@@ -66,13 +66,17 @@ import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 | `selectAllLabel` / `selectRowLabel(row)` / `paginationLabel` | 无障碍文案 |
 | `pageSizes?` | 默认 `[10, 20, 50]` |
 | `empty` | 无匹配时渲染的内容（通常 `EmptyState`） |
-| `scrollHint?` | 局部横向滚动提示 |
+| `scrollHint?` | `string`，局部横向滚动提示 |
 | `loading?` | 与行高一致的扫光骨架 |
 
 `use-data-table.ts` 导出：`dataTableFeatures`（列筛选、全局筛选、分页、行选择）、`DataTableInstance<TData>`、`createDataTableColumns<TData>()`、`useDataTable(options)`。参考 `apps/web/src/features/bills/components/BillsTable.tsx`：
 
 ```tsx
 const column = createDataTableColumns<Bill>()
+const columns = [
+  column.accessor("id", { header: "…" }),
+  // …其余列
+]
 const table = useDataTable({
   columns,
   data: rows,
@@ -103,7 +107,7 @@ const table = useDataTable({
 
 只用 Solar。`AppIcon({ icon, size = 20, stateful?, … })` 渲染图标（有 `aria-label` 时 `role="img"`，否则 `aria-hidden`）；`AppIconComponent` 为图标类型。`Solar*` 命名导出来自 `components/icons/solar/*`（如 `SolarCog`、`SolarBell`、`SolarSearch`、`SolarMoon`、`SolarSun`、`SolarInbox`）。`IconPlaceholder`（`icon-placeholder.tsx`）把 shadcn CLI 生成的占位映射到 Solar。新增：加文件到 `solar/` 并在 `index.ts` 导出。
 
-**变体**：默认 Linear；选中或悬停为同名 Bold（同一 `24×24` 网格，不抖动）。`stateful` 同时渲染 Linear 与 Bold，`styles/icon-states.css` 按状态显示其一，不增加 DOM 包裹层。配对表在 `icon-variants.ts`（`boldIconOf`），目前覆盖一级模块与第二列导航的 18 个图标：`bell`、`chart-2`、`chart-square`、`clock-circle`、`cloud`、`settings`、`card`、`eye`、`document-text`、`folder`、`home-smile-angle`、`widget-2`、`letter`、`notebook`、`pallete-2`、`bill-list`、`refresh`、`shield-warning`。Line Duotone 暂未引入（预留）。
+变体规则（Linear / Bold、`stateful`、24×24 网格）见 [AGENTS.md §3.1](../AGENTS.md)。`stateful` 同时渲染 Linear 与 Bold，由 `styles/icon-states.css` 按状态显示其一，不增加 DOM 包裹层。配对表在 `icon-variants.ts`（`boldIconOf`），目前覆盖一级模块与第二列导航的 18 个图标：`bell`、`chart-2`、`chart-square`、`clock-circle`、`cloud`、`settings`、`card`、`eye`、`document-text`、`folder`、`home-smile-angle`、`widget-2`、`letter`、`notebook`、`pallete-2`、`bill-list`、`refresh`、`shield-warning`。
 
 **别名对照**（命名与实际图形不一致，引用前先看这里）：`SolarCheck` 与 `SolarCircleCheck` 同为 `check-circle-linear`；`SolarFileSearch` = `document-text`；`SolarSquareMenu` = `file-text`；`SolarChartNoAxesColumnIncreasing` = `chart-2`；`SolarReceiptText` = `bill-list`；`SolarCog` = `settings`；`SolarClock3` = `clock-circle`。
 
@@ -114,15 +118,15 @@ const table = useDataTable({
 - `hooks/use-mobile`：`useIsMobile()`。
 - `lib/ui-labels`：`UiLabels`、`defaultUiLabels`（中文）、`UiLabelsProvider`、`useUiLabels()`；共享组件的固定文案（Dialog 关闭、表格底栏与分页、主题/品牌/暗色控件等）由此读取，应用通过 `UiLabelsBridge` 提供翻译。
 
-## 5. 基础组件（`@marismoon/ui/ui/*`，67 个文件）
+## 5. 基础组件（`@marismoon/ui/ui/*`，64 个组件 + 3 个样式文件）
 
 shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 
-`accordion` `alert-dialog` `alert` `aspect-ratio` `attachment` `avatar` `badge` `breadcrumb` `bubble` `button-group` `button` `calendar` `card` `carousel` `chart` `checkbox` `code-block` `collapsible` `combobox` `command` `context-menu` `date-picker` `dialog` `direction` `drawer` `dropdown-menu` `empty` `field` `hover-card` `input-group` `input-otp` `input` `item` `kbd` `label` `marker` `menubar` `message-scroller` `message` `native-select` `navigation-menu` `pagination` `popover` `progress` `questionnaire` `radio-group` `resizable` `scroll-area` `select` `separator` `sheet` `sidebar` `skeleton` `slider` `sonner` `spinner` `switch` `table` `tabs` `textarea` `toggle-group` `toggle` `tooltip` `trace`；样式文件 `popup.css`、`select.css`、`text-field.css`。
+`accordion` `alert-dialog` `alert` `aspect-ratio` `attachment` `avatar` `badge` `breadcrumb` `bubble` `button-group` `button` `calendar` `card` `carousel` `chart` `checkbox` `code-block` `collapsible` `combobox` `command` `context-menu` `date-picker` `dialog` `direction` `drawer` `dropdown-menu` `empty` `field` `hover-card` `input-group` `input-otp` `input` `item` `kbd` `label` `marker` `menubar` `message-scroller` `message` `native-select` `navigation-menu` `pagination` `popover` `progress` `questionnaire` `radio-group` `resizable` `scroll-area` `select` `separator` `sheet` `sidebar` `skeleton` `slider` `sonner` `spinner` `switch` `table` `tabs` `textarea` `toggle-group` `toggle` `tooltip` `trace`。样式文件：`popup.css`、`select.css`、`text-field.css`。
 
 ### 默认值（规范）
 
-- `Button`：`variant` 默认 `default`，可选 `outline | secondary | ghost | destructive | link`；`size` 默认 **`dense`（32px）**，可选 `default`（40px）`small`（28px）`xs` `sm` `lg` `icon` `icon-xs` `icon-sm` `icon-lg`；`shape` 默认 `workspace`（`--radius-workspace-control`）。按钮高度分三级：`default` 40px 只用于页面级主操作（登录卡片的「登录」、向导与表单提交）；`dense`（默认 32px）用于组件与浮层内的操作，含对话框、抽屉、AlertDialog、Sheet 页脚与空状态按钮；`small` 28px（`--control-size-small`）用于小浮层（`AlertDialog size="sm"`、小 Popover、Toast 操作）。`size` 可选值补充 `small`。
+- `Button`：`variant` 默认 `default`，可选 `outline | secondary | ghost | destructive | link`；`size` 默认 **`dense`（32px，不写 `size` 即此值）**，`default` 反而是 40px；可选 `default`（40px）`dense`（32px）`small`（28px）`sm`（36px）`lg`（44px）`xs`（24px）`icon`（32px）`icon-xs`（24px）`icon-sm`（28px）`icon-lg`（40px）；`pointer: coarse` 下 `small` 与 `icon-xs`、`icon-sm` 放大到 40px，`xs` 放大到 36px；`shape` 默认 `workspace`（`--radius-workspace-control`）。按钮高度分三级：`default` 40px 只用于页面级主操作（登录卡片的「登录」、向导与表单提交）；`dense`（默认 32px）用于组件与浮层内的操作，含对话框、抽屉、AlertDialog、Sheet 页脚与空状态按钮；`small` 28px（`--control-size-small`）用于小浮层（`AlertDialog size="sm"`、小 Popover、Toast 操作）；普通 AlertDialog 页脚为 32px，`size="sm"` 的页脚为 28px（由 `popup.css` 自动处理）。各 variant 的底色只来自令牌，暗色没有单独写法：`default` 用 `--primary` / `--primary-foreground`（悬停 `--primary-hover`），`outline` 用 `--field-surface` 加 `--field-shadow`，`secondary` 用 `--secondary`，`ghost` 悬停用 `--muted`，`destructive` 为 `--destructive` 的 10% 底色。
 - `Badge`：`variant` 含 `default secondary destructive outline ghost link`，以及 Ant Design 预设色 `red volcano orange gold yellow lime green cyan blue geekblue purple magenta gray`（加 `solid` 为实心）。
 - `Input`、`SelectTrigger`、`InputGroup`、`NativeSelect`、`Combobox`、`InputOTP`：统一 `field-surface`，不写 `size` 即 32px。
 - `SelectContent` 使用 `position="popper"`。
@@ -130,14 +134,14 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 
 ## 6. 应用级布局组件（`apps/web/src/components/layout`）
 
-非共享库的一部分，随应用保留：`AppShell`、`IconRail`、`WorkspaceNav`（`NavTree`、`NavHighlight`、`SidebarNavItem`）、`MainWorkspace`（含 `WorkspacePageLayout`）、`PageHeader({ title, breadcrumbs, breadcrumbDetail?, description? })`、`WorkspaceControls`（`DarkStyleControl` + `LanguageControl` + `BrandPaletteControl` + `ThemeSwitcher`）、`LanguageControl`（循环切换语言，见 [I18N.md](I18N.md)）、`WorkspacePage`（`WorkspacePageSlots`：`Content`、`Subtitle?`、`BreadcrumbDetail?`、`Summary?`）、`CommandPalette` / `CommandPaletteProvider`。
+非共享库的一部分，随应用保留：`AppShell`、`IconRail`、`WorkspaceNav`（`NavTree`、`NavHighlight`、`SidebarNavItem`）、`MainWorkspace`（含 `WorkspacePageLayout`）、`PageHeader({ title, breadcrumbs, breadcrumbDetail?, description? })`、`WorkspaceControls`（`DarkStyleControl` + `LanguageControl` + `BrandPaletteControl` + `ThemeSwitcher`）、`LanguageControl`（循环切换语言，见 [I18N.md](I18N.md)）、`WorkspacePage`（`WorkspacePageSlots`：`Content`、`Subtitle?`、`BreadcrumbDetail?`、`Summary?`，均为 `ComponentType`）、`CommandPalette` / `CommandPaletteProvider`。
 
 ## 7. 示例实现（可参考，正式开发时删除）
 
 | 能力 | 位置 |
 | --- | --- |
 | KPI 卡、图表卡（recharts） | `features/overview/components/OverviewKpis.tsx`、`OverviewCharts.tsx` |
-| 连续匀速滚动列表（跑马灯） | `features/overview/components/AttentionList.tsx` + `hooks/useAttentionScroll.ts` |
+| 连续匀速滚动列表（跑马灯，仅列表滚动，不含数字动画） | `features/overview/components/AttentionList.tsx` + `hooks/useAttentionScroll.ts` |
 | Tabs 切换卡片（尺寸稳定） | `features/overview/components/ActivityTimeline.tsx` |
 | 表格 + 抽屉 | `features/bills/components/BillsTable.tsx`、`BillDrawer.tsx` |
 | 登录/安全/会话等基础页面 | `features/settings/base-pages/` |
@@ -148,5 +152,4 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 1. 先在预览页/本文件查找可复用组件；其次组合现有组件；最后才新增。
 2. 基础组件放 `packages/ui/src/components/ui`（保持 shadcn 结构以便 CLI diff）；有业务无关的组合放 `shared`；业务组合放 `apps/web/src/features/<name>/components`。
 3. 颜色、圆角、字号一律走令牌（见 [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)）；Button/Badge 内图标写 `data-icon="inline-start|inline-end"`，不手写图标尺寸。
-4. 共享组件 **MUST NOT** 导入 `apps/web` 或使用 `@/`；`ui` 不得导入 `shared`。
-5. 修改共享组件后回归 Overview、Bills、Sidebar、AI 助手与组件预览（见 [AGENTS.md](../AGENTS.md) 自检清单）。
+4. 包边界与提交前回归清单见 [AGENTS.md](../AGENTS.md) §1 与 §9。
