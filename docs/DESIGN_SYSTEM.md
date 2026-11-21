@@ -101,6 +101,7 @@
 - 尺寸稳定性见 AGENTS.md §4.4；Hover/Focus 不引起布局跳动（明确的展开/收起除外）。
 - 内容溢出、空状态、加载状态由卡片内部处理，**不**拉伸列表行填满卡片，**不**裁剪重要内容。
 - 滚动内容边缘使用 `soft-edge.css` 的渐隐（容器需列入其选择器），**不**用边框/阴影/遮罩层掩盖裁剪。
+- 第三列内容区的顶部/底部渐隐在 `apps/web/src/components/layout/layout.css` 的 `.page-content-frame::before/::after`：范围只覆盖内容列并向两侧各羽化 `--workspace-fade-feather`（8px），**不得**覆盖第一、二列；改动时复核展开与收起导航两种状态的两侧。
 - 阴影出血规则见 AGENTS.md §3 规则 9。
 
 ## 5. 控件视觉
@@ -123,7 +124,7 @@
 | 表格 | 行悬停 140ms；行进入 180ms 淡入（`--row-index` 错开，最多 8 行）；勾选行左侧 3px 指示条；`StatusBadge pulse` 低频呼吸；`DataTable loading` 扫光骨架 |
 | `.shimmer-text` / `.shimmer-block` | 扫光文字/占位块 |
 
-规则：不使用 layout 动画与弹簧回弹；金额与数字不做滚动/跳动动画；减弱动效（`prefers-reduced-motion`）的处理与 `.animate-spin` 例外见 AGENTS.md §6.2。
+减弱动效（`prefers-reduced-motion`）与 `.animate-spin` 例外、禁用 layout 动画/弹簧/数字动画等规则见 AGENTS.md §6。
 
 ## 7. 图表规则
 

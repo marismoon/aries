@@ -126,7 +126,17 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 
 ### 默认值（规范）
 
-- `Button`：`variant` 默认 `default`，可选 `outline | secondary | ghost | destructive | link`；`size` 默认 **`dense`（32px，不写 `size` 即此值）**，`default` 反而是 40px；可选 `default`（40px）`dense`（32px）`small`（28px）`sm`（36px）`lg`（44px）`xs`（24px）`icon`（32px）`icon-xs`（24px）`icon-sm`（28px）`icon-lg`（40px）；`pointer: coarse` 下 `small` 与 `icon-xs`、`icon-sm` 放大到 40px，`xs` 放大到 36px；`shape` 默认 `workspace`（`--radius-workspace-control`）。按钮高度分三级：`default` 40px 只用于页面级主操作（登录卡片的「登录」、向导与表单提交）；`dense`（默认 32px）用于组件与浮层内的操作，含对话框、抽屉、AlertDialog、Sheet 页脚与空状态按钮；`small` 28px（`--control-size-small`）用于小浮层（`AlertDialog size="sm"`、小 Popover、Toast 操作）；普通 AlertDialog 页脚为 32px，`size="sm"` 的页脚为 28px（由 `popup.css` 自动处理）。各 variant 的底色只来自令牌，暗色没有单独写法：`default` 用 `--primary` / `--primary-foreground`（悬停 `--primary-hover`），`outline` 用 `--field-surface` 加 `--field-shadow`，`secondary` 用 `--secondary`，`ghost` 悬停用 `--muted`，`destructive` 为 `--destructive` 的 10% 底色。
+- `Button`：`variant` 默认 `default`，可选 `outline | secondary | ghost | destructive | link`；`shape` 默认 `workspace`（`--radius-workspace-control`）。`size` 默认 **`dense`（32px，不写 `size` 即此值）**，`default` 反而是 40px：
+
+  | `size` | 高度 | 用途 |
+  | --- | --- | --- |
+  | `default` | 40px | 页面级主操作（登录卡片的「登录」、向导与表单提交） |
+  | `dense`（默认） | 32px | 组件与浮层内的操作：对话框、抽屉、AlertDialog、Sheet 页脚、空状态按钮 |
+  | `small` | 28px（`--control-size-small`） | 小浮层：`AlertDialog size="sm"`、小 Popover、Toast 操作 |
+  | `sm` / `lg` / `xs` | 36 / 44 / 24px | 其余场景 |
+  | `icon` / `icon-xs` / `icon-sm` / `icon-lg` | 32 / 24 / 28 / 40px | 图标按钮 |
+
+  `pointer: coarse` 下 `small`、`icon-xs`、`icon-sm` 放大到 40px，`xs` 放大到 36px。普通 AlertDialog 页脚为 32px，`size="sm"` 的页脚为 28px（由 `popup.css` 自动处理）。各 variant 的底色只来自令牌，暗色没有单独写法：`default` 用 `--primary` / `--primary-foreground`（悬停 `--primary-hover`），`outline` 用 `--field-surface` 加 `--field-shadow`，`secondary` 用 `--secondary`，`ghost` 悬停用 `--muted`，`destructive` 为 `--destructive` 的 10% 底色。
 - `Badge`：`variant` 含 `default secondary destructive outline ghost link`，以及 Ant Design 预设色 `red volcano orange gold yellow lime green cyan blue geekblue purple magenta gray`（加 `solid` 为实心）。
 - `Input`、`SelectTrigger`、`InputGroup`、`NativeSelect`、`Combobox`、`InputOTP`：统一 `field-surface`，不写 `size` 即 32px。
 - `SelectContent` 使用 `position="popper"`。
@@ -134,7 +144,7 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 
 ## 6. 应用级布局组件（`apps/web/src/components/layout`）
 
-非共享库的一部分，随应用保留：`AppShell`、`IconRail`、`WorkspaceNav`（`NavTree`、`NavHighlight`、`SidebarNavItem`）、`MainWorkspace`（含 `WorkspacePageLayout`）、`PageHeader({ title, breadcrumbs, breadcrumbDetail?, description? })`、`WorkspaceControls`（`DarkStyleControl` + `LanguageControl` + `BrandPaletteControl` + `ThemeSwitcher`）、`LanguageControl`（循环切换语言，见 [I18N.md](I18N.md)）、`WorkspacePage`（`WorkspacePageSlots`：`Content`、`Subtitle?`、`BreadcrumbDetail?`、`Summary?`，均为 `ComponentType`）、`CommandPalette` / `CommandPaletteProvider`。
+非共享库的一部分，随应用保留：`AppShell`、`IconRail`（用户头像沿用基础组件 `Avatar` + `AvatarBadge` 默认尺寸，不自定义尺寸、颜色与描边）、`WorkspaceNav`（`NavTree`、`NavHighlight`、`SidebarNavItem`）、`MainWorkspace`（含 `WorkspacePageLayout`）、`PageHeader({ title, breadcrumbs, breadcrumbDetail?, description? })`、`WorkspaceControls`（`DarkStyleControl` + `LanguageControl` + `BrandPaletteControl` + `ThemeSwitcher`）、`LanguageControl`（循环切换语言，见 [I18N.md](I18N.md)）、`WorkspacePage`（`WorkspacePageSlots`：`Content`、`Subtitle?`、`BreadcrumbDetail?`、`Summary?`，均为 `ComponentType`）、`CommandPalette` / `CommandPaletteProvider`。
 
 ## 7. 示例实现（可参考，正式开发时删除）
 

@@ -13,7 +13,7 @@
 | --- | --- |
 | 包管理 / 任务 | pnpm 12.16.1（workspace）+ Turborepo；Node ^24 |
 | 包 | `@marismoon/web`（apps/web）、`@marismoon/ui`（packages/ui）、`@marismoon/core`（packages/core） |
-| 启动 | `pnpm install` → `pnpm dev`（Vite，<http://localhost:5173>） |
+| 启动 | `pnpm install` → `pnpm dev`（Vite，默认 <http://localhost:5173>，被占用时端口递增） |
 | 自检 | `pnpm typecheck` · `pnpm lint` · `pnpm build` · `pnpm test` · `pnpm test:ui` |
 | 单个 e2e | `pnpm --filter @marismoon/web exec playwright test e2e/<name>.spec.ts`（Playwright 自动启动 Vite，端口 4173） |
 | 详细文档 | [架构](docs/ARCHITECTURE.md) · [技术栈](docs/TECH_STACK.md) · [设计系统](docs/DESIGN_SYSTEM.md) · [组件](docs/COMPONENTS.md) · [国际化](docs/I18N.md) |
@@ -54,10 +54,11 @@
 1. **MUST** 颜色只使用主题变量（`--primary`、`--accent`、`--muted`、`--destructive`、`--success`、`--warning`、`--danger`、`--info`、`--chart-1..8` 等，完整列表见 [DESIGN_SYSTEM §3](docs/DESIGN_SYSTEM.md)）。
 2. **MUST NOT** 在 `apps/web/src/features` 与 `components/layout` 的新代码中写十六进制、`rgb()`、`hsl()`、`oklch()` 颜色；**MUST NOT** 用 `style={{ color/background… }}` 写死颜色（动态值只能引用 `var(--token)`，如 `StatusBadge`）。颜色字面量只允许出现在 `packages/ui/src/styles/*.css` 的令牌定义中。
 3. **MUST NOT** 新增 `dark:` 变体。深色适配**优先通过令牌**（`.dark` 块）完成；`dark:` 仅允许出现在 `packages/ui/src/components/ui` 的 shadcn 组件内（沿用官方写法）。
-4. **MUST NOT** 修改已确认的亮色（Light）视觉去适配深色；深色问题只改 `.dark` 作用域。暗色共同底座在 `styles/dark-base.css`（glass 与 clean 共用），简洁暗色材质在 `styles/dark-clean.css`（作用域 `.dark[data-dark-style="clean"]`），规则见 [DESIGN_SYSTEM §2](docs/DESIGN_SYSTEM.md)。`marismoon-light` 为纯浅色主题，**MUST NOT** 给它增加深色分支（`tokens.css` 中已有的 `.dark[data-palette="marismoon-light"]` 块只用于让它在暗色类下保持浅色）。
-5. **MUST** 以「系统设置 → 组件预览」（模板阶段）与 [COMPONENTS.md](docs/COMPONENTS.md) 为组件规范；预览页删除后以 COMPONENTS.md 为准。不写 `size` 的 `Button/Input/SelectTrigger` 即 32px 标准控件；按钮三级：页面级主操作 `size="default"`（40px）、组件与浮层内的操作不写 `size`（32px）、小浮层 `size="small"`（28px），适用范围见 [COMPONENTS §5](docs/COMPONENTS.md)。字号与控件高度只使用 [DESIGN_SYSTEM §3](docs/DESIGN_SYSTEM.md) 的令牌。
+4. **MUST NOT** 修改已确认的亮色（Light）视觉去适配深色；深色问题只改 `.dark` 作用域。暗色共同底座在 `styles/dark-base.css`（glass 与 clean 共用），简洁暗色材质在 `styles/dark-clean.css`（作用域 `.dark[data-dark-style="clean"]`），规则见 [DESIGN_SYSTEM §2](docs/DESIGN_SYSTEM.md)。
+   `marismoon-light` 为纯浅色主题，**MUST NOT** 给它增加深色分支（`tokens.css` 中已有的 `.dark[data-palette="marismoon-light"]` 块只用于让它在暗色类下保持浅色）。
+5. **MUST** 以「系统设置 → 组件预览」（模板阶段）与 [COMPONENTS.md](docs/COMPONENTS.md) 为组件规范；预览页删除后以 COMPONENTS.md 为准。不写 `size` 的 `Button/Input/SelectTrigger` 即 32px 标准控件；页面级主操作用 `size="default"`（40px），小浮层用 `size="small"`（28px），适用范围见 [COMPONENTS §5](docs/COMPONENTS.md)。字号与控件高度只使用 [DESIGN_SYSTEM §3](docs/DESIGN_SYSTEM.md) 的令牌。
 6. **MUST** 圆角走令牌：控件 `--radius-workspace-control`，卡片/面板 `--radius-panel`，卡片内分组 `--radius-control`；**MUST NOT** 使用方角。
-7. **MUST** 表单控件统一 `field-surface` 外观；聚焦样式唯一（`--glow-line` 1px 渐变边），**MUST NOT** 叠加 outline/ring。暗色边框规则见 [DESIGN_SYSTEM §2.4](docs/DESIGN_SYSTEM.md)。
+7. **MUST** 表单控件统一 `field-surface` 外观，聚焦样式唯一，**MUST NOT** 叠加 outline/ring；规则与暗色边框见 [DESIGN_SYSTEM §2.4、§5](docs/DESIGN_SYSTEM.md)。
 8. **MUST NOT** 页面样式覆盖全局布局与页头规则；页面 CSS 只负责业务区。
 9. 带阴影的元素位于 `overflow` 非 visible 的容器内时，**MUST** 预留不小于阴影外延的出血（padding 加等量负 margin）。
 10. 已确认的布局、尺寸、材质和视觉样式变更 **MUST** 先取得确认。
