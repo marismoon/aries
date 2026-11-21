@@ -12,6 +12,7 @@ const sources = import.meta.glob<string>(
     "../../components/layout/**/*.{ts,tsx}",
     "../../features/{overview,bills,copilot}/**/*.{ts,tsx}",
     "../../features/settings/base-pages/**/*.{ts,tsx}",
+    "../../features/settings/basic-info/**/*.{ts,tsx}",
     "!**/*.test.*",
   ],
   { query: "?raw", import: "default", eager: true }

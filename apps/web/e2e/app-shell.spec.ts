@@ -346,6 +346,17 @@ test("七个业务模块共用目录结构、显示预定菜单并保留真实�
         await expect(folder).toHaveAttribute("aria-expanded", "true")
         continue
       }
+      if (folderLabel === "系统配置") {
+        // 基础信息 is a real route; 全局参数 is still a Demo placeholder.
+        await expect(tree.getByRole("link")).toHaveText(["基础信息"])
+        await expect(tree.getByRole("button")).toHaveText(["全局参数"])
+        await expectLeafSpacing(tree)
+        await folder.press("Enter")
+        await expect(folder).toHaveAttribute("aria-expanded", "false")
+        await folder.click()
+        await expect(folder).toHaveAttribute("aria-expanded", "true")
+        continue
+      }
       await expect(tree.getByRole("button")).toHaveText([...children])
       await expectLeafSpacing(tree)
       for (const label of children) {
@@ -366,9 +377,9 @@ test("七个业务模块共用目录结构、显示预定菜单并保留真实�
       })
     }
 
-    // Only 系统设置 carries real routes (the 7 组件预览 and 7 动态效果 pages).
+    // Only 系统设置 carries real routes (组件预览、基础页面、动态效果 and 基础信息).
     await expect(directory.getByRole("link")).toHaveCount(
-      name === "系统设置" ? 17 : 0
+      name === "系统设置" ? 18 : 0
     )
     await expect(page).toHaveURL(/\/bills$/)
   }

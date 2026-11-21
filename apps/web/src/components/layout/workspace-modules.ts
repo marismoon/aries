@@ -235,7 +235,10 @@ export const workspaceModules = {
         kind: "folder",
         label: "系统配置",
         icon: SolarCog,
-        children: [{ label: "基础信息" }, { label: "全局参数" }],
+        children: [
+          { label: "基础信息", to: workspacePages["settings-basic"].path },
+          { label: "全局参数" },
+        ],
       },
       {
         kind: "folder",

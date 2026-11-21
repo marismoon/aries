@@ -1,0 +1,195 @@
+.settings-basic-page {
+  container: basic / inline-size;
+}
+
+/* 单栏受控宽度：表单页不横跨整个内容区 */
+.basic-flow {
+  display: grid;
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  gap: var(--space-3);
+}
+
+.basic-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.basic-toolbar p {
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+}
+
+.basic-card {
+  min-width: 0;
+  padding: var(--card-inset);
+}
+
+.basic-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.basic-card-icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  place-items: center;
+  border-radius: calc(var(--radius-control) - 6px);
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.basic-card-header h2 {
+  font-size: 0.9375rem;
+  font-weight: 690;
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+}
+
+.basic-card-header p {
+  margin-top: 1px;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.basic-card-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 行：左标题 + 说明，右定宽控件 */
+.basic-rows {
+  display: grid;
+}
+
+.basic-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  min-height: 56px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.basic-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.basic-row-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.basic-row-text b {
+  font-size: 0.8125rem;
+  font-weight: 620;
+}
+
+.basic-row-text small {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.basic-row-control {
+  display: flex;
+  min-width: 0;
+  justify-content: flex-end;
+}
+
+.basic-row-control[data-width="xs"]
+  > :where(input, textarea, [data-slot="select-trigger"]) {
+  width: 120px;
+}
+
+.basic-row-control[data-width="sm"]
+  > :where(input, textarea, [data-slot="select-trigger"]) {
+  width: 180px;
+}
+
+.basic-row-control[data-width="md"]
+  > :where(input, textarea, [data-slot="select-trigger"]) {
+  width: 240px;
+}
+
+.basic-row-control[data-width="lg"]
+  > :where(input, textarea, [data-slot="select-trigger"]) {
+  width: 320px;
+}
+
+.basic-identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-block: 12px 2px;
+  padding: 12px;
+  border-radius: var(--radius-control);
+  background: var(--recess);
+}
+
+.basic-logo {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  flex: none;
+  place-items: center;
+  border-radius: var(--radius-control);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 1.25rem;
+  font-weight: 720;
+}
+
+.basic-identity-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.basic-identity-text strong {
+  display: block;
+  overflow: hidden;
+  font-size: 0.9375rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.basic-identity-text span {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+@container basic (max-width: 600px) {
+  .basic-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .basic-row-control {
+    justify-content: flex-start;
+  }
+
+  .basic-row-control > :where(input, textarea, [data-slot="select-trigger"]) {
+    width: 100% !important;
+  }
+
+  .basic-card-header {
+    flex-wrap: wrap;
+  }
+
+  .basic-identity {
+    flex-wrap: wrap;
+  }
+}

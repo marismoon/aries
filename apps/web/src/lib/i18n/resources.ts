@@ -1,6 +1,10 @@
 export const resources = {
   "zh-CN": {
     translation: {
+      settingsBasic: {
+        title: "基础信息",
+        description: "组织资料、账期与币种、区域显示与数据保留。",
+      },
       overview: {
         title: "运营总览",
         description: "跟踪本期出账、采集进度与待处理事项。",
@@ -62,6 +66,11 @@ export const resources = {
   },
   en: {
     translation: {
+      settingsBasic: {
+        title: "Basics",
+        description:
+          "Organization profile, billing period and currency, regional display and data retention.",
+      },
       overview: {
         title: "Operations overview",
         description:

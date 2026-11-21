@@ -228,6 +228,19 @@ export const workspacePages = {
       return { Content: () => <BasePagesPage slug="login" /> }
     },
   },
+  "settings-basic": {
+    id: "settings-basic",
+    moduleId: "settings",
+    path: "/settings/system/basic",
+    titleKey: "settingsBasic.title",
+    descriptionKey: "settingsBasic.description",
+    breadcrumbs: [{ label: "系统设置" }, { label: "系统配置" }],
+    load: async () => {
+      const { BasicInfoPage } =
+        await import("@/features/settings/basic-info/BasicInfoPage")
+      return { Content: BasicInfoPage }
+    },
+  },
   "base-security": {
     id: "base-security",
     moduleId: "settings",
