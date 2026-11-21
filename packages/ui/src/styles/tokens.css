@@ -236,7 +236,7 @@
     0 7px 16px -9px var(--sidebar-shadow-color), var(--glass-specular);
   --surface-filter: blur(40px) saturate(150%);
   --surface-shadow-color: rgb(4 2 21 / 32%);
-  --environment-strength: 70%;
+  --environment-strength: 100%;
   --floating-shadow: 0 18px 60px rgb(2 0 15 / 55%);
 
   --primary: #704bf0;

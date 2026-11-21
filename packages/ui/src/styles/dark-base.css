@@ -97,4 +97,55 @@
   --card-bottom: oklch(
     from var(--primary) calc(var(--card-l) - 0.015) var(--card-c) h
   );
+
+  /* The rest of the surface ladder is tinted the same way, so buttons, fields,
+     the active nav item, count chips and segmented tracks sit in the page's
+     colour instead of reading as neutral black cut-outs. */
+  --control-l: 0.3;
+  --popover-l: 0.33;
+  --recess-l: 0.2;
+  --control: oklch(from var(--primary) var(--control-l) var(--card-c) h);
+  --secondary: var(--control);
+  --muted: var(--control);
+  --popover: oklch(from var(--primary) var(--popover-l) var(--card-c) h);
+  --recess: oklch(from var(--primary) var(--recess-l) var(--card-c) h);
+
+  /* The page itself takes the palette hue too (the canvas under the aurora),
+     so the whole screen is one colour family rather than black plus glow.
+     --background stays neutral: it feeds the theme-color meta tag. */
+  --base-l: 0.2;
+  --base-c: 0.04;
+  --environment-base: oklch(from var(--primary) var(--base-l) var(--base-c) h);
+
+  /* Aurora: three blooms (top, bottom, one low on the right) instead of six,
+     each a single soft ellipse. Dark glass only; light mode keeps its own. */
+  --page-background:
+    radial-gradient(
+      ellipse 55% 60% at 106% -9%,
+      color-mix(
+        in srgb,
+        var(--environment-top) var(--environment-strength),
+        transparent
+      ),
+      transparent 76%
+    ),
+    radial-gradient(
+      ellipse 68% 76% at -8% 102%,
+      color-mix(
+        in srgb,
+        var(--environment-bottom) var(--environment-strength),
+        transparent
+      ),
+      transparent 75%
+    ),
+    radial-gradient(
+      ellipse 42% 46% at 68% 90%,
+      color-mix(
+        in srgb,
+        var(--environment-side) var(--environment-strength),
+        transparent
+      ),
+      transparent 80%
+    ),
+    var(--environment-base);
 }
