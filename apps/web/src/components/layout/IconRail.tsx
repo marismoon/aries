@@ -12,7 +12,13 @@ import {
   SolarSparkles,
 } from "@marismoon/ui/icons"
 import { Link } from "react-router"
-import { Avatar, AvatarBadge, AvatarFallback } from "@marismoon/ui/ui/avatar"
+import {
+  Avatar,
+  AvatarBadge,
+  AvatarFallback,
+  AvatarImage,
+} from "@marismoon/ui/ui/avatar"
+import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
 import { Button } from "@marismoon/ui/ui/button"
 import {
   Tooltip,
@@ -273,15 +279,18 @@ export function IconRail({
               role="img"
               aria-label={tl("演示用户 · 管理员")}
               title={tl("演示用户 · 管理员")}
-              className="size-7"
             >
-              <AvatarFallback className="bg-[linear-gradient(145deg,color-mix(in_srgb,var(--success)_80%,white),color-mix(in_srgb,var(--success)_70%,black))] text-xs font-semibold text-white dark:text-background">
-                M
-              </AvatarFallback>
-              <AvatarBadge
-                aria-hidden="true"
-                className="-right-px -bottom-px size-2 bg-(--success) ring-[1.5px] group-data-[size=default]/avatar:size-2"
-              />
+              <AvatarImage src="https://github.com/pranathip.png" alt="" />
+              <AvatarFallback>M</AvatarFallback>
+              <AvatarBadge aria-hidden="true">
+                <IconPlaceholder
+                  lucide="PlusIcon"
+                  tabler="IconPlus"
+                  hugeicons="PlusSignIcon"
+                  phosphor="PlusIcon"
+                  remixicon="RiAddLine"
+                />
+              </AvatarBadge>
             </Avatar>
           </span>
           <RailTooltip label={navLabel}>
