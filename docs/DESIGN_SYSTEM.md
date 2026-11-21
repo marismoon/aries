@@ -18,6 +18,7 @@
 - **品牌主题**（`<html data-palette="…">`，`lib/storage.ts` 的 `paletteLabels`，localStorage 键 `marismoon-palette`）：`saas-analytics-spectrum`（默认）、`telemedicine`、`mental-health`、`pet-adoption`、`health-wellness`、`violet-aurora`、`amber-sand`、`rose-quartz`、`marismoon-light`。`marismoon-light` 为**纯浅色**主题（`color-scheme: light`，暗色块也保持浅色）。
 - **暗色风格**（`<html data-dark-style="glass|clean">`，键 `marismoon-dark-style`）：`glass` 毛玻璃（默认）、`clean` 简洁（无模糊/光晕/阴影，靠发丝线分层）。两种风格共用 `dark-base.css` 的骨架，只差材质。
 - **暗色底座**：每个主题只声明 `--dark-hue`，饱和度统一 `--dark-tint: 6%`；亮度（HSL L）recess 8 < 画布 11 < 卡片 15 < 控件 19 < 浮层 23；发丝线为白色 alpha：`--border-subtle` 10%、`--border` 18%、`--layout-control-border` 22%、`--input` 32%；语义色全主题固定。主题块不再写表面/边框/语义色，只提供主色、强调、图表、光晕与 hero。图表色在暗色下须对卡片 ≥3:1。
+- **玻璃卡片染色**：glass 的卡片取主色色相，固定 OKLCH 亮度/彩度（`--card-l: 0.26`、`--card-c: 0.032`），不透明度 52/44%，极光强度 70%；clean 卡片保持中性。回退把 `--card-c` 设为 0 即可。
 - 切换控件：`BrandPaletteControl`（轮换主题）、`DarkStyleControl`（仅暗色模式显示）、`ThemeSwitcher`（明暗）。
 
 ## 2. 令牌

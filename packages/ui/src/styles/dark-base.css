@@ -83,3 +83,18 @@
   --danger-bg: color-mix(in srgb, var(--danger) 14%, transparent);
   --info-bg: color-mix(in srgb, var(--info) 14%, transparent);
 }
+
+/* Glass material: the card takes the hue of the palette's primary at a fixed
+   OKLCH lightness and chroma, so every palette gets the same tonal depth and
+   the card reads as tinted glass over the aurora instead of a neutral dark
+   hole. Clean keeps neutral cards (it has no aurora). Set --card-c to 0 for a
+   neutral card; raise --card-l and the chart / input-edge contrast checks
+   start to fail (see the dark contrast check, run locally). */
+.dark:not([data-dark-style="clean"]):not([data-palette="marismoon-light"]) {
+  --card-l: 0.26;
+  --card-c: 0.032;
+  --card: oklch(from var(--primary) var(--card-l) var(--card-c) h);
+  --card-bottom: oklch(
+    from var(--primary) calc(var(--card-l) - 0.015) var(--card-c) h
+  );
+}

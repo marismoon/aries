@@ -222,8 +222,8 @@
   --surface-shadow-ink: #040215;
   --surface-shadow-scale: 3;
   --surface-inset: rgb(255 255 255 / 6%);
-  --glass-fill-top: 72%;
-  --glass-fill-bottom: 64%;
+  --glass-fill-top: 52%;
+  --glass-fill-bottom: 44%;
   --glass-specular: inset 0 0 28px rgb(255 255 255 / 7%);
   --glass-edge: rgb(255 255 255 / 12%);
   --surface-shadow-tint: 1.3;
