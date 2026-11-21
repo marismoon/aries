@@ -275,7 +275,10 @@ export function IconRail({
               title={tl("演示用户 · 管理员")}
             >
               <AvatarFallback>M</AvatarFallback>
-              <AvatarBadge aria-hidden="true" />
+              <AvatarBadge
+                aria-hidden="true"
+                className="group-data-[size=default]/avatar:size-2"
+              />
             </Avatar>
           </span>
           <RailTooltip label={navLabel}>
