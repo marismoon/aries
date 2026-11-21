@@ -1014,6 +1014,12 @@
     height: var(--column-height);
     overflow-y: auto;
     overscroll-behavior: contain;
+    /* overflow-y: auto also clips x at the column edge, which cut the dock's
+       magnified plates (22% growth plus a 2px drift, about 7px past the
+       column). Widen the clip box into the column gap and pad it back, so
+       layout does not move. */
+    margin-inline-end: calc(var(--space-2) * -1);
+    padding-inline-end: var(--space-2);
   }
 }
 
