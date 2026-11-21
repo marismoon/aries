@@ -23,7 +23,7 @@ const tones = {
 } as const
 
 const toneBase =
-  "border-[color-mix(in_srgb,var(--tone)_30%,transparent)] bg-[color-mix(in_srgb,var(--tone)_11%,transparent)] text-[color-mix(in_srgb,var(--tone)_80%,black)] dark:border-[color-mix(in_srgb,var(--tone)_36%,transparent)] dark:bg-[color-mix(in_srgb,var(--tone)_20%,transparent)] dark:text-[color-mix(in_srgb,var(--tone)_72%,white)] data-[solid=true]:border-transparent data-[solid=true]:bg-(--tone) data-[solid=true]:text-white"
+  "border-[color-mix(in_srgb,var(--tone)_30%,transparent)] bg-[color-mix(in_srgb,var(--tone)_11%,transparent)] text-[color-mix(in_srgb,var(--tone)_80%,black)] dark:border-[color-mix(in_srgb,var(--tone)_36%,transparent)] dark:bg-[color-mix(in_srgb,var(--tone)_20%,transparent)] dark:text-[color-mix(in_srgb,var(--tone)_var(--tone-mix),white)] data-[solid=true]:border-transparent data-[solid=true]:bg-(--tone) data-[solid=true]:text-white dark:data-[solid=true]:text-(--tone-ink)"
 
 const toneVariants = Object.fromEntries(
   Object.keys(tones).map((name) => [
@@ -79,6 +79,9 @@ function Badge({
         variant && variant in tones
           ? ({
               "--tone": tones[variant as keyof typeof tones],
+              // Dark only (read by the dark: classes): label mix and solid ink.
+              "--tone-mix": `var(--tone-${variant}-mix, 72%)`,
+              "--tone-ink": `var(--tone-${variant}-ink)`,
               ...style,
             } as React.CSSProperties)
           : style

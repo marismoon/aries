@@ -33,6 +33,30 @@
   --tone-purple: #722ed1;
   --tone-magenta: #eb2f96;
   --tone-gray: #8c8c8c;
+  /* Dark-mode Badge contrast (read only by the dark: classes in badge.tsx).
+     --tone-X-mix: share of the tone in the soft label (the rest is white),
+     lowered for deep hues; default 72%. --tone-X-ink: label on a solid fill,
+     light on deep tones, dark on light ones; both reach 4.5:1. */
+  --tone-ink-light: hsl(220 20% 98%);
+  --tone-ink-dark: hsl(220 15% 7%);
+  --tone-red-mix: 64%;
+  --tone-blue-mix: 68%;
+  --tone-geekblue-mix: 60%;
+  --tone-purple-mix: 56%;
+  --tone-magenta-mix: 66%;
+  --tone-red-ink: var(--tone-ink-dark);
+  --tone-volcano-ink: var(--tone-ink-dark);
+  --tone-orange-ink: var(--tone-ink-dark);
+  --tone-gold-ink: var(--tone-ink-dark);
+  --tone-yellow-ink: var(--tone-ink-dark);
+  --tone-lime-ink: var(--tone-ink-dark);
+  --tone-green-ink: var(--tone-ink-dark);
+  --tone-cyan-ink: var(--tone-ink-dark);
+  --tone-blue-ink: var(--tone-ink-dark);
+  --tone-geekblue-ink: var(--tone-ink-light);
+  --tone-purple-ink: var(--tone-ink-light);
+  --tone-magenta-ink: var(--tone-ink-dark);
+  --tone-gray-ink: var(--tone-ink-dark);
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;

@@ -109,7 +109,7 @@
 - 分段胶囊族（Tabs、ToggleGroup、Menubar）：`--recess` 胶囊、内边距 3px、选项 28px 高、12px 字、字重 620；悬停 `--sidebar-item-hover`，选中为 `--layout-control` 浮起胶囊。
 - 浮层统一 `components/ui/popup.css`（玻璃底、圆角、26px 圆角行、悬停强调色）；下拉用 `SelectContent position="popper"`。
 - 表格：标题栏圆头色条、透明背景，上方与首条记录上方无分割线（见 `shared/data-table.css`）。
-- Badge 提供 Ant Design 预设色 `red volcano orange gold yellow lime green cyan blue geekblue purple magenta gray`（色值为 `tokens.css` 的 `--tone-*`，与品牌无关）：`<Badge variant="blue">` 柔和，加 `solid` 实心；状态用 `StatusBadge`。
+- Badge 提供 Ant Design 预设色 `red volcano orange gold yellow lime green cyan blue geekblue purple magenta gray`（色值为 `tokens.css` 的 `--tone-*`，与品牌无关）：`<Badge variant="blue">` 柔和，加 `solid` 实心；状态用 `StatusBadge`。暗色下文字对比度 ≥ 4.5:1 由 `--tone-*-mix`（柔和标签里的色占比）与 `--tone-*-ink`（实心标签的字色）保证，仅 `dark:` 类读取，亮色不受影响。
 - 图标：Solar，默认 Linear，选中/悬停切同名 Bold（`AppIcon stateful`，见 COMPONENTS.md）；`AppIcon` 默认 20px；Button/Badge 内图标写 `data-icon="inline-start|inline-end"`，尺寸随组件自动缩放。
 
 ## 6. 动效规则
