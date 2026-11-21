@@ -1,0 +1,152 @@
+/* Aceternity-style effects, rewritten on the project's tokens. */
+.ace-moving-border {
+  position: relative;
+  padding: 1.5px;
+  border-radius: var(--radius-control);
+  background: var(--field-surface);
+  box-shadow: var(--field-shadow);
+  overflow: hidden;
+}
+
+.ace-moving-border {
+  --glow-300: color-mix(in srgb, var(--primary) 62%, white);
+  --glow-500: var(--primary);
+}
+
+.ace-moving-border::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 56px;
+  height: 56px;
+  background: radial-gradient(
+    var(--glow-500) 25%,
+    var(--glow-300) 45%,
+    transparent 70%
+  );
+  offset-path: rect(0 100% 100% 0 round 24px);
+  offset-anchor: 50% 50%;
+  animation: ace-move 4s linear infinite;
+  content: "";
+}
+
+@keyframes ace-move {
+  to {
+    offset-distance: 100%;
+  }
+}
+
+.ace-moving-border-body {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  padding: 14px 16px;
+  border-radius: calc(var(--radius-control) - 1.5px);
+  background: var(--popover);
+}
+
+.ace-card3d {
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px;
+  border-radius: var(--radius-panel);
+  background: var(--field-surface);
+  box-shadow: var(--floating-shadow);
+}
+
+.ace-glare {
+  --gx: 50%;
+  --gy: 50%;
+  position: relative;
+  display: grid;
+  gap: 2px;
+  min-height: 6rem;
+  align-content: center;
+  overflow: hidden;
+  padding: 16px 20px;
+  border-radius: var(--radius-panel);
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    color-mix(in srgb, var(--primary) 55%, #7fd8ff)
+  );
+  color: var(--primary-foreground);
+}
+
+.ace-glare::before {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    220px circle at var(--gx) var(--gy),
+    rgb(255 255 255 / 0.55),
+    transparent 65%
+  );
+  mix-blend-mode: overlay;
+  content: "";
+}
+
+.ace-notice {
+  display: grid;
+  min-width: 11rem;
+  gap: 2px;
+  padding: 10px 14px;
+  border-radius: var(--radius-control);
+  background: var(--field-surface);
+  box-shadow: var(--field-shadow);
+}
+
+.ace-meteors {
+  position: relative;
+  display: grid;
+  min-height: 6.5rem;
+  place-items: center;
+  overflow: hidden;
+  border-radius: var(--radius-control);
+  background: var(--recess);
+}
+
+.ace-meteor {
+  position: absolute;
+  top: -10px;
+  width: 1.5px;
+  height: 46px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to top,
+    transparent,
+    color-mix(in srgb, var(--primary) 70%, transparent)
+  );
+  rotate: 25deg;
+  opacity: 0;
+  animation: ace-fall linear infinite;
+}
+
+@keyframes ace-fall {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-60px, 150px);
+  }
+}
+
+.ace-tile {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: var(--radius-control);
+  background: var(--field-surface);
+  box-shadow: var(--field-shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ace-moving-border::before,
+  .ace-meteor {
+    animation: none;
+  }
+}

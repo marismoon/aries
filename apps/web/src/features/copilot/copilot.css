@@ -1,0 +1,465 @@
+.copilot-panel {
+  --copilot-surface: color-mix(in srgb, var(--popover) 91%, transparent);
+  position: fixed;
+  z-index: 45;
+  inset-inline-end: var(--workspace-safe-inline-end);
+  inset-block-end: var(--workspace-safe-block-end);
+  display: flex;
+  flex-direction: column;
+  width: min(368px, calc(100% - 2 * var(--workspace-safe-inline-end)));
+  max-height: min(
+    560px,
+    calc(100dvh - var(--workspace-safe-block-end) - var(--space-4))
+  );
+  overflow: hidden;
+  border: 1px solid var(--glass-edge);
+  border-radius: 22px;
+  background: var(--copilot-surface);
+  color: var(--popover-foreground);
+  box-shadow: var(--floating-shadow);
+  backdrop-filter: blur(26px);
+  transform-origin: bottom right;
+  font-size: 0.8125rem;
+}
+
+.copilot-panel[data-transparent] {
+  --copilot-surface: var(--copilot-surface-clear);
+}
+
+.dark .copilot-panel[data-transparent] {
+  --copilot-surface: color-mix(in srgb, var(--popover) 44%, transparent);
+}
+
+.copilot-panel:focus {
+  outline: none;
+}
+
+.copilot-header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  padding: 12px 12px 10px 15px;
+}
+
+.copilot-panel[data-compact] .copilot-header {
+  padding-block: 10px 8px;
+}
+
+.copilot-mark,
+.copilot-welcome-mark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.copilot-mark {
+  width: 28px;
+  height: 28px;
+}
+
+.copilot-title {
+  flex: none;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.copilot-title,
+.copilot-beta {
+  margin-inline-start: var(--space-2);
+}
+
+.copilot-beta {
+  border-radius: 999px;
+  padding: 1px 7px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-size: 0.6875rem;
+  font-weight: 650;
+}
+
+.copilot-header-actions {
+  display: flex;
+  min-width: 0;
+  margin-inline-start: auto;
+}
+
+.copilot-icon-button {
+  border-radius: 50%;
+  color: var(--muted-foreground);
+}
+
+.copilot-transparency-button {
+  flex-shrink: 1;
+  min-width: var(--space-6);
+}
+
+.copilot-history {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  padding: var(--space-4);
+}
+
+.copilot-welcome {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1);
+  text-align: center;
+}
+
+.copilot-welcome-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+}
+
+.copilot-welcome h3 {
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.copilot-welcome p,
+.copilot-copy-notice {
+  color: var(--muted-foreground);
+}
+
+.copilot-suggestions,
+.copilot-messages {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.copilot-suggestions {
+  width: 100%;
+  margin-block-start: var(--space-1);
+}
+
+.copilot-suggestion {
+  width: 100%;
+  min-height: 36px;
+  justify-content: space-between;
+  padding-inline: var(--space-3);
+  font-size: 0.78125rem;
+  text-align: start;
+  white-space: normal;
+}
+
+.copilot-suggestion svg {
+  color: var(--muted-foreground);
+}
+
+.copilot-chips {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 var(--space-3) 10px;
+}
+
+.copilot-chip {
+  height: 26px;
+  border-radius: 999px;
+  padding-inline: 10px;
+  font-size: 0.71875rem;
+}
+
+.copilot-messages {
+  gap: var(--space-4);
+}
+
+.copilot-message {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-1);
+  justify-items: start;
+}
+
+.copilot-message[data-role="user"] {
+  justify-items: end;
+}
+
+.copilot-question {
+  max-width: 100%;
+  border: 0;
+  border-radius: 16px;
+  border-end-end-radius: 5px;
+  padding: 9px 13px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.copilot-reply {
+  display: grid;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+  gap: var(--space-2);
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+
+.copilot-reply :is(h3, h4) {
+  font-weight: 650;
+}
+
+.copilot-reply ul {
+  display: grid;
+  gap: var(--space-1);
+  padding-inline-start: 18px;
+  list-style-type: disc;
+}
+
+.copilot-copy {
+  color: var(--muted-foreground);
+}
+
+.copilot-loading,
+.copilot-error {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-start: var(--space-3);
+  color: var(--muted-foreground);
+}
+
+.copilot-error p {
+  color: var(--danger);
+}
+
+.copilot-footer {
+  display: grid;
+  flex: none;
+  gap: var(--space-2);
+  padding: 10px 14px 14px;
+}
+
+.copilot-panel[data-compact] .copilot-footer {
+  padding: 0 12px 12px;
+}
+
+.copilot-copy-notice {
+  font-size: var(--text-label);
+}
+
+.copilot-composer {
+  display: grid;
+  gap: 6px;
+}
+
+.copilot-composer textarea {
+  min-height: 1lh;
+  max-height: 110px;
+  resize: none;
+  field-sizing: content;
+}
+
+.copilot-composer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.copilot-context {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  border-radius: 999px;
+  padding-inline: 9px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-size: 0.71875rem;
+}
+
+.copilot-send {
+  border-radius: 50%;
+}
+
+.copilot-send > span {
+  display: grid;
+  place-items: center;
+}
+
+@media (max-width: 520px) {
+  .copilot-icon-button,
+  .copilot-send {
+    width: var(--control-size-compact);
+    height: var(--control-size-compact);
+  }
+
+  .copilot-chip {
+    min-height: 30px;
+  }
+
+  .copilot-suggestion,
+  .copilot-copy,
+  .copilot-error button {
+    min-height: var(--control-size-touch);
+  }
+
+  .copilot-composer textarea {
+    font-size: 1rem;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .copilot-panel {
+    background-color: var(--popover);
+    backdrop-filter: none;
+  }
+
+  .copilot-transparency-button {
+    display: none;
+  }
+}
+
+/* Composer glow, built like the Qianwen / Aliyun chat box: a 1px ring that
+   turns while the box is idle, with a faint blurred halo that sits behind the
+   opaque box. On focus (or while a reply is generating) the ring stops as a
+   plain gradient line and the halo goes away. */
+@property --glow-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 180deg;
+}
+
+@keyframes marismoon-glow-spin {
+  to {
+    --glow-angle: 360deg;
+  }
+}
+
+:is(.copilot-glow, .glow-ring) {
+  --glow-300: color-mix(in srgb, var(--primary) 62%, white);
+  --glow-500: var(--primary);
+  --glow-700: color-mix(in srgb, var(--primary) 78%, black);
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  border-radius: var(--radius-workspace-control);
+}
+
+:is(.copilot-glow, .glow-ring) > * {
+  position: relative;
+  z-index: 1;
+}
+
+:is(.copilot-glow, .glow-ring)::before,
+:is(.copilot-glow, .glow-ring)::after {
+  position: absolute;
+  z-index: 0;
+  border-radius: inherit;
+  content: "";
+  pointer-events: none;
+}
+
+:is(.copilot-glow, .glow-ring)::before {
+  inset: -1px;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--glow-angle) at 50% 50%,
+    var(--glow-300) 0deg,
+    var(--glow-highlight) 44deg,
+    var(--glow-highlight) 86deg,
+    var(--glow-700) 126deg,
+    var(--glow-500) 156deg,
+    var(--glow-300) 190deg,
+    var(--glow-highlight) 228deg,
+    var(--glow-highlight) 268deg,
+    var(--glow-300) 318deg,
+    var(--glow-300) 360deg
+  );
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0.72;
+  transition: opacity 0.18s;
+}
+
+:is(.copilot-glow, .glow-ring)::after {
+  inset: 0;
+  background: var(--glow-line);
+  filter: blur(10px);
+  opacity: 0.18;
+  transform: translateY(2px) scale(1.006);
+  transition: opacity 0.3s;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :is(.copilot-glow, .glow-ring)::before {
+    animation: marismoon-glow-spin 5s linear infinite;
+  }
+}
+
+:is(.copilot-glow, .glow-ring):focus-within::before,
+:is(.copilot-glow, .glow-ring)[data-active]::before {
+  background: var(--glow-line);
+  animation: none;
+}
+
+:is(.copilot-glow, .glow-ring):focus-within::after,
+:is(.copilot-glow, .glow-ring)[data-active]::after {
+  opacity: 0;
+}
+
+.dark :is(.copilot-glow, .glow-ring)::before {
+  opacity: 1;
+  background: conic-gradient(
+    from var(--glow-angle) at 50% 50%,
+    var(--glow-dark-teal) 0deg,
+    var(--glow-dark-blue) 90deg,
+    var(--glow-500) 180deg,
+    var(--glow-dark-indigo) 270deg,
+    var(--glow-dark-teal) 360deg
+  );
+}
+
+.dark :is(.copilot-glow, .glow-ring)::after {
+  opacity: 0;
+}
+
+.dark :is(.copilot-glow, .glow-ring):is(:focus-within, [data-active])::before {
+  background: var(--glow-line);
+}
+
+/* The box itself is opaque so the halo only shows around it. */
+.copilot-composer {
+  border: 0;
+  padding: 9px 11px 8px 13px;
+  background: var(--popover);
+}
+
+.copilot-composer.field-surface:focus-within {
+  outline-color: transparent;
+}
+
+/* Hover-only variant of the shared glow ring (buttons and cards). */
+.glow-ring[data-on-hover]::before,
+.glow-ring[data-on-hover]::after {
+  opacity: 0;
+}
+
+.glow-ring[data-on-hover]:is(:hover, :focus-within)::before {
+  opacity: 1;
+}
+
+@media (pointer: coarse) {
+  .copilot-chip {
+    min-height: var(--control-size-dense);
+  }
+}

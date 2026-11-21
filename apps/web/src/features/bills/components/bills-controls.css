@@ -1,0 +1,118 @@
+.bills-toolbar {
+  display: grid;
+  container-type: inline-size;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--card-inset);
+}
+
+.bills-toolbar-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.bills-toolbar-title {
+  font-size: 0.9375rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.bills-toolbar-fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.bills-search {
+  position: relative;
+  flex: 0 1 280px;
+  min-width: 0;
+}
+
+.bills-search > svg {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 11px;
+  transform: translateY(-50%);
+  color: var(--muted-foreground);
+  pointer-events: none;
+}
+
+.bills-search-input {
+  padding-inline-start: 31px;
+  font-size: 0.78125rem;
+}
+
+.bills-selects {
+  display: flex;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.bills-selects [data-slot="select-trigger"] {
+  display: grid;
+  grid-template-columns: max-content minmax(0, auto) auto;
+  width: auto;
+}
+
+.bills-selects [data-slot="select-value"] {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bill-filter-label {
+  color: var(--muted-foreground);
+}
+
+.bills-reset {
+  padding-inline: 11px;
+  color: var(--accent-foreground);
+  font-size: 0.75rem;
+}
+
+.bills-reset {
+  margin-inline-start: auto;
+}
+
+@container (max-width: 39rem) {
+  .bills-search {
+    flex-basis: 100%;
+  }
+}
+
+@container (max-width: 32rem) {
+  .bills-selects {
+    display: grid;
+    flex-basis: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .bills-selects [data-slot="select-trigger"] {
+    gap: 3px;
+    padding-inline: 7px;
+  }
+}
+
+@container (max-width: 20rem) {
+  .bills-selects {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .bills-toolbar {
+    padding: var(--space-3) var(--register-inset);
+  }
+
+  .bills-search-input,
+  .bills-selects [data-slot="select-trigger"],
+  .bills-reset {
+    height: var(--control-size-touch);
+  }
+}

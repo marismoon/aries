@@ -1,0 +1,132 @@
+.overview-charts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+/* Every chart card shares one fixed size, so toggling cards never reflows
+   the rest of the grid. */
+.chart-card {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 6px;
+  height: 272px;
+  min-width: 0;
+  padding: var(--card-inset);
+}
+
+.chart-card-header h2 {
+  font-size: 0.9375rem;
+  font-weight: 690;
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+}
+
+.chart-card-header p {
+  margin-top: 2px;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chart-plot {
+  min-height: 0;
+}
+
+.chart-plot svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.chart-plot text {
+  fill: var(--muted-foreground);
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-plot .chart-value {
+  fill: var(--foreground);
+  font-weight: 650;
+}
+
+.chart-plot .chart-axis-label {
+  font-size: 9.5px;
+}
+
+.chart-plot .chart-total {
+  fill: var(--foreground);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.chart-axis line,
+.chart-axis polygon {
+  stroke: var(--border-subtle);
+  stroke-width: 1;
+}
+
+.chart-series polyline {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart-series circle {
+  fill: currentColor;
+  stroke: var(--card);
+  stroke-width: 1.2;
+}
+
+.chart-legend {
+  display: flex;
+  min-height: 16px;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 4px 12px;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  white-space: nowrap;
+}
+
+:lang(en) .chart-legend {
+  /* English series names are longer; stay on one line inside the card. */
+  gap: 4px 9px;
+  font-size: 0.625rem;
+}
+
+.chart-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.chart-legend i {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 3px;
+}
+
+@container overview (max-width: 1040px) {
+  .overview-charts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .overview-charts > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+@container overview (max-width: 640px) {
+  .overview-charts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

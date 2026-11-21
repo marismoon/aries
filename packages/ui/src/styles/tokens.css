@@ -1,0 +1,1151 @@
+:root {
+  /* Focus / glow edge shared by the AI composer and every text field. */
+  --glow-line: linear-gradient(
+    270deg,
+    #4897fe 0%,
+    #40ebda 20%,
+    #14c8c7 39%,
+    var(--primary) 69%
+  );
+  color-scheme: light;
+  /* AI assistant effects (rail ring, panel glow): fixed hues, not brand-driven. */
+  --ai-blue-base: #5b9bff;
+  --ai-violet-base: #a78bfa;
+  --ai-pink-base: #f4a0d8;
+  --ai-cyan-base: #5fdcea;
+  --glow-highlight: rgb(255 255 255 / 86%);
+  --glow-dark-teal: #3a9a8a;
+  --glow-dark-blue: #3890c7;
+  --glow-dark-indigo: #4a1fb8;
+  --copilot-surface-clear: rgb(255 255 255 / 18%);
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --workspace-safe-inline-end: max(
+    clamp(var(--space-3), 1.25vw, var(--space-6)),
+    env(safe-area-inset-right, 0px)
+  );
+  --workspace-safe-block-end: max(
+    var(--space-4),
+    env(safe-area-inset-bottom, 0px)
+  );
+  --text-label: 0.75rem;
+  --text-body: 0.875rem;
+  --metric-label-size: 0.8125rem;
+  --metric-label-weight: 700;
+  --metric-label-leading: 1.3;
+  --metric-value-size: 1.5rem;
+  --metric-value-weight: 720;
+  --metric-value-leading: 1.1;
+  --metric-value-tracking: -0.042em;
+  --metric-note-size: 0.6875rem;
+  --metric-note-leading: var(--text-sm--line-height);
+  --card-inset: 1rem;
+  --metric-card-inset: var(--card-inset);
+  --control-size-small: 1.75rem;
+  --control-size-dense: 2rem;
+  --control-size: 2.5rem;
+  --control-size-compact: 2.25rem;
+  --control-size-touch: 2.75rem;
+  --radius: 1rem;
+  --radius-control: 1rem;
+  --radius-workspace-control: 1.125rem;
+  --radius-panel: 1.5rem;
+  --background: #f4f5fb;
+  --foreground: #141224;
+  --card: rgb(255 255 255 / 65%);
+  --card-bottom: rgb(255 255 255 / 49%);
+  --card-foreground: var(--foreground);
+  --workspace-nav: linear-gradient(
+    157deg,
+    rgb(255 255 255 / 34%),
+    rgb(255 255 255 / 22%)
+  );
+  --nav-filter: blur(26px) saturate(145%);
+  --popover: #fbfaff;
+  --popover-foreground: var(--foreground);
+  --control: rgb(255 255 255 / 76%);
+  --layout-control: var(--control);
+  --layout-control-border: #d9d2f4;
+  --secondary: #eeebf9;
+  --secondary-foreground: #352952;
+  --muted: #efedf8;
+  --muted-foreground: #615c78;
+  --recess: rgb(255 255 255 / 41%);
+  --border: #e0d9f2;
+  --border-subtle: rgb(77 67 146 / 12%);
+  --input: #8c809b;
+  --surface-edge: rgb(255 255 255 / 78%);
+  --sidebar-edge: var(--glass-edge);
+  --sidebar-background-clip: padding-box;
+  --sidebar-radius: 1.375rem;
+  --sidebar-item-radius: var(--radius-workspace-control);
+  --sidebar-item-height: 2.375rem;
+  --sidebar-leaf-height: 1.75rem;
+  --surface-highlight: rgb(255 255 255 / 57%);
+  --sidebar-highlight: color-mix(
+    in srgb,
+    var(--surface-highlight) 35%,
+    transparent
+  );
+  --sidebar-shadow-color: rgb(51 47 101 / 12%);
+  --sidebar-shadow:
+    0 7px 16px -9px var(--sidebar-shadow-color), var(--glass-specular);
+  --field-surface: color-mix(in srgb, var(--layout-control) 88%, transparent);
+  --field-surface-hover: color-mix(
+    in srgb,
+    var(--field-surface) 82%,
+    var(--accent)
+  );
+  --field-shadow: 0 2px 6px var(--sidebar-shadow-color);
+  --sidebar-item-hover: color-mix(in srgb, var(--accent) 55%, transparent);
+  --surface-filter: blur(40px) saturate(160%);
+  --surface-shadow-color: rgb(51 47 101 / 12%);
+  /* Elevation is tiered so it fades out inside the scroll viewport's bleed
+     (4px/12px sides, 16px bottom) instead of being clipped to a hard edge. */
+  --surface-shadow-ink: var(--foreground);
+  --surface-shadow-scale: 1;
+  /* Cards have no border line. Like Aliyun's glass cards, the edge comes from a
+     soft inner glow plus a brand-tinted shadow underneath; both stay inside the
+     scroll viewport's bleed (16px below, 12px at the sides). */
+  --surface-shadow:
+    0 6px 12px -6px
+      color-mix(
+        in srgb,
+        var(--surface-shadow-ink) calc(3% * var(--surface-shadow-scale)),
+        transparent
+      ),
+    0 10px 16px -10px
+      color-mix(
+        in srgb,
+        var(--primary) calc(18% * var(--surface-shadow-tint, 1)),
+        transparent
+      ),
+    var(--glass-specular);
+  --surface-inset: rgb(255 255 255 / 72%);
+  --surface-inset-shadow:
+    0 1px 2px
+      color-mix(
+        in srgb,
+        var(--surface-shadow-ink) calc(7% * var(--surface-shadow-scale)),
+        transparent
+      ),
+    0 6px 12px -8px
+      color-mix(
+        in srgb,
+        var(--surface-shadow-ink) calc(14% * var(--surface-shadow-scale)),
+        transparent
+      ),
+    0 0 0 1px var(--glass-edge);
+  /* Liquid glass: translucent fill and a blurred, saturated backdrop. The rim
+     is the 1px border alone, so every edge reads the same width. */
+  --glass-fill-top: 100%;
+  --glass-fill-bottom: 72%;
+  --glass-specular: inset 0 0 32px rgb(255 255 255 / 50%);
+  /* One hairline for every glass surface; kept faint so it never reads as a white outline. */
+  --glass-edge: transparent;
+  --environment-strength: 100%;
+  --floating-shadow: 0 18px 60px rgb(41 24 74 / 18%);
+  --overlay: rgb(28 16 52 / 42%);
+
+  --swatch-telemedicine: #4f8cff;
+  --swatch-mental-health: #7c9eb2;
+  --swatch-pet-adoption: #e07a5f;
+  --swatch-health-wellness: #22c55e;
+  --swatch-violet-aurora: #934fff;
+  --swatch-amber-sand: #d9901a;
+  --swatch-rose-quartz: #e03a73;
+  --swatch-marismoon-light: #0369a1;
+  --primary: #5b3df5;
+  --primary-foreground: #fff;
+  --primary-hover: color-mix(
+    in oklch,
+    var(--primary),
+    var(--primary-foreground) 12%
+  );
+  --primary-surface: var(--primary);
+  --accent: #ebe7fc;
+  --accent-foreground: #4c29d7;
+  --ring: #704be5;
+  --rail-control-size: 44px;
+  --rail-backplate-size: 38px;
+  --rail-icon-size: 22px;
+  --icon-control-hover-bg: color-mix(in srgb, var(--primary) 12%, transparent);
+  --rail-active-bg: var(--primary);
+  --rail-active-fg: #fff;
+  --nav-active-bg: var(--accent);
+  --nav-active-fg: var(--accent-foreground);
+  --scope-selected: var(--layout-control);
+  --rail-logo-bg: #19162b;
+  --rail-logo-fg: #fff;
+
+  --chart-1: #5b3df5;
+  --chart-2: #805df0;
+  --chart-3: #c5b6ee;
+  --chart-4: #7f70a3;
+  --chart-5: #ddd4f2;
+  --environment-top: rgb(204 173 246 / 27%);
+  --environment-bottom: rgb(132 126 230 / 43%);
+  --environment-side: rgb(150 214 231 / 26%);
+  --environment-base: linear-gradient(
+    37deg,
+    #ded9f6,
+    #faf8ff 49%,
+    #f0f6fb 78%,
+    #e9edf7
+  );
+  --hero-start: #eae4ff;
+  --hero-end: rgb(255 255 255 / 53%);
+  --hero-edge: #d7caff;
+  --hero-ink: #171427;
+  --hero-muted: #5b5375;
+  --hero-bar: linear-gradient(180deg, #865ff9, #7454ed);
+  --hero-bar-current: #391e8f;
+
+  --success: #176045;
+  --success-bg: #e4f6ed;
+  --warning: #8e4a08;
+  --warning-bg: #fff1df;
+  --danger: #b12a3f;
+  --danger-bg: #feefef;
+  --info: #4937af;
+  --info-bg: #edefff;
+  --destructive: var(--danger);
+  --destructive-foreground: #fff;
+}
+
+.dark {
+  color-scheme: dark;
+  --surface-shadow-ink: #040215;
+  --surface-shadow-scale: 3;
+  --surface-inset: rgb(255 255 255 / 6%);
+  --glass-fill-top: 56%;
+  --glass-fill-bottom: 46%;
+  --glass-specular: inset 0 0 28px rgb(255 255 255 / 7%);
+  --glass-edge: transparent;
+  --surface-shadow-tint: 1.3;
+  --background: #0d0b13;
+  --foreground: #f5f1ff;
+  --card: #1c1924;
+  --card-bottom: #181620;
+  --workspace-nav: linear-gradient(
+    160deg,
+    hsl(255 20% 14% / 40%),
+    hsl(255 20% 10% / 32%)
+  );
+  --nav-filter: blur(26px) saturate(160%);
+  --popover: #201d2a;
+  --control: #24212e;
+  --layout-control-border: #3e3a4a;
+  --secondary: #282532;
+  --secondary-foreground: #eee5ff;
+  --muted: #272431;
+  --muted-foreground: #a6a1b5;
+  --recess: #14121b;
+  --border: #3a3644;
+  --border-subtle: rgb(255 255 255 / 8%);
+  --input: #7a758a;
+  --surface-edge: rgb(255 255 255 / 15%);
+  --sidebar-edge: var(--glass-edge);
+  --sidebar-background-clip: border-box;
+  --sidebar-radius: var(--radius-panel);
+  --sidebar-shadow-color: rgb(0 0 0 / 38%);
+  --sidebar-shadow:
+    0 7px 16px -9px var(--sidebar-shadow-color), var(--glass-specular);
+  --surface-highlight: rgb(255 255 255 / 6%);
+  --surface-filter: blur(40px) saturate(150%);
+  --surface-shadow-color: rgb(4 2 21 / 32%);
+  --environment-strength: 100%;
+  --floating-shadow: 0 18px 60px rgb(2 0 15 / 55%);
+  --overlay: rgb(0 0 0 / 62%);
+
+  --primary: #704bf0;
+  --primary-foreground: #fff;
+  --primary-surface: linear-gradient(110deg, #6545ed, #7652f6);
+  --accent: color-mix(in srgb, var(--primary) 20%, var(--background));
+  --accent-foreground: #e1d6ff;
+  --ring: #b99cff;
+  --nav-active-fg: #fff;
+  --scope-selected: var(--accent);
+  --rail-logo-bg: #252230;
+
+  --chart-1: #9470fc;
+  --chart-2: #8a69f9;
+  --chart-3: #6d588e;
+  --chart-4: #a281ff;
+  --chart-5: #48386b;
+  --environment-top: hsl(269 70% 46% / 50%);
+  --environment-bottom: hsl(239 65% 42% / 58%);
+  --environment-side: hsl(255 55% 38% / 24%);
+  --environment-base: var(--background);
+  --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
+  --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
+  --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
+  --hero-ink: var(--foreground);
+  --hero-muted: #d7cdee;
+  --hero-bar: linear-gradient(180deg, #a276ff, #7652f6);
+  --hero-bar-current: linear-gradient(180deg, #d783ff, #a25aef);
+
+  --success: #75e9ab;
+  --success-bg: #17342a;
+  --warning: #ffd075;
+  --warning-bg: #3a2e16;
+  --danger: #ff9bad;
+  --danger-bg: #3d1d27;
+  --info: #bdc7ff;
+  --info-bg: color-mix(in srgb, var(--primary) 18%, var(--card));
+  --destructive-foreground: #391224;
+}
+
+.dark:not([data-palette]) {
+  --primary-hover: #7350e9;
+}
+
+.dark[data-palette] {
+  --rail-active-bg: color-mix(in srgb, var(--primary) 50%, var(--background));
+}
+
+[data-palette="telemedicine"]:not(.dark) {
+  --background: #f4f8ff;
+  --foreground: #1e293b;
+  --card: rgb(250 252 255 / 68%);
+  --card-bottom: rgb(240 246 255 / 54%);
+  --workspace-nav: linear-gradient(
+    157deg,
+    rgb(250 252 255 / 62%),
+    rgb(225 235 250 / 46%)
+  );
+  --popover: #f7f9fd;
+  --control: rgb(245 249 255 / 78%);
+  --layout-control-border: #c0cddd;
+  --secondary: #dfe7f1;
+  --secondary-foreground: #223a59;
+  --muted: #e6ecf4;
+  --muted-foreground: #64748b;
+  --recess: rgb(240 246 255 / 55%);
+  --border: #d9e6fb;
+  --border-subtle: rgb(58 85 120 / 14%);
+  --input: #66758a;
+  --surface-edge: rgb(245 249 255 / 86%);
+  --overlay: rgb(17 29 44 / 42%);
+
+  --primary: #4f8cff;
+  --primary-hover: #3d7af0;
+  --accent: color-mix(in srgb, #4f8cff 13%, white);
+  --rail-logo-bg: linear-gradient(135deg, #79a8ff, #00c9a7);
+  --accent-foreground: #2563d8;
+  --ring: #4f8cff;
+  --chart-1: #4f8cff;
+  --chart-2: #00c9a7;
+  --chart-3: #9cc0ff;
+  --chart-4: #5fe0c8;
+  --chart-5: #d6e4ff;
+  --environment-top: rgb(79 140 255 / 28%);
+  --environment-bottom: rgb(0 201 167 / 26%);
+  --environment-side: rgb(120 190 255 / 22%);
+  --environment-base: linear-gradient(37deg, #dfe9f6, #f7f9fd 55%, #ecf9f6);
+  --hero-start: #dae6f6;
+  --hero-end: rgb(250 252 255 / 52%);
+  --hero-edge: #b5c9e3;
+  --hero-ink: var(--foreground);
+  --hero-muted: #3d4f66;
+  --hero-bar: linear-gradient(180deg, #79a8ff, #4f8cff);
+  --hero-bar-current: #00c9a7;
+}
+
+.dark[data-palette="telemedicine"] {
+  --background: #2a3447;
+  --foreground: #ebf1fa;
+  --card: #35425a;
+  --card-bottom: #313e54;
+  --workspace-nav: linear-gradient(
+    160deg,
+    hsl(218 26% 31% / 46%),
+    hsl(218 26% 25% / 38%)
+  );
+  --popover: #37455d;
+  --control: #3a4a64;
+  --layout-control-border: #56637c;
+  --secondary: #39455b;
+  --secondary-foreground: #c6d8f1;
+  --muted: #39455b;
+  --muted-foreground: #b7bbc3;
+  --recess: #222b3a;
+  --border: #4d5a70;
+  --border-subtle: rgb(255 255 255 / 8%);
+  --input: #798290;
+  --surface-edge: rgb(255 255 255 / 15%);
+  --surface-highlight: rgb(255 255 255 / 6%);
+  --overlay: rgb(0 0 0 / 62%);
+
+  --primary: #7aa9ff;
+  --primary-foreground: #0a1d44;
+  --primary-surface: var(--primary);
+  --accent: color-mix(in srgb, var(--primary) 20%, var(--background));
+  --accent-foreground: #c4dbff;
+  --ring: #7aa9ff;
+  --nav-active-bg: var(--accent);
+  --nav-active-fg: var(--accent-foreground);
+  --chart-1: #7aa9ff;
+  --chart-2: #2fd9b9;
+  --chart-3: #4a76c9;
+  --chart-4: #5fc0d9;
+  --chart-5: #2a4a82;
+  --environment-top: hsl(218 85% 55% / 44%);
+  --environment-bottom: hsl(190 80% 42% / 38%);
+  --environment-side: hsl(168 70% 40% / 20%);
+  --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
+  --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
+  --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
+  --hero-muted: #b6c5d8;
+  --hero-bar: linear-gradient(180deg, #6b9dff, #4f8cff);
+  --hero-bar-current: #2fe0c0;
+}
+
+[data-palette="mental-health"]:not(.dark) {
+  --background: #f0f4f8;
+  --foreground: #2d3748;
+  --card: rgb(250 253 255 / 68%);
+  --card-bottom: rgb(240 249 255 / 54%);
+  --workspace-nav: linear-gradient(
+    157deg,
+    rgb(250 253 255 / 62%),
+    rgb(225 240 250 / 46%)
+  );
+  --popover: #f7fbfd;
+  --control: rgb(245 251 255 / 78%);
+  --layout-control-border: #c0d2dd;
+  --secondary: #dfeaf1;
+  --secondary-foreground: #224559;
+  --muted: #e6eff4;
+  --muted-foreground: #718096;
+  --recess: rgb(240 249 255 / 55%);
+  --border: #d8e4ec;
+  --border-subtle: rgb(58 98 120 / 14%);
+  --input: #667d8a;
+  --surface-edge: rgb(245 251 255 / 86%);
+  --overlay: rgb(17 34 44 / 42%);
+
+  --primary: #6a92a8;
+  --primary-hover: #5a8197;
+  --accent: color-mix(in srgb, #6a92a8 13%, white);
+  --rail-logo-bg: linear-gradient(135deg, #a3c0d0, #a8d5ba);
+  --accent-foreground: #3f6a80;
+  --ring: #7c9eb2;
+  --chart-1: #7c9eb2;
+  --chart-2: #a8d5ba;
+  --chart-3: #b8a9c9;
+  --chart-4: #9bbccd;
+  --chart-5: #dce9ef;
+  --environment-top: rgb(124 158 178 / 30%);
+  --environment-bottom: rgb(168 213 186 / 34%);
+  --environment-side: rgb(184 169 201 / 22%);
+  --environment-base: linear-gradient(37deg, #dfeef6, #f7fbfd 55%, #ecf9f0);
+  --hero-start: #daecf6;
+  --hero-end: rgb(250 253 255 / 52%);
+  --hero-edge: #b5d2e3;
+  --hero-ink: var(--foreground);
+  --hero-muted: #3d5766;
+  --hero-bar: linear-gradient(180deg, #a3c0d0, #7c9eb2);
+  --hero-bar-current: #5fa27c;
+}
+
+.dark[data-palette="mental-health"] {
+  --background: #2c3c44;
+  --foreground: #ebf4fa;
+  --card: #384c57;
+  --card-bottom: #344751;
+  --workspace-nav: linear-gradient(
+    160deg,
+    hsl(201 22% 31% / 46%),
+    hsl(201 22% 25% / 38%)
+  );
+  --popover: #3a4f5a;
+  --control: #3e5460;
+  --layout-control-border: #586d79;
+  --secondary: #3b4e59;
+  --secondary-foreground: #c6e1f1;
+  --muted: #3b4e59;
+  --muted-foreground: #b8bec2;
+  --recess: #243138;
+  --border: #50636d;
+  --border-subtle: rgb(255 255 255 / 8%);
+  --input: #7b878e;
+  --surface-edge: rgb(255 255 255 / 15%);
+  --surface-highlight: rgb(255 255 255 / 6%);
+  --overlay: rgb(0 0 0 / 62%);
+
+  --primary: #9fc4d8;
+  --primary-foreground: #0f2530;
+  --primary-surface: var(--primary);
+  --accent: color-mix(in srgb, var(--primary) 20%, var(--background));
+  --accent-foreground: #cfe6f2;
+  --ring: #9fc4d8;
+  --nav-active-bg: var(--accent);
+  --nav-active-fg: var(--accent-foreground);
+  --chart-1: #9fc4d8;
+  --chart-2: #8fd0a8;
+  --chart-3: #5f8499;
+  --chart-4: #b4a5d0;
+  --chart-5: #3d5866;
+  --environment-top: hsl(200 45% 52% / 42%);
+  --environment-bottom: hsl(160 35% 45% / 34%);
+  --environment-side: hsl(250 28% 55% / 18%);
+  --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
+  --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
+  --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
+  --hero-muted: #b6cbd8;
+  --hero-bar: linear-gradient(180deg, #8fb6cb, #7c9eb2);
+  --hero-bar-current: #a8d5ba;
+}
+
+[data-palette="pet-adoption"]:not(.dark) {
+  --background: #fdf8f4;
+  --foreground: #3d405b;
+  --card: rgb(255 252 250 / 68%);
+  --card-bottom: rgb(255 245 240 / 54%);
+  --workspace-nav: linear-gradient(
+    157deg,
+    rgb(255 252 250 / 62%),
+    rgb(250 234 225 / 46%)
+  );
+  --popover: #fdf9f7;
+  --control: rgb(255 249 245 / 78%);
+  --layout-control-border: #ddcbc0;
+  --secondary: #f1e6df;
+  --secondary-foreground: #593622;
+  --muted: #f4ebe6;
+  --muted-foreground: #6b6e8a;
+  --recess: rgb(255 245 240 / 55%);
+  --border: #efe4dc;
+  --border-subtle: rgb(120 81 58 / 14%);
+  --input: #8a7366;
+  --surface-edge: rgb(255 249 245 / 86%);
+  --overlay: rgb(44 27 17 / 42%);
+
+  --primary: #e07a5f;
+  --primary-hover: #cf6a4f;
+  --accent: color-mix(in srgb, #e07a5f 13%, white);
+  --rail-logo-bg: linear-gradient(135deg, #eb9a82, #81b29a);
+  --accent-foreground: #b8512f;
+  --ring: #e07a5f;
+  --chart-1: #e07a5f;
+  --chart-2: #81b29a;
+  --chart-3: #f2cc8f;
+  --chart-4: #d99a7c;
+  --chart-5: #f7ddd2;
+  --environment-top: rgb(224 122 95 / 28%);
+  --environment-bottom: rgb(129 178 154 / 30%);
+  --environment-side: rgb(244 196 150 / 24%);
+  --environment-base: linear-gradient(37deg, #f6e8df, #fdf9f7 55%, #ecf9f2);
+  --hero-start: #f6e4da;
+  --hero-end: rgb(255 252 250 / 52%);
+  --hero-edge: #e3c6b5;
+  --hero-ink: var(--foreground);
+  --hero-muted: #664c3d;
+  --hero-bar: linear-gradient(180deg, #eb9a82, #e07a5f);
+  --hero-bar-current: #81b29a;
+}
+
+.dark[data-palette="pet-adoption"] {
+  --background: #46312b;
+  --foreground: #faf0eb;
+  --card: #593e36;
+  --card-bottom: #523a32;
+  --workspace-nav: linear-gradient(
+    160deg,
+    hsl(14 24% 31% / 46%),
+    hsl(14 24% 25% / 38%)
+  );
+  --popover: #5c4038;
+  --control: #62453c;
+  --layout-control-border: #7a5f57;
+  --secondary: #5a413a;
+  --secondary-foreground: #f1d6c6;
+  --muted: #5a413a;
+  --muted-foreground: #c2bab7;
+  --recess: #392823;
+  --border: #6e564e;
+  --border-subtle: rgb(255 255 255 / 8%);
+  --input: #8f7f7a;
+  --surface-edge: rgb(255 255 255 / 15%);
+  --surface-highlight: rgb(255 255 255 / 6%);
+  --overlay: rgb(0 0 0 / 62%);
+
+  --primary: #f2a08a;
+  --primary-foreground: #3a1308;
+  --primary-surface: var(--primary);
+  --accent: color-mix(in srgb, var(--primary) 20%, var(--background));
+  --accent-foreground: #ffd3c5;
+  --ring: #f2a08a;
+  --nav-active-bg: var(--accent);
+  --nav-active-fg: var(--accent-foreground);
+  --chart-1: #f2a08a;
+  --chart-2: #8ccaa9;
+  --chart-3: #b5624b;
+  --chart-4: #f0c078;
+  --chart-5: #6a3a2d;
+  --environment-top: hsl(14 65% 50% / 30%);
+  --environment-bottom: hsl(32 70% 50% / 24%);
+  --environment-side: hsl(350 50% 55% / 14%);
+  --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
+  --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
+  --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
+  --hero-muted: #d8c2b6;
+  --hero-bar: linear-gradient(180deg, #ec9078, #e07a5f);
+  --hero-bar-current: #f2cc8f;
+}
+
+[data-palette="health-wellness"]:not(.dark) {
+  --background: #f3f8f4;
+  --foreground: #0f172a;
+  --card: rgb(250 255 252 / 68%);
+  --card-bottom: rgb(240 255 245 / 54%);
+  --workspace-nav: linear-gradient(
+    157deg,
+    rgb(250 255 252 / 62%),
+    rgb(225 250 233 / 46%)
+  );
+  --popover: #f7fdf9;
+  --control: rgb(245 255 248 / 78%);
+  --layout-control-border: #c0ddca;
+  --secondary: #dff1e5;
+  --secondary-foreground: #225934;
+  --muted: #e6f4eb;
+  --muted-foreground: #64748b;
+  --recess: rgb(240 255 245 / 55%);
+  --border: #d8eadd;
+  --border-subtle: rgb(58 120 79 / 14%);
+  --input: #668a72;
+  --surface-edge: rgb(245 255 248 / 86%);
+  --overlay: rgb(17 44 26 / 42%);
+
+  --primary: #16a34a;
+  --primary-hover: #15913f;
+  --accent: color-mix(in srgb, #16a34a 13%, white);
+  --rail-logo-bg: linear-gradient(135deg, #5fdc8c, #87ceeb);
+  --accent-foreground: #127a3a;
+  --ring: #22c55e;
+  --chart-1: #22c55e;
+  --chart-2: #87ceeb;
+  --chart-3: #90ee90;
+  --chart-4: #5dade2;
+  --chart-5: #d3f2de;
+  --environment-top: rgb(34 197 94 / 26%);
+  --environment-bottom: rgb(135 206 235 / 32%);
+  --environment-side: rgb(144 238 144 / 24%);
+  --environment-base: linear-gradient(37deg, #dff6e7, #f7fdf9 55%, #ecf4f9);
+  --hero-start: #daf6e3;
+  --hero-end: rgb(250 255 252 / 52%);
+  --hero-edge: #b5e3c4;
+  --hero-ink: var(--foreground);
+  --hero-muted: #3d664b;
+  --hero-bar: linear-gradient(180deg, #5fdc8c, #22c55e);
+  --hero-bar-current: #5dade2;
+}
+
+.dark[data-palette="health-wellness"] {
+  --background: #2b4634;
+  --foreground: #ebfaf0;
+  --card: #365942;
+  --card-bottom: #32523d;
+  --workspace-nav: linear-gradient(
+    160deg,
+    hsl(140 24% 31% / 46%),
+    hsl(140 24% 25% / 38%)
+  );
+  --popover: #385c44;
+  --control: #3c6249;
+  --layout-control-border: #577a63;
+  --secondary: #3a5a45;
+  --secondary-foreground: #c6f1d4;
+  --muted: #3a5a45;
+  --muted-foreground: #b7c2bb;
+  --recess: #23392a;
+  --border: #4e6e59;
+  --border-subtle: rgb(255 255 255 / 8%);
+  --input: #7a8f81;
+  --surface-edge: rgb(255 255 255 / 15%);
+  --surface-highlight: rgb(255 255 255 / 6%);
+  --overlay: rgb(0 0 0 / 62%);
+
+  --primary: #4ade80;
+  --primary-foreground: #06301a;
+  --primary-surface: var(--primary);
+  --accent: color-mix(in srgb, var(--primary) 20%, var(--background));
+  --accent-foreground: #bdf5d2;
+  --ring: #4ade80;
+  --nav-active-bg: var(--accent);
+  --nav-active-fg: var(--accent-foreground);
+  --chart-1: #4ade80;
+  --chart-2: #7cc8ea;
+  --chart-3: #2f8f58;
+  --chart-4: #5db6dc;
+  --chart-5: #1f5a3a;
+  --environment-top: hsl(145 60% 40% / 34%);
+  --environment-bottom: hsl(190 55% 46% / 28%);
+  --environment-side: hsl(120 45% 45% / 14%);
+  --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
+  --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
+  --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
+  --hero-muted: #b6d8c1;
+  --hero-bar: linear-gradient(180deg, #3fd479, #22c55e);
+  --hero-bar-current: #87ceeb;
+}
+
+/* Touch devices get larger hit areas; mouse and trackpad layouts are untouched. */
+@media (pointer: coarse) {
+  :root {
+    --control-size-dense: 2.5rem;
+    --control-size-compact: 2.5rem;
+    --control-size: 2.75rem;
+  }
+}
+
+/* Additional palettes: the telemedicine ladder (lightness and saturation
+   steps) rotated to a new hue, so every palette shares one tonal structure. */
+[data-palette="violet-aurora"]:not(.dark) {
+  --background: #f8f4ff;
+  --foreground: #281e3b;
+  --card: rgb(252 250 255 / 68%);
+  --card-bottom: rgb(245 240 255 / 54%);
+  --workspace-nav: linear-gradient(
+    157deg,
+    rgb(252 250 255 / 62%),
+    rgb(233 225 250 / 46%)
+  );
+  --popover: #f9f7fd;
+  --control: rgb(248 245 255 / 78%);
+  --layout-control-border: #c8c0dd;
+  --secondary: #e4dff1;
+  --secondary-foreground: #322259;
+  --muted: #eae6f4;
+  --muted-foreground: #71648b;
+  --recess: rgb(245 240 255 / 55%);
+  --border: #e5d9fb;
+  --border-subtle: rgb(76 58 120 / 14%);
+  --input: #71668a;
+  --surface-edge: rgb(248 245 255 / 86%);
+  --overlay: rgb(25 17 44 / 42%);
+
+  --primary: #934fff;
+  --primary-hover: #833df0;
+  --accent: color-mix(in srgb, #934fff 13%, white);
+  --rail-logo-bg: linear-gradient(135deg, #ac79ff, #0058c9);
+  --accent-foreground: #6a25d8;
+  --ring: #934fff;
+  --chart-1: #934fff;
+  --chart-2: #0058c9;
+  --chart-3: #c19cff;
+  --chart-4: #5f99e0;
+  --chart-5: #e6d6ff;
+  --environment-top: rgb(147 79 255 / 28%);
+  --environment-bottom: rgb(0 88 201 / 26%);
+  --environment-side: rgb(149 120 255 / 22%);
+  --environment-base: linear-gradient(37deg, #e6dff6, #f9f7fd 55%, #ecf2f9);
+  --hero-start: #e3daf6;
+  --hero-end: rgb(252 250 255 / 52%);
+  --hero-edge: #c3b5e3;
+  --hero-ink: var(--foreground);
+  --hero-muted: #493d66;
+  --hero-bar: linear-gradient(180deg, #ac79ff, #934fff);
+  --hero-bar-current: #0058c9;
+}
+
+.dark[data-palette="violet-aurora"] {
+  --background: #352a47;
+  --foreground: #f0ebfa;
+  --card: #43355a;
+  --card-bottom: #3e3154;
+  --workspace-nav: linear-gradient(
+    160deg,
+    hsl(262 26% 31% / 46%),
+    hsl(262 26% 25% / 38%)
+  );
+  --popover: #45375d;
+  --control: #493a64;
+  --layout-control-border: #65567c;
+  --secondary: #46395b;
+  --secondary-foreground: #d4c6f1;
+  --muted: #46395b;
+  --muted-foreground: #bcb7c3;
+  --recess: #2b223a;
+  --border: #5a4d70;
+  --border-subtle: rgb(255 255 255 / 8%);
+  --input: #817990;
+  --surface-edge: rgb(255 255 255 / 15%);
+  --surface-highlight: rgb(255 255 255 / 6%);
+  --overlay: rgb(0 0 0 / 62%);
+
+  --primary: #ad7aff;
+  --primary-foreground: #220a44;
+  --primary-surface: var(--primary);
+  --accent: color-mix(in srgb, var(--primary) 20%, var(--background));
+  --accent-foreground: #d8c4ff;
+  --ring: #ad7aff;
+  --nav-active-bg: var(--accent);
+  --nav-active-fg: var(--accent-foreground);
+  --chart-1: #ad7aff;
+  --chart-2: #2f7cd9;
+  --chart-3: #7b4ac9;
+  --chart-4: #5f67d9;
+  --chart-5: #4b2a82;
+  --environment-top: hsl(262 85% 55% / 44%);
+  --environment-bottom: hsl(234 80% 42% / 38%);
+  --environment-side: hsl(212 70% 40% / 20%);
+  --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
+  --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
+  --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
+  --hero-muted: #c0b6d8;
+  --hero-bar: linear-gradient(180deg, #a66bff, #934fff);
+  --hero-bar-current: #2f7ee0;
+}
+
+[data-palette="amber-sand"]:not(.dark) {
+  --background: #fffbf4;
+  --foreground: #3b311e;
+  --card: rgb(255 253 250 / 68%);
+  --card-bottom: rgb(255 250 240 / 54%);
+  --workspace-nav: linear-gradient(
+    157deg,
+    rgb(255 253 250 / 62%),
+    rgb(250 241 225 / 46%)
+  );
+  --popover: #fdfbf7;
+  --control: rgb(255 251 245 / 78%);
+  --layout-control-border: #ddd1c0;
+  --secondary: #f1eadf;
+  --secondary-foreground: #594322;
+  --muted: #f4eee6;
+  --muted-foreground: #8b7c64;
+  --recess: rgb(255 250 240 / 55%);
+  --border: #fbefd9;
+  --border-subtle: rgb(120 95 58 / 14%);
+  --input: #8a7c66;
+  --surface-edge: rgb(255 251 245 / 86%);
+  --overlay: rgb(44 33 17 / 42%);
+
+  --primary: #ffc84f;
+  --primary-hover: #f0b93d;
+  --accent: color-mix(in srgb, #ffc84f 13%, white);
+  --rail-logo-bg: linear-gradient(135deg, #ffd479, #c9001b);
+  --accent-foreground: #d8a025;
+  --ring: #ffc84f;
+  --chart-1: #ffc84f;
+  --chart-2: #c9001b;
+  --chart-3: #ffde9c;
+  --chart-4: #e05f73;
+  --chart-5: #fff2d6;
+  --environment-top: rgb(255 200 79 / 28%);
+  --environment-bottom: rgb(201 0 27 / 26%);
+  --environment-side: rgb(255 190 120 / 22%);
+  --environment-base: linear-gradient(37deg, #f6eddf, #fdfbf7 55%, #f9ecef);
+  --hero-start: #f6ebda;
+  --hero-end: rgb(255 253 250 / 52%);
+  --hero-edge: #e3d1b5;
+  --hero-ink: var(--foreground);
+  --hero-muted: #66553d;
+  --hero-bar: linear-gradient(180deg, #ffd479, #ffc84f);
+  --hero-bar-current: #c9001b;
+}
+
+.dark[data-palette="amber-sand"] {
+  --background: #473e2a;
+  --foreground: #faf4eb;
+  --card: #5a4e35;
+  --card-bottom: #544831;
+  --workspace-nav: linear-gradient(
+    160deg,
+    hsl(40 26% 31% / 46%),
+    hsl(40 26% 25% / 38%)
+  );
+  --popover: #5d5037;
+  --control: #64553a;
+  --layout-control-border: #7c7056;
+  --secondary: #5b5039;
+  --secondary-foreground: #f1e0c6;
+  --muted: #5b5039;
+  --muted-foreground: #c3bfb7;
+  --recess: #3a3222;
+  --border: #70644d;
+  --border-subtle: rgb(255 255 255 / 8%);
+  --input: #908879;
+  --surface-edge: rgb(255 255 255 / 15%);
+  --surface-highlight: rgb(255 255 255 / 6%);
+  --overlay: rgb(0 0 0 / 62%);
+
+  --primary: #ffd47a;
+  --primary-foreground: #44330a;
+  --primary-surface: var(--primary);
+  --accent: color-mix(in srgb, var(--primary) 20%, var(--background));
+  --accent-foreground: #ffeac4;
+  --ring: #ffd47a;
+  --nav-active-bg: var(--accent);
+  --nav-active-fg: var(--accent-foreground);
+  --chart-1: #ffd47a;
+  --chart-2: #d92f49;
+  --chart-3: #c9a14a;
+  --chart-4: #d97c5f;
+  --chart-5: #82652a;
+  --environment-top: hsl(40 85% 55% / 44%);
+  --environment-bottom: hsl(12 80% 42% / 38%);
+  --environment-side: hsl(350 70% 40% / 20%);
+  --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
+  --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
+  --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
+  --hero-muted: #d8cab6;
+  --hero-bar: linear-gradient(180deg, #ffd26b, #ffc84f);
+  --hero-bar-current: #e02f49;
+}
+
+[data-palette="rose-quartz"]:not(.dark) {
+  --background: #fff4f8;
+  --foreground: #3b1e28;
+  --card: rgb(255 250 252 / 68%);
+  --card-bottom: rgb(255 240 245 / 54%);
+  --workspace-nav: linear-gradient(
+    157deg,
+    rgb(255 250 252 / 62%),
+    rgb(250 225 234 / 46%)
+  );
+  --popover: #fdf7f9;
+  --control: rgb(255 245 249 / 78%);
+  --layout-control-border: #ddc0cc;
+  --secondary: #f1dfe6;
+  --secondary-foreground: #592238;
+  --muted: #f4e6ec;
+  --muted-foreground: #8b6473;
+  --recess: rgb(255 240 245 / 55%);
+  --border: #fbd9e5;
+  --border-subtle: rgb(120 58 83 / 14%);
+  --input: #8a6674;
+  --surface-edge: rgb(255 245 249 / 86%);
+  --overlay: rgb(44 17 28 / 42%);
+
+  --primary: #ff4f86;
+  --primary-hover: #f03d74;
+  --accent: color-mix(in srgb, #ff4f86 13%, white);
+  --rail-logo-bg: linear-gradient(135deg, #ff79a4, #ae00c9);
+  --accent-foreground: #d8255d;
+  --ring: #ff4f86;
+  --chart-1: #ff4f86;
+  --chart-2: #ae00c9;
+  --chart-3: #ff9cbd;
+  --chart-4: #cc5fe0;
+  --chart-5: #ffd6e3;
+  --environment-top: rgb(255 79 134 / 28%);
+  --environment-bottom: rgb(174 0 201 / 26%);
+  --environment-side: rgb(255 120 185 / 22%);
+  --environment-base: linear-gradient(37deg, #f6dfe8, #fdf7f9 55%, #f6ecf9);
+  --hero-start: #f6dae5;
+  --hero-end: rgb(255 250 252 / 52%);
+  --hero-edge: #e3b5c7;
+  --hero-ink: var(--foreground);
+  --hero-muted: #663d4e;
+  --hero-bar: linear-gradient(180deg, #ff79a4, #ff4f86);
+  --hero-bar-current: #ae00c9;
+}
+
+.dark[data-palette="rose-quartz"] {
+  --background: #472a33;
+  --foreground: #faebf0;
+  --card: #5a3541;
+  --card-bottom: #54313d;
+  --workspace-nav: linear-gradient(
+    160deg,
+    hsl(340 26% 31% / 46%),
+    hsl(340 26% 25% / 38%)
+  );
+  --popover: #5d3744;
+  --control: #643a49;
+  --layout-control-border: #7c5662;
+  --secondary: #5b3944;
+  --secondary-foreground: #f1c6d7;
+  --muted: #5b3944;
+  --muted-foreground: #c3b7bb;
+  --recess: #3a222a;
+  --border: #704d59;
+  --border-subtle: rgb(255 255 255 / 8%);
+  --input: #907981;
+  --surface-edge: rgb(255 255 255 / 15%);
+  --surface-highlight: rgb(255 255 255 / 6%);
+  --overlay: rgb(0 0 0 / 62%);
+
+  --primary: #ff7aa5;
+  --primary-foreground: #440a1b;
+  --primary-surface: var(--primary);
+  --accent: color-mix(in srgb, var(--primary) 20%, var(--background));
+  --accent-foreground: #ffc4d9;
+  --ring: #ff7aa5;
+  --nav-active-bg: var(--accent);
+  --nav-active-fg: var(--accent-foreground);
+  --chart-1: #ff7aa5;
+  --chart-2: #bf2fd9;
+  --chart-3: #c94a72;
+  --chart-4: #d95fbc;
+  --chart-5: #822a47;
+  --environment-top: hsl(340 85% 55% / 44%);
+  --environment-bottom: hsl(312 80% 42% / 38%);
+  --environment-side: hsl(290 70% 40% / 20%);
+  --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
+  --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
+  --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
+  --hero-muted: #d8b6c4;
+  --hero-bar: linear-gradient(180deg, #ff6b98, #ff4f86);
+  --hero-bar-current: #c62fe0;
+}
+
+/* Light-mode corrections where a plain hue rotation is too light for text on
+   the primary (amber) or slightly hot (rose): same ladder, deeper primary. */
+[data-palette="amber-sand"]:not(.dark) {
+  --primary: #b36b00;
+  --primary-hover: #9c5d00;
+  --accent: color-mix(in srgb, #b36b00 13%, white);
+  --accent-foreground: #8a5300;
+  --ring: #b36b00;
+  --chart-1: #d9901a;
+  --chart-2: #d9486a;
+  --hero-bar: linear-gradient(180deg, #f0b44a, #d9901a);
+  --hero-bar-current: #d9486a;
+  --rail-logo-bg: linear-gradient(135deg, #f0b44a, #d9486a);
+  --environment-top: rgb(240 170 40 / 28%);
+  --environment-bottom: rgb(217 72 106 / 22%);
+}
+
+[data-palette="rose-quartz"]:not(.dark) {
+  --primary: #e03a73;
+  --primary-hover: #cc2d66;
+  --ring: #e03a73;
+  --accent: color-mix(in srgb, #e03a73 13%, white);
+  --accent-foreground: #b81e57;
+  --chart-1: #e03a73;
+  --hero-bar: linear-gradient(180deg, #f27aa0, #e03a73);
+}
+
+/* Marismoon Light: a light-only palette. Semantic roles follow Realtime Colors
+   (background / surface / text / primary / secondary / accent); the 50-950
+   ramps follow the UI Colors convention (sky for the primary, slate for the
+   neutrals). Usage: 50-100 soft fills and hovers, 200-300 hairlines, 400-500
+   icons and secondary chart marks, 600-700 primary fills and highlights,
+   800-950 headings only, never large backgrounds. Status colours are the
+   shared semantic tokens and are intentionally not overridden here. */
+[data-palette="marismoon-light"],
+.dark[data-palette="marismoon-light"] {
+  color-scheme: light;
+  --marismoon-primary-50: #f0f9ff;
+  --marismoon-primary-100: #e0f2fe;
+  --marismoon-primary-200: #bae6fd;
+  --marismoon-primary-300: #7dd3fc;
+  --marismoon-primary-400: #38bdf8;
+  --marismoon-primary-500: #0ea5e9;
+  --marismoon-primary-600: #0284c7;
+  --marismoon-primary-700: #0369a1;
+  --marismoon-primary-800: #075985;
+  --marismoon-primary-900: #0c4a6e;
+  --marismoon-primary-950: #082f49;
+  --marismoon-neutral-50: #f8fafc;
+  --marismoon-neutral-100: #f1f5f9;
+  --marismoon-neutral-200: #e2e8f0;
+  --marismoon-neutral-300: #cbd5e1;
+  --marismoon-neutral-400: #94a3b8;
+  --marismoon-neutral-500: #64748b;
+  --marismoon-neutral-600: #475569;
+  --marismoon-neutral-700: #334155;
+  --marismoon-neutral-800: #1e293b;
+  --marismoon-neutral-900: #0f172a;
+  --marismoon-neutral-950: #020617;
+
+  --background: var(--marismoon-neutral-50);
+  --foreground: var(--marismoon-neutral-900);
+  --card: rgb(255 255 255 / 80%);
+  --card-bottom: rgb(255 255 255 / 64%);
+  --workspace-nav: linear-gradient(
+    157deg,
+    rgb(255 255 255 / 72%),
+    rgb(241 245 249 / 54%)
+  );
+  --popover: #ffffff;
+  --control: rgb(255 255 255 / 82%);
+  --layout-control-border: var(--marismoon-neutral-300);
+  --secondary: var(--marismoon-neutral-100);
+  --secondary-foreground: var(--marismoon-neutral-700);
+  --muted: var(--marismoon-neutral-100);
+  --muted-foreground: var(--marismoon-neutral-500);
+  --recess: rgb(241 245 249 / 62%);
+  --border: var(--marismoon-neutral-200);
+  --border-subtle: rgb(15 23 42 / 6%);
+  --input: var(--marismoon-neutral-500);
+  --surface-edge: rgb(255 255 255 / 88%);
+  --overlay: rgb(15 23 42 / 42%);
+
+  --primary: var(--marismoon-primary-700);
+  --primary-hover: var(--marismoon-primary-800);
+  --accent: color-mix(in srgb, var(--marismoon-primary-600) 9%, white);
+  --accent-foreground: var(--marismoon-primary-800);
+  --rail-logo-bg: linear-gradient(
+    135deg,
+    var(--marismoon-primary-500),
+    var(--marismoon-primary-800)
+  );
+  --ring: var(--marismoon-primary-600);
+  --chart-1: var(--marismoon-primary-600);
+  --chart-2: #6366f1;
+  --chart-3: var(--marismoon-primary-300);
+  --chart-4: #a5b4fc;
+  --chart-5: var(--marismoon-primary-100);
+  --environment-top: rgb(14 165 233 / 18%);
+  --environment-bottom: rgb(99 102 241 / 14%);
+  --environment-side: rgb(148 163 184 / 18%);
+  --environment-base: linear-gradient(37deg, #eef2f7, #f8fafc 55%, #f1f5f9);
+  --hero-start: var(--marismoon-primary-100);
+  --hero-end: rgb(255 255 255 / 56%);
+  --hero-edge: var(--marismoon-primary-200);
+  --hero-ink: var(--foreground);
+  --hero-muted: var(--marismoon-neutral-600);
+  --hero-bar: linear-gradient(
+    180deg,
+    var(--marismoon-primary-400),
+    var(--marismoon-primary-600)
+  );
+  --hero-bar-current: var(--marismoon-primary-800);
+}
+
+/* Light-only: under the dark class this palette keeps every light value the
+   dark base would have replaced (surfaces, shadows, status tones). */
+.dark[data-palette="marismoon-light"] {
+  --surface-shadow-ink: var(--foreground);
+  --surface-shadow-scale: 1;
+  --surface-inset: rgb(255 255 255 / 72%);
+  --glass-fill-top: 100%;
+  --glass-fill-bottom: 72%;
+  --glass-specular: inset 0 0 32px rgb(255 255 255 / 50%);
+  --glass-edge: transparent;
+  --nav-filter: blur(26px) saturate(145%);
+  --sidebar-edge: var(--glass-edge);
+  --sidebar-background-clip: padding-box;
+  --sidebar-radius: 1.375rem;
+  --sidebar-shadow-color: rgb(51 47 101 / 12%);
+  --sidebar-shadow:
+    0 7px 16px -9px var(--sidebar-shadow-color), var(--glass-specular);
+  --surface-highlight: rgb(255 255 255 / 57%);
+  --surface-filter: blur(40px) saturate(160%);
+  --surface-shadow-color: rgb(51 47 101 / 12%);
+  --environment-strength: 100%;
+  --floating-shadow: 0 18px 60px rgb(41 24 74 / 18%);
+  --primary-foreground: #fff;
+  --primary-surface: var(--primary);
+  --nav-active-fg: var(--accent-foreground);
+  --scope-selected: var(--layout-control);
+  --success: #176045;
+  --success-bg: #e4f6ed;
+  --warning: #8e4a08;
+  --warning-bg: #fff1df;
+  --danger: #b12a3f;
+  --danger-bg: #feefef;
+  --info: #4937af;
+  --info-bg: #edefff;
+  --destructive-foreground: #fff;
+}

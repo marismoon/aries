@@ -1,0 +1,48 @@
+/* Icon states: Linear by default, the same icon in Bold on hover or when the
+   control is selected. <AppIcon stateful> renders both on one 24x24 grid;
+   only the visible one changes, so nothing shifts. No wrapper element is added. */
+svg[data-icon-variant="bold"] {
+  display: none;
+}
+
+:is(a, button, [role="tab"], [role="menuitem"]):is(
+    [aria-current]:not([aria-current="false"]),
+    [aria-selected="true"],
+    [aria-pressed="true"],
+    [data-state="active"],
+    [data-state="on"],
+    [data-state="open"]
+  )
+  svg[data-icon-variant="linear"] {
+  display: none;
+}
+
+:is(a, button, [role="tab"], [role="menuitem"]):is(
+    [aria-current]:not([aria-current="false"]),
+    [aria-selected="true"],
+    [aria-pressed="true"],
+    [data-state="active"],
+    [data-state="on"],
+    [data-state="open"]
+  )
+  svg[data-icon-variant="bold"] {
+  display: block;
+}
+
+@media (hover: hover) {
+  :is(a, button, [role="tab"], [role="menuitem"]):not(
+      :disabled,
+      [aria-disabled="true"]
+    ):hover
+    svg[data-icon-variant="linear"] {
+    display: none;
+  }
+
+  :is(a, button, [role="tab"], [role="menuitem"]):not(
+      :disabled,
+      [aria-disabled="true"]
+    ):hover
+    svg[data-icon-variant="bold"] {
+    display: block;
+  }
+}

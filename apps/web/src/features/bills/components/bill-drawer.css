@@ -1,0 +1,168 @@
+.bill-drawer-body {
+  display: grid;
+  flex: 1 1 auto;
+  min-height: 0;
+  align-content: start;
+  gap: var(--space-5);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-block: var(--space-1) var(--space-3);
+  touch-action: pan-y;
+}
+
+.bill-drawer-body:focus-visible {
+  outline-offset: -2px;
+}
+
+/* Top summary: status, id and the two amounts, set on a soft inset. */
+.bill-drawer-summary {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--accent) 42%, transparent);
+}
+
+.bill-drawer-summary-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.bill-drawer-id {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 560;
+}
+
+.bill-drawer-amounts {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.bill-drawer-amounts dt {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.bill-drawer-amounts dd {
+  margin: 2px 0 0;
+  font-size: 1.25rem;
+  font-weight: 720;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.bill-drawer-amounts > div:last-child dd {
+  color: var(--muted-foreground);
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.bill-drawer-section h3 {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.bill-drawer-section h3 span {
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  font-weight: 450;
+}
+
+.bill-drawer-rows {
+  margin: 0;
+  font-size: 0.8125rem;
+}
+
+.bill-drawer-rows > div {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.bill-drawer-rows dt {
+  color: var(--muted-foreground);
+}
+
+.bill-drawer-rows dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  text-align: end;
+  font-weight: 560;
+}
+
+.bill-drawer-pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-size: 0.75rem;
+  font-weight: 620;
+}
+
+.bill-drawer-stages {
+  display: grid;
+  gap: 6px;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bill-drawer-stages li {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--muted) 55%, transparent);
+  font-size: 0.8125rem;
+  font-weight: 620;
+}
+
+.bill-drawer-stage-state {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 450;
+}
+
+.bill-drawer-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: var(--space-2) 0 0;
+  color: var(--muted-foreground);
+}
+
+.bill-drawer-chain > span:not([aria-hidden]) {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-size: 0.75rem;
+  font-weight: 620;
+}
+
+.bill-drawer-form {
+  display: grid;
+  gap: var(--space-4);
+}

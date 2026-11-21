@@ -1,0 +1,135 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/noto-sans-sc";
+@import "./tokens.css";
+@import "./spectrum.css";
+@import "./materials.css";
+@import "./dark-clean.css";
+@import "../components/ui/popup.css";
+@import "./motion.css";
+@import "./soft-edge.css";
+@import "./icon-states.css";
+
+/* Scan the package sources; apps add their own @source for their code. */
+@source "../";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Every `transition-*` utility (shadcn controls, tabs, menus) shares one curve. */
+@theme {
+  --default-transition-duration: 160ms;
+  --default-transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@theme inline {
+  --font-sans: "Inter Variable", "Noto Sans SC Variable", system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+  --color-chart-7: var(--chart-7);
+  --color-chart-8: var(--chart-8);
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: var(--radius-control);
+  --radius-xl: 1.25rem;
+  --radius-2xl: var(--radius-panel);
+  --radius-3xl: 2rem;
+  --radius-4xl: 2.5rem;
+}
+
+@layer base {
+  html {
+    block-size: 100dvh;
+    overscroll-behavior: none;
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body,
+  #root {
+    block-size: 100%;
+  }
+
+  html,
+  body,
+  #root {
+    overflow: clip;
+  }
+
+  body {
+    min-width: 0;
+    color: var(--foreground);
+    font-size: var(--text-body);
+    line-height: 1.55;
+  }
+
+  * {
+    border-color: var(--border);
+    outline-color: var(--ring);
+  }
+
+  :where(h1, h2, h3) {
+    text-wrap: balance;
+    scroll-margin-block-start: 1rem;
+  }
+
+  :where(p, figcaption) {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+
+  button,
+  a[href] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: color-mix(
+      in srgb,
+      var(--accent) 55%,
+      transparent
+    );
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+
+  ::selection {
+    color: var(--accent-foreground);
+    background: var(--accent);
+  }
+}
+
+@utility financial-number {
+  font-variant-numeric: tabular-nums lining-nums;
+}

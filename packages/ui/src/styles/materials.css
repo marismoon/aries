@@ -1,0 +1,146 @@
+:root {
+  background: var(--background);
+}
+
+:root {
+  /* One token for the page environment, so the scroll-edge fade in the
+     workspace can paint exactly the same thing without sampling it in JS. */
+  --page-background:
+    radial-gradient(
+      ellipse 26% 34% at 12% 4%,
+      color-mix(
+        in srgb,
+        var(--environment-bottom) calc(var(--environment-strength) * 0.8),
+        transparent
+      ),
+      transparent 78%
+    ),
+    radial-gradient(
+      ellipse 34% 46% at 14% 40%,
+      color-mix(
+        in srgb,
+        var(--environment-side) var(--environment-strength),
+        transparent
+      ),
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 42% 38% at 46% 4%,
+      color-mix(
+        in srgb,
+        var(--environment-top) calc(var(--environment-strength) * 0.7),
+        transparent
+      ),
+      transparent 78%
+    ),
+    radial-gradient(
+      ellipse 68% 76% at -8% 102%,
+      color-mix(
+        in srgb,
+        var(--environment-bottom) var(--environment-strength),
+        transparent
+      ),
+      transparent 75%
+    ),
+    radial-gradient(
+      ellipse 55% 60% at 106% -9%,
+      color-mix(
+        in srgb,
+        var(--environment-top) var(--environment-strength),
+        transparent
+      ),
+      transparent 76%
+    ),
+    radial-gradient(
+      ellipse 55% 57% at 65% 84%,
+      color-mix(
+        in srgb,
+        var(--environment-side) var(--environment-strength),
+        transparent
+      ),
+      transparent 80%
+    ),
+    var(--environment-base);
+}
+
+body {
+  background: var(--page-background);
+}
+
+.surface {
+  min-width: 0;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius-panel);
+  background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--card) var(--glass-fill-top), transparent),
+      color-mix(
+        in srgb,
+        var(--card-bottom) var(--glass-fill-bottom),
+        transparent
+      )
+    )
+    no-repeat border-box;
+  color: var(--card-foreground);
+  box-shadow: var(--surface-shadow);
+  backdrop-filter: var(--surface-filter);
+}
+
+.surface-inset {
+  border-radius: calc(var(--radius-panel) - 6px);
+  background: var(--surface-inset);
+  box-shadow: var(--surface-inset-shadow);
+}
+
+.frost-divider {
+  border-color: var(--border-subtle);
+}
+
+.hero-surface {
+  background-image: var(
+    --hero-decor,
+    radial-gradient(
+      ellipse 95% 116% at 98% 119%,
+      transparent 61%,
+      color-mix(in srgb, var(--primary) 5%, transparent) 61% 68%,
+      transparent 68%
+    ),
+    linear-gradient(130deg, var(--hero-start), var(--hero-end))
+  );
+  background-color: var(--hero-fill, transparent);
+  box-shadow: var(--hero-outline, var(--surface-shadow));
+  color: var(--hero-ink);
+}
+
+.workspace-content
+  :is(
+    [data-slot="select-trigger"]:not([data-field-focus="quiet"]),
+    [data-slot="button"][data-variant="outline"]
+  ):not([aria-invalid="true"]) {
+  border-color: var(--border-subtle);
+}
+
+.workspace-content
+  [data-slot="select-trigger"]:not(
+    :disabled,
+    [data-field-focus="quiet"]
+  ):hover {
+  background-color: var(--muted);
+}
+
+.workspace-content [data-slot="tabs-trigger"]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .surface {
+    backdrop-filter: none;
+  }
+
+  .surface:not(.hero-surface) {
+    background-color: var(--popover);
+    background-image: none;
+  }
+}

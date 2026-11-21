@@ -1,0 +1,87 @@
+.bills-page {
+  flex: 1;
+  grid-template-rows: auto minmax(min-content, 1fr);
+}
+
+.bills-totals {
+  display: grid;
+  align-items: stretch;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.bills-foreign-total {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+}
+
+.bills-total-divider {
+  align-self: stretch;
+  width: 1px;
+  margin-block: 0.15em;
+  background: var(--border-subtle);
+}
+
+.bills-foreign-total > span {
+  white-space: nowrap;
+}
+
+.bills-currency-code {
+  color: var(--muted-foreground);
+  font-size: var(--text-label);
+  font-weight: 650;
+  letter-spacing: normal;
+}
+
+@container workspace (max-width: 32rem) {
+  .bills-totals {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.bills-register {
+  --register-inset: var(--space-4);
+  overflow: clip;
+  container-type: inline-size;
+}
+
+.bills-loading {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--card-inset);
+}
+
+.bills-loading-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.bills-loading-rows {
+  display: grid;
+}
+
+/* Mirrors the table columns so the layout does not jump when data arrives. */
+.bills-loading-row {
+  display: grid;
+  grid-template-columns:
+    16px minmax(120px, 1.6fr) 72px 90px 56px minmax(80px, 1fr)
+    84px;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 51px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+@media (max-width: 700px) {
+  .bills-page {
+    gap: 16px;
+  }
+
+  .bills-register {
+    --register-inset: var(--space-3);
+  }
+}

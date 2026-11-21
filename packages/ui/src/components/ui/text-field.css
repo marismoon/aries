@@ -1,0 +1,77 @@
+.field-surface {
+  --field-focus-color: var(--ring);
+  border-radius: var(--radius-workspace-control);
+  background: var(--field-surface);
+  background-clip: padding-box;
+  box-shadow: var(--field-shadow);
+  transition: background-color var(--duration-feedback) var(--ease-feedback);
+}
+
+/* Wrapper surfaces (a div or form around an embedded input) need the same 1px edge as a
+   real input, otherwise the focus gradient border has no border to paint on. */
+.field-surface:not(input, textarea, select, button) {
+  border: 1px solid transparent;
+}
+
+.field-surface:not(:disabled, :has(> .field-control:disabled)):hover {
+  background-color: var(--field-surface-hover);
+}
+
+.field-surface:is(:disabled, :has(> .field-control:disabled)) {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.field-surface:is(
+  [aria-invalid="true"],
+  :has(> .field-control[aria-invalid="true"])
+) {
+  --field-focus-color: var(--destructive);
+  outline: 1px solid var(--field-focus-color);
+  outline-offset: 0;
+}
+
+/* Focus: the same thin flowing-gradient edge as the AI assistant's composer, on
+   every text field (inputs, textareas, input groups, native selects, comboboxes).
+   The fill turns solid so the gradient only shows as the 1px border. */
+:is(
+    .field-surface:not(.copilot-composer),
+    [data-slot="input-group"],
+    [data-slot="native-select"],
+    [data-slot="combobox-chips"]
+  ):is(
+    :focus-visible,
+    :has(> .field-control:focus-visible),
+    :has([data-slot="input-group-control"]:focus-visible),
+    :has(input:focus-visible)
+  ):not([aria-invalid="true"], :has([aria-invalid="true"])) {
+  outline: none;
+  border-color: transparent;
+  background-color: transparent;
+  background-image:
+    linear-gradient(var(--popover), var(--popover)), var(--glow-line);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: var(--field-shadow);
+}
+
+.field-control {
+  color: var(--foreground);
+}
+
+.field-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.field-control:disabled {
+  cursor: not-allowed;
+}
+
+.field-surface > .field-control[data-embedded] {
+  border-radius: inherit;
+  background: transparent;
+}
+
+.field-surface > .field-control[data-embedded]:focus-visible {
+  outline: none;
+}

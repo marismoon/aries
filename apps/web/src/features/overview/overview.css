@@ -1,0 +1,62 @@
+.overview-page {
+  container: overview / inline-size;
+}
+
+.overview-workflow-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.overview-workflow-grid[data-single="true"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.overview-extras {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: var(--space-3);
+}
+
+.dashboard-preferences {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+}
+
+.dashboard-preference {
+  display: flex;
+  min-width: 0;
+  min-height: 42px;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border-radius: var(--radius-workspace-control);
+  background: var(--field-surface);
+  box-shadow: var(--field-shadow);
+  cursor: pointer;
+}
+
+.dashboard-preference:hover {
+  background: var(--field-surface-hover);
+}
+
+.dashboard-preference-hint {
+  margin-inline-start: auto;
+  color: var(--muted-foreground);
+  font-size: 0.7rem;
+}
+
+@container overview (max-width: 890px) {
+  .overview-workflow-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-preferences {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

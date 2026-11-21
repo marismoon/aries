@@ -1,0 +1,133 @@
+/* Bills-only cell content and column widths. Table chrome (header, rows,
+   footer, alignment) lives in components/shared/data-table.css. */
+
+.data-table [data-column="id"] {
+  --column-fraction: 0.17;
+}
+
+.data-table [data-column="vendor"] {
+  --column-fraction: 0.12;
+}
+
+.data-table [data-column="period"] {
+  --column-fraction: 0.084;
+}
+
+.data-table [data-column="currency"] {
+  --column-fraction: 0.068;
+  padding-inline: 8px;
+}
+
+.data-table [data-column="issuedAmount"] {
+  --column-fraction: 0.13;
+}
+
+.data-table [data-column="estimatedAmount"] {
+  --column-fraction: 0.11;
+}
+
+.data-table [data-column="channel"] {
+  --column-fraction: 0.084;
+}
+
+.data-table [data-column="status"] {
+  --column-fraction: 0.124;
+}
+
+.data-table [data-column="actions"] {
+  --column-fraction: 0.11;
+}
+
+.bill-row-id {
+  display: block;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.bill-row-account {
+  display: block;
+  margin-block-start: 2px;
+  color: var(--muted-foreground);
+  font-size: var(--text-label);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.bill-row-pill {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  vertical-align: middle;
+  padding: 2px 8px;
+  font-size: 0.71875rem;
+  font-weight: 610;
+  text-overflow: ellipsis;
+  border-radius: 999px;
+  background: var(
+    --pill-fill,
+    color-mix(in srgb, var(--accent) 65%, var(--muted))
+  );
+  box-shadow: var(--pill-edge, none);
+  color: var(--secondary-foreground);
+}
+
+.data-table tbody [data-column="issuedAmount"] {
+  font-weight: 650;
+}
+
+.data-table
+  tbody
+  :is(
+    [data-column="estimatedAmount"],
+    [data-column="channel"],
+    [data-column="period"]
+  ) {
+  color: var(--muted-foreground);
+}
+
+/* Icon action: its edge sits on the same line as the "操作" header. */
+.bill-detail-action {
+  margin-inline-end: -4px;
+  color: var(--muted-foreground);
+}
+
+.bill-detail-action:hover {
+  color: var(--accent-foreground);
+}
+
+@media (max-width: 700px) {
+  .bill-detail-action {
+    size: var(--control-size-compact);
+  }
+}
+
+/* English provider names and headings need more room; the fractions still
+   add up to 1 so the table keeps its outer size. */
+:lang(en) .data-table [data-column="id"] {
+  --column-fraction: 0.16;
+}
+
+:lang(en) .data-table [data-column="vendor"] {
+  --column-fraction: 0.145;
+}
+
+:lang(en) .data-table [data-column="period"] {
+  --column-fraction: 0.08;
+}
+
+:lang(en) .data-table [data-column="issuedAmount"] {
+  --column-fraction: 0.125;
+}
+
+:lang(en) .data-table [data-column="estimatedAmount"] {
+  --column-fraction: 0.105;
+}
+
+:lang(en) .data-table [data-column="channel"] {
+  --column-fraction: 0.08;
+}
+
+:lang(en) .data-table [data-column="actions"] {
+  --column-fraction: 0.113;
+}

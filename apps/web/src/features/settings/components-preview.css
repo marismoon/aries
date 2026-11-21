@@ -1,0 +1,199 @@
+.components-page {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.components-group > h2 {
+  margin-bottom: var(--space-2);
+  padding-inline: var(--space-1);
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+}
+
+.components-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+@container (max-width: 760px) {
+  .components-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.component-card {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--card-inset);
+}
+
+.component-card[data-wide] {
+  grid-column: 1 / -1;
+}
+
+.component-card > header h3 {
+  font-size: 0.9375rem;
+  font-weight: 690;
+  letter-spacing: -0.015em;
+}
+
+.component-card > header p {
+  margin-top: 2px;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.component-demo {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.component-demo[data-stack] {
+  display: grid;
+  align-items: stretch;
+}
+
+.component-usage {
+  display: block;
+  overflow-x: auto;
+  padding: 6px 10px;
+  border-radius: var(--radius-workspace-control);
+  background: color-mix(in srgb, var(--accent) 40%, transparent);
+  color: var(--accent-foreground);
+  font-size: 0.6875rem;
+  white-space: nowrap;
+}
+
+.spec-rows {
+  display: grid;
+  gap: 8px;
+}
+
+.spec-row {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  font-size: 0.8125rem;
+}
+
+.spec-row code {
+  min-width: 4.5rem;
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+}
+
+.spec-row > div {
+  display: grid;
+  gap: 1px;
+}
+
+.spec-row > div code {
+  min-width: 0;
+}
+
+.spec-row > span:last-child,
+.spec-row > div > span {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.spec-radius {
+  width: 56px;
+  height: 36px;
+  flex: none;
+  border: 1.5px solid var(--primary);
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.spec-swatches {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 10px;
+}
+
+.spec-swatch {
+  display: grid;
+  gap: 2px;
+  font-size: 0.75rem;
+}
+
+.spec-swatch span {
+  height: 32px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-workspace-control);
+}
+
+.spec-swatch code {
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+}
+
+/* The preview shows the bills register as-is; only its height is shortened. */
+.data-table-preview {
+  --data-table-min-height: 360px;
+  width: 100%;
+}
+
+.component-demo:has(> .data-table-preview) {
+  display: block;
+}
+
+.component-bare {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.component-bare[data-wide] {
+  grid-column: 1 / -1;
+}
+
+.component-bare > header {
+  padding-inline: var(--space-1);
+}
+
+.component-bare > header h3 {
+  font-size: 0.9375rem;
+  font-weight: 690;
+  letter-spacing: -0.015em;
+}
+
+.component-bare > header p {
+  margin-top: 2px;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.component-section {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.component-section > h2 {
+  padding-inline: var(--space-1);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+/* Official chart examples use the Marismoon categorical palette on this page. */
+#component-chart {
+  --chart-1: var(--chart-soft-1);
+  --chart-2: var(--chart-soft-2);
+  --chart-3: var(--chart-soft-3);
+  --chart-4: var(--chart-soft-4);
+  --chart-5: var(--chart-soft-5);
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "radix-rhea",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "../../packages/ui/src/styles/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "solar",
+  "rtl": false,
+  "aliases": {
+    "components": "@marismoon/ui",
+    "utils": "@marismoon/ui/lib/utils",
+    "ui": "@marismoon/ui/ui",
+    "lib": "@marismoon/ui/lib",
+    "hooks": "@marismoon/ui/hooks"
+  },
+  "menuColor": "default",
+  "menuAccent": "subtle",
+  "registries": {}
+}

@@ -1,0 +1,1314 @@
+.app-shell {
+  --rail-start-inset: var(--space-4);
+  --rail-block-start: 1.375rem;
+  --rail-block-end: max(var(--space-5), var(--workspace-safe-block-end));
+  --rail-item-gap: var(--space-2);
+  --rail-logo-gap: var(--space-5);
+  --rail-logo-center: calc(
+    var(--rail-block-start) + var(--rail-control-size) / 2
+  );
+  --icon-rail-width: calc(var(--rail-start-inset) + var(--rail-backplate-size));
+  --workspace-nav-width: 256px;
+  --workspace-column-gap: 10px;
+  --column-height: 100dvh;
+  display: grid;
+  grid-template-columns:
+    var(--icon-rail-width) var(--workspace-nav-width)
+    minmax(0, 1fr);
+  column-gap: var(--workspace-column-gap);
+  width: 100%;
+  block-size: 100%;
+}
+
+/* Collapse / expand the second column. The track animates to 0 while the nav
+   keeps its full width (so its text never reflows) and fades out quickly while
+   sliding left; on expand it fades in once the column is about 60% open. The
+   main area follows the same curve through the grid track. */
+.app-shell {
+  position: relative;
+}
+
+@media (min-width: 701px) {
+  .app-shell {
+    transition:
+      grid-template-columns 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      column-gap 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Two gaps around the empty track: half each, so the main area sits exactly
+     where it did when the column was removed. */
+  .app-shell[data-nav-collapsed="true"] {
+    grid-template-columns: var(--icon-rail-width) 0 minmax(0, 1fr);
+    column-gap: calc(var(--workspace-column-gap) / 2);
+  }
+
+  .app-shell > .workspace-nav--desktop {
+    width: var(--workspace-nav-width);
+    transition:
+      opacity 180ms ease-out 120ms,
+      transform 240ms cubic-bezier(0.22, 1, 0.36, 1) 120ms,
+      visibility 0s;
+  }
+
+  .app-shell[data-nav-collapsed="true"] > .workspace-nav--desktop {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(-8px);
+    pointer-events: none;
+    transition:
+      opacity 100ms ease-in,
+      transform 140ms ease-in,
+      visibility 0s linear 260ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell,
+  .app-shell > .workspace-nav--desktop {
+    transition: none !important;
+  }
+}
+
+.icon-rail {
+  position: sticky;
+  top: 0;
+  min-height: var(--column-height);
+}
+
+.icon-rail-column {
+  min-width: 0;
+}
+
+.icon-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rail-item-gap);
+  padding-block: var(--rail-block-start) var(--rail-block-end);
+}
+
+.rail-brand,
+.rail-control {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--rail-control-size);
+  height: var(--rail-control-size);
+  border: 0;
+  border-radius: 9999px;
+  padding: 0;
+}
+
+.rail-brand::before,
+.rail-control::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  width: var(--rail-backplate-size);
+  height: var(--rail-backplate-size);
+  margin: auto;
+  border-radius: inherit;
+  background: var(--rail-fill);
+  transition: background var(--duration-feedback) var(--ease-feedback);
+  box-shadow: 0 3px 10px -2px
+    color-mix(in srgb, var(--primary) calc(var(--dock-t, 0) * 24%), transparent);
+  pointer-events: none;
+  content: "";
+}
+
+.rail-brand {
+  --rail-fill: var(--rail-logo-bg, var(--foreground));
+  margin-block-end: calc(var(--rail-logo-gap) - var(--rail-item-gap));
+  color: var(--rail-logo-fg, var(--background));
+  font-size: var(--text-body);
+  font-weight: 720;
+  letter-spacing: -0.04em;
+}
+
+.rail-control > svg {
+  width: var(--rail-icon-size);
+  height: var(--rail-icon-size);
+}
+
+.rail-modules,
+.rail-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--rail-item-gap);
+}
+
+.rail-footer {
+  margin-top: auto;
+}
+
+.rail-control {
+  /* --dock-t (0..1, set by IconRail while the pointer is near) fades the same
+     hover fill and a soft lift in, so the growing control has a body, like the
+     pills of the dock example. */
+  --rail-fill: color-mix(
+    in srgb,
+    var(--icon-control-hover-bg) calc(var(--dock-t, 0) * 100%),
+    transparent
+  );
+  background: transparent;
+  color: var(--foreground);
+  transition: color var(--duration-feedback) var(--ease-feedback);
+}
+
+.rail-control:not(:disabled):hover {
+  --rail-fill: var(--icon-control-hover-bg);
+}
+
+.rail-control:not(:disabled)[aria-current="true"] {
+  --rail-fill: var(--rail-active-bg);
+  color: var(--rail-active-fg);
+}
+
+.rail-brand:focus-visible,
+.rail-control:focus-visible {
+  outline: none;
+}
+
+.rail-brand:focus-visible::before,
+.rail-control:focus-visible::before {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.rail-control:disabled {
+  opacity: 0.82;
+}
+
+.workspace-nav--desktop {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  padding-block: var(--space-4) var(--workspace-safe-block-end);
+}
+
+.workspace-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-4);
+}
+
+.workspace-nav--desktop > .workspace-nav {
+  min-height: 0;
+  gap: 13px;
+  padding: 18px var(--space-4);
+  border-style: solid;
+  border-width: var(--nav-border-width, 1px);
+  border-color: var(--sidebar-edge);
+  border-radius: var(--sidebar-radius);
+  background: var(--workspace-nav);
+  background-clip: var(--sidebar-background-clip);
+  box-shadow: var(--sidebar-shadow);
+  backdrop-filter: var(--nav-filter);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .workspace-nav--desktop > .workspace-nav {
+    background-image: none;
+    background-color: var(--popover);
+    backdrop-filter: none;
+  }
+}
+
+.workspace-nav-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-inline: 2px;
+}
+
+.workspace-nav-heading strong {
+  color: var(--foreground);
+  font-size: 1.3125rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.35;
+}
+
+.workspace-nav-create {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  color: var(--foreground);
+  opacity: 0.78;
+}
+
+.workspace-scope-tabs,
+.workspace-scope-panel {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: inherit;
+}
+
+.workspace-scope {
+  display: flex;
+  width: 100%;
+  height: var(--control-size-compact);
+  flex: none;
+  align-items: center;
+  gap: 2px;
+  border: 0;
+  border-radius: 9999px;
+  padding: var(--space-1);
+  background: color-mix(in srgb, var(--muted) 53%, transparent);
+  color: var(--muted-foreground);
+}
+
+.workspace-scope > [data-slot="tabs-trigger"] {
+  display: grid;
+  min-width: 0;
+  height: 100%;
+  flex: 1;
+  place-items: center;
+  border: 0;
+  border-radius: inherit;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 0.78125rem;
+  font-weight: 400;
+  line-height: inherit;
+}
+
+.workspace-scope > [data-slot="tabs-trigger"]:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.workspace-scope > [data-state="active"] {
+  background: var(--scope-selected, var(--layout-control));
+  color: var(--foreground);
+  font-weight: 650;
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--foreground) 7%, transparent);
+}
+
+.workspace-scope > [data-slot="tabs-trigger"]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+
+/* Shadows must never meet a clipping edge: the scroller carries an 8px bleed
+   (padding) that is cancelled by an equal negative margin, so rows keep their
+   position while a raised row's shadow fades out inside the scroller. */
+.workspace-directory {
+  position: relative;
+  min-height: 0;
+  flex: 1;
+  margin: -6px -8px;
+  padding: 6px 8px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  /* No visible scrollbar: wheel and trackpad scrolling are unchanged. */
+  scrollbar-width: none;
+}
+
+.workspace-directory::-webkit-scrollbar {
+  display: none;
+}
+
+.workspace-nav-list {
+  display: grid;
+  gap: 4px;
+}
+
+.workspace-nav-item {
+  display: flex;
+  width: 100%;
+  height: auto;
+  min-height: var(--sidebar-item-height);
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  border: 0;
+  border-radius: var(--sidebar-item-radius);
+  padding: 5px 12px;
+  background: transparent;
+  color: var(--foreground);
+  font-size: 0.84375rem;
+  font-weight: 550;
+  line-height: inherit;
+  text-align: left;
+  transition:
+    color var(--duration-feedback) var(--ease-feedback),
+    background-color var(--duration-feedback) var(--ease-feedback),
+    transform 150ms var(--ease-feedback);
+}
+
+.workspace-nav-item:focus-visible {
+  outline-offset: -2px;
+}
+
+.workspace-nav-item > svg {
+  flex: none;
+}
+
+/* The hover and selected backgrounds are the shared pills drawn by
+   NavHighlight (they slide between items); the items only change text. */
+.workspace-nav-item {
+  position: relative;
+  z-index: 1;
+}
+
+.workspace-nav-item:not([aria-current="page"]):is(
+    :not(:disabled),
+    .nav-tree-leaf
+  ):hover {
+  background: transparent;
+  color: var(--foreground);
+}
+
+.workspace-nav-item:not([aria-current="page"]):is(
+    :not(:disabled),
+    .nav-tree-leaf
+  ):hover
+  > span {
+  transform: translateX(3px);
+}
+
+.workspace-nav-item > span {
+  transition: transform 150ms var(--ease-feedback);
+}
+
+.workspace-nav-item:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.workspace-nav-item[aria-current="page"],
+.workspace-nav-item[aria-current="page"]:hover {
+  background: transparent;
+  color: var(--accent-foreground);
+  font-weight: 650;
+}
+
+.nav-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  border-radius: var(--sidebar-item-radius);
+  pointer-events: none;
+}
+
+/* Hover: a bright, thin-edged glass pill that stands out on the tinted panel. */
+.nav-pill--hover {
+  background: var(--nav-hover-fill, color-mix(in srgb, white 52%, transparent));
+  box-shadow: var(
+    --nav-hover-shadow,
+    inset 0 0 0 1px color-mix(in srgb, white 62%, transparent)
+  );
+}
+
+.dark .nav-pill--hover {
+  background: var(--nav-hover-fill, color-mix(in srgb, white 9%, transparent));
+  box-shadow: var(
+    --nav-hover-shadow,
+    inset 0 0 0 1px color-mix(in srgb, white 12%, transparent)
+  );
+}
+
+/* Selected: the raised pill, same material as the search field. */
+.nav-pill--active {
+  background: var(--nav-active-fill, var(--field-surface));
+  background-clip: padding-box;
+  box-shadow: var(--nav-active-shadow, var(--field-shadow));
+  transition: scale 150ms var(--ease-feedback);
+}
+
+.workspace-directory:has([aria-current="page"]:active) .nav-pill--active {
+  scale: 0.98;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-nav-item,
+  .workspace-nav-item > span {
+    transform: none !important;
+    transition: none;
+  }
+}
+
+.workspace-nav-list > li:has(.workspace-nav-parent) {
+  margin-top: 10px;
+}
+
+.workspace-nav-parent {
+  min-height: var(--control-size-dense);
+  /* Same inset as route items, so every row's icon sits on one vertical line. */
+  padding-inline: 12px;
+  font-weight: 640;
+}
+
+.workspace-nav-parent > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.workspace-nav-item > .nav-caret {
+  margin-inline-start: auto;
+  transition: transform var(--duration-feedback) var(--ease-feedback);
+}
+
+[aria-expanded="false"] > .nav-caret {
+  transform: rotate(-90deg);
+}
+
+.nav-tree-children {
+  --nav-tree-line: color-mix(in srgb, var(--primary) 34%, transparent);
+  display: grid;
+  row-gap: var(--space-1);
+  margin-inline-start: 15px;
+}
+
+.nav-tree-children > li {
+  position: relative;
+  padding-inline-start: 20px;
+}
+
+.nav-tree-children > li::before {
+  position: absolute;
+  inset-inline-start: 0;
+  top: calc(var(--space-1) / -2);
+  bottom: calc(var(--space-1) / -2);
+  border-inline-start: 1.5px solid var(--nav-tree-line);
+  pointer-events: none;
+  content: "";
+}
+
+.nav-tree-children > li::after {
+  position: absolute;
+  inset-inline-start: 0;
+  top: calc(50% - 10px);
+  width: 14px;
+  height: 10px;
+  border-inline-start: 1.5px solid var(--nav-tree-line);
+  border-bottom: 1.5px solid var(--nav-tree-line);
+  border-end-start-radius: 7px;
+  pointer-events: none;
+  content: "";
+}
+
+.nav-tree-children
+  > li:has(
+    .workspace-nav-item:hover:not(:disabled),
+    [aria-current="page"]
+  )::after {
+  --nav-tree-line: color-mix(in srgb, var(--primary) 72%, transparent);
+}
+
+/* A node dot at the end of the branch arc, drawn on the row itself so the
+   arc's own box does not clip it. */
+.nav-tree-children
+  > li:has(.workspace-nav-item:hover:not(:disabled), [aria-current="page"]) {
+  background: radial-gradient(
+    circle 3px at 14px 50%,
+    var(--primary) 96%,
+    transparent
+  );
+}
+
+.nav-tree-children > li:last-child::before {
+  bottom: calc(50% + 9px);
+}
+
+.nav-tree-leaf {
+  height: var(--sidebar-leaf-height);
+  min-height: 0;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  color: var(--muted-foreground);
+  font-size: var(--text-label);
+  font-weight: inherit;
+}
+
+.nav-tree-leaf:disabled {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.workspace-nav-count {
+  min-width: 22px;
+  flex: none;
+  margin-inline-start: auto;
+  padding: 1px 4px;
+  border-radius: 8px;
+  background: color-mix(in srgb, white 70%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, white 80%, transparent);
+  color: var(--muted-foreground);
+  font-size: var(--text-label);
+  text-align: center;
+}
+
+.dark .workspace-nav-count {
+  background: color-mix(in srgb, white 10%, transparent);
+  box-shadow: none;
+}
+
+/* On the selected (already white) pill the count stays a quiet recess. */
+[aria-current="page"] > .workspace-nav-count {
+  background: var(--recess);
+  box-shadow: none;
+}
+
+.workspace-main {
+  --workspace-inset-start: clamp(var(--space-3), 1.25vw, var(--space-6));
+  --workspace-inset-end: var(--workspace-safe-inline-end);
+  container: workspace / inline-size;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-block-size: 0;
+  padding-inline: var(--workspace-inset-start) var(--workspace-inset-end);
+}
+
+.workspace-content:focus-visible,
+.page-content-viewport:focus-visible {
+  outline-offset: -2px;
+}
+
+.workspace-main > [data-motion-surface="route"],
+.workspace-main .workspace-page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-inline-size: 0;
+  min-block-size: 0;
+}
+
+.workspace-main .workspace-page {
+  gap: var(--space-3);
+}
+
+.workspace-page > .page-header {
+  flex: none;
+}
+
+.page-content-frame {
+  --workspace-edge-size: 16px;
+  /* Card shadows must fade out inside the clipping viewport. Widen the clip
+     edge by the bleed and pull the frame back by the same amount so card
+     positions and scroll length stay unchanged. */
+  --workspace-bleed-inline: max(
+    0px,
+    var(--space-4) - var(--workspace-inset-start)
+  );
+  --workspace-bleed-block: var(--space-4);
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-inline-size: 0;
+  min-block-size: 0;
+  /* Keep the scrollbar and clipping edge at the workspace boundary. */
+  margin-inline: calc(
+      -1 * (var(--workspace-inset-start) + var(--workspace-bleed-inline))
+    )
+    calc(-1 * var(--workspace-inset-end));
+  margin-block-end: calc(-1 * var(--workspace-bleed-block));
+}
+
+.page-content-viewport {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-inline-size: 0;
+  min-block-size: 0;
+  padding-inline: calc(
+      var(--workspace-inset-start) + var(--workspace-bleed-inline)
+    )
+    var(--workspace-inset-end);
+  /* The last card ends on the same line as the nav card and the rail. */
+  padding-block-end: var(--workspace-bleed-block);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--border) transparent;
+  scrollbar-width: thin;
+  scroll-padding-block-start: var(--workspace-edge-size);
+  scroll-padding-block-end: var(--workspace-edge-size);
+}
+
+@supports (mask-image: linear-gradient(black, transparent)) {
+  .page-content-frame:has(> [data-has-more-below="true"])::before,
+  .page-content-frame:has(> [data-scrolled="true"])::after {
+    position: absolute;
+    z-index: 1;
+    inset-inline: 0;
+    block-size: var(--workspace-edge-size);
+    /* Mask only this edge so the content keeps its existing backdrop root. */
+    background: var(--page-background);
+    background-attachment: fixed;
+    pointer-events: none;
+    content: "";
+  }
+
+  .page-content-frame:has(> [data-scrolled="true"])::after {
+    inset-block-start: 0;
+    mask-image: linear-gradient(black, transparent);
+  }
+
+  .page-content-frame:has(> [data-has-more-below="true"])::before {
+    inset-block-end: 0;
+    mask-image: linear-gradient(transparent, black);
+  }
+}
+
+.page-content {
+  display: grid;
+  min-inline-size: 0;
+  gap: var(--space-3);
+}
+
+.page-content[data-has-summary] {
+  flex: 1 0 auto;
+  grid-template-rows: auto minmax(min-content, 1fr);
+}
+
+.page-header {
+  --breadcrumb-leading: 1.5;
+  display: grid;
+  min-height: 92px;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  row-gap: var(--space-1);
+  padding: var(--space-2) 2px;
+}
+
+.page-header-content {
+  display: grid;
+  row-gap: var(--space-1);
+}
+
+.page-header-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.workspace-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted-foreground);
+  font-size: var(--text-label);
+  line-height: var(--breadcrumb-leading);
+}
+
+.workspace-breadcrumb [aria-current="page"] {
+  color: var(--foreground);
+  font-weight: 550;
+}
+
+.workspace-breadcrumb > svg {
+  width: 11px;
+  height: 11px;
+  flex: none;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 1.6875rem;
+  font-weight: 760;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+
+.page-header-description {
+  color: var(--muted-foreground);
+  font-size: var(--text-label);
+  line-height: 1.4;
+}
+
+.page-header-actions,
+.workspace-tools {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.page-header-actions {
+  justify-content: flex-end;
+}
+
+.page-header-actions > .workspace-tools {
+  flex: none;
+  flex-wrap: nowrap;
+}
+
+.page-header-actions > :is(button, a) {
+  height: var(--control-size-compact);
+  font-size: 0.8125rem;
+}
+
+.page-header-actions > [data-variant="outline"] {
+  border-color: var(--layout-control-border);
+  background: var(--layout-control);
+}
+
+.page-header-actions > [data-variant="outline"]:hover {
+  background: var(--muted);
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 60;
+  inset: 12px auto auto 12px;
+  border-radius: var(--radius-control);
+  padding: 10px 14px;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  transform: translateY(calc(-100% - 16px));
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.rail-footer > .mobile-directory-trigger {
+  display: none;
+}
+
+.mobile-directory-panel {
+  max-width: min(calc(100% - 28px), 345px);
+  max-height: calc(100dvh - 28px);
+  overflow-y: auto;
+  padding: 0;
+}
+
+.workspace-nav--mobile > .workspace-nav {
+  --sidebar-leaf-height: var(--control-size-compact);
+  padding: 16px;
+}
+
+.workspace-nav--mobile .workspace-nav-heading {
+  justify-content: flex-start;
+  gap: 10px;
+  padding-inline-end: 42px;
+}
+
+.command-trigger,
+.workspace-mode-control {
+  height: var(--control-size-compact);
+  color: var(--muted-foreground);
+}
+
+.palette-trigger[data-palette-display="name"] {
+  border-color: var(--layout-control-border, var(--border));
+  background: var(--layout-control, var(--control));
+}
+
+.command-trigger {
+  width: 100%;
+  max-width: 100%;
+  justify-content: flex-start;
+  gap: 8px;
+  border-color: transparent;
+  padding-inline: var(--space-3) var(--space-2);
+  font-size: 0.8125rem;
+}
+
+.command-trigger:hover {
+  color: var(--foreground);
+}
+
+.palette-trigger[data-palette-display="name"]:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.workspace-mode-control:not([data-palette-display="name"]):not(:disabled):is(
+    :hover,
+    [aria-expanded="true"]
+  ) {
+  background: var(--icon-control-hover-bg);
+  color: var(--foreground);
+}
+
+.command-trigger-shortcut {
+  margin-inline-start: auto;
+  border-radius: 6px;
+  padding: 0 5px;
+  background: var(--accent);
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 0.6875rem;
+  white-space: nowrap;
+}
+
+.command-search-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.workspace-mode-control {
+  width: var(--control-size-compact);
+  border-radius: 50%;
+}
+
+.workspace-mode-control > svg {
+  color: var(--foreground);
+}
+
+.palette-trigger[data-palette-display="name"] {
+  width: auto;
+  gap: 6px;
+  border-radius: var(--radius-workspace-control);
+  padding-inline: 10px;
+  font-size: 0.8125rem;
+}
+
+.palette-trigger[data-palette-display="name"] .palette-trigger-chevron {
+  width: 12px;
+  height: 12px;
+  color: inherit;
+}
+
+.command-panel {
+  gap: 14px;
+  max-width: min(calc(100% - 28px), 465px);
+}
+
+.command-search {
+  position: relative;
+}
+
+.command-search > svg {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  color: var(--muted-foreground);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.command-search > input {
+  /* 42px in total with the wrapper's 1px edge (the focus gradient border). */
+  min-height: 40px;
+  padding-inline-start: 37px;
+}
+
+.command-results {
+  display: grid;
+  gap: 4px;
+}
+
+/* Result rows follow the shared list standard (popup.css): pill rows with the
+   accent highlight, and a round icon chip. */
+.command-result {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+  border-radius: calc(var(--radius-control) - 4px);
+  padding: 6px 8px;
+  transition: background-color var(--duration-feedback) var(--ease-feedback);
+}
+
+.command-result:hover,
+.command-result:focus-visible {
+  background: color-mix(in srgb, var(--accent) 45%, var(--popover));
+  color: var(--accent-foreground);
+}
+
+.command-result-icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  box-shadow: var(--field-shadow);
+}
+
+.command-result-icon > svg,
+.command-result-arrow {
+  width: 16px;
+  height: 16px;
+}
+
+.command-result-text {
+  display: grid;
+  min-width: 0;
+}
+
+.command-result-text > strong {
+  font-size: 0.8125rem;
+  font-weight: 650;
+}
+
+.command-result-text > small,
+.command-empty {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.command-result-arrow {
+  flex: none;
+  margin-inline-start: auto;
+  color: var(--muted-foreground);
+}
+
+.command-empty {
+  padding: 8px 0;
+}
+
+@media (min-width: 701px) {
+  .page-header {
+    padding-block: calc(
+        var(--rail-logo-center) - var(--breadcrumb-leading) *
+          var(--text-label) / 2
+      )
+      0;
+    row-gap: var(--space-3);
+  }
+
+  .page-header-content {
+    row-gap: 0;
+  }
+
+  .app-shell {
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .icon-rail {
+    padding-inline-start: var(--rail-start-inset);
+    /* The 38px plate is centered within the 44px hit area. */
+    padding-block-end: calc(
+      var(--rail-block-end) -
+        (var(--rail-control-size) - var(--rail-backplate-size)) / 2
+    );
+  }
+
+  .workspace-main {
+    --workspace-inset-start: var(--space-1);
+    margin-block-end: var(--workspace-safe-block-end);
+  }
+}
+
+@media (min-width: 701px) and (max-height: 625px) {
+  .icon-rail {
+    position: relative;
+    top: auto;
+    height: var(--column-height);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+@media (max-width: 700px) {
+  .app-shell,
+  .app-shell[data-nav-collapsed="true"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell {
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .workspace-nav--desktop {
+    display: none;
+  }
+
+  .icon-rail-column {
+    border-block-end: 1px solid var(--border-subtle);
+  }
+
+  .icon-rail {
+    position: static;
+    min-height: 52px;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: var(--space-1) var(--space-3);
+  }
+
+  .rail-modules,
+  .rail-footer {
+    flex-direction: row;
+  }
+
+  .rail-brand {
+    margin: 0;
+  }
+
+  .rail-footer {
+    margin: 0 0 0 auto;
+  }
+
+  .rail-desktop-module,
+  .rail-footer > .rail-desktop-toggle {
+    display: none;
+  }
+
+  .rail-footer > .mobile-directory-trigger {
+    display: grid;
+  }
+
+  .page-content-viewport {
+    padding-block-end: var(--workspace-safe-block-end);
+  }
+
+  .page-content[data-has-summary] {
+    gap: var(--space-4);
+  }
+
+  .page-header-actions > :is(button, a),
+  .workspace-tools > .workspace-mode-control {
+    height: var(--control-size-touch);
+  }
+
+  .workspace-tools
+    > .workspace-mode-control:not([data-palette-display="name"]) {
+    width: var(--control-size-touch);
+  }
+}
+
+@media (max-width: 350px) {
+  .icon-rail,
+  .rail-modules,
+  .rail-footer {
+    gap: var(--space-1);
+  }
+
+  .icon-rail {
+    padding-inline: var(--space-2);
+  }
+}
+
+/* Help links pinned to the bottom of the second column: side by side, split by
+   a hairline. */
+.workspace-nav-footer {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  margin-block-start: auto;
+  padding-block-start: var(--space-2);
+}
+
+.workspace-nav-footer button {
+  display: flex;
+  min-height: 2rem;
+  align-items: center;
+  gap: 6px;
+  padding-inline: 10px;
+  border-radius: var(--sidebar-item-radius);
+  color: var(--muted-foreground);
+  font-size: 0.78125rem;
+  font-weight: 560;
+  white-space: nowrap;
+  transition:
+    color var(--duration-feedback) var(--ease-feedback),
+    background-color var(--duration-feedback) var(--ease-feedback);
+}
+
+.workspace-nav-footer button:hover {
+  background: var(--sidebar-item-hover);
+  color: var(--foreground);
+}
+
+.workspace-nav-footer button:focus-visible {
+  outline-offset: -2px;
+}
+
+.workspace-nav-footer-divider {
+  width: 1px;
+  height: 14px;
+  flex: none;
+  background: var(--border-subtle);
+}
+
+/* The toggle glyph turns over when the column changes state (not on first paint). */
+.rail-toggle-icon {
+  display: grid;
+  place-items: center;
+}
+
+.rail-toggle-icon[data-flip] {
+  animation: rail-toggle-flip 240ms var(--ease-feedback);
+}
+
+@keyframes rail-toggle-flip {
+  from {
+    opacity: 0.4;
+    transform: rotateY(90deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail-toggle-icon[data-flip] {
+    animation: none;
+  }
+}
+
+/* Dock scaling (IconRail sets --dock on the controls near the pointer). The
+   glyph and its backplate grow together and drift slightly outward. */
+.rail-control > svg,
+.rail-control::before {
+  scale: var(--dock, 1);
+  translate: calc((var(--dock, 1) - 1) * 10px) var(--dock-dy, 0px);
+  transition: background var(--duration-feedback) var(--ease-feedback);
+}
+
+/* Collapsed navigation: the expand control gives a small, occasional nudge
+   toward the column it opens. */
+.rail-desktop-toggle[data-hint] .rail-toggle-icon {
+  animation: rail-toggle-nudge 4.5s ease-in-out 1.5s infinite;
+}
+
+@keyframes rail-toggle-nudge {
+  0%,
+  72%,
+  100% {
+    transform: translateX(0);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+  88% {
+    transform: translateX(0);
+  }
+  94% {
+    transform: translateX(2px);
+  }
+}
+
+/* AI assistant: a continuous, soft multi-colour flow (blue, violet, pink,
+   cyan) round the ring plus a blurred halo that breathes. Calm at rest, richer
+   and faster on hover / focus / while the panel is open. Only this control. */
+@property --ai-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.icon-rail {
+  --ai-blue: color-mix(in srgb, var(--ai-blue-base) 85%, var(--primary));
+  --ai-violet: color-mix(in srgb, var(--ai-violet-base) 88%, var(--primary));
+  --ai-pink: color-mix(in srgb, var(--ai-pink-base) 85%, var(--primary));
+  --ai-cyan: color-mix(in srgb, var(--ai-cyan-base) 85%, var(--primary));
+}
+
+/* No disc behind the AI control (not even on hover / when open): only the thin
+   ring and a tight halo along it. The gradient reads --ai-angle on the
+   pseudo-element itself, so the animated angle really moves it. */
+.rail-ai::after {
+  position: absolute;
+  z-index: -1;
+  margin: auto;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--ai-angle),
+    var(--ai-blue),
+    var(--ai-violet),
+    var(--ai-pink),
+    var(--ai-cyan),
+    var(--ai-blue)
+  );
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  content: "";
+}
+
+/* Crisp 1.5px ring. */
+.rail-ai::after {
+  inset: 0;
+  width: var(--rail-backplate-size);
+  height: var(--rail-backplate-size);
+  padding: 1.5px;
+  opacity: 0.9;
+  scale: var(--dock, 1);
+  translate: calc((var(--dock, 1) - 1) * 10px) var(--dock-dy, 0px);
+  transition: opacity 240ms ease-out;
+}
+
+/* No halo and no backplate: the control's own disc stays empty (also on hover
+   and while the panel is open); only the thin flowing ring remains. */
+.rail-control.rail-ai::before {
+  background: transparent;
+  box-shadow: none;
+}
+
+.rail-ai:is(:hover, :focus-visible, [aria-expanded="true"])::after {
+  opacity: 1;
+}
+
+/* Follow-the-pointer growth, capped near 1.17 (the dock reaches 1.22). */
+.rail-ai > svg,
+.rail-ai::after {
+  scale: calc(1 + (var(--dock, 1) - 1) * 0.77);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rail-ai::after {
+    animation:
+      rail-ai-flow 3.6s linear infinite,
+      rail-ai-hop 5.2s ease-in-out infinite;
+  }
+
+  /* An occasional small hop (the ring and the stars together), so the control
+     reads as awake without drawing the eye. */
+  .rail-ai > svg {
+    animation: rail-ai-hop 5.2s ease-in-out infinite;
+  }
+}
+
+@keyframes rail-ai-hop {
+  0%,
+  78%,
+  100% {
+    transform: translateY(0);
+  }
+  85% {
+    transform: translateY(-3px);
+  }
+  91% {
+    transform: translateY(0);
+  }
+  95% {
+    transform: translateY(-1.5px);
+  }
+}
+
+@keyframes rail-ai-flow {
+  to {
+    --ai-angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail-desktop-toggle[data-hint] .rail-toggle-icon {
+    animation: none;
+  }
+}
+
+@media (pointer: coarse) {
+  .workspace-nav-footer button {
+    min-height: var(--control-size-dense);
+  }
+}

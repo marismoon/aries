@@ -1,0 +1,56 @@
+[data-slot="select-content"][data-position="popper"] {
+  --select-available-width: var(--radix-select-content-available-width, 100vw);
+  --select-trigger-width: var(--radix-select-trigger-width, 0px);
+  /* The list is exactly as wide as its trigger; long labels scroll on hover. */
+  inline-size: var(--select-trigger-width);
+  min-inline-size: var(--select-trigger-width);
+  max-inline-size: var(--select-trigger-width);
+  border-radius: var(--radius-control);
+  box-shadow: var(--field-shadow);
+}
+
+[data-slot="select-item"][data-popper] {
+  /* A slim highlight with a 2px gap, so adjacent states never touch. */
+  margin-block: 1px;
+  border-radius: calc(var(--radius-control) - var(--space-1) - 2px);
+}
+
+[data-slot="select-item"][data-popper][data-highlighted] {
+  background-color: color-mix(in srgb, var(--accent) 35%, var(--popover));
+}
+
+[data-slot="select-item"][data-popper][data-state="checked"] {
+  background-color: color-mix(in srgb, var(--accent) 65%, var(--popover));
+  color: var(--accent-foreground);
+  font-weight: 620;
+}
+
+[data-slot="select-item"][data-popper][data-state="checked"][data-highlighted] {
+  background-color: color-mix(in srgb, var(--accent) 85%, var(--popover));
+}
+
+[data-slot="select-item-text"] {
+  grid-area: 1 / 1;
+  min-inline-size: 0;
+  margin-inline-end: var(--space-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Hovering an overflowing option slides its text left to reveal the tail. */
+[data-slot="select-item-text"] {
+  display: block;
+  transition: text-indent 0.2s var(--ease-feedback);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  [data-slot="select-item"][data-popper]:hover
+    [data-slot="select-item-text"][data-overflowing] {
+    text-indent: calc(-1 * var(--select-overflow, 0px));
+    text-overflow: clip;
+    transition-duration: var(--select-scroll-duration, 0.6s);
+    transition-timing-function: linear;
+    transition-delay: 0.15s;
+  }
+}

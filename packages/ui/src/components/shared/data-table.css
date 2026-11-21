@@ -1,0 +1,375 @@
+/* Marismoon data table template. Every table in the product renders through
+   DataTable, so these rules are the only place table chrome is defined.
+   Features add column widths (--column-fraction) and cell content styles. */
+
+.data-table-hint {
+  --data-table-inset: var(--register-inset, var(--space-4));
+  display: none;
+  align-items: center;
+  gap: 5px;
+  padding: 0 var(--data-table-inset) 9px;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+@container (max-width: 899px) {
+  .data-table-hint {
+    display: flex;
+  }
+}
+
+.data-table-hint[data-empty] {
+  visibility: hidden;
+}
+
+/* The table fills its card: toolbar and footer keep their height and the rows
+   scroll in this region, so the card bottom lines up with the nav. */
+.data-table-scroll,
+.data-table-empty {
+  flex: 1 1 0;
+  min-block-size: var(--data-table-min-height, 560px);
+  min-width: 0;
+}
+
+.data-table-scroll {
+  position: relative;
+  overflow: auto;
+  scrollbar-color: var(--border) transparent;
+  scrollbar-width: thin;
+}
+
+.data-table-scroll:focus-visible {
+  outline-offset: -2px;
+}
+
+.data-table {
+  --data-table-selection-width: 40px;
+  --data-table-data-width: max(
+    860px,
+    calc(100cqw - var(--data-table-selection-width))
+  );
+  width: 100%;
+  min-width: calc(860px + var(--data-table-selection-width));
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.data-table :is(th, td) {
+  padding-inline: var(--space-3);
+  white-space: nowrap;
+  vertical-align: middle;
+  text-align: start;
+}
+
+/* One alignment per column, set on both its header and its cells, so a header
+   and its values always share the same edge. */
+.data-table [data-align="end"] {
+  text-align: end;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.data-table [data-align="center"] {
+  text-align: center;
+}
+
+.data-table tr > :last-child {
+  padding-inline-end: 14px;
+}
+
+.data-table [data-column]:not([data-column="selection"]) {
+  width: calc(var(--data-table-data-width) * var(--column-fraction, 0.1));
+}
+
+.data-table [data-column="selection"] {
+  width: var(--data-table-selection-width);
+  padding-inline: 0;
+  text-align: center;
+}
+
+.data-table [data-column="selection"] + [data-column] {
+  padding-inline-start: 14px;
+}
+
+/* A floating pill header bar: the cell is transparent and ::after paints the
+   capsule with the same surface and lift as the search box. */
+.data-table thead th {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+  height: 38px;
+  border-bottom: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-size: 0.71875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.data-table thead th::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  /* Opaque so rows scrolling underneath never show through; a quiet, nearly
+     flat tint so the bar reads as part of the table, not above it. */
+  background: var(
+    --table-head-fill,
+    color-mix(in srgb, var(--popover) 86%, var(--background))
+  );
+  box-shadow: var(--table-head-shadow, inset 0 1px 0 rgb(255 255 255 / 0.55));
+}
+
+/* In dark the bar's top light is a whisper, not a white line above the header. */
+.dark .data-table thead th::after {
+  box-shadow: var(--table-head-shadow, inset 0 1px 0 rgb(255 255 255 / 0.08));
+}
+
+/* No rule above the header bar or between it and the first record. */
+.data-table thead tr {
+  border-bottom: 0;
+}
+
+.data-table tbody tr:first-child :is(th, td) {
+  border-top: 0;
+}
+
+.data-table thead th:first-child::after {
+  border-start-start-radius: 19px;
+  border-end-start-radius: 19px;
+}
+
+.data-table thead th:last-child::after {
+  border-start-end-radius: 19px;
+  border-end-end-radius: 19px;
+}
+
+.data-table tbody :is(th, td) {
+  position: relative;
+  height: 51px;
+  /* Keeps the cell metrics of a ruled row; the visible line is the ::after. */
+  border-bottom: 1px solid transparent;
+  font-size: 0.8125rem;
+  font-weight: 460;
+}
+
+.data-table tbody th {
+  padding-block: var(--space-1);
+}
+
+/* The record divider stops short of both card edges: drawn per row, inset at the
+   first and last cell. */
+.data-table tbody :is(th, td)::after {
+  position: absolute;
+  inset-block-end: -1px;
+  inset-inline: 0;
+  height: 1px;
+  background: var(--border-subtle);
+  content: "";
+}
+
+/* Both ends of the line fade out instead of stopping dead. */
+.data-table tbody tr > :first-child::after {
+  inset-inline-start: 10px;
+  background: linear-gradient(to right, transparent, var(--border-subtle) 44px);
+}
+
+.data-table tbody tr > :last-child::after {
+  inset-inline-end: 10px;
+  background: linear-gradient(to left, transparent, var(--border-subtle) 44px);
+}
+
+.data-table tbody tr:last-child :is(th, td)::after {
+  display: none;
+}
+
+.data-table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+/* ---- Motion template (every table inherits it) -------------------------
+   Quiet, short and never on the numbers: 120-180ms colour changes, a 180ms
+   fade for rows entering, no counting animations and no bounce, so amounts and
+   statuses stay aligned while a finance user compares columns. */
+.data-table tbody tr {
+  /* Row dividers are drawn per cell (::after) so they can stop short of the
+     edges; the shadcn row border would add a second, full-width line. */
+  border-bottom: 0;
+  transition: background-color 140ms var(--ease-feedback);
+  animation: data-table-row-in 180ms var(--ease-feedback) backwards;
+  animation-delay: calc(min(var(--row-index, 0), 8) * 16ms);
+}
+
+@keyframes data-table-row-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.data-table tbody tr:hover,
+.data-table tbody tr:focus-within {
+  background: var(
+    --row-hover,
+    color-mix(in srgb, var(--accent) 37%, transparent)
+  );
+}
+
+.data-table tbody tr[data-state="selected"] {
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* Selected rows grow a thin accent bar on their leading edge. */
+.data-table tbody tr > :first-child {
+  position: relative;
+}
+
+.data-table tbody tr > :first-child::before {
+  position: absolute;
+  inset-block: 12px;
+  inset-inline-start: 4px;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--primary);
+  transform: scaleY(0);
+  transition: transform 180ms var(--ease-feedback);
+  content: "";
+}
+
+.data-table tbody tr[data-state="selected"] > :first-child::before {
+  transform: scaleY(1);
+}
+
+/* Row actions stay quiet until the row (or the action) is the focus. */
+.data-table [data-column="actions"] :is(button, a) {
+  transition:
+    color 140ms var(--ease-feedback),
+    scale 140ms var(--ease-feedback);
+}
+
+.data-table
+  tbody
+  tr:is(:hover, :focus-within)
+  [data-column="actions"]
+  :is(button, a),
+.data-table [data-column="actions"] :is(button, a):is(:hover, :focus-visible) {
+  color: var(--foreground);
+}
+
+.data-table [data-column="actions"] :is(button, a):is(:hover, :focus-visible) {
+  scale: 1.08;
+}
+
+/* A breathing dot for statuses that are still in progress (StatusBadge pulse). */
+.status-pulse {
+  animation: status-breathe 2.4s ease-in-out infinite;
+}
+
+@keyframes status-breathe {
+  50% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+}
+
+/* A filter that is narrowing the table gets a soft primary tint. */
+.data-table-filter {
+  transition:
+    background-color 160ms var(--ease-feedback),
+    color 160ms var(--ease-feedback);
+}
+
+.data-table-filter[data-active] {
+  background: color-mix(in srgb, var(--primary) 10%, var(--field-surface));
+  color: var(--primary);
+}
+
+/* Loading: skeleton rows with the same rhythm as real rows. */
+.data-table-skeleton {
+  display: grid;
+  align-content: start;
+  gap: 0;
+}
+
+.data-table-skeleton-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+  height: 51px;
+  padding-inline: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.data-table-skeleton-row > span {
+  height: 12px;
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .data-table tbody tr,
+  .status-pulse {
+    animation: none;
+  }
+
+  .data-table
+    [data-column="actions"]
+    :is(button, a):is(:hover, :focus-visible) {
+    scale: none;
+  }
+}
+
+.data-table-footer,
+.data-table-summary,
+.data-table-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.data-table-footer {
+  --data-table-inset: var(--register-inset, var(--space-4));
+  min-height: 49px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-block-start: auto;
+  padding: 6px var(--data-table-inset);
+  border-top: 1px solid var(--border-subtle);
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.data-table-pagination {
+  --pagination-control-size: var(--control-size-dense);
+  gap: var(--space-3);
+  margin-inline-start: auto;
+  white-space: nowrap;
+}
+
+.data-table-summary {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 520px) {
+  .data-table-footer {
+    padding-inline: var(--space-3);
+  }
+
+  .data-table-pagination {
+    --pagination-control-size: var(--control-size-touch);
+    gap: 6px;
+  }
+}
+
+@media (max-width: 414px) {
+  .data-table-footer {
+    block-size: 82.140625px;
+    align-content: space-between;
+    row-gap: 0;
+  }
+
+  .data-table-pagination {
+    flex-basis: 100%;
+    justify-content: flex-end;
+  }
+}

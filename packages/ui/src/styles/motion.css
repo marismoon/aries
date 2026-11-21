@@ -1,0 +1,120 @@
+:root {
+  /* Decelerating entrance: nav, buttons, tabs, popovers, card hover. */
+  --ease-feedback: cubic-bezier(0.23, 1, 0.32, 1);
+  --duration-feedback: 150ms;
+  --duration-exit: 145ms;
+}
+
+/* Radix keeps the closing nodes in the DOM while this CSS animation runs. */
+:is(
+    [data-slot="dialog-overlay"],
+    [data-slot="dialog-content"]
+  )[data-state="closed"]:not([data-motion="instant"]) {
+  animation: marismoon-dialog-exit var(--duration-exit) var(--ease-feedback)
+    both;
+}
+
+@keyframes marismoon-dialog-exit {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  :is(
+    [data-motion-surface="route"],
+    [data-slot="dialog-overlay"],
+    [data-slot="dialog-content"]
+  ) {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* A loading spinner is the one animation that carries meaning: without it
+     "loading" looks like a frozen page. Keep it, slower and smaller in effect. */
+  .animate-spin {
+    animation-duration: 2.4s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
+
+/* Shimmer: a soft highlight sweeping over text or placeholder blocks. Shared by
+   loading skeletons (DataTable) and the motion examples. */
+.shimmer-text {
+  background:
+    linear-gradient(
+        100deg,
+        transparent 35%,
+        color-mix(in srgb, var(--background) 85%, white) 50%,
+        transparent 65%
+      )
+      0 0 / 250% 100% no-repeat,
+    var(--muted-foreground);
+  background-clip: text;
+  color: transparent;
+  animation: shimmer-sweep 1.8s linear infinite;
+}
+
+.shimmer-block {
+  background:
+    linear-gradient(
+        100deg,
+        transparent 30%,
+        color-mix(in srgb, var(--background) 70%, white) 50%,
+        transparent 70%
+      )
+      0 0 / 250% 100% no-repeat,
+    var(--recess);
+  animation: shimmer-sweep 1.8s linear infinite;
+}
+
+@keyframes shimmer-sweep {
+  from {
+    background-position:
+      150% 0,
+      0 0;
+  }
+  to {
+    background-position:
+      -50% 0,
+      0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-text,
+  .shimmer-block {
+    animation: none;
+  }
+}
+
+/* Chart entrance: marks grow from their baseline once, with a short stagger.
+   Shared by the overview charts and available to any chart built from plain
+   elements (recharts animates its own marks). */
+@keyframes chart-grow-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes chart-grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes chart-fade-in {
+  from {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,109 @@
+/* One look for every floating list (select, menus, combobox, popover, cards):
+   the same glass, rounded content, and pill-shaped rows as the bills filters.
+   Unlayered, so it wins over the utility classes the shadcn files ship with. */
+:is(
+  [data-slot="select-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="dropdown-menu-sub-content"],
+  [data-slot="context-menu-content"],
+  [data-slot="context-menu-sub-content"],
+  [data-slot="menubar-content"],
+  [data-slot="menubar-sub-content"],
+  [data-slot="combobox-content"],
+  [data-slot="popover-content"],
+  [data-slot="hover-card-content"],
+  [data-slot="navigation-menu-content"],
+  [data-slot="navigation-menu-viewport"]
+) {
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--popover) 97%, transparent);
+  box-shadow: var(--floating-shadow);
+  backdrop-filter: blur(24px) saturate(160%);
+}
+
+:is(
+  [data-slot="select-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="dropdown-menu-sub-content"],
+  [data-slot="context-menu-content"],
+  [data-slot="context-menu-sub-content"],
+  [data-slot="menubar-content"],
+  [data-slot="menubar-sub-content"],
+  [data-slot="combobox-content"]
+) {
+  padding: 4px;
+}
+
+:is(
+  [data-slot="select-item"],
+  [data-slot="dropdown-menu-item"],
+  [data-slot="dropdown-menu-checkbox-item"],
+  [data-slot="dropdown-menu-radio-item"],
+  [data-slot="dropdown-menu-sub-trigger"],
+  [data-slot="context-menu-item"],
+  [data-slot="context-menu-checkbox-item"],
+  [data-slot="context-menu-radio-item"],
+  [data-slot="context-menu-sub-trigger"],
+  [data-slot="menubar-item"],
+  [data-slot="menubar-checkbox-item"],
+  [data-slot="menubar-radio-item"],
+  [data-slot="menubar-sub-trigger"],
+  [data-slot="combobox-item"],
+  [data-slot="command-item"]
+) {
+  min-height: 1.625rem;
+  margin-block: 1px;
+  border-radius: calc(var(--radius-control) - 4px);
+  font-size: 0.8125rem;
+  transition: background-color var(--duration-feedback) var(--ease-feedback);
+}
+
+:is(
+  [data-slot="select-item"],
+  [data-slot="dropdown-menu-item"],
+  [data-slot="dropdown-menu-checkbox-item"],
+  [data-slot="dropdown-menu-radio-item"],
+  [data-slot="dropdown-menu-sub-trigger"],
+  [data-slot="context-menu-item"],
+  [data-slot="context-menu-checkbox-item"],
+  [data-slot="context-menu-radio-item"],
+  [data-slot="context-menu-sub-trigger"],
+  [data-slot="menubar-item"],
+  [data-slot="menubar-checkbox-item"],
+  [data-slot="menubar-radio-item"],
+  [data-slot="menubar-sub-trigger"],
+  [data-slot="combobox-item"],
+  [data-slot="command-item"]
+):is([data-highlighted], [data-selected="true"], [data-state="open"]) {
+  background-color: color-mix(in srgb, var(--accent) 45%, var(--popover));
+  color: var(--accent-foreground);
+}
+
+:is(
+  [data-slot="dropdown-menu-label"],
+  [data-slot="context-menu-label"],
+  [data-slot="menubar-label"],
+  [data-slot="select-label"],
+  [data-slot="combobox-label"]
+) {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+}
+
+/* Small floating cards use the small control height (28px) for their actions. */
+[data-slot="alert-dialog-content"][data-size="sm"]
+  [data-slot="alert-dialog-footer"]
+  button {
+  height: var(--control-size-small);
+  padding-inline: 0.625rem;
+  font-size: 0.75rem;
+}
+
+@media (pointer: coarse) {
+  [data-slot="alert-dialog-content"][data-size="sm"]
+    [data-slot="alert-dialog-footer"]
+    button {
+    height: 2.5rem;
+  }
+}

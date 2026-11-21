@@ -1,0 +1,184 @@
+/* Motion demo styles: only the effects that are pure CSS. Colours come from the
+   theme tokens so every palette and light/dark mode works. */
+.beam-card {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: var(--radius-control);
+  background: var(--popover);
+}
+
+.spotlight-card {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  display: grid;
+  min-height: 6rem;
+  place-items: center;
+  overflow: hidden;
+  border-radius: var(--radius-control);
+  background: var(--field-surface);
+  box-shadow: var(--field-shadow);
+}
+
+.spotlight-card::before {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    180px circle at var(--x) var(--y),
+    color-mix(in srgb, var(--primary) 22%, transparent),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 200ms;
+  content: "";
+}
+
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+
+.typewriter-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-inline-start: 2px;
+  vertical-align: -0.12em;
+  background: var(--primary);
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.marquee {
+  overflow: hidden;
+  /* Bleed so the chips' shadows are not cut at the top and bottom. */
+  padding-block: 10px;
+  margin-block: -10px;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 18%,
+    #000 82%,
+    transparent
+  );
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 8px;
+  animation: marquee-run 14s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-item {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--field-surface);
+  box-shadow: var(--field-shadow);
+  font-size: 0.8125rem;
+}
+
+@keyframes marquee-run {
+  to {
+    transform: translateX(calc(-50% - 4px));
+  }
+}
+
+/* Stages hold the demos that scroll or slide. They are not panels: the demo
+   card is already the surface, so a stage has no fill, border or radius of its
+   own. Elements inside float as themed pills (their shadows get bleed padding),
+   scrollbars are hidden and the ends fade softly (soft-edge.css). */
+.motion-stage,
+.motion-scroll {
+  position: relative;
+  overflow: hidden;
+}
+
+.motion-scroll {
+  height: 9.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px 8px;
+  scrollbar-width: none;
+}
+
+.motion-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.motion-row {
+  margin: 0 0 6px;
+  padding: 10px 14px;
+  border-radius: var(--radius-workspace-control);
+  background: var(--field-surface);
+  box-shadow: var(--field-shadow);
+  font-size: 0.8125rem;
+}
+
+.motion-bleed {
+  padding: 3px 6px;
+}
+
+.motion-bleed {
+  margin-inline: -6px;
+}
+
+.motion-sidebar {
+  flex: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .typewriter-caret {
+    animation: none;
+  }
+}
+
+/* Soft categorical chart colours: bright, rounded-feeling hues blended a little
+   with the theme primary so they follow every palette. */
+:root {
+  --chart-soft-1: color-mix(in srgb, #6aa8ff 84%, var(--primary));
+  --chart-soft-2: color-mix(in srgb, #5fd8b0 88%, var(--primary));
+  --chart-soft-3: color-mix(in srgb, #ffb36b 88%, var(--primary));
+  --chart-soft-4: color-mix(in srgb, #b39cff 84%, var(--primary));
+  --chart-soft-5: color-mix(in srgb, #63d9e6 88%, var(--primary));
+  --chart-soft-6: color-mix(in srgb, #ff9cc6 88%, var(--primary));
+  --chart-soft-7: color-mix(in srgb, #ffd970 90%, var(--primary));
+  --chart-soft-8: color-mix(in srgb, #8fa6ff 84%, var(--primary));
+}
+
+.dark {
+  --chart-soft-1: color-mix(in srgb, #7db3ff 82%, var(--primary));
+  --chart-soft-2: color-mix(in srgb, #6fe0b8 84%, var(--primary));
+  --chart-soft-3: color-mix(in srgb, #ffbf80 84%, var(--primary));
+  --chart-soft-4: color-mix(in srgb, #bfa9ff 82%, var(--primary));
+  --chart-soft-5: color-mix(in srgb, #78e0ec 84%, var(--primary));
+  --chart-soft-6: color-mix(in srgb, #ffabd0 84%, var(--primary));
+  --chart-soft-7: color-mix(in srgb, #ffe085 86%, var(--primary));
+  --chart-soft-8: color-mix(in srgb, #9fb3ff 82%, var(--primary));
+}
+
+/* Charts keep no focus rectangle after a click (the sectors and bars are
+   pointer targets, not tab stops). */
+.recharts-wrapper,
+.recharts-wrapper :focus,
+.recharts-wrapper :focus-visible,
+.recharts-surface:focus {
+  outline: none;
+}
+
+/* Floating dock: the same glass as every popup, floating on the card. */
+.dock-bar {
+  background: color-mix(in srgb, var(--popover) 97%, transparent);
+  box-shadow: var(--floating-shadow);
+}

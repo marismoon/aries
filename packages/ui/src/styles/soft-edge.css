@@ -1,0 +1,60 @@
+/* Soft scroll edges: content that scrolls out of a container fades away instead
+   of being cut by a hard edge. The fade only appears on a side that actually
+   has more content (driven by the scroll position), so a list at rest keeps
+   its first and last rows fully visible. Where scroll-driven animation is
+   unsupported the container simply keeps its normal edge. */
+@property --soft-edge-start {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --soft-edge-end {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@keyframes soft-edge {
+  0% {
+    --soft-edge-start: 0px;
+    --soft-edge-end: 16px;
+  }
+  3% {
+    --soft-edge-start: 16px;
+  }
+  97% {
+    --soft-edge-end: 16px;
+  }
+  100% {
+    --soft-edge-start: 16px;
+    --soft-edge-end: 0px;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  :is(
+    .workspace-directory,
+    .mobile-directory-panel,
+    .bill-drawer-body,
+    .copilot-history,
+    .activity-viewport,
+    .motion-scroll,
+    [data-slot="command-list"],
+    [data-slot="select-content"] [data-radix-select-viewport],
+    [data-slot="combobox-list"]
+  ) {
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 var(--soft-edge-start),
+      #000 calc(100% - var(--soft-edge-end)),
+      transparent 100%
+    );
+    animation: soft-edge linear both;
+    animation-timeline: scroll(self);
+  }
+}
+
+/* The attention list carries its own edge fade (looping mode only) and the
+   activity list uses the scroll-driven one above. */

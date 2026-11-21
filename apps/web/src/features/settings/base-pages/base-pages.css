@@ -1,0 +1,229 @@
+/* 基础页面: full-screen sign-in / security / error pages, previewed over the
+   workspace. Colours and radii come from the theme tokens only. */
+.base-intro {
+  padding-inline: var(--space-1);
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+}
+
+.base-grid {
+  list-style: none;
+}
+
+.base-card {
+  cursor: pointer;
+  text-align: start;
+}
+
+.base-card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-workspace-control);
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/* Full-screen preview */
+.base-preview {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  overflow-y: auto;
+  place-items: center;
+  padding: 32px 16px;
+  background: var(--environment-base, var(--background));
+  color: var(--foreground);
+}
+
+.base-preview-close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+}
+
+.base-preview-stage {
+  display: grid;
+  width: min(100%, 420px);
+}
+
+.base-screen {
+  width: 100%;
+  --card-spacing: 28px;
+  background: var(--popover);
+  box-shadow: var(--floating-shadow);
+}
+
+.base-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.base-brand-mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.base-brand b {
+  display: block;
+  font-size: 0.9375rem;
+}
+
+.base-brand small {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.base-heading h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.base-heading p {
+  margin-top: 6px;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.base-heading b {
+  color: var(--foreground);
+}
+
+.base-code {
+  font-size: 2.5rem;
+  font-weight: 760;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.base-wide {
+  width: 100%;
+}
+
+.base-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.base-row,
+.base-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+
+.base-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+}
+
+.base-tag {
+  display: flex;
+}
+
+.base-kv {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: var(--radius-control);
+  background: var(--recess);
+  font-size: 0.8125rem;
+}
+
+.base-kv div {
+  display: flex;
+  gap: 12px;
+}
+
+.base-kv dt {
+  flex: none;
+  width: 5.5em;
+  color: var(--muted-foreground);
+}
+
+.base-steps {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: 0.6875rem;
+}
+
+.base-steps li {
+  display: grid;
+  flex: 1;
+  justify-items: center;
+  gap: 4px;
+  color: var(--muted-foreground);
+}
+
+.base-steps i {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--muted);
+  font-style: normal;
+  font-weight: 640;
+}
+
+.base-steps [data-state="current"] {
+  color: var(--foreground);
+}
+
+.base-steps [data-state="current"] i,
+.base-steps [data-state="done"] i {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.base-qr {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+}
+
+.base-qr-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  width: 144px;
+  height: 144px;
+  padding: 10px;
+  border-radius: var(--radius-control);
+  background: white;
+}
+
+.base-qr-grid i {
+  background: transparent;
+}
+
+.base-qr-grid i[data-on] {
+  background: #0f172a;
+}
+
+.base-qr-key {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.base-qr-key code,
+.base-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--foreground);
+  letter-spacing: 0.06em;
+}

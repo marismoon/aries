@@ -1,0 +1,25 @@
+/* Solar by 480 Design. CC BY 4.0. https://github.com/iconify/icon-sets/blob/master/json/solar.json */
+import type { SVGProps } from "react"
+
+export function PanelLeftOpenLinearIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.5"
+      >
+        <path strokeLinejoin="round" d="M14.2109 15L16.7824 12L14.2109 9" />
+        <path d="M14 3L10 3C6.22877 3 4.34315 3 3.17158 4.17157C2 5.34314 2 7.22876 2 11L2 13C2 16.7712 2 18.6569 3.17157 19.8284C4.34315 21 6.22876 21 10 21L14 21C17.7712 21 19.6569 21 20.8284 19.8284C22 18.6569 22 16.7712 22 13L22 11C22 7.22876 22 5.34315 20.8284 4.17157C19.6569 3 17.7712 3 14 3Z" />
+        <path d="M9 3L9 21" />
+      </g>
+    </svg>
+  )
+}

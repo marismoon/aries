@@ -1,0 +1,137 @@
+/* Dark, "clean" style (switched from the header, dark mode only).
+
+   No backdrop blur, no glow or aurora, no stacked shadows: a tidy ladder of
+   solid surface lightness separated by 1px hairlines, rounded as before.
+   The light-only Marismoon palette is excluded so it stays light. Everything is scoped to .dark[data-dark-style="clean"]:not([data-palette="marismoon-light"]), so the glass dark
+   style and light mode are untouched. One hue per palette; lightness steps are
+   shared, so the ladder is the same in every palette. */
+.dark[data-dark-style="clean"]:not([data-palette="marismoon-light"]) {
+  /* One neutral ladder for every palette; only the hue differs, injected at
+     3% saturation so the surfaces stay neutral slate with a faint lean. */
+  --clean-hue: 220;
+  --clean-sat: 3%;
+}
+
+.dark[data-dark-style="clean"]:not(
+    [data-palette="marismoon-light"]
+  )[data-palette="telemedicine"] {
+  --clean-hue: 218;
+}
+
+.dark[data-dark-style="clean"]:not(
+    [data-palette="marismoon-light"]
+  )[data-palette="mental-health"] {
+  --clean-hue: 200;
+}
+
+.dark[data-dark-style="clean"]:not(
+    [data-palette="marismoon-light"]
+  )[data-palette="pet-adoption"] {
+  --clean-hue: 20;
+}
+
+.dark[data-dark-style="clean"]:not(
+    [data-palette="marismoon-light"]
+  )[data-palette="health-wellness"] {
+  --clean-hue: 142;
+}
+
+.dark[data-dark-style="clean"]:not(
+    [data-palette="marismoon-light"]
+  )[data-palette="violet-aurora"] {
+  --clean-hue: 262;
+}
+
+.dark[data-dark-style="clean"]:not(
+    [data-palette="marismoon-light"]
+  )[data-palette="amber-sand"] {
+  --clean-hue: 40;
+}
+
+.dark[data-dark-style="clean"]:not(
+    [data-palette="marismoon-light"]
+  )[data-palette="rose-quartz"] {
+  --clean-hue: 342;
+}
+
+.dark[data-dark-style="clean"]:not([data-palette="marismoon-light"]) {
+  /* Lightness ladder: canvas 11 < sidebar / card 14 < inset cards, inputs 17 <
+     floating / active 20. Same in every palette. */
+  --background: hsl(var(--clean-hue) var(--clean-sat) 11%);
+  --workspace-nav: transparent;
+  --card: hsl(var(--clean-hue) var(--clean-sat) 14%);
+  --card-bottom: var(--card);
+  --popover: hsl(var(--clean-hue) var(--clean-sat) 20%);
+  --control: hsl(var(--clean-hue) var(--clean-sat) 17%);
+  --secondary: var(--control);
+  --muted: hsl(var(--clean-hue) var(--clean-sat) 17%);
+  --recess: hsl(var(--clean-hue) var(--clean-sat) 9%);
+  --border: rgb(255 255 255 / 8%);
+  --layout-control-border: rgb(255 255 255 / 11%);
+  --border-subtle: rgb(255 255 255 / 5%);
+  --input: rgb(255 255 255 / 30%);
+  --muted-foreground: hsl(var(--clean-hue) 8% 70%);
+  --foreground: hsl(var(--clean-hue) 12% 96%);
+
+  /* No aurora: a flat canvas. */
+  --environment-top: transparent;
+  --environment-bottom: transparent;
+  --environment-side: transparent;
+  --environment-base: var(--background);
+
+  /* No glass: solid fills, a hairline edge instead of a blur and shadow. */
+  --glass-fill-top: 100%;
+  --glass-fill-bottom: 100%;
+  --glass-edge: var(--border);
+  --glass-specular: inset 0 0 0 0 transparent;
+  --surface-filter: none;
+  --nav-filter: none;
+  --surface-shadow: none;
+  --surface-inset: hsl(var(--clean-hue) var(--clean-sat) 12%);
+  --surface-inset-shadow: none;
+  --sidebar-edge: var(--border);
+  --sidebar-radius: 0;
+  --sidebar-shadow: none;
+  --sidebar-shadow-color: transparent;
+  --sidebar-background-clip: border-box;
+  --field-shadow: inset 0 0 0 1px var(--border);
+  --floating-shadow: 0 8px 24px rgb(0 0 0 / 32%);
+}
+
+/* Status tones: low-opacity same-hue fills with a fine translucent edge. */
+.dark[data-dark-style="clean"]:not([data-palette="marismoon-light"]) {
+  /* Semantic colours are fixed: the same in every palette (green done, amber
+     pending, red failed, blue in progress), never mixed with the brand. */
+  --success: #6ee7a8;
+  --warning: #fbd075;
+  --danger: #ff8fa3;
+  --info: #8fb8ff;
+  --success-bg: color-mix(in srgb, var(--success) 12%, transparent);
+  --warning-bg: color-mix(in srgb, var(--warning) 12%, transparent);
+  --danger-bg: color-mix(in srgb, var(--danger) 12%, transparent);
+  --info-bg: color-mix(in srgb, var(--info) 12%, transparent);
+  /* Accent surfaces stay quiet: the brand colour is for the active state only. */
+  --accent: color-mix(in srgb, var(--primary) 14%, var(--background));
+  --hero-start: var(--card);
+  --hero-end: var(--card);
+  --hero-edge: var(--border);
+}
+
+/* Component parameter entries (read by the components with the glass look as
+   their fallback). No component class names are needed here. */
+.dark[data-dark-style="clean"]:not([data-palette="marismoon-light"]) {
+  --status-badge-edge: color-mix(in srgb, currentColor 24%, transparent);
+  --hero-decor: none;
+  --hero-fill: var(--card);
+  --hero-outline: inset 0 0 0 1px var(--border);
+  --nav-border-width: 0 1px 0 0;
+  --nav-active-fill: color-mix(in srgb, var(--primary) 16%, transparent);
+  --nav-active-shadow: none;
+  --nav-hover-fill: rgb(255 255 255 / 5%);
+  --nav-hover-shadow: none;
+  --row-hover: rgb(255 255 255 / 3%);
+  --table-head-fill: hsl(var(--clean-hue) var(--clean-sat) 16%);
+  --table-head-shadow: none;
+  --pill-fill: transparent;
+  --pill-edge: inset 0 0 0 1px rgb(255 255 255 / 10%);
+}
