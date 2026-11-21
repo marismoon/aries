@@ -1,6 +1,6 @@
 # 设计系统
 
-全部样式与令牌位于 `packages/ui/src/styles/`，由 `globals.css` 汇总引入（顺序：tailwindcss → tw-animate-css → shadcn/tailwind.css → 字体 → `tokens.css` → `spectrum.css` → `materials.css` → `dark-base.css` → `dark-clean.css` → `components/ui/popup.css` → `motion.css` → `soft-edge.css`）。应用入口 `apps/web/src/index.css` 引入它并 `@source` 应用代码。
+全部样式与令牌位于 `packages/ui/src/styles/`，由 `globals.css` 汇总引入（顺序：tailwindcss → tw-animate-css → shadcn/tailwind.css → 字体 → `tokens.css` → `spectrum.css` → `materials.css` → `dark-base.css` → `dark-clean.css` → `components/ui/popup.css` → `motion.css` → `soft-edge.css` → `icon-states.css`）。应用入口 `apps/web/src/index.css` 引入它并 `@source` 应用代码。
 
 | 文件 | 内容 |
 | --- | --- |
@@ -11,6 +11,7 @@
 | `dark-clean.css` | 简洁暗色材质（`.dark[data-dark-style="clean"]`）：关闭模糊、光晕、阴影 |
 | `motion.css` | 缓动/时长令牌、对话框退出、`prefers-reduced-motion`、`.shimmer-text`/`.shimmer-block` |
 | `soft-edge.css` | 滚动容器边缘渐隐（scroll-driven animation，不支持时降级） |
+| `icon-states.css` | 图标 Linear/Bold 状态切换（见 COMPONENTS.md） |
 
 ## 1. 主题与模式
 
@@ -122,7 +123,7 @@
 | 表格 | 行悬停 140ms；行进入 180ms 淡入（`--row-index` 错开，最多 8 行）；勾选行左侧 3px 指示条；`StatusBadge pulse` 低频呼吸；`DataTable loading` 扫光骨架 |
 | `.shimmer-text` / `.shimmer-block` | 扫光文字/占位块 |
 
-规则：**不使用 layout 动画与弹簧回弹**；金额与数字不做滚动/跳动动画；**`prefers-reduced-motion: reduce` 下关闭所有 CSS 动画/过渡**（`motion.css` 全局兜底，新增动效仍须自检）；JS 动效使用 `useReducedMotion`。
+规则：**不使用 layout 动画与弹簧回弹**；金额与数字不做滚动/跳动动画；**`prefers-reduced-motion: reduce` 下关闭所有 CSS 动画/过渡**（`motion.css` 全局兜底，新增动效仍须自检），唯一例外是加载转圈 `.animate-spin`：为保留「正在加载」语义，减弱动效下改为 2.4s 慢速无限旋转；JS 动效使用 `useReducedMotion`。
 
 ## 7. 图表规则
 

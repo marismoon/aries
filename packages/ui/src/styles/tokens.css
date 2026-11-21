@@ -326,7 +326,6 @@
 }
 
 .dark[data-palette="telemedicine"] {
-  --background: #2a3447;
 
   --primary: #7aa9ff;
   --primary-foreground: #0a1d44;
@@ -401,7 +400,6 @@
 }
 
 .dark[data-palette="mental-health"] {
-  --background: #2c3c44;
 
   --primary: #9fc4d8;
   --primary-foreground: #0f2530;
@@ -476,7 +474,6 @@
 }
 
 .dark[data-palette="pet-adoption"] {
-  --background: #46312b;
 
   --primary: #f2a08a;
   --primary-foreground: #3a1308;
@@ -551,7 +548,6 @@
 }
 
 .dark[data-palette="health-wellness"] {
-  --background: #2b4634;
 
   --primary: #4ade80;
   --primary-foreground: #06301a;
@@ -637,7 +633,6 @@
 }
 
 .dark[data-palette="violet-aurora"] {
-  --background: #352a47;
 
   --primary: #ad7aff;
   --primary-foreground: #220a44;
@@ -712,7 +707,6 @@
 }
 
 .dark[data-palette="amber-sand"] {
-  --background: #473e2a;
 
   --primary: #ffd47a;
   --primary-foreground: #44330a;
@@ -787,7 +781,6 @@
 }
 
 .dark[data-palette="rose-quartz"] {
-  --background: #472a33;
 
   --primary: #ff7aa5;
   --primary-foreground: #440a1b;
