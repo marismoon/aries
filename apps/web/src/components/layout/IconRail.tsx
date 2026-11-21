@@ -273,11 +273,14 @@ export function IconRail({
               role="img"
               aria-label={tl("演示用户 · 管理员")}
               title={tl("演示用户 · 管理员")}
+              className="size-7"
             >
-              <AvatarFallback>M</AvatarFallback>
+              <AvatarFallback className="bg-[linear-gradient(145deg,color-mix(in_srgb,var(--success)_80%,white),color-mix(in_srgb,var(--success)_70%,black))] text-xs font-semibold text-white dark:text-background">
+                M
+              </AvatarFallback>
               <AvatarBadge
                 aria-hidden="true"
-                className="group-data-[size=default]/avatar:size-2"
+                className="-right-px -bottom-px size-2 bg-(--success) ring-[1.5px] group-data-[size=default]/avatar:size-2"
               />
             </Avatar>
           </span>
