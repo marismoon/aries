@@ -1,0 +1,85 @@
+/* Dark foundation, shared by the glass and clean dark styles.
+
+   One tonal skeleton for every palette: a lightness ladder tinted with the
+   palette hue at one saturation, white-alpha hairlines, one set of semantic
+   colours. A palette block in tokens.css / spectrum.css only supplies its
+   primary, accent, charts, aurora and hero tokens. The two dark styles differ
+   only in material: glass adds blur, aurora and a specular rim (tokens.css,
+   materials.css); clean turns all of it off (dark-clean.css).
+
+   Ladder (HSL lightness): recess 8 < canvas 11 < card 15 < control 19 < popover 23.
+   Steps are small by design; hairlines carry the separation, not lightness.
+   Excluded: the light-only marismoon-light palette. */
+.dark:not([data-palette="marismoon-light"]) {
+  --dark-hue: 255;
+  --dark-tint: 6%;
+}
+
+.dark[data-palette="saas-analytics-spectrum"] {
+  --dark-hue: 220;
+}
+.dark[data-palette="telemedicine"] {
+  --dark-hue: 218;
+}
+.dark[data-palette="mental-health"] {
+  --dark-hue: 200;
+}
+.dark[data-palette="pet-adoption"] {
+  --dark-hue: 20;
+}
+.dark[data-palette="health-wellness"] {
+  --dark-hue: 142;
+}
+.dark[data-palette="violet-aurora"] {
+  --dark-hue: 262;
+}
+.dark[data-palette="amber-sand"] {
+  --dark-hue: 40;
+}
+.dark[data-palette="rose-quartz"] {
+  --dark-hue: 342;
+}
+
+.dark:not([data-palette="marismoon-light"]) {
+  /* Surfaces. */
+  --background: hsl(var(--dark-hue) var(--dark-tint) 11%);
+  --card: hsl(var(--dark-hue) var(--dark-tint) 15%);
+  --card-bottom: hsl(var(--dark-hue) var(--dark-tint) 14%);
+  --control: hsl(var(--dark-hue) var(--dark-tint) 19%);
+  --secondary: var(--control);
+  --muted: var(--control);
+  --popover: hsl(var(--dark-hue) var(--dark-tint) 23%);
+  --recess: hsl(var(--dark-hue) var(--dark-tint) 8%);
+  --surface-inset: rgb(255 255 255 / 5%);
+  --surface-highlight: rgb(255 255 255 / 6%);
+  --workspace-nav: linear-gradient(
+    160deg,
+    hsl(var(--dark-hue) 20% 14% / 40%),
+    hsl(var(--dark-hue) 20% 10% / 32%)
+  );
+
+  /* Text. */
+  --foreground: hsl(var(--dark-hue) 12% 96%);
+  --secondary-foreground: hsl(var(--dark-hue) 30% 90%);
+  --muted-foreground: hsl(var(--dark-hue) 10% 70%);
+
+  /* Hairlines: white at a fixed alpha, so they hold on every step above. */
+  --border-subtle: rgb(255 255 255 / 10%);
+  --border: rgb(255 255 255 / 18%);
+  --layout-control-border: rgb(255 255 255 / 22%);
+  --input: rgb(255 255 255 / 32%);
+  --surface-edge: rgb(255 255 255 / 15%);
+  /* Text-field edge: a real 1px border (see text-field.css), never a shadow ring. */
+  --field-edge: var(--input);
+  --overlay: hsl(var(--dark-hue) 30% 4% / 62%);
+
+  /* Semantic colours: fixed, never mixed with the brand. */
+  --success: #6ee7a8;
+  --warning: #fbd075;
+  --danger: #ff8fa3;
+  --info: #8fb8ff;
+  --success-bg: color-mix(in srgb, var(--success) 14%, transparent);
+  --warning-bg: color-mix(in srgb, var(--warning) 14%, transparent);
+  --danger-bg: color-mix(in srgb, var(--danger) 14%, transparent);
+  --info-bg: color-mix(in srgb, var(--info) 14%, transparent);
+}

@@ -29,6 +29,25 @@
   --field-focus-color: var(--destructive);
   outline: 1px solid var(--field-focus-color);
   outline-offset: 0;
+  box-shadow: var(--field-text-shadow, var(--field-shadow));
+}
+
+/* Dark: text fields get a real 1px edge (--field-edge, undefined in light mode).
+   Focus and invalid keep their own border handling below, and the composer has
+   its own glow ring, so none of them is touched here. */
+:is(
+    .field-surface:not(.copilot-composer),
+    [data-slot="input-group"],
+    [data-slot="native-select"],
+    [data-slot="combobox-chips"]
+  ):not(
+    [aria-invalid="true"],
+    :has([aria-invalid="true"]),
+    :focus-visible,
+    :has(:focus-visible)
+  ) {
+  border-color: var(--field-edge, transparent);
+  box-shadow: var(--field-text-shadow, var(--field-shadow));
 }
 
 /* Focus: the same thin flowing-gradient edge as the AI assistant's composer, on
@@ -52,7 +71,7 @@
     linear-gradient(var(--popover), var(--popover)), var(--glow-line);
   background-origin: border-box;
   background-clip: padding-box, border-box;
-  box-shadow: var(--field-shadow);
+  box-shadow: var(--field-text-shadow, var(--field-shadow));
 }
 
 .field-control {

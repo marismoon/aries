@@ -169,32 +169,9 @@
 
 .dark[data-palette="saas-analytics-spectrum"] {
   --spectrum-tint: 20%;
-  --background: #2b3446;
-  --foreground: #f1f5ff;
-  --muted-foreground: #b7bbc2;
-  --card: #364259;
-  --card-bottom: #323d52;
-  --popover: #38445c;
-  --control: #3c4962;
-  --muted: #3a455a;
-  --recess: #232a39;
-  --secondary: #3a455a;
-  --secondary-foreground: #dbe5fb;
-  --border: #4e596e;
-  --border-subtle: rgb(255 255 255 / 8%);
-  --input: #7a818f;
-  --layout-control-border: #57637a;
-  --surface-edge: rgb(255 255 255 / 15%);
-  --surface-highlight: rgb(255 255 255 / 6%);
   --surface-shadow-color: rgb(3 9 24 / 36%);
-  --workspace-nav: linear-gradient(
-    160deg,
-    hsl(220 24% 31% / 40%),
-    hsl(220 24% 25% / 32%)
-  );
   --sidebar-shadow-color: rgb(0 0 0 / 38%);
   --floating-shadow: 0 18px 60px rgb(2 7 22 / 58%);
-  --overlay: rgb(0 0 0 / 62%);
 
   --primary: #7ab4ff;
   --primary-foreground: #0f2038;

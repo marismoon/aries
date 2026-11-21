@@ -334,10 +334,16 @@
 @property --glow-angle {
   syntax: "<angle>";
   inherits: false;
-  initial-value: 180deg;
+  initial-value: 0deg;
 }
 
+/* A full turn (0 to 360deg): both ends are the same gradient position, so the
+   loop has no seam. Half a turn would snap back at the end of every cycle. */
 @keyframes marismoon-glow-spin {
+  from {
+    --glow-angle: 0deg;
+  }
+
   to {
     --glow-angle: 360deg;
   }
@@ -437,8 +443,11 @@
   background: var(--glow-line);
 }
 
-/* The box itself is opaque so the halo only shows around it. */
+/* The box itself is opaque so the halo only shows around it. The glow ring is
+   its edge, so the inset hairline some dark styles give field-surface is
+   switched off here (it would draw a second, detached ring). */
 .copilot-composer {
+  --field-shadow: 0 2px 6px var(--sidebar-shadow-color);
   border: 0;
   padding: 9px 11px 8px 13px;
   background: var(--popover);

@@ -1,13 +1,14 @@
 # 设计系统
 
-全部样式与令牌位于 `packages/ui/src/styles/`，由 `globals.css` 汇总引入（顺序：tailwindcss → tw-animate-css → shadcn/tailwind.css → 字体 → `tokens.css` → `spectrum.css` → `materials.css` → `dark-clean.css` → `components/ui/popup.css` → `motion.css` → `soft-edge.css`）。应用入口 `apps/web/src/index.css` 引入它并 `@source` 应用代码。
+全部样式与令牌位于 `packages/ui/src/styles/`，由 `globals.css` 汇总引入（顺序：tailwindcss → tw-animate-css → shadcn/tailwind.css → 字体 → `tokens.css` → `spectrum.css` → `materials.css` → `dark-base.css` → `dark-clean.css` → `components/ui/popup.css` → `motion.css` → `soft-edge.css`）。应用入口 `apps/web/src/index.css` 引入它并 `@source` 应用代码。
 
 | 文件 | 内容 |
 | --- | --- |
 | `tokens.css` | `:root` 基础令牌（亮色）、`.dark` 暗色、各品牌主题 `[data-palette="…"]` |
 | `spectrum.css` | 图表/强调色谱 `--spectrum-*` 与 `--swatch-*` |
 | `materials.css` | 玻璃材质：`.surface`、`.surface-inset`、`.frost-divider`、`.hero-surface`、页面环境光 |
-| `dark-clean.css` | 简洁暗色（`.dark[data-dark-style="clean"]`，不含 `marismoon-light`） |
+| `dark-base.css` | 暗色共同底座：亮度阶梯、白色 alpha 发丝线、语义色，glass 与 clean 共用（不含 `marismoon-light`） |
+| `dark-clean.css` | 简洁暗色材质（`.dark[data-dark-style="clean"]`）：仅关闭模糊/光晕/阴影 |
 | `motion.css` | 缓动/时长令牌、对话框退出、`prefers-reduced-motion`、`.shimmer-text`/`.shimmer-block` |
 | `soft-edge.css` | 滚动容器边缘渐隐（scroll-driven animation，不支持时降级） |
 
@@ -15,7 +16,8 @@
 
 - **模式**：`next-themes`（`attribute="class"`）切换 `.dark`；`:root` 声明 `color-scheme: light`。
 - **品牌主题**（`<html data-palette="…">`，`lib/storage.ts` 的 `paletteLabels`，localStorage 键 `marismoon-palette`）：`saas-analytics-spectrum`（默认）、`telemedicine`、`mental-health`、`pet-adoption`、`health-wellness`、`violet-aurora`、`amber-sand`、`rose-quartz`、`marismoon-light`。`marismoon-light` 为**纯浅色**主题（`color-scheme: light`，暗色块也保持浅色）。
-- **暗色风格**（`<html data-dark-style="glass|clean">`，键 `marismoon-dark-style`）：`glass` 毛玻璃（默认）、`clean` 简洁（实色阶梯 + 1px 发丝线，无模糊/光晕；每个主题只注入 3% 饱和度的色相）。
+- **暗色风格**（`<html data-dark-style="glass|clean">`，键 `marismoon-dark-style`）：`glass` 毛玻璃（默认）、`clean` 简洁（无模糊/光晕/阴影，靠发丝线分层）。两种风格共用 `dark-base.css` 的骨架，只差材质。
+- **暗色底座**：每个主题只声明 `--dark-hue`，饱和度统一 `--dark-tint: 6%`；亮度（HSL L）recess 8 < 画布 11 < 卡片 15 < 控件 19 < 浮层 23；发丝线为白色 alpha：`--border-subtle` 10%、`--border` 18%、`--layout-control-border` 22%、`--input` 32%；语义色全主题固定。主题块不再写表面/边框/语义色，只提供主色、强调、图表、光晕与 hero。图表色在暗色下须对卡片 ≥3:1。
 - 切换控件：`BrandPaletteControl`（轮换主题）、`DarkStyleControl`（仅暗色模式显示）、`ThemeSwitcher`（明暗）。
 
 ## 2. 令牌

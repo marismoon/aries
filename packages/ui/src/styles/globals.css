@@ -6,6 +6,7 @@
 @import "./tokens.css";
 @import "./spectrum.css";
 @import "./materials.css";
+@import "./dark-base.css";
 @import "./dark-clean.css";
 @import "../components/ui/popup.css";
 @import "./motion.css";
