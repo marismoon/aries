@@ -3,22 +3,23 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
 import { Slot } from "radix-ui"
 
-// Ant Design preset colours (base tone of each hue). Tag-style: a tinted fill, a
-// soft border and a deepened label, so every tone stays legible on glass.
+// Ant Design preset hues, defined as --tone-* tokens in styles/tokens.css.
+// Tag-style: a tinted fill, a soft border and a deepened label, so every tone
+// stays legible on glass.
 const tones = {
-  red: "#f5222d",
-  volcano: "#fa541c",
-  orange: "#fa8c16",
-  gold: "#faad14",
-  yellow: "#d4b106",
-  lime: "#7cb305",
-  green: "#52c41a",
-  cyan: "#13c2c2",
-  blue: "#1677ff",
-  geekblue: "#2f54eb",
-  purple: "#722ed1",
-  magenta: "#eb2f96",
-  gray: "#8c8c8c",
+  red: "var(--tone-red)",
+  volcano: "var(--tone-volcano)",
+  orange: "var(--tone-orange)",
+  gold: "var(--tone-gold)",
+  yellow: "var(--tone-yellow)",
+  lime: "var(--tone-lime)",
+  green: "var(--tone-green)",
+  cyan: "var(--tone-cyan)",
+  blue: "var(--tone-blue)",
+  geekblue: "var(--tone-geekblue)",
+  purple: "var(--tone-purple)",
+  magenta: "var(--tone-magenta)",
+  gray: "var(--tone-gray)",
 } as const
 
 const toneBase =

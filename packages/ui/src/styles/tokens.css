@@ -18,6 +18,21 @@
   --glow-dark-blue: #3890c7;
   --glow-dark-indigo: #4a1fb8;
   --copilot-surface-clear: rgb(255 255 255 / 18%);
+  /* Badge tones: the Ant Design preset hues, fixed (not brand-driven). Badge
+     derives its fill, edge and label from these with color-mix. */
+  --tone-red: #f5222d;
+  --tone-volcano: #fa541c;
+  --tone-orange: #fa8c16;
+  --tone-gold: #faad14;
+  --tone-yellow: #d4b106;
+  --tone-lime: #7cb305;
+  --tone-green: #52c41a;
+  --tone-cyan: #13c2c2;
+  --tone-blue: #1677ff;
+  --tone-geekblue: #2f54eb;
+  --tone-purple: #722ed1;
+  --tone-magenta: #eb2f96;
+  --tone-gray: #8c8c8c;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;

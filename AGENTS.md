@@ -48,7 +48,7 @@
 
 以下规则对**新增与被修改的代码**生效；**MUST NOT** 为清理存量而改动已确认的视觉。存量豁免（不得扩大）：
 
-- 颜色字面量：`packages/ui/src/components/ui/badge.tsx`（Ant Design 预设色板）；`apps/web/src/components/layout/layout.css`、`apps/web/src/features/copilot/copilot.css`、`apps/web/src/features/overview/components/overview-workflow.css`、`apps/web/src/features/settings/` 下的 `motion-demos.css`、`interaction-demos.css`、`aceternity-demos.css`、`base-pages/base-pages.css`。
+- 颜色字面量：`apps/web/src/components/layout/layout.css`、`apps/web/src/features/copilot/copilot.css`、`apps/web/src/features/overview/components/overview-workflow.css`、`apps/web/src/features/settings/` 下的 `motion-demos.css`、`interaction-demos.css`、`aceternity-demos.css`、`base-pages/base-pages.css`。
 - `dark:` 变体：`apps/web/src/features/settings/examples/*`（官方示例写法）与 `apps/web/src/lib/highlighter.tsx`（shiki 双主题）。
 
 1. **MUST** 颜色只使用主题变量（`--primary`、`--accent`、`--muted`、`--destructive`、`--success`、`--warning`、`--danger`、`--info`、`--chart-1..8` 等，完整列表见 [DESIGN_SYSTEM §3](docs/DESIGN_SYSTEM.md)）。
