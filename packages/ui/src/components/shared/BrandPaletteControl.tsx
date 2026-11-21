@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useTheme } from "next-themes"
 
 import { AppIcon, SolarPalette } from "../icons"
 import { Button } from "../ui/button"
@@ -15,20 +16,24 @@ type Palette = keyof typeof paletteLabels
 
 const paletteOrder = Object.keys(paletteLabels).filter(isPalette)
 
-function getNextPalette(palette: Palette): Palette {
-  return (
-    paletteOrder[(paletteOrder.indexOf(palette) + 1) % paletteOrder.length] ??
-    palette
-  )
+// Palettes with no dark rendering (see DESIGN_SYSTEM §1): dark mode skips them.
+const lightOnlyPalettes: ReadonlySet<Palette> = new Set(["marismoon-light"])
+
+function getNextPalette(palette: Palette, dark: boolean): Palette {
+  const order = dark
+    ? paletteOrder.filter((item) => !lightOnlyPalettes.has(item))
+    : paletteOrder
+  return order[(order.indexOf(palette) + 1) % order.length] ?? palette
 }
 
 export function BrandPaletteControl() {
   const labels = useUiLabels()
   const [palette, setPalette] = useState(getActivePalette)
-  const nextPalette = getNextPalette(palette)
+  const dark = useTheme().resolvedTheme === "dark"
+  const nextPalette = getNextPalette(palette, dark)
 
   function cyclePalette() {
-    const next = getNextPalette(getActivePalette())
+    const next = getNextPalette(getActivePalette(), dark)
     setStoredPalette(next)
     setPalette(next)
   }

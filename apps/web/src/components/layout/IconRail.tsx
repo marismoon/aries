@@ -270,13 +270,12 @@ export function IconRail({
           />
           <span className="grid size-(--rail-control-size) shrink-0 place-items-center">
             <Avatar
-              className="after:hidden"
               role="img"
               aria-label={tl("演示用户 · 管理员")}
               title={tl("演示用户 · 管理员")}
             >
               <AvatarFallback>M</AvatarFallback>
-              <AvatarBadge className="bg-(--success)" aria-hidden="true" />
+              <AvatarBadge aria-hidden="true" />
             </Avatar>
           </span>
           <RailTooltip label={navLabel}>

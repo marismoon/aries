@@ -179,16 +179,19 @@ for (const mode of ["light", "dark"] as const) {
     const statusColors = await readTokens(statusTokens)
     const brandStyles: string[][] = []
 
-    for (const value of brandCycle) {
+    // Dark mode skips the light-only palette when cycling.
+    const cycle =
+      mode === "dark"
+        ? brandCycle.filter((value) => value !== "marismoon-light")
+        : brandCycle
+
+    for (const value of cycle) {
       await palette.click()
       await expect(root).toHaveAttribute("data-palette", value)
       await expect(root).toHaveClass(new RegExp(`\\b${mode}\\b`))
       await expect(page.getByRole("menu")).toHaveCount(0)
       brandStyles.push(await readTokens(brandTokens))
-      // The light-only Marismoon palette keeps the light status tones in dark too.
-      if (!(mode === "dark" && value === "marismoon-light")) {
-        expect(await readTokens(statusTokens)).toEqual(statusColors)
-      }
+      expect(await readTokens(statusTokens)).toEqual(statusColors)
     }
 
     for (const [index, token] of brandTokens.entries()) {
@@ -196,7 +199,7 @@ for (const mode of ["light", "dark"] as const) {
       expect(values, `${token} 有有效定义`).not.toContain("")
       // Dark hairlines are one shared white-alpha ladder (dark-base.css), not per brand.
       if (mode === "dark" && sharedDarkTokens.has(token)) continue
-      expect(new Set(values).size, `${token} 跟随品牌`).toBe(brandCycle.length)
+      expect(new Set(values).size, `${token} 跟随品牌`).toBe(cycle.length)
     }
   })
 }

@@ -16,7 +16,7 @@
 ## 1. 主题与模式
 
 - **模式**：`next-themes`（`attribute="class"`）切换 `.dark`；`:root` 声明 `color-scheme: light`。
-- **品牌主题**（`<html data-palette="…">`，localStorage 键 `marismoon-palette`）：以 `lib/storage.ts` 的 `paletteLabels` 为准，默认 `saas-analytics-spectrum`。`marismoon-light` 为**纯浅色**主题（`color-scheme: light`，暗色块也保持浅色）。
+- **品牌主题**（`<html data-palette="…">`，localStorage 键 `marismoon-palette`）：以 `lib/storage.ts` 的 `paletteLabels` 为准，默认 `saas-analytics-spectrum`。`marismoon-light` 为**纯浅色**主题（`color-scheme: light`，暗色块也保持浅色）。暗色模式下品牌轮换跳过它。
 - **暗色风格**（`<html data-dark-style="glass|clean">`，键 `marismoon-dark-style`）：`glass` 毛玻璃（默认）、`clean` 简洁。详见 §2。
 - 切换控件：`BrandPaletteControl`（轮换主题）、`DarkStyleControl`（仅暗色模式显示）、`ThemeSwitcher`（明暗）。
 
