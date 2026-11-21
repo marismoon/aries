@@ -601,6 +601,10 @@
 
 .page-content-frame {
   --workspace-edge-size: 16px;
+  /* The top and bottom fade strips span the content columns plus this feather
+     on each side, and fade out horizontally over it, so they never show a hard
+     end or paint over the neighbouring columns (rail, nav). */
+  --workspace-fade-feather: 8px;
   /* Card shadows must fade out inside the clipping viewport. Widen the clip
      edge by the bleed and pull the frame back by the same amount so card
      positions and scroll length stay unchanged. */
@@ -649,8 +653,16 @@
   .page-content-frame:has(> [data-scrolled="true"])::after {
     position: absolute;
     z-index: 1;
-    inset-inline: 0;
+    inset-inline-start: calc(
+      var(--workspace-inset-start) + var(--workspace-bleed-inline) -
+        var(--workspace-fade-feather)
+    );
+    inset-inline-end: max(
+      0px,
+      calc(var(--workspace-inset-end) - var(--workspace-fade-feather))
+    );
     block-size: var(--workspace-edge-size);
+    mask-composite: intersect;
     /* Mask only this edge so the content keeps its existing backdrop root. */
     background: var(--page-background);
     background-attachment: fixed;
@@ -660,12 +672,28 @@
 
   .page-content-frame:has(> [data-scrolled="true"])::after {
     inset-block-start: 0;
-    mask-image: linear-gradient(black, transparent);
+    mask-image:
+      linear-gradient(
+        to right,
+        transparent,
+        black var(--workspace-fade-feather),
+        black calc(100% - var(--workspace-fade-feather)),
+        transparent
+      ),
+      linear-gradient(black, transparent);
   }
 
   .page-content-frame:has(> [data-has-more-below="true"])::before {
     inset-block-end: 0;
-    mask-image: linear-gradient(transparent, black);
+    mask-image:
+      linear-gradient(
+        to right,
+        transparent,
+        black var(--workspace-fade-feather),
+        black calc(100% - var(--workspace-fade-feather)),
+        transparent
+      ),
+      linear-gradient(transparent, black);
   }
 }
 
