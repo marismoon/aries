@@ -39,7 +39,7 @@
 | 新 shadcn 组件 | **SHOULD** 用 `pnpm dlx shadcn@latest add <name>`（先 `shadcn view` 看官方实现；`components.json` 的别名已指向 `@marismoon/ui`，**该 CLI 流程在拆包后未经验证**，不通过时手动落到 `packages/ui/src/components/ui`）；**MUST NOT** 对现有项目重新执行 `shadcn init`（预设 `b27GcrRo`：radix / rhea / neutral / Inter） |
 | 新共享组合组件 | **MUST** 放 `packages/ui/src/components/shared`，并同步 [docs/COMPONENTS.md](docs/COMPONENTS.md) |
 | 新图标 | **MUST** 只用 Solar：从 `@marismoon/ui/icons` 引入；缺图标时在 `components/icons/solar` 增文件并在 `index.ts` 导出。变体规则见 §3.1 |
-| 新主题色 | **MUST** 在 `packages/ui/src/styles/tokens.css` 增 `[data-palette="…"]` 块（亮、暗各一）并登记 `lib/storage.ts` 的 `paletteLabels` 与 `--swatch-*` |
+| 新主题色 | **MUST** 在 `packages/ui/src/styles/tokens.css` 增 `[data-palette="…"]` 块（亮、暗各一），在 `dark-base.css` 增该主题的 `--dark-hue`，并登记 `lib/storage.ts` 的 `paletteLabels` 与 `--swatch-*`；步骤与对比度底线见 [DESIGN_SYSTEM §9](docs/DESIGN_SYSTEM.md) |
 
 ## 3. 视觉与主题红线
 
@@ -48,10 +48,10 @@
 1. **MUST** 颜色只使用主题变量（`--primary`、`--accent`、`--muted`、`--destructive`、`--success`、`--warning`、`--danger`、`--info`、`--chart-1..8` 等，见 [DESIGN_SYSTEM](docs/DESIGN_SYSTEM.md)）。
 2. **MUST NOT** 在 `apps/web/src/features` 与 `components/layout` 的新代码中写十六进制/rgb/hsl 颜色；**MUST NOT** 用 `style={{ color/background… }}` 写死颜色（动态值只能引用 `var(--token)`，如 `StatusBadge`）。颜色字面量只允许出现在 `packages/ui/src/styles/*.css` 的令牌定义中。
 3. **MUST NOT** 新增 `dark:` 变体。深色适配**优先通过令牌**（`.dark` 块）完成；`dark:` 仅允许出现在 `packages/ui/src/components/ui` 的 shadcn 组件内（沿用官方写法）。
-4. **MUST NOT** 修改已确认的亮色（Light）视觉去适配深色；深色问题只改 `.dark` 作用域。「简洁暗色」写在 `styles/dark-clean.css`，作用域 `.dark[data-dark-style="clean"]`；`marismoon-light` 主题为纯浅色，**MUST NOT** 给它增加深色分支。
+4. **MUST NOT** 修改已确认的亮色（Light）视觉去适配深色；深色问题只改 `.dark` 作用域。暗色共同底座（亮度阶梯、发丝线、语义色）在 `styles/dark-base.css`，glass 与 clean 共用；「简洁暗色」材质在 `styles/dark-clean.css`，作用域 `.dark[data-dark-style="clean"]`（详见 [DESIGN_SYSTEM §2](docs/DESIGN_SYSTEM.md)）；`marismoon-light` 主题为纯浅色，**MUST NOT** 给它增加深色分支。
 5. **MUST** 以「系统设置 → 组件预览」为唯一规范：不写 `size` 的 `Button/Input/SelectTrigger` 即 32px 标准控件；按钮分三级：**页面级主操作**（登录卡片的「登录」、向导与表单提交）40px，写 `size="default"`；**组件与浮层内的操作**（配置、设置、对话框/抽屉/AlertDialog/Sheet 页脚、空状态按钮）32px，不写 `size`；**小浮层**（`AlertDialog size="sm"`、小 Popover、Toast 操作）28px，写 `size="small"`（AlertDialog sm 由 `popup.css` 自动处理）。触屏下自动放大到 ≥40px。字号只用 11/12/13/14/15/20px；控件与表格正文 13px，表头与标签 12px。
 6. **MUST** 圆角走令牌：控件 `--radius-workspace-control`，卡片/面板 `--radius-panel`，卡片内分组 `--radius-control`；**MUST NOT** 使用方角。
-7. **MUST** 表单控件统一 `field-surface` 外观；聚焦样式唯一（`--glow-line` 1px 渐变边），**MUST NOT** 叠加 outline/ring。
+7. **MUST** 表单控件统一 `field-surface` 外观；聚焦样式唯一（`--glow-line` 1px 渐变边），**MUST NOT** 叠加 outline/ring；暗色下文本控件的静止边框用真实 1px `--field-edge`，**MUST NOT** 再用 `--field-shadow` 内描边环叠一层。
 8. **MUST NOT** 页面样式覆盖全局布局与页头规则；页面 CSS 只负责业务区。
 9. 带阴影的元素位于 `overflow` 非 visible 的容器内时，**MUST** 预留不小于阴影外延的出血（padding 加等量负 margin）。
 10. 已确认的布局、尺寸、材质和视觉样式变更 **MUST** 先取得确认。

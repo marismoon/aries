@@ -7,7 +7,7 @@
    only in material: glass adds blur, aurora and a specular rim (tokens.css,
    materials.css); clean turns all of it off (dark-clean.css).
 
-   Ladder (HSL lightness): recess 8 < canvas 11 < card 15 < control 19 < popover 23.
+   Ladder (HSL lightness): recess 8 < canvas 12 < card 15 < control 19 < popover 23.
    Steps are small by design; hairlines carry the separation, not lightness.
    Excluded: the light-only marismoon-light palette. */
 .dark:not([data-palette="marismoon-light"]) {
@@ -41,8 +41,11 @@
 }
 
 .dark:not([data-palette="marismoon-light"]) {
+  /* Browser-drawn parts follow the palette too. */
+  scrollbar-color: rgb(255 255 255 / 24%) transparent;
+
   /* Surfaces. */
-  --background: hsl(var(--dark-hue) var(--dark-tint) 11%);
+  --background: hsl(var(--dark-hue) var(--dark-tint) 12%);
   --card: hsl(var(--dark-hue) var(--dark-tint) 15%);
   --card-bottom: hsl(var(--dark-hue) var(--dark-tint) 14%);
   --control: hsl(var(--dark-hue) var(--dark-tint) 19%);
@@ -117,11 +120,11 @@
   --base-c: 0.04;
   --environment-base: oklch(from var(--primary) var(--base-l) var(--base-c) h);
 
-  /* Aurora: three blooms (top, bottom, one low on the right) instead of six,
-     each a single soft ellipse. Dark glass only; light mode keeps its own. */
+  /* Aurora: two blooms (top right, bottom left) instead of six, each a single
+     soft ellipse. Dark glass only; light mode keeps its own. */
   --page-background:
     radial-gradient(
-      ellipse 55% 60% at 106% -9%,
+      ellipse 52% 58% at 104% -6%,
       color-mix(
         in srgb,
         var(--environment-top) var(--environment-strength),
@@ -130,22 +133,13 @@
       transparent 76%
     ),
     radial-gradient(
-      ellipse 68% 76% at -8% 102%,
+      ellipse 58% 64% at -6% 104%,
       color-mix(
         in srgb,
         var(--environment-bottom) var(--environment-strength),
         transparent
       ),
       transparent 75%
-    ),
-    radial-gradient(
-      ellipse 42% 46% at 68% 90%,
-      color-mix(
-        in srgb,
-        var(--environment-side) var(--environment-strength),
-        transparent
-      ),
-      transparent 80%
     ),
     var(--environment-base);
 }

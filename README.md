@@ -1,6 +1,6 @@
 # Marismoon Aries — 工作区前端启动模板
 
-基于真实项目脱敏裁剪的 React 工作区模板：三列 AppShell、玻璃质感设计系统（9 套品牌主题，亮 / 暗 / 简洁暗色）、基于 shadcn 的共享组件库、TanStack 数据表模板、图表与动效规范。可直接 `pnpm dev` 运行。
+基于真实项目脱敏裁剪的 React 工作区模板：三列 AppShell、玻璃质感设计系统（9 套品牌主题，亮色 + 暗色两种风格：玻璃 / 简洁）、基于 shadcn 的共享组件库、TanStack 数据表模板、图表与动效规范。可直接 `pnpm dev` 运行。
 
 > `apps/web` 里的 overview、bills、copilot 与「系统设置」下的组件预览、动效、基础页面是**示例与调试页面**，用于开发期对照规范；正式项目开发完成后可删除。`packages/*` 为长期保留的共享层。全部数据为本地 Mock。
 

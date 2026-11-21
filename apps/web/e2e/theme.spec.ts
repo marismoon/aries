@@ -70,7 +70,7 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
   const root = page.locator("html")
   const chromeColor = page.locator('meta[name="theme-color"]')
   await expect(root).toHaveClass(/\bdark\b/)
-  await expect(chromeColor).toHaveAttribute("content", "hsl(220 6% 11%)")
+  await expect(chromeColor).toHaveAttribute("content", "hsl(220 6% 12%)")
 
   const switchToLight = page.getByRole("button", { name: "切换到浅色模式" })
   const switchToDark = page.getByRole("button", { name: "切换到深色模式" })
@@ -162,6 +162,7 @@ for (const mode of ["light", "dark"] as const) {
       "--chart-1",
       "--hero-start",
     ]
+    const sharedDarkTokens = new Set(["--border", "--layout-control-border"])
     const statusTokens = [
       "--success",
       "--success-bg",
@@ -193,6 +194,8 @@ for (const mode of ["light", "dark"] as const) {
     for (const [index, token] of brandTokens.entries()) {
       const values = brandStyles.map((style) => style[index])
       expect(values, `${token} 有有效定义`).not.toContain("")
+      // Dark hairlines are one shared white-alpha ladder (dark-base.css), not per brand.
+      if (mode === "dark" && sharedDarkTokens.has(token)) continue
       expect(new Set(values).size, `${token} 跟随品牌`).toBe(brandCycle.length)
     }
   })
