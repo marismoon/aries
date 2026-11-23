@@ -1,7 +1,8 @@
 # 重构方案：通用前端框架 + 完整 Demo + 起步模板
 
-> 状态：方案已确认，执行中。本文是执行契约；与 `AGENTS.md` 冲突时，以 `AGENTS.md` 的视觉与主题红线为准，并停下来询问。
-> 开始前必须读完：`AGENTS.md`、`CLAUDE.md`、`pnpm-workspace.yaml`、`docs/` 全部文档。
+> 状态：**阶段一已完成**（步骤 0–9 全部落地，终验于 `fd2ce86`）。本文保留为重构的历史记录与决策依据；后续规则以 `AGENTS.md` 与 `docs/` 现行文档为准，阶段二（发包、export 脚本、changeset）另行规划。
+> 原执行要求：开始前读完 `AGENTS.md`、`CLAUDE.md`、`pnpm-workspace.yaml`、`docs/` 全部文档；与 `AGENTS.md` 冲突时，以其视觉与主题红线为准。
+> 实施差异：CVE 应急的 `overrides` 实测生效位置为根 `pnpm-workspace.yaml` 顶层（见 `docs/VERSIONING.md`），而非下文 §6 所写的 `package.json#pnpm.overrides`。
 
 ## 1. 目标
 
