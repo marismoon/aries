@@ -12,6 +12,7 @@
     "test:coverage": "turbo run test:coverage",
     "test:ui": "turbo run test:ui",
     "lint": "eslint .",
+    "audit": "pnpm audit --audit-level=high",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "prepare": "husky"
   },
@@ -26,21 +27,21 @@
     "pnpm": ">=12"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.5",
-    "eslint": "^9.39.5",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.7",
-    "eslint-plugin-import-x": "^4.18.1",
-    "eslint-import-resolver-typescript": "^4.4.5",
-    "globals": "^17",
+    "@eslint/js": "catalog:dev",
+    "eslint": "catalog:dev",
+    "eslint-plugin-jsx-a11y": "catalog:dev",
+    "eslint-plugin-react-hooks": "catalog:dev",
+    "eslint-plugin-react-refresh": "catalog:dev",
+    "eslint-plugin-import-x": "catalog:dev",
+    "eslint-import-resolver-typescript": "catalog:dev",
+    "globals": "catalog:dev",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
-    "typescript-eslint": "^8",
+    "typescript-eslint": "catalog:dev",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.1",
-    "typescript": "~6.0.2",
-    "@types/node": "^24",
+    "typescript": "catalog:",
+    "@types/node": "catalog:",
     "turbo": "^2"
   }
 }
