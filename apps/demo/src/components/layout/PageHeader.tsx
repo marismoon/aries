@@ -1,8 +1,8 @@
 import { Fragment, type ReactNode } from "react"
-import { Link } from "react-router"
 import { AppIcon, SolarChevronRight } from "@marismoon/ui/icons"
 import type { WorkspacePageConfig } from "@/app/workspace-pages"
 import { useUiText } from "@/lib/i18n/use-ui-text"
+import { ShellLink } from "./ShellLink"
 import { WorkspaceControls } from "./WorkspaceControls"
 
 export function PageHeader({
@@ -23,7 +23,7 @@ export function PageHeader({
         {breadcrumbs.map(({ label, path }) => (
           <Fragment key={label}>
             {path ? (
-              <Link to={path}>{tl(label)}</Link>
+              <ShellLink to={path}>{tl(label)}</ShellLink>
             ) : (
               <span>{tl(label)}</span>
             )}

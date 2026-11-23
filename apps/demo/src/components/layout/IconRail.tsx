@@ -11,7 +11,6 @@ import {
   SolarPanelLeftOpen,
   SolarSparkles,
 } from "@marismoon/ui/icons"
-import { Link } from "react-router"
 import {
   Avatar,
   AvatarBadge,
@@ -25,6 +24,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@marismoon/ui/ui/tooltip"
+import { ShellLink } from "./ShellLink"
 import {
   workspaceModuleIds,
   workspaceModules,
@@ -234,13 +234,13 @@ export function IconRail({
     <div className="icon-rail-column" data-layout-column="rail">
       <nav className="icon-rail" aria-label={tl("主模块")} ref={rail}>
         <RailTooltip label={tl("Marismoon 工作台")}>
-          <Link
+          <ShellLink
             to="/overview"
             className="rail-brand"
             aria-label={tl("Marismoon 工作台")}
           >
             <span translate="no">fH</span>
-          </Link>
+          </ShellLink>
         </RailTooltip>
         <div className="rail-modules">
           {mainModules.map((id) => (

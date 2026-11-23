@@ -1,19 +1,23 @@
 import {
+  createContext,
+  useContext,
   useLayoutEffect,
   useRef,
   type ReactNode,
   type RefObject,
   type UIEvent,
 } from "react"
-import { Outlet, useLocation, useOutletContext } from "react-router"
 
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import { MotionSurface } from "@marismoon/ui/motion/MotionSurface"
+import { useShellRouter } from "./types/adapter"
 
 type WorkspaceScrollContext = {
   viewport: RefObject<HTMLDivElement | null>
   onScroll: (event: UIEvent<HTMLDivElement>) => void
 }
+
+const WorkspaceScroll = createContext<WorkspaceScrollContext | null>(null)
 
 function updateScrollEdge(viewport: HTMLDivElement) {
   viewport.dataset.scrolled = String(viewport.scrollTop > 0)
@@ -34,7 +38,9 @@ export function WorkspacePageLayout({
   children: ReactNode
 }) {
   const tl = useUiText()
-  const { viewport, onScroll } = useOutletContext<WorkspaceScrollContext>()
+  const scroll = useContext(WorkspaceScroll)
+  if (!scroll) throw new Error("WorkspacePageLayout requires MainWorkspace")
+  const { viewport, onScroll } = scroll
 
   useLayoutEffect(() => {
     const node = viewport.current
@@ -73,20 +79,20 @@ export function WorkspacePageLayout({
   )
 }
 
-export function MainWorkspace() {
-  const { pathname, key } = useLocation()
+export function MainWorkspace({ children }: { children: ReactNode }) {
+  const { activePath, locationKey = activePath } = useShellRouter()
   const viewport = useRef<HTMLDivElement>(null)
   const workspaceScroll = useRef(new Map<string, number>())
 
   useLayoutEffect(() => {
     if (viewport.current) {
-      viewport.current.scrollTop = workspaceScroll.current.get(key) ?? 0
+      viewport.current.scrollTop = workspaceScroll.current.get(locationKey) ?? 0
       updateScrollEdge(viewport.current)
     }
-  }, [key])
+  }, [locationKey])
 
   function onScroll({ currentTarget }: UIEvent<HTMLDivElement>) {
-    workspaceScroll.current.set(key, currentTarget.scrollTop)
+    workspaceScroll.current.set(locationKey, currentTarget.scrollTop)
     updateScrollEdge(currentTarget)
   }
 
@@ -97,10 +103,10 @@ export function MainWorkspace() {
       id="main-content"
       tabIndex={-1}
     >
-      <MotionSurface key={pathname}>
-        <Outlet
-          context={{ viewport, onScroll } satisfies WorkspaceScrollContext}
-        />
+      <MotionSurface key={activePath}>
+        <WorkspaceScroll.Provider value={{ viewport, onScroll }}>
+          {children}
+        </WorkspaceScroll.Provider>
       </MotionSurface>
     </main>
   )

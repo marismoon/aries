@@ -14,7 +14,6 @@ import {
   SolarSearch,
   type AppIconComponent,
 } from "@marismoon/ui/icons"
-import { Link, useLocation, useNavigate } from "react-router"
 import { Button } from "@marismoon/ui/ui/button"
 import {
   Dialog,
@@ -24,6 +23,8 @@ import {
   DialogTitle,
 } from "@marismoon/ui/ui/dialog"
 import { Input } from "@marismoon/ui/ui/input"
+import { ShellLink } from "./ShellLink"
+import { useShellRouter } from "./types/adapter"
 
 export type CommandItem = {
   title: string
@@ -108,8 +109,7 @@ export function CommandPaletteProvider({
   const selectedRoute = useRef(false)
   const onLaunchNavigate = useRef<() => void>(undefined)
   const dialogId = useId()
-  const navigate = useNavigate()
-  const { pathname } = useLocation()
+  const { activePath, onNavigate } = useShellRouter()
   const search = query.trim().toLowerCase()
   const translate = (text: string) =>
     text
@@ -172,8 +172,9 @@ export function CommandPaletteProvider({
 
   async function selectPage(path: string) {
     selectedRoute.current =
-      path !== pathname || Boolean(onLaunchNavigate.current)
-    await navigate(path)
+      path !== activePath || Boolean(onLaunchNavigate.current)
+    if (onNavigate) await onNavigate(path)
+    else window.location.assign(path)
     onLaunchNavigate.current?.()
     setOpen(false)
   }
@@ -253,11 +254,12 @@ export function CommandPaletteProvider({
                 return (
                   <li key={path ?? title}>
                     {path ? (
-                      <Link
+                      <ShellLink
                         to={path}
                         className="command-result"
                         onClick={(event) => {
                           if (
+                            !onNavigate ||
                             event.metaKey ||
                             event.ctrlKey ||
                             event.shiftKey ||
@@ -269,7 +271,7 @@ export function CommandPaletteProvider({
                         }}
                       >
                         {content}
-                      </Link>
+                      </ShellLink>
                     ) : (
                       <button type="button" className="command-result" disabled>
                         {content}

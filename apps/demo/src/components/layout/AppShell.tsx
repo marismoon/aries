@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, type ReactNode } from "react"
 import { useTranslation } from "react-i18next"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import { workspacePages } from "@/app/workspace-pages"
 import { AppIcon, SolarPanelLeftOpen } from "@marismoon/ui/icons"
-import { useLocation, useMatches } from "react-router"
 import { Button } from "@marismoon/ui/ui/button"
 import {
   Dialog,
@@ -19,6 +18,7 @@ import { IconRail } from "./IconRail"
 import { MainWorkspace } from "./MainWorkspace"
 import { WorkspaceNav } from "./WorkspaceNav"
 import type { WorkspaceModuleId } from "./workspace-modules"
+import { useShellRouter } from "./types/adapter"
 import "./layout.css"
 
 function MobileDirectory({
@@ -61,13 +61,16 @@ function MobileDirectory({
 
 export function AppShell({
   getModuleCommands,
+  routeId,
+  children,
 }: {
   getModuleCommands: (module: WorkspaceModuleId) => ModuleCommands
+  routeId?: string
+  children: ReactNode
 }) {
-  const { key } = useLocation()
+  const { activePath, locationKey = activePath } = useShellRouter()
   const { t } = useTranslation()
   const tl = useUiText()
-  const routeId = useMatches().at(-1)?.id
   const page =
     Object.values(workspacePages).find(({ id }) => id === routeId) ??
     workspacePages.overview
@@ -82,11 +85,11 @@ export function AppShell({
   const [selection, setSelection] = useState<{
     locationKey: string
     module: WorkspaceModuleId
-  }>({ locationKey: key, module: routeModule })
+  }>({ locationKey, module: routeModule })
   const activeModule =
-    selection.locationKey === key ? selection.module : routeModule
-  if (selection.locationKey !== key) {
-    setSelection({ locationKey: key, module: routeModule })
+    selection.locationKey === locationKey ? selection.module : routeModule
+  if (selection.locationKey !== locationKey) {
+    setSelection({ locationKey, module: routeModule })
   }
   const copilot = useCopilot()
   const {
@@ -96,7 +99,7 @@ export function AppShell({
   } = copilot
 
   function selectModule(module: WorkspaceModuleId) {
-    setSelection({ locationKey: key, module })
+    setSelection({ locationKey, module })
   }
 
   useEffect(() => {
@@ -158,7 +161,7 @@ export function AppShell({
           }
         />
         <WorkspaceNav activeModule={activeModule} />
-        <MainWorkspace />
+        <MainWorkspace>{children}</MainWorkspace>
       </div>
       <CopilotPanel copilot={copilot} pageName={pageName} />
     </CommandPaletteProvider>

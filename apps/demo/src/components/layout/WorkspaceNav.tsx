@@ -5,7 +5,6 @@ import {
   SolarQuestionCircle,
 } from "@marismoon/ui/icons"
 import { useRef } from "react"
-import { NavLink } from "react-router"
 
 import { useUiText } from "@/lib/i18n/use-ui-text"
 
@@ -20,6 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@marismoon/ui/ui/tabs"
 import { CommandPalette } from "./CommandPalette"
 import { NavHighlight } from "./NavHighlight"
 import { NavTree } from "./NavTree"
+import { ShellLink } from "./ShellLink"
 import { SidebarNavItem } from "./SidebarNavItem"
 import {
   workspaceModuleIds,
@@ -60,9 +60,9 @@ function DirectoryItem({
             <li key={label}>
               {to ? (
                 <SidebarNavItem className="nav-tree-leaf" asChild>
-                  <NavLink to={to} end onClick={onNavigate}>
+                  <ShellLink to={to} end onClick={onNavigate}>
                     {content}
-                  </NavLink>
+                  </ShellLink>
                 </SidebarNavItem>
               ) : (
                 <SidebarNavItem
@@ -84,7 +84,7 @@ function DirectoryItem({
     <li>
       {entry.kind === "route" ? (
         <SidebarNavItem asChild>
-          <NavLink to={entry.to} end onClick={onNavigate}>
+          <ShellLink to={entry.to} end onClick={onNavigate}>
             <AppIcon icon={icon} size={16} stateful aria-hidden="true" />
             <span>{tl(entry.label)}</span>
             {entry.count != null && (
@@ -95,7 +95,7 @@ function DirectoryItem({
                 {entry.count}
               </span>
             )}
-          </NavLink>
+          </ShellLink>
         </SidebarNavItem>
       ) : (
         <SidebarNavItem title={tl("Demo 暂未开放")} disabled>

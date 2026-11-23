@@ -1,10 +1,9 @@
 import { createBrowserRouter, Navigate } from "react-router"
 
-import { AppShell } from "@/components/layout/AppShell"
 import { WorkspacePage } from "@/components/layout/WorkspacePage"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import { Skeleton } from "@marismoon/ui/ui/skeleton"
-import { useModuleCommands } from "./command-items"
+import { DemoShell } from "./shell-adapter"
 import { workspacePages } from "./workspace-pages"
 
 function LoadingWorkspace() {
@@ -18,11 +17,6 @@ function LoadingWorkspace() {
       <Skeleton className="h-12 w-32" />
     </div>
   )
-}
-
-function DemoShell() {
-  const getModuleCommands = useModuleCommands()
-  return <AppShell getModuleCommands={getModuleCommands} />
 }
 
 export const router = createBrowserRouter([
