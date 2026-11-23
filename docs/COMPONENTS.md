@@ -11,7 +11,7 @@
 | `@marismoon/ui/shared/use-data-table` | `src/components/shared/use-data-table.ts` |
 | `@marismoon/ui/motion/<Name>`、`@marismoon/ui/motion/motion-tokens` | `src/components/motion/*` |
 | `@marismoon/ui/icons` | `src/components/icons/index.ts` |
-| `@marismoon/ui/lib/utils`、`@marismoon/ui/lib/storage`、`@marismoon/ui/lib/ui-labels` | `src/lib/*.ts` |
+| `@marismoon/ui/lib/utils`、`@marismoon/ui/lib/format`、`@marismoon/ui/lib/storage`、`@marismoon/ui/lib/ui-labels` | `src/lib/*.ts` |
 | `@marismoon/ui/hooks/use-mobile` | `src/hooks/use-mobile.ts` |
 
 ## 1. 共享组合组件（`@marismoon/ui/shared/*`）
@@ -114,6 +114,7 @@ const table = useDataTable({
 ## 4. 工具与 Hook
 
 - `lib/utils`：`cn`（重导出自 `cn` 包）。
+- `lib/format` 提供万元数值格式化 `formatWan`、金额格式化 `formatCurrency` 和活动时间格式化 `formatActivityTime`。
 - `lib/storage`：`paletteLabels`、`isPalette`、`getStoredPalette`、`applyStoredPalette`、`getActivePalette`、`setStoredPalette`、`DarkStyle`、`getActiveDarkStyle`、`applyStoredDarkStyle`、`setStoredDarkStyle`。
 - `hooks/use-mobile`：`useIsMobile()`。
 - `lib/ui-labels`：`UiLabels`、`defaultUiLabels`（中文）、`UiLabelsProvider`、`useUiLabels()`；共享组件的固定文案（Dialog 关闭、表格底栏与分页、主题/品牌/暗色控件等）由此读取，应用通过 `UiLabelsBridge` 提供翻译。

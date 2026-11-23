@@ -28,8 +28,8 @@ import {
   DialogTitle,
 } from "@marismoon/ui/ui/dialog"
 import { Skeleton } from "@marismoon/ui/ui/skeleton"
-import { dashboardMetrics } from "@marismoon/core/mocks/overview"
-import type { AttentionItem } from "@marismoon/core/types/overview"
+import { dashboardMetrics } from "@/shared/mocks/overview"
+import type { AttentionItem } from "@/shared/types/overview"
 import { useAttentionScroll } from "../hooks/useAttentionScroll"
 
 import "./overview-workflow.css"

@@ -12,7 +12,7 @@
 | 项 | 值 |
 | --- | --- |
 | 包管理 / 任务 | pnpm 12.16.1（workspace）+ Turborepo；Node ^24 |
-| 包 | `@marismoon/demo`（apps/demo）、`@marismoon/ui`（packages/ui）、`@marismoon/core`（packages/core） |
+| 包 | `@marismoon/demo`（apps/demo）、`@marismoon/ui`（packages/ui）、`@marismoon/config`（packages/config） |
 | 启动 | `pnpm install` → `pnpm dev`（Vite，默认 <http://localhost:5173>，被占用时端口递增） |
 | 自检 | `pnpm typecheck` · `pnpm lint` · `pnpm build` · `pnpm test` · `pnpm test:ui` |
 | 单个 e2e | `pnpm --filter @marismoon/demo exec playwright test e2e/<name>.spec.ts`（Playwright 自动启动 Vite，端口 4173） |
@@ -20,15 +20,15 @@
 
 ## 1. Monorepo 边界
 
-依赖方向只能是 `apps/demo → packages/ui`、`apps/demo → packages/core`，`packages/ui` 与 `packages/core` 互不依赖。
+运行时的工作区依赖方向只能是 `apps/demo → packages/ui`。Demo 与 UI 的 TypeScript 配置、根 ESLint 配置通过开发依赖引用 `@marismoon/config`。
 
 | 位置 | 职责 | 禁止 |
 | --- | --- | --- |
-| `packages/ui` | shadcn 基础组件（`components/ui`）、共享组合组件（`components/shared`）、Solar 图标（`components/icons`）、动效（`components/motion`）、`lib/utils`、`lib/storage`（主题偏好）、`hooks/use-mobile`、**全部全局样式与设计令牌**（`styles/`） | MUST NOT 导入 `apps/demo`、`@/` 别名、业务数据 |
-| `packages/core` | 与 UI 无关的类型（zod）、格式化函数（`format.ts`）、Mock 数据与 Mock 服务 | MUST NOT 依赖 React 或 `@marismoon/ui` |
-| `apps/demo` | 应用外壳（`components/layout`）、路由（`app/`）、页面与业务（`features/`）、i18n（`lib/i18n`） | MUST NOT 复制 `packages/ui` 的组件或样式 |
+| `packages/ui` | shadcn 基础组件（`components/ui`）、共享组合组件（`components/shared`）、Solar 图标（`components/icons`）、动效（`components/motion`）、`lib/utils`、`lib/format`（金额与时间）、`lib/storage`（主题偏好）、`hooks/use-mobile`、**全部全局样式与设计令牌**（`styles/`） | MUST NOT 导入 `apps/demo`、`@/` 别名、业务数据 |
+| `packages/config` | 同仓共享的 ESLint 与 TypeScript 配置（private） | 仅用于开发工具 |
+| `apps/demo` | 应用外壳（`components/layout`）、路由（`app/`）、页面与业务（`features/`）、跨功能 Mock 与业务类型（`shared/`）、i18n（`lib/i18n`） | MUST NOT 复制 `packages/ui` 的组件或样式 |
 
-1. **MUST** 通过包导出路径使用共享层（路径总表见 [COMPONENTS.md](docs/COMPONENTS.md) 开头，映射来自各包 `package.json` 的 `exports`）；`@marismoon/core` 同理。
+1. **MUST** 通过包导出路径使用共享层（UI 路径总表见 [COMPONENTS.md](docs/COMPONENTS.md) 开头，映射来自各包 `package.json` 的 `exports`）。
 2. **MUST NOT** 使用 `@marismoon/ui/src/...` 深层路径；**MUST NOT** 在 `packages/ui` 内使用 `@/` 别名（包内一律相对路径）。`@/` 只在 `apps/demo` 内表示 `apps/demo/src`。
 3. 应用内分层 `components/layout ← features ← app`：下层 **MUST NOT** 导入上层。`eslint.config.js` 已对 `packages/ui` 强制「不得导入 `apps/demo`」与「`components/ui`、`lib` 不得导入 `shared`」。
 4. **MUST** 仅用 `pnpm`；**MUST NOT** 提交 `package-lock.json` / `yarn.lock`。
@@ -111,10 +111,10 @@ PC（1440×900、1920×1080）为视觉基线。断点与验收视口见 [DESIGN
 在仓库根目录依次执行，**全部通过**才可提交：
 
 ```bash
-pnpm typecheck     # turbo: @marismoon/core、@marismoon/ui、@marismoon/demo
+pnpm typecheck     # turbo: @marismoon/ui、@marismoon/demo
 pnpm lint          # eslint .
 pnpm build
-pnpm test          # vitest（core、ui、web）
+pnpm test          # vitest（ui、demo）
 pnpm test:ui       # playwright（首次：pnpm --filter @marismoon/demo exec playwright install chromium）
 ```
 

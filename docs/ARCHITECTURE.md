@@ -3,18 +3,17 @@
 ## 1. 包与依赖方向
 
 ```text
-apps/demo (@marismoon/demo) ──► packages/ui   (@marismoon/ui)
-        └──────────────► packages/core (@marismoon/core)
-packages/ui  ✗  packages/core   （互不依赖）
+apps/demo (@marismoon/demo) ──► packages/ui (@marismoon/ui)
+根 ESLint 配置、Demo 与 UI 的 TypeScript 配置 ──► packages/config (@marismoon/config)
 ```
 
 | 包 | 入口（`exports`） | 内容 |
 | --- | --- | --- |
-| `@marismoon/ui` | `./ui/*` `./shared/*` `./motion/*` `./icons` `./icons/*` `./hooks/*` `./lib/*` `./styles/*`（直接导出源码，无构建步骤） | `src/components/{ui,shared,icons,motion}`、`src/hooks/use-mobile.ts`、`src/lib/{utils,storage}.ts`、`src/styles/*.css` |
-| `@marismoon/core` | `./*` → `src/*.ts` | `format.ts`、`types/{billing,overview}.ts`、`mocks/{bills,charts,overview,period,mock-service}.ts` |
-| `@marismoon/demo` | — | `src/{app,components/layout,features,lib,test}`、`e2e/` |
+| `@marismoon/ui` | `./ui/*` `./shared/*` `./motion/*` `./icons` `./icons/*` `./hooks/*` `./lib/*` `./styles/*`（直接导出源码，无构建步骤） | `src/components/{ui,shared,icons,motion}`、`src/hooks/use-mobile.ts`、`src/lib/{utils,format,storage}.ts`、`src/styles/*.css` |
+| `@marismoon/config` | `./eslint/*`、`./typescript/*.json` | ESLint 的 base、react、boundaries 和 TypeScript 的 base、react、app 配置 |
+| `@marismoon/demo` | — | `src/{app,components/layout,features,shared,lib,test}`、`e2e/` |
 
-两个包都以**源码**被 Vite 直接编译；`packages/ui` 内部只用相对导入。
+Demo 通过包导出路径引用 UI 源码，由 Vite 直接编译。`packages/ui` 内部只用相对导入。
 
 ## 2. apps/demo 目录
 
@@ -26,9 +25,11 @@ apps/demo/src
 │   ├── App.tsx         AppProviders + RouterProvider
 │   ├── providers.tsx   QueryClient、next-themes、LazyMotion/MotionConfig（`reducedMotion="user"`）、TooltipProvider、演示状态；命令面板由 `AppShell` 内的 `CommandPaletteProvider` 提供
 │   ├── router.tsx      AppShell 下按 workspacePages 生成懒加载路由；/ 重定向到 /overview
+│   ├── command-items.ts  getModuleCommands 为命令面板提供当前模块的搜索条目
 │   └── workspace-pages.tsx  页面注册表（WorkspacePageConfig）
 ├── components/layout/  AppShell、IconRail、WorkspaceNav(+NavTree/NavHighlight/SidebarNavItem)、MainWorkspace、PageHeader、WorkspaceControls、WorkspacePage、CommandPalette、workspace-modules.ts、layout.css
 ├── features/           overview、bills、copilot、settings（均为示例/调试页面）
+├── shared/             跨功能的 Mock 数据、服务（mocks/）和业务类型（types/）
 ├── lib/                i18n（i18next 资源、语言存储、`useUiText`，见 I18N.md）、query-client.ts、highlighter.tsx（shiki）
 └── hooks/use-highlighted-code.ts
 ```
@@ -49,6 +50,7 @@ apps/demo/src
 
 - 第一列入口类型：`module` 切换第二列数据；`action` 不改变路由和模块；`navigation` 由目标路由决定模块。
 - 页面的模块归属与选中态**以路由为准**（页面配置的 `moduleId`）。
+- `router.tsx` 将 Demo 的 `getModuleCommands` 传给 `AppShell`。外壳用当前模块调用它，将返回值通过 `commands` 传给 `CommandPaletteProvider`。
 - 新增业务模块：在 `workspace-modules.ts` 注册（`WorkspaceEntry` 为 `route` / `folder` / `demo`）；新增页面：在 `workspace-pages.tsx` 注册，侧栏入口引用 `workspacePages.<id>.path`。
 - `WorkspacePageSlots`：`Content`（必填）、`Subtitle`、`BreadcrumbDetail`、`Summary`。标题与面包屑来自页面配置（`titleKey` 经 i18n）。
 
@@ -58,18 +60,18 @@ AppShell 固定视口；body 不滚动；仅 `PageContentViewport`（第三列�
 
 ## 6. 数据流
 
-`@marismoon/core/mocks/mock-service.ts`（`getDemoAttentionItems`、`getDemoBills`，带模拟延迟）→ `useQuery`（`features/*/hooks/*Demo.ts`）→ 页面。接入真实后端时替换 Mock 服务并读取 `VITE_API_BASE_URL`；类型/校验保留在 `@marismoon/core/types`（zod）。
+Demo 的 `@/shared/mocks/mock-service` 导出 `getDemoAttentionItems` 和 `getDemoBills`。两者模拟请求延迟，并用 `@/shared/types` 目录中的 Zod schema 校验返回值。页面通过各功能的 `useQuery` Hook 读取数据。概览专用的图表数据在 `features/overview/mocks/charts.ts`。接入真实后端时替换 Mock 服务并读取 `VITE_API_BASE_URL`。
 
 ## 7. 测试
 
 | 层 | 工具 | 位置 |
 | --- | --- | --- |
-| 单测 | Vitest（jsdom） | `packages/core`、`apps/demo/src/**/*.test.{ts,tsx}` |
+| 单测 | Vitest（Demo 使用 jsdom） | `packages/ui/src/**/*.test.{ts,tsx}`、`apps/demo/src/**/*.test.{ts,tsx}` |
 | e2e | Playwright（Chromium，`pnpm dev` 作为 webServer，端口 4173） | `apps/demo/e2e/{app-shell,i18n,components-preview,motion,responsive,responsive-adaptation,scroll-boundary,theme,workspace-scroll}.spec.ts` |
 
 ## 8. 删除示例页面的步骤（正式开发时）
 
 1. 在 `workspace-pages.tsx` 移除 overview / bills / settings 下相应条目，并同步 `workspace-modules.ts` 与 `lib/i18n/resources.ts` 文案。
 2. 删除 `apps/demo/src/features/<name>`；`providers.tsx` 中的 `DemoProviders` 随之删除。
-3. 若不再使用 Mock，删除 `packages/core/src/mocks`；`workspace-modules.ts` 目前从 `@marismoon/core/mocks/bills` 读取示例数量，需一并改写。
+3. 若不再使用 Mock，先替换消费者（包括从 `@/shared/mocks/bills` 读取示例数量的 `workspace-modules.ts`），再删除 `apps/demo/src/shared/mocks`。
 4. 删除对应 e2e 并保留外壳/主题/滚动/响应式用例（已不含业务数据断言）。

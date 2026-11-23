@@ -23,9 +23,9 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@marismoon/ui/ui/drawer"
-import { formatCurrency } from "@marismoon/core/format"
-import { billStatusMeta } from "@marismoon/core/mocks/bills"
-import type { Bill, BillStatus } from "@marismoon/core/types/billing"
+import { formatCurrency } from "@marismoon/ui/lib/format"
+import { billStatusMeta } from "@/shared/mocks/bills"
+import type { Bill, BillStatus } from "@/shared/types/billing"
 
 import "./bill-drawer.css"
 import { useUiText } from "@/lib/i18n/use-ui-text"

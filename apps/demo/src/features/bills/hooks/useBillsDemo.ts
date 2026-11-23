@@ -1,9 +1,9 @@
 import { createContext, useContext, useMemo, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 
-import { initialBillFilters } from "@marismoon/core/mocks/bills"
-import { getDemoBills } from "@marismoon/core/mocks/mock-service"
-import type { Bill, BillFilters, Currency } from "@marismoon/core/types/billing"
+import { initialBillFilters } from "@/shared/mocks/bills"
+import { getDemoBills } from "@/shared/mocks/mock-service"
+import type { Bill, BillFilters, Currency } from "@/shared/types/billing"
 
 export function matchesBillFilters(bill: Bill, filters: BillFilters) {
   const query = filters.query.trim().toLowerCase()

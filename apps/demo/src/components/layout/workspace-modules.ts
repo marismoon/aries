@@ -20,7 +20,7 @@ import {
   SolarShieldAlert,
   type AppIconComponent,
 } from "@marismoon/ui/icons"
-import { demoBills } from "@marismoon/core/mocks/bills"
+import { demoBills } from "@/shared/mocks/bills"
 
 interface WorkspaceLeaf {
   label: string

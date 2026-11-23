@@ -12,8 +12,8 @@ import {
   qualitySeries,
   topAccounts,
   yearMonthly,
-} from "@marismoon/core/mocks/charts"
-import { formatWan } from "@marismoon/core/format"
+} from "@/features/overview/mocks/charts"
+import { formatWan } from "@marismoon/ui/lib/format"
 
 import "./overview-charts.css"
 import { useUiText } from "@/lib/i18n/use-ui-text"

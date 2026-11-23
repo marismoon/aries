@@ -14,7 +14,7 @@ import {
 } from "@marismoon/ui/ui/dialog"
 import { CopilotPanel } from "@/features/copilot/CopilotPanel"
 import { useCopilot } from "@/features/copilot/useCopilot"
-import { CommandPaletteProvider } from "./CommandPalette"
+import { CommandPaletteProvider, type ModuleCommands } from "./CommandPalette"
 import { IconRail } from "./IconRail"
 import { MainWorkspace } from "./MainWorkspace"
 import { WorkspaceNav } from "./WorkspaceNav"
@@ -59,7 +59,11 @@ function MobileDirectory({
   )
 }
 
-export function AppShell() {
+export function AppShell({
+  getModuleCommands,
+}: {
+  getModuleCommands: (module: WorkspaceModuleId) => ModuleCommands
+}) {
   const { key } = useLocation()
   const { t } = useTranslation()
   const tl = useUiText()
@@ -133,7 +137,10 @@ export function AppShell() {
   }, [copilotOpen, openCopilotFrom, closeCopilot])
 
   return (
-    <CommandPaletteProvider activeModule={activeModule}>
+    <CommandPaletteProvider
+      activeModule={activeModule}
+      commands={getModuleCommands(activeModule)}
+    >
       <div className="app-shell" data-nav-collapsed={!navExpanded}>
         <a className="skip-link" href="#main-content">
           {tl("跳到主内容")}

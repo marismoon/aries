@@ -1,6 +1,6 @@
 # 技术栈
 
-版本为本模板锁定安装时的实际版本（`pnpm ls -r`），范围写法见各 `package.json`。
+版本为本模板锁定安装时的实际版本（`pnpm ls -r`）。各包的 `package.json` 引用的 catalog 定义在 `pnpm-workspace.yaml`。
 
 ## 运行环境与工具链
 
@@ -9,7 +9,7 @@
 | Node.js | ^24（`engines`） | |
 | pnpm | 12.16.1 | workspace：`apps/*`、`packages/*` |
 | Turborepo | 2.11.13 | 任务：dev（无缓存、常驻）、build、typecheck、test、test:coverage、test:ui |
-| TypeScript | 6.0.3（`~6.0.2`） | strict、`noUncheckedIndexedAccess`、`erasableSyntaxOnly` |
+| TypeScript | 6.0.3 | UI 与 Demo 通过 `@marismoon/config` 共享编译配置，业务代码启用 strict、`noUncheckedIndexedAccess`、`erasableSyntaxOnly` |
 | ESLint | 9.39.5 | typescript-eslint（type-checked）、react-hooks、react-refresh、jsx-a11y、import-x（`no-cycle`） |
 | Prettier | 3.10.1 | + `prettier-plugin-tailwindcss`（函数 `cn`、`cva`） |
 | husky / lint-staged | 9.1.7 / ^17.6 | 提交前对暂存的 ts/tsx 运行 Prettier 与 `eslint --fix` |
@@ -31,7 +31,7 @@
 | 路由 | react-router | 8.5.2 | `createBrowserRouter` + `lazy` |
 | 国际化 | i18next / react-i18next | 27.2.2 / 18.0.3 | `apps/demo/src/lib/i18n` |
 | 主题 | next-themes | 0.4.6 | `attribute="class"` 切换 `.dark` |
-| 校验 | zod（仅 `@marismoon/core`） | 4.6.7 | |
+| 校验 | zod（`@marismoon/demo`） | 4.6.7 | 校验账单与概览数据 |
 | 其他 UI | vaul 1.1.2（Drawer）、sonner 2.0.8、cmdk 1.1.1、input-otp 1.5.0、react-day-picker 10.0.2、date-fns 4.4.0、embla-carousel-react 8.6.0、react-resizable-panels 4.24.1、shiki 4.6.0 | | 均由 shadcn 组件或预览页使用 |
 | 字体 | `@fontsource-variable/inter`、`@fontsource-variable/noto-sans-sc` | | 在 `globals.css` 引入 |
 | 测试 | vitest 5.1.1、jsdom 31、Testing Library、`@playwright/test` 1.65.1 | | 单测 `src/**/*.test.{ts,tsx}`；e2e 在 `apps/demo/e2e` |

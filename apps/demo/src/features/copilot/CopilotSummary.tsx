@@ -1,5 +1,5 @@
-import { formatWan } from "@marismoon/core/format"
-import { dashboardMetrics, issuedTrend } from "@marismoon/core/mocks/overview"
+import { formatWan } from "@marismoon/ui/lib/format"
+import { dashboardMetrics, issuedTrend } from "@/shared/mocks/overview"
 
 import "./copilot-summary.css"
 import { useUiText } from "@/lib/i18n/use-ui-text"

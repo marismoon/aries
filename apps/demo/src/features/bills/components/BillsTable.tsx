@@ -9,9 +9,9 @@ import {
   useDataTable,
 } from "@marismoon/ui/shared/use-data-table"
 import { Button } from "@marismoon/ui/ui/button"
-import { formatCurrency } from "@marismoon/core/format"
-import { billStatusMeta } from "@marismoon/core/mocks/bills"
-import type { Bill, BillFilters } from "@marismoon/core/types/billing"
+import { formatCurrency } from "@marismoon/ui/lib/format"
+import { billStatusMeta } from "@/shared/mocks/bills"
+import type { Bill, BillFilters } from "@/shared/types/billing"
 import { matchesBillFilters } from "../hooks/useBillsDemo"
 import { BillsToolbar } from "./BillsToolbar"
 

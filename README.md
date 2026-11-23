@@ -8,9 +8,9 @@
 
 ```text
 .
-├── apps/demo            @marismoon/demo  应用：外壳布局、路由、页面（features）、i18n、e2e
-├── packages/ui         @marismoon/ui   shadcn 组件、共享组合组件、Solar 图标、动效、设计令牌与全局样式
-├── packages/core       @marismoon/core 类型（zod）、格式化、Mock 数据与服务
+├── apps/demo           @marismoon/demo    外壳布局、路由、页面、业务类型（zod）、Mock 数据与服务、i18n、e2e
+├── packages/ui         @marismoon/ui      shadcn 组件、共享组合组件、Solar 图标、动效、格式化、设计令牌与全局样式
+├── packages/config     @marismoon/config  同仓共享的 ESLint 与 TypeScript 配置
 ├── docs/               架构 / 技术栈 / 设计系统 / 组件文档
 ├── AGENTS.md           开发契约（人与 AI 助手共同遵守）
 └── CLAUDE.md           指向 AGENTS.md 的精简入口
@@ -30,8 +30,8 @@ pnpm dev          # http://localhost:5173
 | 命令 | 作用 |
 | --- | --- |
 | `pnpm dev` | `turbo run dev --filter=@marismoon/demo` |
-| `pnpm build` | 各包 build（web：`tsc -b && vite build`） |
-| `pnpm typecheck` | 各包类型检查 |
+| `pnpm build` | 构建 Demo（`tsc -b && vite build`） |
+| `pnpm typecheck` | 检查 UI 和 Demo 的类型 |
 | `pnpm lint` | `eslint .` |
 | `pnpm test` / `pnpm test:coverage` | Vitest |
 | `pnpm test:ui` | Playwright e2e（首次 `pnpm --filter @marismoon/demo exec playwright install chromium`） |

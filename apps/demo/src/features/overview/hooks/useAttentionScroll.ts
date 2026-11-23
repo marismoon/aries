@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
-import type { AttentionItem } from "@marismoon/core/types/overview"
+import type { AttentionItem } from "@/shared/types/overview"
 
 /** Scroll speed of the looping list, in px per second (a calm 30). */
 const speed = 30

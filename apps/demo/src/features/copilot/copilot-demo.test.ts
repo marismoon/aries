@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { attentionItems } from "@marismoon/core/mocks/overview"
+import { attentionItems } from "@/shared/mocks/overview"
 
 import { getCopilotReply, recommendedQuestions } from "./copilot-demo"
 

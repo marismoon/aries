@@ -3,14 +3,14 @@ import type { CSSProperties, ReactNode } from "react"
 import { AppIcon, SolarCheck } from "@marismoon/ui/icons"
 import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 import { StatusBadge } from "@marismoon/ui/shared/StatusBadge"
-import { formatCurrency, formatWan } from "@marismoon/core/format"
+import { formatCurrency, formatWan } from "@marismoon/ui/lib/format"
 import {
   collectionChannels,
   collectionStates,
   dashboardMetrics,
   issuedTrend,
-} from "@marismoon/core/mocks/overview"
-import { demoPeriod } from "@marismoon/core/mocks/period"
+} from "@/shared/mocks/overview"
+import { demoPeriod } from "@/shared/mocks/period"
 
 import "./overview-metrics.css"
 import { useUiText } from "@/lib/i18n/use-ui-text"

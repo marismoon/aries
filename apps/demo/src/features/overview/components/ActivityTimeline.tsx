@@ -2,9 +2,9 @@ import { useState, type CSSProperties } from "react"
 
 import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@marismoon/ui/ui/tabs"
-import { formatActivityTime, formatWan } from "@marismoon/core/format"
-import { defaultActivity, issuedTrend } from "@marismoon/core/mocks/overview"
-import type { ActivityEvent } from "@marismoon/core/types/overview"
+import { formatActivityTime, formatWan } from "@marismoon/ui/lib/format"
+import { defaultActivity, issuedTrend } from "@/shared/mocks/overview"
+import type { ActivityEvent } from "@/shared/types/overview"
 
 import "./overview-workflow.css"
 import { useUiText } from "@/lib/i18n/use-ui-text"

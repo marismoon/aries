@@ -3,8 +3,8 @@ import {
   collectionChannels,
   collectionStates,
   dashboardMetrics,
-} from "@marismoon/core/mocks/overview"
-import { demoPeriod } from "@marismoon/core/mocks/period"
+} from "@/shared/mocks/overview"
+import { demoPeriod } from "@/shared/mocks/period"
 
 import "./overview-metrics.css"
 import { useUiText } from "@/lib/i18n/use-ui-text"

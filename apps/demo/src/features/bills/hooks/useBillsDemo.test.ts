@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { demoBills, initialBillFilters } from "@marismoon/core/mocks/bills"
+import { demoBills, initialBillFilters } from "@/shared/mocks/bills"
 import { filterBills, sumBillsByCurrency } from "./useBillsDemo"
 
 describe("月账单样例口径", () => {

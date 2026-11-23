@@ -1,12 +1,9 @@
 import { createContext, useContext, useState } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 
-import { getDemoAttentionItems } from "@marismoon/core/mocks/mock-service"
-import { attentionDemoItems } from "@marismoon/core/mocks/overview"
-import type {
-  ActivityEvent,
-  AttentionItem,
-} from "@marismoon/core/types/overview"
+import { getDemoAttentionItems } from "@/shared/mocks/mock-service"
+import { attentionDemoItems } from "@/shared/mocks/overview"
+import type { ActivityEvent, AttentionItem } from "@/shared/types/overview"
 
 const attentionQueryKey = ["attention"] as const
 

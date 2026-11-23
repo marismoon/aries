@@ -6,7 +6,7 @@ import {
   collectionStates,
   dashboardMetrics,
   issuedTrend,
-} from "@marismoon/core/mocks/overview"
+} from "@/shared/mocks/overview"
 import { createQueryWrapper } from "@/test/query-wrapper"
 import { useDashboardDemoState } from "./useDashboardDemo"
 

@@ -10,12 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@marismoon/ui/ui/select"
-import { billStatusMeta, initialBillFilters } from "@marismoon/core/mocks/bills"
-import type {
-  BillFilters,
-  BillStatus,
-  Currency,
-} from "@marismoon/core/types/billing"
+import { billStatusMeta, initialBillFilters } from "@/shared/mocks/bills"
+import type { BillFilters, BillStatus, Currency } from "@/shared/types/billing"
 
 import "./bills-controls.css"
 import { useUiText } from "@/lib/i18n/use-ui-text"

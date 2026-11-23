@@ -1,15 +1,15 @@
 import { sumBillsByCurrency } from "@/features/bills/hooks/useBillsDemo"
-import { formatCurrency } from "@marismoon/core/format"
-import { billStatusMeta, demoBills } from "@marismoon/core/mocks/bills"
+import { formatCurrency } from "@marismoon/ui/lib/format"
+import { billStatusMeta, demoBills } from "@/shared/mocks/bills"
 import {
   attentionItems,
   collectionStates,
   dashboardMetrics,
   issuedTrend,
-} from "@marismoon/core/mocks/overview"
-import { demoPeriod, demoPeriodLabel } from "@marismoon/core/mocks/period"
-import type { BillStatus } from "@marismoon/core/types/billing"
-import type { AttentionItem } from "@marismoon/core/types/overview"
+} from "@/shared/mocks/overview"
+import { demoPeriod, demoPeriodLabel } from "@/shared/mocks/period"
+import type { BillStatus } from "@/shared/types/billing"
+import type { AttentionItem } from "@/shared/types/overview"
 
 export const recommendedQuestions = [
   { id: "anomalies", text: "本月有哪些账单异常？" },

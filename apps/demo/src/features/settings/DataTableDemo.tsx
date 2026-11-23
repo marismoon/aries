@@ -3,7 +3,7 @@ import { useState } from "react"
 import "@/features/bills/bills.css"
 import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 import { BillsTable } from "@/features/bills/components/BillsTable"
-import { demoBills, initialBillFilters } from "@marismoon/core/mocks/bills"
+import { demoBills, initialBillFilters } from "@/shared/mocks/bills"
 
 const sampleBills = demoBills.slice(0, 40)
 const sampleVendors = Array.from(new Set(sampleBills.map((b) => b.vendor)))
