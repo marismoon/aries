@@ -1,16 +1,4 @@
 .app-shell {
-  --rail-start-inset: var(--space-4);
-  --rail-block-start: 1.375rem;
-  --rail-block-end: max(var(--space-5), var(--workspace-safe-block-end));
-  --rail-item-gap: var(--space-2);
-  --rail-logo-gap: var(--space-5);
-  --rail-logo-center: calc(
-    var(--rail-block-start) + var(--rail-control-size) / 2
-  );
-  --icon-rail-width: calc(var(--rail-start-inset) + var(--rail-backplate-size));
-  --workspace-nav-width: 256px;
-  --workspace-column-gap: 10px;
-  --column-height: 100dvh;
   display: grid;
   grid-template-columns:
     var(--icon-rail-width) var(--workspace-nav-width)
@@ -119,7 +107,6 @@
 }
 
 .rail-brand {
-  --rail-fill: var(--rail-logo-bg, var(--foreground));
   margin-block-end: calc(var(--rail-logo-gap) - var(--rail-item-gap));
   color: var(--rail-logo-fg, var(--background));
   font-size: var(--text-body);
@@ -145,25 +132,12 @@
 }
 
 .rail-control {
-  /* --dock-t (0..1, set by IconRail while the pointer is near) fades the same
-     hover fill and a soft lift in, so the growing control has a body, like the
-     pills of the dock example. */
-  --rail-fill: color-mix(
-    in srgb,
-    var(--icon-control-hover-bg) calc(var(--dock-t, 0) * 100%),
-    transparent
-  );
   background: transparent;
   color: var(--foreground);
   transition: color var(--duration-feedback) var(--ease-feedback);
 }
 
-.rail-control:not(:disabled):hover {
-  --rail-fill: var(--icon-control-hover-bg);
-}
-
 .rail-control:not(:disabled)[aria-current="true"] {
-  --rail-fill: var(--rail-active-bg);
   color: var(--rail-active-fg);
 }
 
@@ -470,7 +444,6 @@
 }
 
 .nav-tree-children {
-  --nav-tree-line: color-mix(in srgb, var(--primary) 34%, transparent);
   display: grid;
   row-gap: var(--space-1);
   /* Same gap above the first child as between siblings. */
@@ -504,14 +477,6 @@
   border-end-start-radius: 7px;
   pointer-events: none;
   content: "";
-}
-
-.nav-tree-children
-  > li:has(
-    .workspace-nav-item:hover:not(:disabled),
-    [aria-current="page"]
-  )::after {
-  --nav-tree-line: color-mix(in srgb, var(--primary) 72%, transparent);
 }
 
 /* A node dot at the end of the branch arc, drawn on the row itself so the
@@ -574,8 +539,6 @@
 }
 
 .workspace-main {
-  --workspace-inset-start: clamp(var(--space-3), 1.25vw, var(--space-6));
-  --workspace-inset-end: var(--workspace-safe-inline-end);
   container: workspace / inline-size;
   display: flex;
   flex-direction: column;
@@ -607,19 +570,6 @@
 }
 
 .page-content-frame {
-  --workspace-edge-size: 16px;
-  /* The top and bottom fade strips span the content columns plus this feather
-     on each side, and fade out horizontally over it, so they never show a hard
-     end or paint over the neighbouring columns (rail, nav). */
-  --workspace-fade-feather: 8px;
-  /* Card shadows must fade out inside the clipping viewport. Widen the clip
-     edge by the bleed and pull the frame back by the same amount so card
-     positions and scroll length stay unchanged. */
-  --workspace-bleed-inline: max(
-    0px,
-    var(--space-4) - var(--workspace-inset-start)
-  );
-  --workspace-bleed-block: var(--space-4);
   position: relative;
   display: flex;
   flex: 1;
@@ -716,7 +666,6 @@
 }
 
 .page-header {
-  --breadcrumb-leading: 1.5;
   display: grid;
   min-height: 92px;
   grid-template-columns: minmax(0, 1fr);
@@ -831,7 +780,6 @@
 }
 
 .workspace-nav--mobile > .workspace-nav {
-  --sidebar-leaf-height: var(--control-size-compact);
   padding: 16px;
 }
 
@@ -1037,7 +985,6 @@
   }
 
   .workspace-main {
-    --workspace-inset-start: var(--space-1);
     margin-block-end: var(--workspace-safe-block-end);
   }
 }
@@ -1239,19 +1186,6 @@
 /* AI assistant: a continuous, soft multi-colour flow (blue, violet, pink,
    cyan) round the ring plus a blurred halo that breathes. Calm at rest, richer
    and faster on hover / focus / while the panel is open. Only this control. */
-@property --ai-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-
-.icon-rail {
-  --ai-blue: color-mix(in srgb, var(--ai-blue-base) 85%, var(--primary));
-  --ai-violet: color-mix(in srgb, var(--ai-violet-base) 88%, var(--primary));
-  --ai-pink: color-mix(in srgb, var(--ai-pink-base) 85%, var(--primary));
-  --ai-cyan: color-mix(in srgb, var(--ai-cyan-base) 85%, var(--primary));
-}
-
 /* No disc behind the AI control (not even on hover / when open): only the thin
    ring and a tight halo along it. The gradient reads --ai-angle on the
    pseudo-element itself, so the animated angle really moves it. */
@@ -1333,12 +1267,6 @@
   }
   95% {
     transform: translateY(-1.5px);
-  }
-}
-
-@keyframes rail-ai-flow {
-  to {
-    --ai-angle: 360deg;
   }
 }
 

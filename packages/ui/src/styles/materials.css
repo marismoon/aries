@@ -144,3 +144,45 @@ body {
     background-image: none;
   }
 }
+
+.rail-brand {
+  --rail-fill: var(--rail-logo-bg, var(--foreground));
+}
+
+.rail-control {
+  /* --dock-t (0..1, set by IconRail while the pointer is near) fades the same
+     hover fill and a soft lift in, so the growing control has a body, like the
+     pills of the dock example. */
+  --rail-fill: color-mix(
+    in srgb,
+    var(--icon-control-hover-bg) calc(var(--dock-t, 0) * 100%),
+    transparent
+  );
+}
+
+.rail-control:not(:disabled):hover {
+  --rail-fill: var(--icon-control-hover-bg);
+}
+
+.rail-control:not(:disabled)[aria-current="true"] {
+  --rail-fill: var(--rail-active-bg);
+}
+
+.nav-tree-children {
+  --nav-tree-line: color-mix(in srgb, var(--primary) 34%, transparent);
+}
+
+.nav-tree-children
+  > li:has(
+    .workspace-nav-item:hover:not(:disabled),
+    [aria-current="page"]
+  )::after {
+  --nav-tree-line: color-mix(in srgb, var(--primary) 72%, transparent);
+}
+
+.icon-rail {
+  --ai-blue: color-mix(in srgb, var(--ai-blue-base) 85%, var(--primary));
+  --ai-violet: color-mix(in srgb, var(--ai-violet-base) 88%, var(--primary));
+  --ai-pink: color-mix(in srgb, var(--ai-pink-base) 85%, var(--primary));
+  --ai-cyan: color-mix(in srgb, var(--ai-cyan-base) 85%, var(--primary));
+}
