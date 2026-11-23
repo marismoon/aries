@@ -22,3 +22,9 @@ overrides:
 方案中所称的根级 `pnpm.overrides` 在本仓由上述 YAML 配置实现。pnpm 12.16.1 会忽略根 `package.json` 的旧字段 `pnpm.overrides`。[pnpm 工作区配置](https://pnpm.io/settings)
 
 执行 `pnpm install` 并核实锁定版本，重跑自检和审计。在修复提交记录公告编号、影响路径、选定版本与移除条件。上游正式版本覆盖修复后，升级上游、移除临时覆盖，再次核对解析结果和审计，在同一提交记录解除原因。
+
+### 已评估、接受风险 · minimatch 开发工具链（2026-11-23）
+
+中危公告 CVE-2026-118764 涉及 `>=7.0.0 <11.0.1`。Demo 和 UI 各自的开发依赖链为 `shadcn@4.23.0 → ts-morph@26.0.0 → @ts-morph/common@0.27.0 → minimatch@10.2.6`。上游声明 `^10.0.1`，公告列出的首个修复版 `11.0.1` 超出该范围。[上游公告 GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249)
+
+本次保留锁定版本，接受开发工具处理不可信 glob 模式时的拒绝服务风险。已核对两个应用的全部生产 JavaScript，包括异步加载的代码块。Demo 的 114 个文件和 Starter 的 1 个文件均未包含这条 CLI 依赖链。默认审计继续报告该项，CI 维持高危阻断。若上游发布兼容修复、工具链转用已修复版本，或这条依赖进入运行时，重新评估并更新本记录。
