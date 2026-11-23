@@ -6,6 +6,7 @@
   "packageManager": "pnpm@12.16.1",
   "scripts": {
     "dev": "turbo run dev --filter=@marismoon/demo",
+    "dev:starter": "turbo run dev --filter=@marismoon/starter",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",

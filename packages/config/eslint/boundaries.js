@@ -32,8 +32,13 @@ const privateSources = {
 }
 
 const appImports = {
-  regex: '^(?:@marismoon/demo(?:/|$)|@/|/?(?:\\.\\.?/)*apps/)',
-  message: 'Shared packages must not import an application.',
+  regex: '^(?:@marismoon/demo(?:/|$)|/?(?:\\.\\.?/)*apps/)',
+  message: 'Import application code only from its own application.',
+}
+
+const starterAndAppAliases = {
+  regex: '^(?:@/|@marismoon/starter(?:/|$)|/?(?:\\.\\.?/)*templates/starter(?:/|$))',
+  message: 'Shared packages must not import the starter or an application alias.',
 }
 
 const shellFromUi = {
@@ -62,7 +67,7 @@ function restrictImports(oldPatterns, boundaries = []) {
   }
 }
 
-const uiBoundaries = [appImports, shellFromUi]
+const uiBoundaries = [appImports, starterAndAppAliases, shellFromUi]
 
 export const publicImports = restrictImports([])
 export const sourceImports = restrictImports([sourceIcons])
@@ -71,7 +76,8 @@ export const uiSourceImports = restrictImports([sourceIcons], uiBoundaries)
 export const uiPrimitiveImports = restrictImports([primitiveLayers, nonSolarIcons], uiBoundaries)
 export const uiSharedImports = restrictImports([sharedLayers, nonSolarIcons], uiBoundaries)
 export const demoImports = restrictImports([nonSolarIcons])
-export const shellImports = restrictImports([nonSolarIcons], [appImports, hostDependencies])
+export const shellImports = restrictImports([nonSolarIcons], [appImports, starterAndAppAliases, hostDependencies])
+export const starterImports = restrictImports([sourceIcons], [appImports])
 
 // Existing color literals are checked manually under AGENTS.md §3 and §9.
 // The exemptions for existing declarations apply only to these files:

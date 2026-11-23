@@ -1,7 +1,7 @@
 import { defineConfig, globalIgnores } from 'eslint/config'
 import { disableTypeChecked, typeChecked, typescript } from '@marismoon/config/eslint/base'
 import { accessibility, exampleRules, react, shadcnRules } from '@marismoon/config/eslint/react'
-import { demoImports, publicImports, shellImports, sourceImports, uiImports, uiPrimitiveImports, uiSharedImports, uiSourceImports } from '@marismoon/config/eslint/boundaries'
+import { demoImports, publicImports, shellImports, sourceImports, starterImports, uiImports, uiPrimitiveImports, uiSharedImports, uiSourceImports } from '@marismoon/config/eslint/boundaries'
 
 export default defineConfig([
   globalIgnores(['**/dist', '**/coverage', '**/playwright-report', '**/test-results', '**/artifacts']),
@@ -27,6 +27,7 @@ export default defineConfig([
     rules: demoImports,
   },
   { files: ['packages/shell/**'], rules: shellImports },
+  { files: ['templates/starter/**'], rules: starterImports },
   {
     files: [
       'packages/ui/src/components/ui/{carousel,chart,code-block,input-group}.tsx',

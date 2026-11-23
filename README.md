@@ -31,6 +31,7 @@ pnpm dev          # http://localhost:5173
 | 命令 | 作用 |
 | --- | --- |
 | `pnpm dev` | `turbo run dev --filter=@marismoon/demo` |
+| `pnpm dev:starter` | 启动首页和设置页起步模板，默认端口 5174 |
 | `pnpm build` | 构建 Demo（`tsc -b && vite build`） |
 | `pnpm typecheck` | 检查 UI、Shell 和 Demo 的类型 |
 | `pnpm lint` | `eslint .` |
