@@ -175,7 +175,15 @@ interface ShellLabels { /* 折叠、搜索占位、命令面板等外壳固定�
 2. `templates/starter/package.json` 不得出现 `@marismoon/config`。
 3. 任意包不得深层导入 `@marismoon/ui/src/*`、`@marismoon/shell/src/*`。
 
-`e2e/visual/` 不进默认 CI；基线在 Linux 容器生成，避免 macOS 与 CI 字体差异误报。
+### 视觉回归的定位（辅助，非主要验证）
+
+视觉截图对比**只作辅助手段**，不是任一步骤的通过门禁。主要验证依次为：类型检查 / lint / build / test / smoke E2E、lockfile 解析版本对比、构建产物 CSS 类名集合对比。
+
+- `e2e/visual/` 不进默认 CI，不纳入 `pnpm test:ui`，仅通过独立命令 `test:visual` 运行。
+- **正式基线**（若将来接入 CI 或作为发版门禁）必须在 Linux 容器中生成，避免 macOS 与 CI 字体渲染差异误报。
+- **允许使用当前 macOS 生成本地基线**，仅用于重构期间在本机做前后对比；macOS 基线不得作为 CI 或他人的基线使用（Playwright 快照带平台后缀，`-darwin` 与 `-linux` 并存，互不覆盖）。
+- 截图范围保持精简：约 3–4 个代表页面（如 overview、一个 settings 页）× Light/Dark × glass，不做全页面全组合。固定视口、禁用动画、等待字体与数据加载完成。
+- 出现差异时先判断是真回归还是抖动；**禁止为通过而放宽阈值或更新基线来掩盖差异**。
 
 ## 9. ADR（写入 `docs/decisions/`，每条一页）
 
@@ -206,13 +214,15 @@ interface ShellLabels { /* 折叠、搜索占位、命令面板等外壳固定�
 
 每一步结束必须能通过 `pnpm typecheck && pnpm lint && pnpm build && pnpm test`，并单独提交。
 
-0. **前置**：当前分支 `layout.css` 有未提交改动，先确认并提交或由用户处理；然后在 `apps/web` 用 Playwright 对全部页面 × Light/Dark × glass/clean 截基线图（存放 `e2e/visual`，不进默认 CI）。
-1. **改名**：`apps/web` → `apps/demo`（纯 `git mv`，仅改引用与包名），单独提交。
-2. **Catalog**：引入 `catalog:` / `catalogs.dev`，各包切换，不改业务代码。
+0. **前置**：确认工作区干净（`layout.css` 的改动已由用户提交）、分支正确；记录当前 `pnpm-lock.yaml` 的解析版本作为步骤 2 的对照。**不在此步建立视觉基线。**
+1. **改名**：`apps/web` → `apps/demo`（纯 `git mv`，仅改引用与包名），单独提交。验证靠 `typecheck / lint / build / test / test:ui`。
+2. **Catalog**：引入 `catalog:` / `catalogs.dev`，各包切换，不改业务代码、不升级版本。验证：迁移前后 lockfile 中各包解析版本一致。
 3. **config 包**：创建 `packages/config`，把 eslint / tsconfig 共享并让 ui、demo 引用；补依赖方向规则与颜色豁免路径。
 4. **取消 core**：`format.ts` → `ui/lib`；mocks、types 迁入 demo features；处理 `CommandPalette` 对 `mocks/bills` 的依赖。
 5. **就地解耦（先不搬文件）**：在 demo 内完成路由适配、`ShellLabels`、导航 Schema、slot、`CommandPalette` 数据注入、`LanguageControl` 受控化。**第一项任务**：核对 `layout.css` 用到的 `--glass-*` / `--sidebar-*` 变量是否全部定义在 `ui/styles`，有定义在 demo 样式里的先归位到 ui。
-6. **机械搬迁**：把已解耦的 `layout/` 整体移入 `packages/shell`，同步样式入口、`@source`、`exports`、ESLint 规则；跑视觉对比，必须与基线一致。
+6. **机械搬迁**：把已解耦的 `layout/` 整体移入 `packages/shell`，同步样式入口、`@source`、`exports`、ESLint 规则。
+   - 搬迁**前**先在本机（macOS 允许）build demo，保存产物 CSS 的类名集合，并按 §8 生成少量辅助截图基线。
+   - 搬迁**后**主要验证：build 产物 CSS 类名集合不得缺失（确定性对比，抓 `@source` 漏扫）；辅助验证：跑 `test:visual` 对比，人工复核差异；最后由用户人工过一遍关键页面。
 7. **starter**：创建最小骨架（home + settings 占位、最小 AppShell / 主题 / i18n / React Query）、自包含 tsconfig 与 eslint、精简版 `AGENTS.md`、冒烟 E2E，并纳入 workspace 与 CI。
 8. **文档与 CI**：更新 `AGENTS.md`、`README.md`、`docs/`（含 ADR）；补 `audit` 脚本；加入 §8 的三项检查；`.changeset/` 仅预留。
 9. **全量验证并汇报**：依次跑通 `pnpm typecheck`、`pnpm lint`、`pnpm build`、`pnpm test`、`pnpm test:ui`（覆盖 `apps/demo` 与 `templates/starter` 冒烟），汇报每项结果。
@@ -221,7 +231,8 @@ interface ShellLabels { /* 折叠、搜索占位、命令面板等外壳固定�
 
 | 风险 | 对策 |
 |---|---|
-| Tailwind v4 `@source` 跨包漏类名，样式悄悄消失 | 步骤 0 基线截图，步骤 6 对比 |
+| Tailwind v4 `@source` 跨包漏类名，样式悄悄消失 | 步骤 6 前后对比 build 产物 CSS 类名集合（主要）；少量截图与人工复核（辅助） |
+| 视觉截图抖动、跨平台字体差异导致误报 | 视觉仅作辅助；正式基线在 Linux 容器；macOS 基线仅限本机；禁止为通过而调阈值 |
 | `layout.css` 依赖的变量定义在 demo | 步骤 5 第一项核对并归位 |
 | 隐式业务依赖（`CommandPalette`、`useCopilot`）抽离时才暴露 | 先在 demo 内解耦再搬文件 |
 | i18n 词条归属混乱 | 逐条梳理，外壳固定文案进 `ShellLabels`，业务词条留 demo，不整体搬 |
@@ -231,7 +242,7 @@ interface ShellLabels { /* 折叠、搜索占位、命令面板等外壳固定�
 
 ## 13. 验收标准
 
-- 全部页面视觉与重构前一致（Light/Dark × glass/clean），i18n 中英文覆盖不退化。
+- 全部页面视觉与重构前一致（Light/Dark × glass/clean）：以构建产物 CSS 类名集合不缺失和用户人工复核为准，截图对比仅作辅助；i18n 中英文覆盖不退化。
 - `packages/shell` 的 `package.json` 与源码中不出现 `react-router`、`i18next`、`react-i18next`、`@marismoon/core`、`features/*` 引用。
 - `apps/demo` 与 `templates/starter` 只通过公开导出路径消费 `ui` / `shell`。
 - §8 三项检查在 CI 中生效；`pnpm audit` 脚本可用。
