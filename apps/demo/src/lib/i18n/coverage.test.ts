@@ -9,7 +9,7 @@ const cjk = /[\u4e00-\u9fff]/
 const sources = import.meta.glob<string>(
   [
     "../../app/**/*.{ts,tsx}",
-    "../../components/layout/**/*.{ts,tsx}",
+    "../../../../../packages/shell/src/**/*.{ts,tsx}",
     "./ShellLabelsBridge.tsx",
     "../../features/{overview,bills,copilot}/**/*.{ts,tsx}",
     "../../features/settings/base-pages/**/*.{ts,tsx}",

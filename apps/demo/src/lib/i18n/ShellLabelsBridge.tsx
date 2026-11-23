@@ -1,8 +1,5 @@
 import type { ReactNode } from "react"
-import {
-  ShellLabelsProvider,
-  type ShellLabels,
-} from "@/components/layout/types/labels"
+import { ShellLabelsProvider, type ShellLabels } from "@marismoon/shell"
 import { i18n } from "./index"
 import {
   applyDocumentLanguage,

@@ -8,15 +8,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@marismoon/ui/ui/dialog"
-import { CommandPaletteProvider } from "./CommandPalette"
-import { IconRail } from "./IconRail"
-import { MainWorkspace } from "./MainWorkspace"
-import { WorkspaceNav } from "./WorkspaceNav"
-import type { NavModule, WorkspaceNavigation } from "./types/nav"
-import { HeaderExtraContext } from "./context/header-extra"
-import { useShellRouter } from "./types/adapter"
-import { useShellLabels } from "./types/labels"
-import "./layout.css"
+import { CommandPaletteProvider } from "../CommandPalette"
+import { IconRail } from "../IconRail"
+import { MainWorkspace } from "../MainWorkspace"
+import { WorkspaceNav } from "../WorkspaceNav"
+import type { NavModule, WorkspaceNavigation } from "../../types/nav"
+import { HeaderExtraContext } from "../../context/header-extra"
+import { useShellRouter } from "../../types/adapter"
+import { useShellLabels } from "../../types/labels"
 
 function MobileDirectory({
   navigation,

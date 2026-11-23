@@ -6,7 +6,7 @@ import {
 } from "@marismoon/ui/icons"
 import { useRef } from "react"
 
-import { useShellLabels } from "./types/labels"
+import { useShellLabels } from "../../types/labels"
 
 import {
   Select,
@@ -16,12 +16,12 @@ import {
   SelectValue,
 } from "@marismoon/ui/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@marismoon/ui/ui/tabs"
-import { CommandPalette } from "./CommandPalette"
-import { NavHighlight } from "./NavHighlight"
-import { NavTree } from "./NavTree"
-import { ShellLink } from "./ShellLink"
-import { SidebarNavItem } from "./SidebarNavItem"
-import type { NavModule, NavNode, WorkspaceNavigation } from "./types/nav"
+import { CommandPalette } from "../CommandPalette"
+import { NavHighlight } from "../NavHighlight"
+import { NavTree } from "../NavTree"
+import { ShellLink } from "../ShellLink"
+import { SidebarNavItem } from "../SidebarNavItem"
+import type { NavModule, NavNode, WorkspaceNavigation } from "../../types/nav"
 
 function DirectoryItem({
   entry,

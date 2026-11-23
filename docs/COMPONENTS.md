@@ -143,9 +143,9 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 - `SelectContent` 使用 `position="popper"`。
 - `Tabs` / `ToggleGroup` / `Menubar`：`--recess` 分段胶囊，选项 28px。
 
-## 6. 应用级布局组件（`apps/demo/src/components/layout`）
+## 6. 工作区布局组件（`@marismoon/shell`）
 
-非共享库的一部分，随应用保留：`AppShell`、`IconRail`（用户头像沿用基础组件 `Avatar` + `AvatarBadge` 默认尺寸，不自定义尺寸、颜色与描边）、`WorkspaceNav`（`NavTree`、`NavHighlight`、`SidebarNavItem`）、`MainWorkspace`（含 `WorkspacePageLayout`）、`PageHeader({ title, breadcrumbs, breadcrumbDetail?, description? })`、`WorkspaceControls`（`DarkStyleControl` + `LanguageControl` + `BrandPaletteControl` + `ThemeSwitcher`）、`LanguageControl`（循环切换语言，见 [I18N.md](I18N.md)）、`WorkspacePage`（`WorkspacePageSlots`：`Content`、`Subtitle?`、`BreadcrumbDetail?`、`Summary?`，均为 `ComponentType`）、`CommandPalette` / `CommandPaletteProvider`。
+布局组件由 `@marismoon/shell` 根入口导出，接线与插槽见[工作区外壳文档](../packages/shell/README.md)。组件包括 `AppShell`、`IconRail`（用户头像沿用基础组件 `Avatar` + `AvatarBadge` 默认尺寸，不自定义尺寸、颜色与描边）、`WorkspaceNav`（`NavTree`、`NavHighlight`、`SidebarNavItem`）、`MainWorkspace`（含 `WorkspacePageLayout`）、`PageHeader({ title, breadcrumbs, breadcrumbDetail?, description? })`、`WorkspaceControls`（`DarkStyleControl` + `LanguageControl` + `BrandPaletteControl` + `ThemeSwitcher`）、`LanguageControl`（循环切换语言，见 [I18N.md](I18N.md)）、`WorkspacePage`（`WorkspacePageSlots`：`Content`、`Subtitle?`、`BreadcrumbDetail?`、`Summary?`，均为 `ComponentType`）、`CommandPalette` / `CommandPaletteProvider`。
 
 ## 7. 示例实现（可参考，正式开发时删除）
 

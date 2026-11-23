@@ -2,7 +2,7 @@ import { useContext, useEffect, useState, type RefObject } from "react"
 import {
   NavHighlightContext,
   type HighlightRect,
-} from "./context/nav-highlight"
+} from "../../context/nav-highlight"
 
 const ITEM = ".workspace-nav-item"
 

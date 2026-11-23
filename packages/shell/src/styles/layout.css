@@ -1,3 +1,5 @@
+@source "../**/*.tsx";
+
 .app-shell {
   display: grid;
   grid-template-columns:

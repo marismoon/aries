@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import type { ModuleCommands } from "../CommandPalette"
+import type { ModuleCommands } from "../components/CommandPalette"
 
 export interface NavNode {
   id: string

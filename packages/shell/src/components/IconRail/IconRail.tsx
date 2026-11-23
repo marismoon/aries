@@ -23,9 +23,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@marismoon/ui/ui/tooltip"
-import { ShellLink } from "./ShellLink"
-import type { NavModule, WorkspaceNavigation } from "./types/nav"
-import { useShellLabels } from "./types/labels"
+import { ShellLink } from "../ShellLink"
+import type { NavModule, WorkspaceNavigation } from "../../types/nav"
+import { useShellLabels } from "../../types/labels"
 
 export function RailTooltip({
   label,

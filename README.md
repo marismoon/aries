@@ -8,8 +8,9 @@
 
 ```text
 .
-├── apps/demo           @marismoon/demo    外壳布局、路由、页面、业务类型（zod）、Mock 数据与服务、i18n、e2e
+├── apps/demo           @marismoon/demo    外壳接线、路由、页面、业务类型（zod）、Mock 数据与服务、i18n、e2e
 ├── packages/ui         @marismoon/ui      shadcn 组件、共享组合组件、Solar 图标、动效、格式化、设计令牌与全局样式
+├── packages/shell      @marismoon/shell   工作区外壳、导航、命令面板与布局样式
 ├── packages/config     @marismoon/config  同仓共享的 ESLint 与 TypeScript 配置
 ├── docs/               架构 / 技术栈 / 设计系统 / 组件文档
 ├── AGENTS.md           开发契约（人与 AI 助手共同遵守）
@@ -31,7 +32,7 @@ pnpm dev          # http://localhost:5173
 | --- | --- |
 | `pnpm dev` | `turbo run dev --filter=@marismoon/demo` |
 | `pnpm build` | 构建 Demo（`tsc -b && vite build`） |
-| `pnpm typecheck` | 检查 UI 和 Demo 的类型 |
+| `pnpm typecheck` | 检查 UI、Shell 和 Demo 的类型 |
 | `pnpm lint` | `eslint .` |
 | `pnpm test` / `pnpm test:coverage` | Vitest |
 | `pnpm test:ui` | Playwright e2e（首次 `pnpm --filter @marismoon/demo exec playwright install chromium`） |
@@ -42,6 +43,7 @@ pnpm dev          # http://localhost:5173
 ## 文档
 
 - [AGENTS.md](AGENTS.md) — 开发契约
+- [工作区外壳](packages/shell/README.md) — 公开 API、样式接入与 CSS 变量契约
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [docs/TECH_STACK.md](docs/TECH_STACK.md) · [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) · [docs/COMPONENTS.md](docs/COMPONENTS.md) · [docs/I18N.md](docs/I18N.md)
 
 ## 环境变量

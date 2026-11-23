@@ -12,7 +12,7 @@
 | 项 | 值 |
 | --- | --- |
 | 包管理 / 任务 | pnpm 12.16.1（workspace）+ Turborepo；Node ^24 |
-| 包 | `@marismoon/demo`（apps/demo）、`@marismoon/ui`（packages/ui）、`@marismoon/config`（packages/config） |
+| 包 | `@marismoon/demo`（apps/demo）、`@marismoon/shell`（packages/shell）、`@marismoon/ui`（packages/ui）、`@marismoon/config`（packages/config） |
 | 启动 | `pnpm install` → `pnpm dev`（Vite，默认 <http://localhost:5173>，被占用时端口递增） |
 | 自检 | `pnpm typecheck` · `pnpm lint` · `pnpm build` · `pnpm test` · `pnpm test:ui` |
 | 单个 e2e | `pnpm --filter @marismoon/demo exec playwright test e2e/<name>.spec.ts`（Playwright 自动启动 Vite，端口 4173） |
@@ -20,17 +20,18 @@
 
 ## 1. Monorepo 边界
 
-运行时的工作区依赖方向只能是 `apps/demo → packages/ui`。Demo 与 UI 的 TypeScript 配置、根 ESLint 配置通过开发依赖引用 `@marismoon/config`。
+运行时的工作区依赖方向只能是 `apps/demo → packages/shell → packages/ui` 和 `apps/demo → packages/ui`。Demo、Shell 与 UI 的 TypeScript 配置、根 ESLint 配置通过开发依赖引用 `@marismoon/config`。
 
 | 位置 | 职责 | 禁止 |
 | --- | --- | --- |
 | `packages/ui` | shadcn 基础组件（`components/ui`）、共享组合组件（`components/shared`）、Solar 图标（`components/icons`）、动效（`components/motion`）、`lib/utils`、`lib/format`（金额与时间）、`lib/storage`（主题偏好）、`hooks/use-mobile`、**全部全局样式与设计令牌**（`styles/`） | MUST NOT 导入 `apps/demo`、`@/` 别名、业务数据 |
+| `packages/shell` | 三列外壳、导航、页面布局、命令面板与布局样式（见 [外壳 API](packages/shell/README.md)） | MUST NOT 导入应用代码、路由库、国际化库或业务数据 |
 | `packages/config` | 同仓共享的 ESLint 与 TypeScript 配置（private） | 仅用于开发工具 |
-| `apps/demo` | 应用外壳（`components/layout`）、路由（`app/`）、页面与业务（`features/`）、跨功能 Mock 与业务类型（`shared/`）、i18n（`lib/i18n`） | MUST NOT 复制 `packages/ui` 的组件或样式 |
+| `apps/demo` | 外壳接线与路由（`app/`）、页面与业务（`features/`）、跨功能 Mock 与业务类型（`shared/`）、i18n（`lib/i18n`） | MUST NOT 复制 `packages/ui` 的组件或样式 |
 
 1. **MUST** 通过包导出路径使用共享层（UI 路径总表见 [COMPONENTS.md](docs/COMPONENTS.md) 开头，映射来自各包 `package.json` 的 `exports`）。
-2. **MUST NOT** 使用 `@marismoon/ui/src/...` 深层路径；**MUST NOT** 在 `packages/ui` 内使用 `@/` 别名（包内一律相对路径）。`@/` 只在 `apps/demo` 内表示 `apps/demo/src`。
-3. 应用内分层 `components/layout ← features ← app`：下层 **MUST NOT** 导入上层。`eslint.config.js` 已对 `packages/ui` 强制「不得导入 `apps/demo`」与「`components/ui`、`lib` 不得导入 `shared`」。
+2. **MUST NOT** 使用 `@marismoon/ui/src/...` 或 `@marismoon/shell/src/...` 深层路径；**MUST NOT** 在 `packages/ui` 内使用 `@/` 别名（包内一律相对路径）。`@/` 只在 `apps/demo` 内表示 `apps/demo/src`。
+3. 分层 `packages/shell ← apps/demo/src/features ← apps/demo/src/app`：下层 **MUST NOT** 导入上层。`eslint.config.js` 已对 `packages/ui` 强制「不得导入 `apps/demo`」与「`components/ui`、`lib` 不得导入 `shared`」。
 4. **MUST** 仅用 `pnpm`；**MUST NOT** 提交 `package-lock.json` / `yarn.lock`。
 
 ## 2. 新增内容的唯一入口
@@ -48,11 +49,11 @@
 
 以下规则对**新增与被修改的代码**生效；**MUST NOT** 为清理存量而改动已确认的视觉。存量豁免（不得扩大）：
 
-- 颜色字面量沿用 [boundaries.js 中列出的七个 CSS 文件](packages/config/eslint/boundaries.js)，按 §9 人工核对。
+- 颜色字面量沿用 [boundaries.js 中列出的七个 CSS 文件](packages/config/eslint/boundaries.js)，其中外壳样式为 `packages/shell/src/styles/layout.css`，按 §9 人工核对。
 - `dark:` 变体：`apps/demo/src/features/settings/examples/*`（官方示例写法）与 `apps/demo/src/lib/highlighter.tsx`（shiki 双主题）。
 
 1. **MUST** 颜色只使用主题变量（`--primary`、`--accent`、`--muted`、`--destructive`、`--success`、`--warning`、`--danger`、`--info`、`--chart-1..8` 等，完整列表见 [DESIGN_SYSTEM §3](docs/DESIGN_SYSTEM.md)）。
-2. **MUST NOT** 在 `apps/demo/src/features` 与 `components/layout` 的新代码中写十六进制、`rgb()`、`hsl()`、`oklch()` 颜色；**MUST NOT** 用 `style={{ color/background… }}` 写死颜色（动态值只能引用 `var(--token)`，如 `StatusBadge`）。颜色字面量只允许出现在 `packages/ui/src/styles/*.css` 的令牌定义中。
+2. **MUST NOT** 在 `apps/demo/src/features` 与 `packages/shell/src` 的新代码中写十六进制、`rgb()`、`hsl()`、`oklch()` 颜色；**MUST NOT** 用 `style={{ color/background… }}` 写死颜色（动态值只能引用 `var(--token)`，如 `StatusBadge`）。颜色字面量只允许出现在 `packages/ui/src/styles/*.css` 的令牌定义中。
 3. **MUST NOT** 新增 `dark:` 变体。深色适配**优先通过令牌**（`.dark` 块）完成；`dark:` 仅允许出现在 `packages/ui/src/components/ui` 的 shadcn 组件内（沿用官方写法）。
 4. **MUST NOT** 修改已确认的亮色（Light）视觉去适配深色；深色问题只改 `.dark` 作用域。暗色共同底座在 `styles/dark-base.css`（glass 与 clean 共用），简洁暗色材质在 `styles/dark-clean.css`（作用域 `.dark[data-dark-style="clean"]`），规则见 [DESIGN_SYSTEM §2](docs/DESIGN_SYSTEM.md)。
    `marismoon-light` 为纯浅色主题，**MUST NOT** 给它增加深色分支（`tokens.css` 中已有的 `.dark[data-palette="marismoon-light"]` 块只用于让它在暗色类下保持浅色）。
@@ -111,16 +112,16 @@ PC（1440×900、1920×1080）为视觉基线。断点与验收视口见 [DESIGN
 在仓库根目录依次执行，**全部通过**才可提交：
 
 ```bash
-pnpm typecheck     # turbo: @marismoon/ui、@marismoon/demo
+pnpm typecheck     # turbo: @marismoon/ui、@marismoon/shell、@marismoon/demo
 pnpm lint          # eslint .
 pnpm build
-pnpm test          # vitest（ui、demo）
+pnpm test          # vitest（ui、shell、demo）
 pnpm test:ui       # playwright（首次：pnpm --filter @marismoon/demo exec playwright install chromium）
 ```
 
 另需人工核对：
 
-- [ ] **令牌合规**：`git diff -U0 -- apps/demo | grep -nE '^\+.*(#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(|oklch\()'` 无新增命中（豁免文件见 §3）
+- [ ] **令牌合规**：`git diff -U0 -- apps/demo packages/shell | grep -nE '^\+.*(#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(|oklch\()'` 无新增命中（豁免文件见 §3）
 - [ ] **无新增 `dark:`**：`git diff -U0 -- . ':!packages/ui/src/components/ui' | grep -n '^\+.*dark:'` 无命中
 - [ ] **响应式**：[DESIGN_SYSTEM §8](docs/DESIGN_SYSTEM.md) 的验收视口下无横向溢出、无重叠（`e2e/responsive-adaptation.spec.ts` 已覆盖，改动页面再手动抽查）
 - [ ] **主题**：Light / Dark（glass 与 clean）与品牌轮换后页头控件数量、图标、位置一致

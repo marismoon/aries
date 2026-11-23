@@ -3,24 +3,26 @@
 ## 1. 包与依赖方向
 
 ```text
-apps/demo (@marismoon/demo) ──► packages/ui (@marismoon/ui)
-根 ESLint 配置、Demo 与 UI 的 TypeScript 配置 ──► packages/config (@marismoon/config)
+apps/demo ──► packages/ui
+apps/demo ──► packages/shell ──► packages/ui
+根 ESLint 配置、Demo、Shell 与 UI 的 TypeScript 配置 ──► packages/config (@marismoon/config)
 ```
 
 | 包 | 入口（`exports`） | 内容 |
 | --- | --- | --- |
 | `@marismoon/ui` | `./ui/*` `./shared/*` `./motion/*` `./icons` `./icons/*` `./hooks/*` `./lib/*` `./styles/*`（直接导出源码，无构建步骤） | `src/components/{ui,shared,icons,motion}`、`src/hooks/use-mobile.ts`、`src/lib/{utils,format,storage}.ts`、`src/styles/*.css` |
+| `@marismoon/shell` | `.`、`./styles`（源码） | 三列外壳、页面布局和命令面板，见 [公开 API 与 CSS 变量契约](../packages/shell/README.md) |
 | `@marismoon/config` | `./eslint/*`、`./typescript/*.json` | ESLint 的 base、react、boundaries 和 TypeScript 的 base、react、app 配置 |
-| `@marismoon/demo` | — | `src/{app,components/layout,features,shared,lib,test}`、`e2e/` |
+| `@marismoon/demo` | — | `src/{app,features,shared,lib,test}`、`e2e/` |
 
-Demo 通过包导出路径引用 UI 源码，由 Vite 直接编译。`packages/ui` 内部只用相对导入。
+Demo 通过包导出路径引用 UI 和 Shell 的源码，由 Vite 直接编译。`packages/ui` 内部只用相对导入。
 
 ## 2. apps/demo 目录
 
 ```text
 apps/demo/src
-├── main.tsx            入口：应用品牌/暗色风格偏好 → i18n → index.css → 渲染 App
-├── index.css           @import "@marismoon/ui/styles/globals.css"; @source "./"
+├── main.tsx            入口：载入 index.css 与应用模块，应用已保存的主题偏好后渲染 App
+├── index.css           依次引入 @marismoon/ui/styles/globals.css 和 @marismoon/shell/styles，@source "./" 扫描应用代码
 ├── app/
 │   ├── App.tsx         AppProviders + RouterProvider
 │   ├── providers.tsx   QueryClient、next-themes、LazyMotion/MotionConfig（`reducedMotion="user"`）、TooltipProvider、演示状态；命令面板由 `AppShell` 内的 `CommandPaletteProvider` 提供
@@ -30,7 +32,6 @@ apps/demo/src
 │   ├── workspace-modules.ts  业务菜单注册与导航计数
 │   ├── use-workspace-navigation.tsx  构造已翻译的导航 Schema
 │   └── workspace-pages.tsx  页面注册表（WorkspacePageConfig）
-├── components/layout/  AppShell、IconRail、WorkspaceNav(+NavTree/NavHighlight/SidebarNavItem)、MainWorkspace、PageHeader、WorkspaceControls、WorkspacePage、CommandPalette、types/、layout.css
 ├── features/           overview、bills、copilot、settings（均为示例/调试页面）
 ├── shared/             跨功能的 Mock 数据、服务（mocks/）和业务类型（types/）
 ├── lib/                i18n（i18next 资源、语言存储、`useUiText`，见 I18N.md）、query-client.ts、highlighter.tsx（shiki）

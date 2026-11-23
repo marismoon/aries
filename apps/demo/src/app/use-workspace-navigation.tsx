@@ -1,10 +1,6 @@
 import { useMemo } from "react"
 import { AppIcon } from "@marismoon/ui/icons"
-import type {
-  NavModule,
-  NavNode,
-  WorkspaceNavigation,
-} from "@/components/layout/types/nav"
+import type { NavModule, NavNode, WorkspaceNavigation } from "@marismoon/shell"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import { getModuleCommands } from "./command-items"
 import {

@@ -9,8 +9,8 @@ import {
 } from "react"
 
 import { MotionSurface } from "@marismoon/ui/motion/MotionSurface"
-import { useShellRouter } from "./types/adapter"
-import { useShellLabels } from "./types/labels"
+import { useShellRouter } from "../../types/adapter"
+import { useShellLabels } from "../../types/labels"
 
 type WorkspaceScrollContext = {
   viewport: RefObject<HTMLDivElement | null>

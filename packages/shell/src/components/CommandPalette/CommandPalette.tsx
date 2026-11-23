@@ -22,9 +22,9 @@ import {
   DialogTitle,
 } from "@marismoon/ui/ui/dialog"
 import { Input } from "@marismoon/ui/ui/input"
-import { ShellLink } from "./ShellLink"
-import { useShellRouter } from "./types/adapter"
-import { useShellLabels } from "./types/labels"
+import { ShellLink } from "../ShellLink"
+import { useShellRouter } from "../../types/adapter"
+import { useShellLabels } from "../../types/labels"
 
 export type CommandItem = {
   title: string

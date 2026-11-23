@@ -9,7 +9,7 @@
 | Node.js | ^24（`engines`） | |
 | pnpm | 12.16.1 | workspace：`apps/*`、`packages/*` |
 | Turborepo | 2.11.13 | 任务：dev（无缓存、常驻）、build、typecheck、test、test:coverage、test:ui |
-| TypeScript | 6.0.3 | UI 与 Demo 通过 `@marismoon/config` 共享编译配置，业务代码启用 strict、`noUncheckedIndexedAccess`、`erasableSyntaxOnly` |
+| TypeScript | 6.0.3 | UI、Shell 与 Demo 通过 `@marismoon/config` 共享编译配置，业务代码启用 strict、`noUncheckedIndexedAccess`、`erasableSyntaxOnly` |
 | ESLint | 9.39.5 | typescript-eslint（type-checked）、react-hooks、react-refresh、jsx-a11y、import-x（`no-cycle`） |
 | Prettier | 3.10.1 | + `prettier-plugin-tailwindcss`（函数 `cn`、`cva`） |
 | husky / lint-staged | 9.1.7 / ^17.6 | 提交前对暂存的 ts/tsx 运行 Prettier 与 `eslint --fix` |

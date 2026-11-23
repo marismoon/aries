@@ -1,4 +1,4 @@
-import { useShellRouter, type ShellLinkProps } from "./types/adapter"
+import { useShellRouter, type ShellLinkProps } from "../../types/adapter"
 
 export function ShellLink(props: ShellLinkProps) {
   const { activePath, renderLink, onNavigate } = useShellRouter()

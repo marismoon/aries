@@ -3,10 +3,7 @@ import {
   SolarPalette,
   SolarReceiptText,
 } from "@marismoon/ui/icons"
-import type {
-  CommandItem,
-  ModuleCommands,
-} from "@/components/layout/CommandPalette"
+import type { CommandItem, ModuleCommands } from "@marismoon/shell"
 import {
   workspaceModules,
   type WorkspaceEntry,

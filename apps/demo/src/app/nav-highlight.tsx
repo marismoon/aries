@@ -1,10 +1,7 @@
 import type { ReactNode } from "react"
 import { AnimatePresence } from "motion/react"
 import { span as MotionSpan } from "motion/react-m"
-import {
-  NavHighlightContext,
-  type NavHighlightRects,
-} from "@/components/layout/context/nav-highlight"
+import { NavHighlightContext, type NavHighlightRects } from "@marismoon/shell"
 
 // Critically damped: no overshoot, so neighbouring pills never overlap.
 const slide = { type: "spring", stiffness: 420, damping: 40 } as const

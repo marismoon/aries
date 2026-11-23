@@ -1,4 +1,4 @@
-import type { WorkspacePageSlots } from "@/components/layout/WorkspacePage"
+import type { WorkspacePageSlots } from "@marismoon/shell"
 
 export interface WorkspacePageConfig {
   id: string

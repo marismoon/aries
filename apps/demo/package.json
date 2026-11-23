@@ -13,6 +13,7 @@
     "test:ui": "playwright test"
   },
   "dependencies": {
+    "@marismoon/shell": "workspace:*",
     "@marismoon/ui": "workspace:*",
     "@tanstack/react-query": "^5.108.0",
     "cn": "catalog:",

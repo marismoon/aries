@@ -1,6 +1,6 @@
 import { useId, useState, type ReactNode } from "react"
 import { AppIcon, SolarChevronDown } from "@marismoon/ui/icons"
-import { SidebarNavItem } from "./SidebarNavItem"
+import { SidebarNavItem } from "../SidebarNavItem"
 
 export function NavTree({
   label,

@@ -1,6 +1,6 @@
 import type { ComponentType } from "react"
-import { WorkspacePageLayout } from "./MainWorkspace"
-import { PageHeader, type Breadcrumb } from "./PageHeader"
+import { WorkspacePageLayout } from "../MainWorkspace"
+import { PageHeader, type Breadcrumb } from "../PageHeader"
 
 export interface WorkspacePageSlots {
   Content: ComponentType

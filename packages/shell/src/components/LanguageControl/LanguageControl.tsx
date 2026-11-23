@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
 } from "@marismoon/ui/ui/tooltip"
 
-import { useShellLabels, type LanguageControlProps } from "./types/labels"
+import { useShellLabels, type LanguageControlProps } from "../../types/labels"
 
 /** Header switch that cycles the UI language, like the brand palette control. */
 export function LanguageControl({
