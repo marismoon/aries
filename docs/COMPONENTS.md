@@ -145,7 +145,7 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 
 ## 6. 工作区布局组件（`@marismoon/shell`）
 
-布局组件由 `@marismoon/shell` 根入口导出，接线与插槽见[工作区外壳文档](../packages/shell/README.md)。组件包括 `AppShell`、`IconRail`（用户头像沿用基础组件 `Avatar` + `AvatarBadge` 默认尺寸，不自定义尺寸、颜色与描边）、`WorkspaceNav`（`NavTree`、`NavHighlight`、`SidebarNavItem`）、`MainWorkspace`（含 `WorkspacePageLayout`）、`PageHeader({ title, breadcrumbs, breadcrumbDetail?, description? })`、`WorkspaceControls`（`DarkStyleControl` + `LanguageControl` + `BrandPaletteControl` + `ThemeSwitcher`）、`LanguageControl`（循环切换语言，见 [I18N.md](I18N.md)）、`WorkspacePage`（`WorkspacePageSlots`：`Content`、`Subtitle?`、`BreadcrumbDetail?`、`Summary?`，均为 `ComponentType`）、`CommandPalette` / `CommandPaletteProvider`。
+工作区布局、导航、页头和命令面板由 `@marismoon/shell` 根入口导出。组件清单、Props、插槽、导航与语言适配统一见 [Shell README](../packages/shell/README.md)。Demo 的用户头像沿用基础组件 `Avatar` + `AvatarBadge` 的默认尺寸、颜色与描边。
 
 ## 7. 示例实现（可参考，正式开发时删除）
 

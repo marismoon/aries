@@ -3,8 +3,9 @@
 ## 1. 包与依赖方向
 
 ```text
-apps/demo ──► packages/ui
-apps/demo ──► packages/shell ──► packages/ui
+apps/demo         ─┬─► packages/shell ──► packages/ui
+templates/starter ─┘
+两种宿主也可直接使用 packages/ui 的公开入口。
 根 ESLint 配置、Demo、Shell 与 UI 的 TypeScript 配置 ──► packages/config (@marismoon/config)
 ```
 
@@ -14,8 +15,9 @@ apps/demo ──► packages/shell ──► packages/ui
 | `@marismoon/shell` | `.`、`./styles`（源码） | 三列外壳、页面布局和命令面板，见 [公开 API 与 CSS 变量契约](../packages/shell/README.md) |
 | `@marismoon/config` | `./eslint/*`、`./typescript/*.json` | ESLint 的 base、react、boundaries 和 TypeScript 的 base、react、app 配置 |
 | `@marismoon/demo` | — | `src/{app,features,shared,lib,test}`、`e2e/` |
+| `@marismoon/starter` | — | 首页、设置、独立工程配置和冒烟测试，见[起步指南](STARTER.md) |
 
-Demo 通过包导出路径引用 UI 和 Shell 的源码，由 Vite 直接编译。`packages/ui` 内部只用相对导入。
+两个宿主通过包导出路径引用 UI 和 Shell 的源码，由 Vite 直接编译。`packages/ui` 内部只用相对导入。
 
 ## 2. apps/demo 目录
 
@@ -66,16 +68,12 @@ AppShell 固定视口；body 不滚动；仅 `PageContentViewport`（第三列�
 
 Demo 的 `@/shared/mocks/mock-service` 导出 `getDemoAttentionItems` 和 `getDemoBills`。两者模拟请求延迟，并用 `@/shared/types` 目录中的 Zod schema 校验返回值。页面通过各功能的 `useQuery` Hook 读取数据。概览专用的图表数据在 `features/overview/mocks/charts.ts`。接入真实后端时替换 Mock 服务并读取 `VITE_API_BASE_URL`。
 
-## 7. 测试
+## 7. 测试与边界
 
-| 层 | 工具 | 位置 |
-| --- | --- | --- |
-| 单测 | Vitest（Demo 使用 jsdom） | `packages/ui/src/**/*.test.{ts,tsx}`、`apps/demo/src/**/*.test.{ts,tsx}` |
-| e2e | Playwright（Chromium，`pnpm dev` 作为 webServer，端口 4173） | `apps/demo/e2e/{app-shell,i18n,components-preview,motion,responsive,responsive-adaptation,scroll-boundary,theme,workspace-scroll}.spec.ts` |
+| 根命令 | 覆盖范围 |
+| --- | --- |
+| `pnpm test` | UI 图标、Demo 的业务和翻译、Starter 的双语资源 |
+| `pnpm test:ui` | Demo 在 4173 运行 `apps/demo/e2e/*.spec.ts` 全集；Starter 在 4174 运行 [smoke.spec.ts](../templates/starter/e2e/smoke.spec.ts) |
+| `pnpm check:workspace` | 校验发布清单外的包、Starter 的工程依赖以及全仓共享包导入路径 |
 
-## 8. 删除示例页面的步骤（正式开发时）
-
-1. 在 `workspace-pages.tsx` 移除 overview / bills / settings 下相应条目，并同步 `app/workspace-modules.ts` 与 `lib/i18n/resources.ts` 文案。
-2. 删除 `apps/demo/src/features/<name>`；`providers.tsx` 中的 `DemoProviders` 随之删除。
-3. 若不再使用 Mock，先替换消费者（包括从 `@/shared/mocks/bills` 读取示例数量的 `app/workspace-modules.ts`），再删除 `apps/demo/src/shared/mocks`。
-4. 删除对应 e2e 并保留外壳/主题/滚动/响应式用例（已不含业务数据断言）。
+Demo 的示例与用例是共享框架的回归基线。新项目复制 Starter 到同仓的 `apps/`，操作见[起步指南](STARTER.md)。依赖方向、CSS 入口与目录结构的取舍见[架构决策](decisions/)。

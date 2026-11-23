@@ -5,36 +5,39 @@
 
 文档优先级：本文件与 `docs/` 冲突时以本文件为准；`docs/` 提供令牌定义、组件接口与操作细节，同一规则尽量只在一处完整定义，其余位置给出链接。
 
-> 本仓库是脱敏后的启动模板。`apps/demo` 中的「系统设置 → 组件预览 / 动效 / 基础页面」以及 overview、bills、copilot 是**调试与示例页面**，正式项目开发完成后会删除；`packages/*` 是需要长期保留的共享层。
+> 新项目从 [Starter](docs/STARTER.md) 起步。`apps/demo` 中的「系统设置 → 组件预览 / 动效 / 基础页面」以及 overview、bills、copilot 是**调试与示例页面**，保留为框架的回归基线。
 
 ## 0. 速查
 
 | 项 | 值 |
 | --- | --- |
 | 包管理 / 任务 | pnpm 12.16.1（workspace）+ Turborepo；Node ^24 |
-| 包 | `@marismoon/demo`（apps/demo）、`@marismoon/shell`（packages/shell）、`@marismoon/ui`（packages/ui）、`@marismoon/config`（packages/config） |
-| 启动 | `pnpm install` → `pnpm dev`（Vite，默认 <http://localhost:5173>，被占用时端口递增） |
-| 自检 | `pnpm typecheck` · `pnpm lint` · `pnpm build` · `pnpm test` · `pnpm test:ui` |
+| 包 | `@marismoon/demo`（apps/demo）、`@marismoon/starter`（templates/starter）、`@marismoon/shell`（packages/shell）、`@marismoon/ui`（packages/ui）、`@marismoon/config`（packages/config） |
+| 启动 | `pnpm install` → `pnpm dev`（Vite，默认 <http://localhost:5173>，被占用时端口递增）；`pnpm dev:starter` 启动模板（默认 5174） |
+| 自检 | `pnpm typecheck` · `pnpm lint` · `pnpm build` · `pnpm test` · `pnpm test:ui` · `pnpm check:workspace` |
 | 单个 e2e | `pnpm --filter @marismoon/demo exec playwright test e2e/<name>.spec.ts`（Playwright 自动启动 Vite，端口 4173） |
-| 详细文档 | [架构](docs/ARCHITECTURE.md) · [技术栈](docs/TECH_STACK.md) · [设计系统](docs/DESIGN_SYSTEM.md) · [组件](docs/COMPONENTS.md) · [国际化](docs/I18N.md) |
+| 详细文档 | [架构](docs/ARCHITECTURE.md) · [技术栈](docs/TECH_STACK.md) · [设计系统](docs/DESIGN_SYSTEM.md) · [组件](docs/COMPONENTS.md) · [国际化](docs/I18N.md) · [Starter](docs/STARTER.md) · [版本治理](docs/VERSIONING.md) |
 
 ## 1. Monorepo 边界
 
-运行时的工作区依赖方向只能是 `apps/demo → packages/shell → packages/ui` 和 `apps/demo → packages/ui`。Demo、Shell 与 UI 的 TypeScript 配置、根 ESLint 配置通过开发依赖引用 `@marismoon/config`。
+Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 UI。应用之间不得互相导入。Demo、Shell 与 UI 的 TypeScript 配置、根 ESLint 配置通过开发依赖引用 `@marismoon/config`。
 
 | 位置 | 职责 | 禁止 |
 | --- | --- | --- |
 | `packages/ui` | shadcn 基础组件（`components/ui`）、共享组合组件（`components/shared`）、Solar 图标（`components/icons`）、动效（`components/motion`）、`lib/utils`、`lib/format`（金额与时间）、`lib/storage`（主题偏好）、`hooks/use-mobile`、**全部全局样式与设计令牌**（`styles/`） | MUST NOT 导入 `apps/demo`、`@/` 别名、业务数据 |
 | `packages/shell` | 三列外壳、导航、页面布局、命令面板与布局样式（见 [外壳 API](packages/shell/README.md)） | MUST NOT 导入应用代码、路由库、国际化库或业务数据 |
+| `templates/starter` | 可复制的首页、设置和宿主接线，见 [Starter 开发契约](templates/starter/AGENTS.md) | MUST NOT 依赖共享工程配置或 Demo 代码 |
 | `packages/config` | 同仓共享的 ESLint 与 TypeScript 配置（private） | 仅用于开发工具 |
 | `apps/demo` | 外壳接线与路由（`app/`）、页面与业务（`features/`）、跨功能 Mock 与业务类型（`shared/`）、i18n（`lib/i18n`） | MUST NOT 复制 `packages/ui` 的组件或样式 |
 
 1. **MUST** 通过包导出路径使用共享层（UI 路径总表见 [COMPONENTS.md](docs/COMPONENTS.md) 开头，映射来自各包 `package.json` 的 `exports`）。
-2. **MUST NOT** 使用 `@marismoon/ui/src/...` 或 `@marismoon/shell/src/...` 深层路径；**MUST NOT** 在 `packages/ui` 内使用 `@/` 别名（包内一律相对路径）。`@/` 只在 `apps/demo` 内表示 `apps/demo/src`。
+2. **MUST NOT** 使用 `@marismoon/ui/src/...` 或 `@marismoon/shell/src/...` 深层路径；**MUST NOT** 在 `packages/ui` 内使用 `@/` 别名（包内一律相对路径）。Demo 与 Starter 的 `@/` 均指向各自的 `src/`。
 3. 分层 `packages/shell ← apps/demo/src/features ← apps/demo/src/app`：下层 **MUST NOT** 导入上层。`eslint.config.js` 已对 `packages/ui` 强制「不得导入 `apps/demo`」与「`components/ui`、`lib` 不得导入 `shared`」。
 4. **MUST** 仅用 `pnpm`；**MUST NOT** 提交 `package-lock.json` / `yarn.lock`。
 
 ## 2. 新增内容的唯一入口
+
+下表中的业务模块、页面注册路径适用于 Demo。Starter 的注册表和双语页面接线见[起步指南](docs/STARTER.md)。
 
 | 需求 | 做法 |
 | --- | --- |
@@ -112,11 +115,12 @@ PC（1440×900、1920×1080）为视觉基线。断点与验收视口见 [DESIGN
 在仓库根目录依次执行，**全部通过**才可提交：
 
 ```bash
-pnpm typecheck     # turbo: @marismoon/ui、@marismoon/shell、@marismoon/demo
+pnpm typecheck     # turbo: UI、Shell、Demo、Starter
 pnpm lint          # eslint .
 pnpm build
-pnpm test          # vitest（ui、shell、demo）
-pnpm test:ui       # playwright（首次：pnpm --filter @marismoon/demo exec playwright install chromium）
+pnpm test          # vitest（ui、shell、demo、starter）
+pnpm test:ui       # demo 全集 + starter 冒烟，首次先安装 Playwright Chromium
+pnpm check:workspace
 ```
 
 另需人工核对：
