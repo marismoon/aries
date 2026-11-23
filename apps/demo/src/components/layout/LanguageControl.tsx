@@ -1,15 +1,3 @@
-import { useState } from "react"
-import { useTranslation } from "react-i18next"
-
-import { i18n } from "@/lib/i18n"
-import {
-  isLanguage,
-  languages,
-  setStoredLanguage,
-  applyDocumentLanguage,
-  type Language,
-} from "@/lib/i18n/language"
-import { useUiText } from "@/lib/i18n/use-ui-text"
 import { AppIcon, SolarGlobal } from "@marismoon/ui/icons"
 import { Button } from "@marismoon/ui/ui/button"
 import {
@@ -18,21 +6,22 @@ import {
   TooltipTrigger,
 } from "@marismoon/ui/ui/tooltip"
 
-const order = Object.keys(languages).filter(isLanguage)
+import { useShellLabels, type LanguageControlProps } from "./types/labels"
 
 /** Header switch that cycles the UI language, like the brand palette control. */
-export function LanguageControl() {
-  const tl = useUiText()
-  const { i18n: active } = useTranslation()
-  const current = isLanguage(active.language) ? active.language : order[0]!
-  const [, setTick] = useState(0)
-  const next: Language = order[(order.indexOf(current) + 1) % order.length]!
-
-  function cycle() {
-    setStoredLanguage(next)
-    applyDocumentLanguage(next)
-    void i18n.changeLanguage(next).then(() => setTick((n) => n + 1))
-  }
+export function LanguageControl({
+  value,
+  options,
+  onChange,
+}: LanguageControlProps) {
+  const labels = useShellLabels()
+  const index = Math.max(
+    0,
+    options.findIndex((option) => option.value === value)
+  )
+  const current = options[index]
+  const next = options[(index + 1) % options.length]
+  if (!current || !next) return null
 
   return (
     <Tooltip>
@@ -42,14 +31,14 @@ export function LanguageControl() {
           variant="ghost"
           size="icon"
           className="workspace-mode-control"
-          aria-label={tl("语言")}
-          onClick={cycle}
+          aria-label={labels.language}
+          onClick={() => onChange(next.value)}
         >
           <AppIcon icon={SolarGlobal} size={20} aria-hidden="true" />
         </Button>
       </TooltipTrigger>
       <TooltipContent side="bottom" sideOffset={8}>
-        {languages[current]} → {languages[next]}
+        {current.label} → {next.label}
       </TooltipContent>
     </Tooltip>
   )

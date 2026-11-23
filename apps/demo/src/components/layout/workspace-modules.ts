@@ -265,3 +265,26 @@ export type WorkspaceModuleId = keyof typeof workspaceModules
 export const workspaceModuleIds = Object.keys(
   workspaceModules
 ) as WorkspaceModuleId[]
+
+export type NavigationEntry = { id: string } & (
+  | Exclude<WorkspaceEntry, { kind: "folder" }>
+  | (Omit<Extract<WorkspaceEntry, { kind: "folder" }>, "children"> & {
+      children: readonly (WorkspaceLeaf & { id: string })[]
+    })
+)
+
+export interface WorkspaceNavigation {
+  modules: Record<
+    WorkspaceModuleId,
+    Omit<WorkspaceModule, "entries"> & {
+      entries: readonly NavigationEntry[]
+    }
+  >
+  directoryDescription: string
+  createLabel: string
+  unavailableLabel: string
+  brandLabel: string
+  userLabel: string
+  panelLabel: string
+  panelTooltip: string
+}

@@ -27,10 +27,10 @@ import {
 import { ShellLink } from "./ShellLink"
 import {
   workspaceModuleIds,
-  workspaceModules,
+  type WorkspaceNavigation,
   type WorkspaceModuleId,
 } from "./workspace-modules"
-import { useUiText } from "@/lib/i18n/use-ui-text"
+import { useShellLabels } from "./types/labels"
 
 const mainModules = workspaceModuleIds.filter((id) => id !== "settings")
 
@@ -54,15 +54,15 @@ function RailTooltip({
 function RailModule({
   id,
   active,
+  navigation,
   onSelect,
 }: {
   id: WorkspaceModuleId
   active: boolean
+  navigation: WorkspaceNavigation
   onSelect: (id: WorkspaceModuleId) => void
 }) {
-  const tl = useUiText()
-  const { icon: Icon, label: source } = workspaceModules[id]
-  const label = tl(source)
+  const { icon: Icon, label } = navigation.modules[id]
 
   return (
     <RailTooltip label={label}>
@@ -88,6 +88,7 @@ function RailModule({
 
 export function IconRail({
   activeModule,
+  navigation,
   navExpanded,
   copilotOpen,
   copilotPanelId,
@@ -97,6 +98,7 @@ export function IconRail({
   mobileDirectory,
 }: {
   activeModule: WorkspaceModuleId
+  navigation: WorkspaceNavigation
   navExpanded: boolean
   copilotOpen: boolean
   copilotPanelId: string
@@ -105,7 +107,7 @@ export function IconRail({
   onOpenCopilot: (element: HTMLElement | null) => void
   mobileDirectory: ReactNode
 }) {
-  const tl = useUiText()
+  const labels = useShellLabels()
   const [flip, setFlip] = useState(false)
   const rail = useRef<HTMLElement>(null)
 
@@ -227,17 +229,19 @@ export function IconRail({
       nav.removeEventListener("pointerleave", leave)
     }
   }, [])
-  const navLabel = tl(navExpanded ? "收起工作区导航" : "展开工作区导航")
+  const navLabel = navExpanded
+    ? labels.collapseNavigation
+    : labels.expandNavigation
   const PanelToggleIcon = navExpanded ? SolarPanelLeftClose : SolarPanelLeftOpen
 
   return (
     <div className="icon-rail-column" data-layout-column="rail">
-      <nav className="icon-rail" aria-label={tl("主模块")} ref={rail}>
-        <RailTooltip label={tl("Marismoon 工作台")}>
+      <nav className="icon-rail" aria-label={labels.mainModules} ref={rail}>
+        <RailTooltip label={navigation.brandLabel}>
           <ShellLink
             to="/overview"
             className="rail-brand"
-            aria-label={tl("Marismoon 工作台")}
+            aria-label={navigation.brandLabel}
           >
             <span translate="no">fH</span>
           </ShellLink>
@@ -247,20 +251,21 @@ export function IconRail({
             <RailModule
               key={id}
               id={id}
+              navigation={navigation}
               active={activeModule === id}
               onSelect={onSelectModule}
             />
           ))}
         </div>
         <div className="rail-footer">
-          <RailTooltip label={tl("AI 助手")}>
+          <RailTooltip label={navigation.panelTooltip}>
             <Button
               type="button"
               variant="ghost"
               size="icon"
               className="rail-control rail-ai"
               data-copilot-trigger="rail"
-              aria-label={tl("Marismoon 智算助手")}
+              aria-label={navigation.panelLabel}
               aria-expanded={copilotOpen}
               aria-controls={copilotOpen ? copilotPanelId : undefined}
               aria-keyshortcuts="Meta+Shift+K Control+Shift+K"
@@ -271,14 +276,15 @@ export function IconRail({
           </RailTooltip>
           <RailModule
             id="settings"
+            navigation={navigation}
             active={activeModule === "settings"}
             onSelect={onSelectModule}
           />
           <span className="grid size-(--rail-control-size) shrink-0 place-items-center">
             <Avatar
               role="img"
-              aria-label={tl("演示用户 · 管理员")}
-              title={tl("演示用户 · 管理员")}
+              aria-label={navigation.userLabel}
+              title={navigation.userLabel}
             >
               <AvatarImage src="https://github.com/pranathip.png" alt="" />
               <AvatarFallback>M</AvatarFallback>

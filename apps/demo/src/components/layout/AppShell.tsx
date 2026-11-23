@@ -1,7 +1,4 @@
 import { useEffect, useState, type ReactNode } from "react"
-import { useTranslation } from "react-i18next"
-import { useUiText } from "@/lib/i18n/use-ui-text"
-import { workspacePages } from "@/app/workspace-pages"
 import { AppIcon, SolarPanelLeftOpen } from "@marismoon/ui/icons"
 import { Button } from "@marismoon/ui/ui/button"
 import {
@@ -17,18 +14,24 @@ import { CommandPaletteProvider, type ModuleCommands } from "./CommandPalette"
 import { IconRail } from "./IconRail"
 import { MainWorkspace } from "./MainWorkspace"
 import { WorkspaceNav } from "./WorkspaceNav"
-import type { WorkspaceModuleId } from "./workspace-modules"
+import type {
+  WorkspaceModuleId,
+  WorkspaceNavigation,
+} from "./workspace-modules"
 import { useShellRouter } from "./types/adapter"
+import { useShellLabels } from "./types/labels"
 import "./layout.css"
 
 function MobileDirectory({
+  navigation,
   activeModule,
   onSelectModule,
 }: {
+  navigation: WorkspaceNavigation
   activeModule: WorkspaceModuleId
   onSelectModule: (id: WorkspaceModuleId) => void
 }) {
-  const tl = useUiText()
+  const labels = useShellLabels()
   const [open, setOpen] = useState(false)
 
   return (
@@ -38,17 +41,18 @@ function MobileDirectory({
           variant="ghost"
           size="icon"
           className="rail-control mobile-directory-trigger"
-          aria-label={tl("打开工作区导航")}
+          aria-label={labels.openNavigation}
         >
           <AppIcon icon={SolarPanelLeftOpen} size={22} aria-hidden="true" />
         </Button>
       </DialogTrigger>
       <DialogContent className="mobile-directory-panel">
-        <DialogTitle className="sr-only">{tl("工作区导航")}</DialogTitle>
+        <DialogTitle className="sr-only">{labels.navigationTitle}</DialogTitle>
         <DialogDescription className="sr-only">
-          {tl("切换模块，或打开运营总览、月账单。")}
+          {navigation.directoryDescription}
         </DialogDescription>
         <WorkspaceNav
+          navigation={navigation}
           mobile
           activeModule={activeModule}
           onSelectModule={onSelectModule}
@@ -61,21 +65,19 @@ function MobileDirectory({
 
 export function AppShell({
   getModuleCommands,
-  routeId,
+  navigation,
+  routeModule,
+  pageName,
   children,
 }: {
   getModuleCommands: (module: WorkspaceModuleId) => ModuleCommands
-  routeId?: string
+  navigation: WorkspaceNavigation
+  routeModule: WorkspaceModuleId
+  pageName: string
   children: ReactNode
 }) {
   const { activePath, locationKey = activePath } = useShellRouter()
-  const { t } = useTranslation()
-  const tl = useUiText()
-  const page =
-    Object.values(workspacePages).find(({ id }) => id === routeId) ??
-    workspacePages.overview
-  const routeModule: WorkspaceModuleId = page.moduleId
-  const pageName = t(page.titleKey)
+  const labels = useShellLabels()
   // iPad portrait (701-899px) keeps the compact icon rail and lets the second
   // column be opened on demand; wider screens start expanded.
   const [navExpanded, setNavExpanded] = useState(
@@ -143,9 +145,10 @@ export function AppShell({
     <CommandPaletteProvider commands={getModuleCommands(activeModule)}>
       <div className="app-shell" data-nav-collapsed={!navExpanded}>
         <a className="skip-link" href="#main-content">
-          {tl("跳到主内容")}
+          {labels.skipToContent}
         </a>
         <IconRail
+          navigation={navigation}
           activeModule={activeModule}
           navExpanded={navExpanded}
           copilotOpen={copilotOpen}
@@ -155,12 +158,13 @@ export function AppShell({
           onOpenCopilot={copilotOpen ? closeCopilot : openCopilotFrom}
           mobileDirectory={
             <MobileDirectory
+              navigation={navigation}
               activeModule={activeModule}
               onSelectModule={selectModule}
             />
           }
         />
-        <WorkspaceNav activeModule={activeModule} />
+        <WorkspaceNav navigation={navigation} activeModule={activeModule} />
         <MainWorkspace>{children}</MainWorkspace>
       </div>
       <CopilotPanel copilot={copilot} pageName={pageName} />

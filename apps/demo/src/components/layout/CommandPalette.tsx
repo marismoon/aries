@@ -7,7 +7,6 @@ import {
   useState,
   type ReactNode,
 } from "react"
-import { useUiText } from "@/lib/i18n/use-ui-text"
 import {
   AppIcon,
   SolarArrowUpRight,
@@ -25,6 +24,7 @@ import {
 import { Input } from "@marismoon/ui/ui/input"
 import { ShellLink } from "./ShellLink"
 import { useShellRouter } from "./types/adapter"
+import { useShellLabels } from "./types/labels"
 
 export type CommandItem = {
   title: string
@@ -35,11 +35,13 @@ export type CommandItem = {
 }
 
 export type ModuleCommands = {
+  triggerLabel: string
   placeholder: string
   items: readonly CommandItem[]
 }
 
 const CommandContext = createContext<{
+  triggerLabel: string
   dialogId: string
   open: boolean
   launch: (element: HTMLButtonElement, onNavigate?: () => void) => void
@@ -61,7 +63,7 @@ function getFocusFallback() {
 }
 
 export function CommandPalette({ onNavigate }: { onNavigate?: () => void }) {
-  const tl = useUiText()
+  const labels = useShellLabels()
   const command = useContext(CommandContext)
   const expanded = command?.open ?? false
 
@@ -73,7 +75,7 @@ export function CommandPalette({ onNavigate }: { onNavigate?: () => void }) {
       shape="workspace"
       className="command-trigger field-surface"
       data-command-trigger="sidebar"
-      aria-label={tl("导航搜索")}
+      aria-label={labels.commandSearch}
       aria-haspopup="dialog"
       aria-expanded={expanded}
       aria-controls={expanded ? command?.dialogId : undefined}
@@ -86,7 +88,7 @@ export function CommandPalette({ onNavigate }: { onNavigate?: () => void }) {
         className="command-search-icon"
         aria-hidden="true"
       />
-      <span className="command-trigger-label">{tl("搜索页面、账单")}</span>
+      <span className="command-trigger-label">{command?.triggerLabel}</span>
       <kbd className="command-trigger-shortcut" aria-hidden="true">
         {isAppleDevice ? "⌘\u00a0K" : "Ctrl\u00a0K"}
       </kbd>
@@ -101,7 +103,7 @@ export function CommandPaletteProvider({
   commands: ModuleCommands
   children: ReactNode
 }) {
-  const tl = useUiText()
+  const labels = useShellLabels()
   const [open, setOpen] = useState(false)
   const [instant, setInstant] = useState(false)
   const [query, setQuery] = useState("")
@@ -111,20 +113,9 @@ export function CommandPaletteProvider({
   const dialogId = useId()
   const { activePath, onNavigate } = useShellRouter()
   const search = query.trim().toLowerCase()
-  const translate = (text: string) =>
-    text
-      .split(" · ")
-      .map((part) => tl(part))
-      .join(" · ")
-  const matches = commands.items
-    .map((result) => ({
-      ...result,
-      title: translate(result.title),
-      description: tl(result.description),
-    }))
-    .filter(({ title, description, keywords }) =>
-      `${title} ${description} ${keywords ?? ""}`.toLowerCase().includes(search)
-    )
+  const matches = commands.items.filter(({ title, description, keywords }) =>
+    `${title} ${description} ${keywords ?? ""}`.toLowerCase().includes(search)
+  )
 
   function launch(element: HTMLButtonElement, onNavigate?: () => void) {
     onLaunchNavigate.current = onNavigate
@@ -180,7 +171,9 @@ export function CommandPaletteProvider({
   }
 
   return (
-    <CommandContext.Provider value={{ dialogId, open, launch }}>
+    <CommandContext.Provider
+      value={{ triggerLabel: commands.triggerLabel, dialogId, open, launch }}
+    >
       {children}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
@@ -201,10 +194,8 @@ export function CommandPaletteProvider({
           }}
         >
           <DialogHeader>
-            <DialogTitle>{tl("搜索页面")}</DialogTitle>
-            <DialogDescription>
-              {tl("输入页面名称，或按 Tab 浏览结果。")}
-            </DialogDescription>
+            <DialogTitle>{labels.commandTitle}</DialogTitle>
+            <DialogDescription>{labels.commandDescription}</DialogDescription>
           </DialogHeader>
 
           <form
@@ -227,12 +218,12 @@ export function CommandPaletteProvider({
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder={commands.placeholder}
-              aria-label={tl("输入页面名称")}
+              aria-label={labels.commandInput}
             />
           </form>
 
           {matches.length ? (
-            <ul className="command-results" aria-label={tl("搜索结果")}>
+            <ul className="command-results" aria-label={labels.commandResults}>
               {matches.map(({ title, description, path, icon: Icon }) => {
                 const content = (
                   <>
@@ -283,7 +274,7 @@ export function CommandPaletteProvider({
             </ul>
           ) : (
             <p className="command-empty" role="status">
-              {tl("未找到匹配的页面。")}
+              {labels.commandEmpty}
             </p>
           )}
         </DialogContent>

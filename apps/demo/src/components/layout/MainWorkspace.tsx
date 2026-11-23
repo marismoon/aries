@@ -8,9 +8,9 @@ import {
   type UIEvent,
 } from "react"
 
-import { useUiText } from "@/lib/i18n/use-ui-text"
 import { MotionSurface } from "@marismoon/ui/motion/MotionSurface"
 import { useShellRouter } from "./types/adapter"
+import { useShellLabels } from "./types/labels"
 
 type WorkspaceScrollContext = {
   viewport: RefObject<HTMLDivElement | null>
@@ -37,7 +37,7 @@ export function WorkspacePageLayout({
   summary?: ReactNode
   children: ReactNode
 }) {
-  const tl = useUiText()
+  const labels = useShellLabels()
   const scroll = useContext(WorkspaceScroll)
   if (!scroll) throw new Error("WorkspacePageLayout requires MainWorkspace")
   const { viewport, onScroll } = scroll
@@ -61,7 +61,7 @@ export function WorkspacePageLayout({
           ref={viewport}
           className="page-content-viewport"
           role="region"
-          aria-label={tl("页面内容")}
+          aria-label={labels.pageContent}
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- The scroll viewport needs keyboard access.
           tabIndex={0}
           onScroll={onScroll}

@@ -155,10 +155,15 @@ function getModuleItems(activeModule: WorkspaceModuleId) {
 export function useModuleCommands() {
   const tl = useUiText()
   return (id: WorkspaceModuleId): ModuleCommands => ({
+    triggerLabel: tl("搜索页面、账单"),
     placeholder:
       id === "overview"
         ? tl("搜索运营总览、月账单…")
         : `${tl("搜索")} ${tl(workspaceModules[id].label)}…`,
-    items: getModuleItems(id),
+    items: getModuleItems(id).map((item) => ({
+      ...item,
+      title: tl.parts(item.title),
+      description: tl(item.description),
+    })),
   })
 }

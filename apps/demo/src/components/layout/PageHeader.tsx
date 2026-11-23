@@ -1,9 +1,14 @@
 import { Fragment, type ReactNode } from "react"
 import { AppIcon, SolarChevronRight } from "@marismoon/ui/icons"
-import type { WorkspacePageConfig } from "@/app/workspace-pages"
-import { useUiText } from "@/lib/i18n/use-ui-text"
 import { ShellLink } from "./ShellLink"
 import { WorkspaceControls } from "./WorkspaceControls"
+import { useShellLabels } from "./types/labels"
+
+export interface Breadcrumb {
+  id: string
+  label: string
+  path?: string
+}
 
 export function PageHeader({
   title,
@@ -12,20 +17,20 @@ export function PageHeader({
   description,
 }: {
   title: string
-  breadcrumbs: WorkspacePageConfig["breadcrumbs"]
+  breadcrumbs: readonly Breadcrumb[]
   breadcrumbDetail?: ReactNode
   description?: ReactNode
 }) {
-  const tl = useUiText()
+  const labels = useShellLabels()
   return (
     <header className="page-header">
-      <nav className="workspace-breadcrumb" aria-label={tl("面包屑")}>
-        {breadcrumbs.map(({ label, path }) => (
-          <Fragment key={label}>
+      <nav className="workspace-breadcrumb" aria-label={labels.breadcrumb}>
+        {breadcrumbs.map(({ id, label, path }) => (
+          <Fragment key={id}>
             {path ? (
-              <ShellLink to={path}>{tl(label)}</ShellLink>
+              <ShellLink to={path}>{label}</ShellLink>
             ) : (
-              <span>{tl(label)}</span>
+              <span>{label}</span>
             )}
             <AppIcon icon={SolarChevronRight} size={11} />
           </Fragment>

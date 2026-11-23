@@ -1,8 +1,6 @@
 import type { ComponentType } from "react"
-import { useTranslation } from "react-i18next"
-import type { WorkspacePageConfig } from "@/app/workspace-pages"
 import { WorkspacePageLayout } from "./MainWorkspace"
-import { PageHeader } from "./PageHeader"
+import { PageHeader, type Breadcrumb } from "./PageHeader"
 
 export interface WorkspacePageSlots {
   Content: ComponentType
@@ -17,16 +15,20 @@ export function WorkspacePage({
   Subtitle,
   BreadcrumbDetail,
   Summary,
-}: WorkspacePageSlots & { page: WorkspacePageConfig }) {
-  const { t } = useTranslation()
+}: WorkspacePageSlots & {
+  page: {
+    id: string
+    title: string
+    description?: string
+    breadcrumbs: readonly Breadcrumb[]
+  }
+}) {
   const header = (
     <PageHeader
-      title={t(page.titleKey)}
+      title={page.title}
       breadcrumbs={page.breadcrumbs}
       breadcrumbDetail={BreadcrumbDetail && <BreadcrumbDetail />}
-      description={
-        Subtitle ? <Subtitle /> : page.descriptionKey && t(page.descriptionKey)
-      }
+      description={Subtitle ? <Subtitle /> : page.description}
     />
   )
 

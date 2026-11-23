@@ -6,6 +6,7 @@ import {
   useMatches,
   useNavigate,
 } from "react-router"
+import { useTranslation } from "react-i18next"
 
 import { AppShell } from "@/components/layout/AppShell"
 import {
@@ -13,6 +14,9 @@ import {
   type ShellLinkProps,
 } from "@/components/layout/types/adapter"
 import { useModuleCommands } from "./command-items"
+import { ShellLabelsBridge } from "@/lib/i18n/ShellLabelsBridge"
+import { useWorkspaceNavigation } from "./use-workspace-navigation"
+import { workspacePages } from "./workspace-pages"
 
 function renderLink({ end, ...props }: ShellLinkProps) {
   return end === undefined ? (
@@ -27,6 +31,11 @@ export function DemoShell() {
   const routeId = useMatches().at(-1)?.id
   const navigate = useNavigate()
   const getModuleCommands = useModuleCommands()
+  const navigation = useWorkspaceNavigation()
+  const { t } = useTranslation()
+  const page =
+    Object.values(workspacePages).find(({ id }) => id === routeId) ??
+    workspacePages.overview
   return (
     <ShellRouterProvider
       value={{
@@ -36,9 +45,16 @@ export function DemoShell() {
         renderLink,
       }}
     >
-      <AppShell routeId={routeId} getModuleCommands={getModuleCommands}>
-        <Outlet />
-      </AppShell>
+      <ShellLabelsBridge>
+        <AppShell
+          navigation={navigation}
+          routeModule={page.moduleId}
+          pageName={t(page.titleKey)}
+          getModuleCommands={getModuleCommands}
+        >
+          <Outlet />
+        </AppShell>
+      </ShellLabelsBridge>
     </ShellRouterProvider>
   )
 }

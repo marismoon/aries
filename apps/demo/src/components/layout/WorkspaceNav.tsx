@@ -6,7 +6,7 @@ import {
 } from "@marismoon/ui/icons"
 import { useRef } from "react"
 
-import { useUiText } from "@/lib/i18n/use-ui-text"
+import { useShellLabels } from "./types/labels"
 
 import {
   Select,
@@ -23,28 +23,29 @@ import { ShellLink } from "./ShellLink"
 import { SidebarNavItem } from "./SidebarNavItem"
 import {
   workspaceModuleIds,
-  workspaceModules,
-  type WorkspaceEntry,
+  type NavigationEntry,
+  type WorkspaceNavigation,
   type WorkspaceModuleId,
 } from "./workspace-modules"
 
 function DirectoryItem({
   entry,
+  unavailableLabel,
   onNavigate,
 }: {
-  entry: WorkspaceEntry
+  entry: NavigationEntry
+  unavailableLabel: string
   onNavigate?: () => void
 }) {
-  const tl = useUiText()
   const { label, icon } = entry
 
   if (entry.kind === "folder") {
     return (
-      <NavTree label={tl(label)} icon={icon}>
-        {entry.children.map(({ label, count, to }) => {
+      <NavTree label={label} icon={icon}>
+        {entry.children.map(({ id, label, count, to }) => {
           const content = (
             <>
-              <span>{tl(label)}</span>
+              <span>{label}</span>
               {count != null && (
                 <span
                   className="workspace-nav-count financial-number"
@@ -57,7 +58,7 @@ function DirectoryItem({
           )
 
           return (
-            <li key={label}>
+            <li key={id}>
               {to ? (
                 <SidebarNavItem className="nav-tree-leaf" asChild>
                   <ShellLink to={to} end onClick={onNavigate}>
@@ -67,7 +68,7 @@ function DirectoryItem({
               ) : (
                 <SidebarNavItem
                   className="nav-tree-leaf"
-                  title={tl("Demo 暂未开放")}
+                  title={unavailableLabel}
                   disabled
                 >
                   {content}
@@ -86,7 +87,7 @@ function DirectoryItem({
         <SidebarNavItem asChild>
           <ShellLink to={entry.to} end onClick={onNavigate}>
             <AppIcon icon={icon} size={16} stateful aria-hidden="true" />
-            <span>{tl(entry.label)}</span>
+            <span>{entry.label}</span>
             {entry.count != null && (
               <span
                 className="workspace-nav-count financial-number"
@@ -98,9 +99,9 @@ function DirectoryItem({
           </ShellLink>
         </SidebarNavItem>
       ) : (
-        <SidebarNavItem title={tl("Demo 暂未开放")} disabled>
+        <SidebarNavItem title={unavailableLabel} disabled>
           <AppIcon icon={icon} size={16} aria-hidden="true" />
-          <span>{tl(label)}</span>
+          <span>{label}</span>
         </SidebarNavItem>
       )}
     </li>
@@ -109,32 +110,36 @@ function DirectoryItem({
 
 export function WorkspaceNav({
   activeModule,
+  navigation,
   mobile = false,
   onNavigate,
   onSelectModule,
 }: {
   activeModule: WorkspaceModuleId
+  navigation: WorkspaceNavigation
   mobile?: boolean
   onNavigate?: () => void
   onSelectModule?: (id: WorkspaceModuleId) => void
 }) {
-  const tl = useUiText()
-  const module = workspaceModules[activeModule]
+  const labels = useShellLabels()
+  const { modules, unavailableLabel } = navigation
+  const module = modules[activeModule]
   const directoryRef = useRef<HTMLElement>(null)
   const directory = (
     <>
       <CommandPalette onNavigate={onNavigate} />
       <nav
         className="workspace-directory"
-        aria-label={tl("工作区目录")}
+        aria-label={labels.directory}
         ref={directoryRef}
       >
         <NavHighlight containerRef={directoryRef} />
         <ul className="workspace-nav-list">
           {module.entries.map((entry) => (
             <DirectoryItem
-              key={entry.label}
+              key={entry.id}
               entry={entry}
+              unavailableLabel={unavailableLabel}
               onNavigate={onNavigate}
             />
           ))}
@@ -151,12 +156,12 @@ export function WorkspaceNav({
     >
       <div className="workspace-nav">
         <div className="workspace-nav-heading">
-          <strong>{tl(module.label)}</strong>
+          <strong>{module.label}</strong>
           <button
             type="button"
             className="workspace-nav-create"
-            aria-label={tl("新建采集计划，Demo 暂未开放")}
-            title={tl("Demo 暂未开放")}
+            aria-label={navigation.createLabel}
+            title={unavailableLabel}
             disabled
           >
             <AppIcon icon={SolarPlus} size={16} aria-hidden="true" />
@@ -173,7 +178,7 @@ export function WorkspaceNav({
           >
             <SelectTrigger
               className="w-full"
-              aria-label={tl("切换工作区模块")}
+              aria-label={labels.switchModule}
               size="sm"
             >
               <SelectValue />
@@ -181,7 +186,7 @@ export function WorkspaceNav({
             <SelectContent>
               {workspaceModuleIds.map((id) => (
                 <SelectItem key={id} value={id}>
-                  {tl(workspaceModules[id].label)}
+                  {modules[id].label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -189,16 +194,19 @@ export function WorkspaceNav({
         )}
 
         <Tabs className="workspace-scope-tabs" value="all">
-          <TabsList className="workspace-scope" aria-label={tl("工作区范围")}>
+          <TabsList
+            className="workspace-scope"
+            aria-label={labels.workspaceScope}
+          >
             <TabsTrigger
               value="mine"
-              title={tl("Demo 暂未开放")}
+              title={unavailableLabel}
               aria-controls={undefined}
               disabled
             >
-              {tl("我的待办")}
+              {labels.myTasks}
             </TabsTrigger>
-            <TabsTrigger value="all">{tl("全部数据")}</TabsTrigger>
+            <TabsTrigger value="all">{labels.allData}</TabsTrigger>
           </TabsList>
           <TabsContent
             className="workspace-scope-panel"
@@ -209,15 +217,15 @@ export function WorkspaceNav({
           </TabsContent>
         </Tabs>
 
-        <div className="workspace-nav-footer" aria-label={tl("帮助")}>
-          <button type="button" title={tl("Demo 暂未开放")}>
+        <div className="workspace-nav-footer" aria-label={labels.help}>
+          <button type="button" title={unavailableLabel}>
             <AppIcon icon={SolarQuestionCircle} size={16} aria-hidden="true" />
-            <span>{tl("配置手册")}</span>
+            <span>{labels.setupGuide}</span>
           </button>
           <span className="workspace-nav-footer-divider" aria-hidden="true" />
-          <button type="button" title={tl("Demo 暂未开放")}>
+          <button type="button" title={unavailableLabel}>
             <AppIcon icon={SolarChatSquare} size={16} aria-hidden="true" />
-            <span>{tl("技术支持")}</span>
+            <span>{labels.support}</span>
           </button>
         </div>
       </div>
