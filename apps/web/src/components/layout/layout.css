@@ -473,6 +473,8 @@
   --nav-tree-line: color-mix(in srgb, var(--primary) 34%, transparent);
   display: grid;
   row-gap: var(--space-1);
+  /* Same gap above the first child as between siblings. */
+  margin-top: var(--space-1);
   margin-inline-start: 15px;
 }
 
@@ -521,6 +523,11 @@
     var(--primary) 96%,
     transparent
   );
+}
+
+.nav-tree-children > li:first-child::before {
+  /* Bridge the parent-to-first-child gap so the branch line stays connected. */
+  top: calc(var(--space-1) * -1);
 }
 
 .nav-tree-children > li:last-child::before {
