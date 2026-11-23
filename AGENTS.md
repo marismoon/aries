@@ -37,8 +37,8 @@
 
 | 需求 | 做法 |
 | --- | --- |
-| 新业务模块（第一列） | **MUST** 在 `apps/demo/src/components/layout/workspace-modules.ts` 注册导航数据，由共享 Sidebar 渲染 |
-| 新页面 | **MUST** 在 `apps/demo/src/app/workspace-pages.tsx` 注册 `WorkspacePageConfig`：`id`、`moduleId`、`path`、`titleKey`、`descriptionKey?`、`breadcrumbs`（`readonly { label: string; path?: string }[]`）、`load`（`() => Promise<WorkspacePageSlots>`，懒加载页面槽位）；业务组件放 `apps/demo/src/features/<name>/`，文案键加入 `apps/demo/src/lib/i18n/resources.ts`。要让页面出现在导航里，还需在 `workspace-modules.ts` 对应模块下增加条目（字段见该文件的 `WorkspaceEntry` 类型） |
+| 新业务模块（第一列） | **MUST** 在 `apps/demo/src/app/workspace-modules.ts` 注册导航数据，由 Demo 构造已翻译的导航 Schema 后交给共享 Sidebar 渲染 |
+| 新页面 | **MUST** 在 `apps/demo/src/app/workspace-pages.tsx` 注册 `WorkspacePageConfig`：`id`、`moduleId`、`path`、`titleKey`、`descriptionKey?`、`breadcrumbs`（`readonly { label: string; path?: string }[]`）、`load`（`() => Promise<WorkspacePageSlots>`，懒加载页面槽位）；业务组件放 `apps/demo/src/features/<name>/`，文案键加入 `apps/demo/src/lib/i18n/resources.ts`。要让页面出现在导航里，还需在 `apps/demo/src/app/workspace-modules.ts` 对应模块下增加条目（字段见该文件的 `WorkspaceEntry` 类型） |
 | 新 shadcn 组件 | **SHOULD** 用 `pnpm dlx shadcn@latest add <name>`（先 `shadcn view` 看官方实现）。`apps/demo/components.json` 与 `packages/ui/components.json` 的别名均指向 `@marismoon/ui`（style `radix-rhea`、baseColor `neutral`）；拆包后该 CLI 流程**待验证**，失败时手动写入 `packages/ui/src/components/ui`。**MUST NOT** 对现有项目重新执行 `shadcn init` |
 | 新共享组合组件 | **MUST** 放 `packages/ui/src/components/shared`，并同步 [docs/COMPONENTS.md](docs/COMPONENTS.md) |
 | 新图标 | **MUST** 只用 Solar：从 `@marismoon/ui/icons` 引入；缺图标时在 `components/icons/solar` 增文件并在 `index.ts` 导出。变体规则见 §3.1 |

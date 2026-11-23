@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react"
+import { useState, type ReactNode } from "react"
 import { AppIcon, SolarPanelLeftOpen } from "@marismoon/ui/icons"
 import { Button } from "@marismoon/ui/ui/button"
 import {
@@ -8,16 +8,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@marismoon/ui/ui/dialog"
-import { CopilotPanel } from "@/features/copilot/CopilotPanel"
-import { useCopilot } from "@/features/copilot/useCopilot"
-import { CommandPaletteProvider, type ModuleCommands } from "./CommandPalette"
+import { CommandPaletteProvider } from "./CommandPalette"
 import { IconRail } from "./IconRail"
 import { MainWorkspace } from "./MainWorkspace"
 import { WorkspaceNav } from "./WorkspaceNav"
-import type {
-  WorkspaceModuleId,
-  WorkspaceNavigation,
-} from "./workspace-modules"
+import type { NavModule, WorkspaceNavigation } from "./types/nav"
+import { HeaderExtraContext } from "./context/header-extra"
 import { useShellRouter } from "./types/adapter"
 import { useShellLabels } from "./types/labels"
 import "./layout.css"
@@ -28,8 +24,8 @@ function MobileDirectory({
   onSelectModule,
 }: {
   navigation: WorkspaceNavigation
-  activeModule: WorkspaceModuleId
-  onSelectModule: (id: WorkspaceModuleId) => void
+  activeModule: NavModule
+  onSelectModule: (id: string) => void
 }) {
   const labels = useShellLabels()
   const [open, setOpen] = useState(false)
@@ -63,19 +59,33 @@ function MobileDirectory({
   )
 }
 
+export interface AppShellProps {
+  navigation: WorkspaceNavigation
+  routeModule: string
+  children: ReactNode
+  headerExtra?: ReactNode
+  overlays?: ReactNode
+  /** A renderer can keep its animation boundary mounted during exit. */
+  rightPanel?: ReactNode | ((open: boolean) => ReactNode)
+  rightPanelOpen?: boolean
+  onRightPanelOpenChange?: (open: boolean, launcher: HTMLElement) => void
+  renderRightPanelTrigger?: (props: {
+    open: boolean
+    onToggle: (launcher: HTMLElement) => void
+  }) => ReactNode
+}
+
 export function AppShell({
-  getModuleCommands,
   navigation,
   routeModule,
-  pageName,
   children,
-}: {
-  getModuleCommands: (module: WorkspaceModuleId) => ModuleCommands
-  navigation: WorkspaceNavigation
-  routeModule: WorkspaceModuleId
-  pageName: string
-  children: ReactNode
-}) {
+  headerExtra,
+  overlays,
+  rightPanel,
+  rightPanelOpen = false,
+  onRightPanelOpenChange,
+  renderRightPanelTrigger,
+}: AppShellProps) {
   const { activePath, locationKey = activePath } = useShellRouter()
   const labels = useShellLabels()
   // iPad portrait (701-899px) keeps the compact icon rail and lets the second
@@ -84,65 +94,24 @@ export function AppShell({
     () =>
       !window.matchMedia("(min-width: 701px) and (max-width: 899px)").matches
   )
-  const [selection, setSelection] = useState<{
-    locationKey: string
-    module: WorkspaceModuleId
-  }>({ locationKey, module: routeModule })
-  const activeModule =
+  const [selection, setSelection] = useState({
+    locationKey,
+    module: routeModule,
+  })
+  const activeId =
     selection.locationKey === locationKey ? selection.module : routeModule
   if (selection.locationKey !== locationKey) {
     setSelection({ locationKey, module: routeModule })
   }
-  const copilot = useCopilot()
-  const {
-    open: copilotOpen,
-    openFrom: openCopilotFrom,
-    close: closeCopilot,
-  } = copilot
+  const activeModule = navigation.modules.find(({ id }) => id === activeId)
+  if (!activeModule) throw new Error(`Unknown navigation module: ${activeId}`)
 
-  function selectModule(module: WorkspaceModuleId) {
+  function selectModule(module: string) {
     setSelection({ locationKey, module })
   }
 
-  useEffect(() => {
-    document.title = `${pageName} · Marismoon`
-  }, [pageName])
-
-  useEffect(() => {
-    function handleCopilotShortcut(event: KeyboardEvent) {
-      if (
-        event.defaultPrevented ||
-        event.isComposing ||
-        event.repeat ||
-        (!event.metaKey && !event.ctrlKey) ||
-        !event.shiftKey ||
-        event.altKey ||
-        event.key.toLowerCase() !== "k"
-      )
-        return
-
-      if (document.querySelector('[role="dialog"][data-state="open"]')) return
-
-      event.preventDefault()
-      if (copilotOpen) {
-        closeCopilot()
-        return
-      }
-
-      const focused = document.activeElement
-      const origin =
-        focused instanceof HTMLElement && focused !== document.body
-          ? focused
-          : document.querySelector<HTMLElement>('[data-copilot-trigger="rail"]')
-      openCopilotFrom(origin)
-    }
-
-    window.addEventListener("keydown", handleCopilotShortcut)
-    return () => window.removeEventListener("keydown", handleCopilotShortcut)
-  }, [copilotOpen, openCopilotFrom, closeCopilot])
-
   return (
-    <CommandPaletteProvider commands={getModuleCommands(activeModule)}>
+    <CommandPaletteProvider commands={activeModule.commands}>
       <div className="app-shell" data-nav-collapsed={!navExpanded}>
         <a className="skip-link" href="#main-content">
           {labels.skipToContent}
@@ -151,11 +120,13 @@ export function AppShell({
           navigation={navigation}
           activeModule={activeModule}
           navExpanded={navExpanded}
-          copilotOpen={copilotOpen}
-          copilotPanelId={copilot.panelId}
           onToggleNav={() => setNavExpanded((expanded) => !expanded)}
           onSelectModule={selectModule}
-          onOpenCopilot={copilotOpen ? closeCopilot : openCopilotFrom}
+          rightPanelTrigger={renderRightPanelTrigger?.({
+            open: rightPanelOpen,
+            onToggle: (launcher) =>
+              onRightPanelOpenChange?.(!rightPanelOpen, launcher),
+          })}
           mobileDirectory={
             <MobileDirectory
               navigation={navigation}
@@ -165,9 +136,14 @@ export function AppShell({
           }
         />
         <WorkspaceNav navigation={navigation} activeModule={activeModule} />
-        <MainWorkspace>{children}</MainWorkspace>
+        <HeaderExtraContext.Provider value={headerExtra}>
+          <MainWorkspace>{children}</MainWorkspace>
+        </HeaderExtraContext.Provider>
       </div>
-      <CopilotPanel copilot={copilot} pageName={pageName} />
+      {typeof rightPanel === "function"
+        ? rightPanel(rightPanelOpen)
+        : rightPanelOpen && rightPanel}
+      {overlays}
     </CommandPaletteProvider>
   )
 }

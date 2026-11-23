@@ -481,10 +481,14 @@ function OpenCopilotPanel({ copilot, pageName }: CopilotPanelProps) {
   )
 }
 
-export function CopilotPanel({ copilot, pageName }: CopilotPanelProps) {
+export function CopilotPanel({
+  open,
+  copilot,
+  pageName,
+}: CopilotPanelProps & { open: boolean }) {
   return (
     <AnimatePresence>
-      {copilot.open && (
+      {open && (
         <OpenCopilotPanel key="copilot" copilot={copilot} pageName={pageName} />
       )}
     </AnimatePresence>

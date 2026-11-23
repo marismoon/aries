@@ -24,10 +24,13 @@ apps/demo/src
 ├── app/
 │   ├── App.tsx         AppProviders + RouterProvider
 │   ├── providers.tsx   QueryClient、next-themes、LazyMotion/MotionConfig（`reducedMotion="user"`）、TooltipProvider、演示状态；命令面板由 `AppShell` 内的 `CommandPaletteProvider` 提供
-│   ├── router.tsx      AppShell 下按 workspacePages 生成懒加载路由；/ 重定向到 /overview
-│   ├── command-items.ts  getModuleCommands 为命令面板提供当前模块的搜索条目
+│   ├── router.tsx      按 workspacePages 生成懒加载路由，/ 重定向到 /overview
+│   ├── shell-adapter.tsx  DemoShell 将路由、导航 Schema 与 AI 助手传给 AppShell
+│   ├── command-items.ts   生成各模块已翻译的搜索条目和提示
+│   ├── workspace-modules.ts  业务菜单注册与导航计数
+│   ├── use-workspace-navigation.tsx  构造已翻译的导航 Schema
 │   └── workspace-pages.tsx  页面注册表（WorkspacePageConfig）
-├── components/layout/  AppShell、IconRail、WorkspaceNav(+NavTree/NavHighlight/SidebarNavItem)、MainWorkspace、PageHeader、WorkspaceControls、WorkspacePage、CommandPalette、workspace-modules.ts、layout.css
+├── components/layout/  AppShell、IconRail、WorkspaceNav(+NavTree/NavHighlight/SidebarNavItem)、MainWorkspace、PageHeader、WorkspaceControls、WorkspacePage、CommandPalette、types/、layout.css
 ├── features/           overview、bills、copilot、settings（均为示例/调试页面）
 ├── shared/             跨功能的 Mock 数据、服务（mocks/）和业务类型（types/）
 ├── lib/                i18n（i18next 资源、语言存储、`useUiText`，见 I18N.md）、query-client.ts、highlighter.tsx（shiki）
@@ -38,20 +41,20 @@ apps/demo/src
 
 1. `main.tsx` 调用 `applyStoredPalette()` / `applyStoredDarkStyle()`（来自 `@marismoon/ui/lib/storage`）在首帧前写入 `data-palette` / `data-dark-style`。
 2. `AppProviders`：React Query → next-themes（`.dark` 类，存储键 `marismoon-theme`，默认跟随系统）→ motion（`LazyMotion` + `domAnimation`，`MotionConfig reducedMotion="user"`）→ TooltipProvider → 演示数据上下文。`ThemeColor` 监听 `class`/`data-palette` 同步 `<meta name="theme-color">`。
-3. `router.tsx`：`AppShell` 作为布局路由，子路由由 `workspacePages` 生成，页面通过 `page.load()` 动态导入并以 `WorkspacePage` 渲染。
+3. `router.tsx`：`DemoShell` 连接布局路由与 `AppShell`。子路由由 `workspacePages` 生成，通过 `page.load()` 动态导入页面，并向 `WorkspacePage` 传入已翻译的页面信息和内容槽位。
 
 ## 4. 三列外壳
 
 | 列 | 组件 | 职责 |
 | --- | --- | --- |
 | 第一列 | `IconRail` | 模块入口（`module`）、AI 助手/头像/折叠（`action`）、Logo（`navigation`，回 `/overview`） |
-| 第二列 | `WorkspaceNav` | 共用同一模板，模块切换只更新数据（`workspace-modules.ts`） |
+| 第二列 | `WorkspaceNav` | 根据当前模块的导航 Schema 渲染条目和计数 |
 | 第三列 | `MainWorkspace` → `WorkspacePageLayout` | 固定 `PageHeader`，仅 `PageContentViewport` 滚动 |
 
 - 第一列入口类型：`module` 切换第二列数据；`action` 不改变路由和模块；`navigation` 由目标路由决定模块。
 - 页面的模块归属与选中态**以路由为准**（页面配置的 `moduleId`）。
-- `router.tsx` 将 Demo 的 `getModuleCommands` 传给 `AppShell`。外壳用当前模块调用它，将返回值通过 `commands` 传给 `CommandPaletteProvider`。
-- 新增业务模块：在 `workspace-modules.ts` 注册（`WorkspaceEntry` 为 `route` / `folder` / `demo`）；新增页面：在 `workspace-pages.tsx` 注册，侧栏入口引用 `workspacePages.<id>.path`。
+- `app/use-workspace-navigation.tsx` 根据菜单注册表构造导航 Schema，每个模块携带已翻译的标签、图标和命令项。`app/shell-adapter.tsx` 将导航数据传给 `AppShell`，外壳把当前模块的命令传给 `CommandPaletteProvider`。
+- 新增业务模块：在 `app/workspace-modules.ts` 注册（`WorkspaceEntry` 为 `route` / `folder` / `demo`）；新增页面：在 `workspace-pages.tsx` 注册，侧栏入口引用 `workspacePages.<id>.path`。
 - `WorkspacePageSlots`：`Content`（必填）、`Subtitle`、`BreadcrumbDetail`、`Summary`。标题与面包屑来自页面配置（`titleKey` 经 i18n）。
 
 ## 5. 滚动边界
@@ -71,7 +74,7 @@ Demo 的 `@/shared/mocks/mock-service` 导出 `getDemoAttentionItems` 和 `getDe
 
 ## 8. 删除示例页面的步骤（正式开发时）
 
-1. 在 `workspace-pages.tsx` 移除 overview / bills / settings 下相应条目，并同步 `workspace-modules.ts` 与 `lib/i18n/resources.ts` 文案。
+1. 在 `workspace-pages.tsx` 移除 overview / bills / settings 下相应条目，并同步 `app/workspace-modules.ts` 与 `lib/i18n/resources.ts` 文案。
 2. 删除 `apps/demo/src/features/<name>`；`providers.tsx` 中的 `DemoProviders` 随之删除。
-3. 若不再使用 Mock，先替换消费者（包括从 `@/shared/mocks/bills` 读取示例数量的 `workspace-modules.ts`），再删除 `apps/demo/src/shared/mocks`。
+3. 若不再使用 Mock，先替换消费者（包括从 `@/shared/mocks/bills` 读取示例数量的 `app/workspace-modules.ts`），再删除 `apps/demo/src/shared/mocks`。
 4. 删除对应 e2e 并保留外壳/主题/滚动/响应式用例（已不含业务数据断言）。

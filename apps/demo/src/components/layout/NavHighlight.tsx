@@ -1,11 +1,8 @@
-import { useEffect, useState, type RefObject } from "react"
-import { AnimatePresence } from "motion/react"
-import { span as MotionSpan } from "motion/react-m"
-
-type Rect = { x: number; y: number; width: number; height: number }
-
-// Critically damped: no overshoot, so neighbouring pills never overlap.
-const slide = { type: "spring", stiffness: 420, damping: 40 } as const
+import { useContext, useEffect, useState, type RefObject } from "react"
+import {
+  NavHighlightContext,
+  type HighlightRect,
+} from "./context/nav-highlight"
 
 const ITEM = ".workspace-nav-item"
 
@@ -17,15 +14,16 @@ export function NavHighlight({
 }: {
   containerRef: RefObject<HTMLElement | null>
 }) {
-  const [active, setActive] = useState<Rect | null>(null)
-  const [hover, setHover] = useState<Rect | null>(null)
+  const renderHighlight = useContext(NavHighlightContext)
+  const [active, setActive] = useState<HighlightRect | null>(null)
+  const [hover, setHover] = useState<HighlightRect | null>(null)
 
   useEffect(() => {
     const container = containerRef.current
     if (!container) return
     let hovered: Element | null = null
 
-    const measure = (item: Element | null): Rect | null => {
+    const measure = (item: Element | null): HighlightRect | null => {
       if (!(item instanceof HTMLElement) || item.offsetParent === null)
         return null
       const box = item.getBoundingClientRect()
@@ -96,30 +94,5 @@ export function NavHighlight({
     }
   }, [containerRef])
 
-  return (
-    <>
-      <AnimatePresence initial={false}>
-        {hover && (
-          <MotionSpan
-            key="hover"
-            aria-hidden="true"
-            className="nav-pill nav-pill--hover"
-            initial={{ ...hover, opacity: 0 }}
-            animate={{ ...hover, opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.12 } }}
-            transition={slide}
-          />
-        )}
-      </AnimatePresence>
-      {active && (
-        <MotionSpan
-          aria-hidden="true"
-          className="nav-pill nav-pill--active"
-          initial={false}
-          animate={active}
-          transition={slide}
-        />
-      )}
-    </>
-  )
+  return renderHighlight?.({ active, hover })
 }

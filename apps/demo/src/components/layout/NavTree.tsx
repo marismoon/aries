@@ -1,18 +1,14 @@
 import { useId, useState, type ReactNode } from "react"
-import {
-  AppIcon,
-  SolarChevronDown,
-  type AppIconComponent,
-} from "@marismoon/ui/icons"
+import { AppIcon, SolarChevronDown } from "@marismoon/ui/icons"
 import { SidebarNavItem } from "./SidebarNavItem"
 
 export function NavTree({
   label,
-  icon: Icon,
+  icon,
   children,
 }: {
   label: string
-  icon: AppIconComponent
+  icon: ReactNode
   children: ReactNode
 }) {
   const [expanded, setExpanded] = useState(true)
@@ -26,7 +22,7 @@ export function NavTree({
         aria-expanded={expanded}
         onClick={() => setExpanded(!expanded)}
       >
-        <AppIcon icon={Icon} size={16} stateful aria-hidden="true" />
+        {icon}
         <span>{label}</span>
         <AppIcon
           icon={SolarChevronDown}

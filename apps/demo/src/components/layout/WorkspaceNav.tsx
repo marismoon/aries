@@ -21,87 +21,61 @@ import { NavHighlight } from "./NavHighlight"
 import { NavTree } from "./NavTree"
 import { ShellLink } from "./ShellLink"
 import { SidebarNavItem } from "./SidebarNavItem"
-import {
-  workspaceModuleIds,
-  type NavigationEntry,
-  type WorkspaceNavigation,
-  type WorkspaceModuleId,
-} from "./workspace-modules"
+import type { NavModule, NavNode, WorkspaceNavigation } from "./types/nav"
 
 function DirectoryItem({
   entry,
+  nested = false,
   unavailableLabel,
   onNavigate,
 }: {
-  entry: NavigationEntry
+  entry: NavNode
+  nested?: boolean
   unavailableLabel: string
   onNavigate?: () => void
 }) {
-  const { label, icon } = entry
-
-  if (entry.kind === "folder") {
+  if (entry.children) {
     return (
-      <NavTree label={label} icon={icon}>
-        {entry.children.map(({ id, label, count, to }) => {
-          const content = (
-            <>
-              <span>{label}</span>
-              {count != null && (
-                <span
-                  className="workspace-nav-count financial-number"
-                  aria-hidden={to ? true : undefined}
-                >
-                  {count}
-                </span>
-              )}
-            </>
-          )
-
-          return (
-            <li key={id}>
-              {to ? (
-                <SidebarNavItem className="nav-tree-leaf" asChild>
-                  <ShellLink to={to} end onClick={onNavigate}>
-                    {content}
-                  </ShellLink>
-                </SidebarNavItem>
-              ) : (
-                <SidebarNavItem
-                  className="nav-tree-leaf"
-                  title={unavailableLabel}
-                  disabled
-                >
-                  {content}
-                </SidebarNavItem>
-              )}
-            </li>
-          )
-        })}
+      <NavTree label={entry.label} icon={entry.icon}>
+        {entry.children.map((child) => (
+          <DirectoryItem
+            key={child.id}
+            entry={child}
+            nested
+            unavailableLabel={unavailableLabel}
+            onNavigate={onNavigate}
+          />
+        ))}
       </NavTree>
     )
   }
 
+  const className = nested ? "nav-tree-leaf" : undefined
+  const content = (
+    <>
+      {entry.icon}
+      <span>{entry.label}</span>
+      {entry.count != null && (
+        <span
+          className="workspace-nav-count financial-number"
+          aria-hidden={entry.path ? true : undefined}
+        >
+          {entry.count}
+        </span>
+      )}
+    </>
+  )
   return (
     <li>
-      {entry.kind === "route" ? (
-        <SidebarNavItem asChild>
-          <ShellLink to={entry.to} end onClick={onNavigate}>
-            <AppIcon icon={icon} size={16} stateful aria-hidden="true" />
-            <span>{entry.label}</span>
-            {entry.count != null && (
-              <span
-                className="workspace-nav-count financial-number"
-                aria-hidden="true"
-              >
-                {entry.count}
-              </span>
-            )}
+      {entry.path ? (
+        <SidebarNavItem className={className} asChild>
+          <ShellLink to={entry.path} end onClick={onNavigate}>
+            {content}
           </ShellLink>
         </SidebarNavItem>
       ) : (
-        <SidebarNavItem title={unavailableLabel} disabled>
-          <AppIcon icon={icon} size={16} aria-hidden="true" />
-          <span>{label}</span>
+        <SidebarNavItem className={className} title={unavailableLabel} disabled>
+          {content}
         </SidebarNavItem>
       )}
     </li>
@@ -115,15 +89,14 @@ export function WorkspaceNav({
   onNavigate,
   onSelectModule,
 }: {
-  activeModule: WorkspaceModuleId
+  activeModule: NavModule
   navigation: WorkspaceNavigation
   mobile?: boolean
   onNavigate?: () => void
-  onSelectModule?: (id: WorkspaceModuleId) => void
+  onSelectModule?: (id: string) => void
 }) {
   const labels = useShellLabels()
   const { modules, unavailableLabel } = navigation
-  const module = modules[activeModule]
   const directoryRef = useRef<HTMLElement>(null)
   const directory = (
     <>
@@ -135,7 +108,7 @@ export function WorkspaceNav({
       >
         <NavHighlight containerRef={directoryRef} />
         <ul className="workspace-nav-list">
-          {module.entries.map((entry) => (
+          {activeModule.items.map((entry) => (
             <DirectoryItem
               key={entry.id}
               entry={entry}
@@ -156,7 +129,7 @@ export function WorkspaceNav({
     >
       <div className="workspace-nav">
         <div className="workspace-nav-heading">
-          <strong>{module.label}</strong>
+          <strong>{activeModule.label}</strong>
           <button
             type="button"
             className="workspace-nav-create"
@@ -170,10 +143,9 @@ export function WorkspaceNav({
 
         {mobile && onSelectModule && (
           <Select
-            value={activeModule}
+            value={activeModule.id}
             onValueChange={(value) => {
-              const id = workspaceModuleIds.find((id) => id === value)
-              if (id) onSelectModule(id)
+              if (modules.some(({ id }) => id === value)) onSelectModule(value)
             }}
           >
             <SelectTrigger
@@ -184,9 +156,9 @@ export function WorkspaceNav({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {workspaceModuleIds.map((id) => (
+              {modules.map(({ id, label }) => (
                 <SelectItem key={id} value={id}>
-                  {modules[id].label}
+                  {label}
                 </SelectItem>
               ))}
             </SelectContent>

@@ -1,8 +1,9 @@
-import { Fragment, type ReactNode } from "react"
+import { Fragment, useContext, type ReactNode } from "react"
 import { AppIcon, SolarChevronRight } from "@marismoon/ui/icons"
 import { ShellLink } from "./ShellLink"
 import { WorkspaceControls } from "./WorkspaceControls"
 import { useShellLabels } from "./types/labels"
+import { HeaderExtraContext } from "./context/header-extra"
 
 export interface Breadcrumb {
   id: string
@@ -22,6 +23,7 @@ export function PageHeader({
   description?: ReactNode
 }) {
   const labels = useShellLabels()
+  const headerExtra = useContext(HeaderExtraContext)
   return (
     <header className="page-header">
       <nav className="workspace-breadcrumb" aria-label={labels.breadcrumb}>
@@ -42,6 +44,7 @@ export function PageHeader({
         <div className="page-header-title-row">
           <h1>{title}</h1>
           <div className="page-header-actions">
+            {headerExtra}
             <WorkspaceControls />
           </div>
         </div>

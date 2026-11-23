@@ -9,7 +9,6 @@ import {
   AppIcon,
   SolarPanelLeftClose,
   SolarPanelLeftOpen,
-  SolarSparkles,
 } from "@marismoon/ui/icons"
 import {
   Avatar,
@@ -25,16 +24,10 @@ import {
   TooltipTrigger,
 } from "@marismoon/ui/ui/tooltip"
 import { ShellLink } from "./ShellLink"
-import {
-  workspaceModuleIds,
-  type WorkspaceNavigation,
-  type WorkspaceModuleId,
-} from "./workspace-modules"
+import type { NavModule, WorkspaceNavigation } from "./types/nav"
 import { useShellLabels } from "./types/labels"
 
-const mainModules = workspaceModuleIds.filter((id) => id !== "settings")
-
-function RailTooltip({
+export function RailTooltip({
   label,
   children,
 }: {
@@ -52,17 +45,15 @@ function RailTooltip({
 }
 
 function RailModule({
-  id,
+  module,
   active,
-  navigation,
   onSelect,
 }: {
-  id: WorkspaceModuleId
+  module: NavModule
   active: boolean
-  navigation: WorkspaceNavigation
-  onSelect: (id: WorkspaceModuleId) => void
+  onSelect: (id: string) => void
 }) {
-  const { icon: Icon, label } = navigation.modules[id]
+  const { id, icon, label } = module
 
   return (
     <RailTooltip label={label}>
@@ -71,16 +62,16 @@ function RailModule({
         variant="ghost"
         size="icon"
         className={
-          id === "overview"
+          module.visibleOnMobile
             ? "rail-control"
             : "rail-control rail-desktop-module"
         }
         aria-label={label}
         aria-current={active ? "true" : undefined}
-        data-no-dock={id === "settings" || undefined}
+        data-no-dock={module.railPosition === "footer" || undefined}
         onClick={() => onSelect(id)}
       >
-        <AppIcon icon={Icon} size={22} stateful aria-hidden="true" />
+        {icon}
       </Button>
     </RailTooltip>
   )
@@ -90,21 +81,17 @@ export function IconRail({
   activeModule,
   navigation,
   navExpanded,
-  copilotOpen,
-  copilotPanelId,
+  rightPanelTrigger,
   onToggleNav,
   onSelectModule,
-  onOpenCopilot,
   mobileDirectory,
 }: {
-  activeModule: WorkspaceModuleId
+  activeModule: NavModule
   navigation: WorkspaceNavigation
   navExpanded: boolean
-  copilotOpen: boolean
-  copilotPanelId: string
+  rightPanelTrigger: ReactNode
   onToggleNav: () => void
-  onSelectModule: (id: WorkspaceModuleId) => void
-  onOpenCopilot: (element: HTMLElement | null) => void
+  onSelectModule: (id: string) => void
   mobileDirectory: ReactNode
 }) {
   const labels = useShellLabels()
@@ -234,60 +221,45 @@ export function IconRail({
     : labels.expandNavigation
   const PanelToggleIcon = navExpanded ? SolarPanelLeftClose : SolarPanelLeftOpen
 
+  const renderModule = (module: NavModule) => (
+    <RailModule
+      key={module.id}
+      module={module}
+      active={activeModule.id === module.id}
+      onSelect={onSelectModule}
+    />
+  )
+
   return (
     <div className="icon-rail-column" data-layout-column="rail">
       <nav className="icon-rail" aria-label={labels.mainModules} ref={rail}>
         <RailTooltip label={navigation.brandLabel}>
           <ShellLink
-            to="/overview"
+            to={navigation.brandPath}
             className="rail-brand"
             aria-label={navigation.brandLabel}
           >
-            <span translate="no">fH</span>
+            <span translate="no">{navigation.brandMark}</span>
           </ShellLink>
         </RailTooltip>
         <div className="rail-modules">
-          {mainModules.map((id) => (
-            <RailModule
-              key={id}
-              id={id}
-              navigation={navigation}
-              active={activeModule === id}
-              onSelect={onSelectModule}
-            />
-          ))}
+          {navigation.modules
+            .filter((module) => module.railPosition === "main")
+            .map(renderModule)}
         </div>
         <div className="rail-footer">
-          <RailTooltip label={navigation.panelTooltip}>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="rail-control rail-ai"
-              data-copilot-trigger="rail"
-              aria-label={navigation.panelLabel}
-              aria-expanded={copilotOpen}
-              aria-controls={copilotOpen ? copilotPanelId : undefined}
-              aria-keyshortcuts="Meta+Shift+K Control+Shift+K"
-              onClick={(event) => onOpenCopilot(event.currentTarget)}
-            >
-              <AppIcon icon={SolarSparkles} size={22} aria-hidden="true" />
-            </Button>
-          </RailTooltip>
-          <RailModule
-            id="settings"
-            navigation={navigation}
-            active={activeModule === "settings"}
-            onSelect={onSelectModule}
-          />
+          {rightPanelTrigger}
+          {navigation.modules
+            .filter((module) => module.railPosition === "footer")
+            .map(renderModule)}
           <span className="grid size-(--rail-control-size) shrink-0 place-items-center">
             <Avatar
               role="img"
               aria-label={navigation.userLabel}
               title={navigation.userLabel}
             >
-              <AvatarImage src="https://github.com/pranathip.png" alt="" />
-              <AvatarFallback>M</AvatarFallback>
+              <AvatarImage src={navigation.avatarSrc} alt="" />
+              <AvatarFallback>{navigation.avatarFallback}</AvatarFallback>
               <AvatarBadge aria-hidden="true">
                 <IconPlaceholder
                   lucide="PlusIcon"

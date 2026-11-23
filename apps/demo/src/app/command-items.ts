@@ -11,9 +11,9 @@ import {
   workspaceModules,
   type WorkspaceEntry,
   type WorkspaceModuleId,
-} from "@/components/layout/workspace-modules"
+} from "./workspace-modules"
 import { workspacePages } from "./workspace-pages"
-import { useUiText } from "@/lib/i18n/use-ui-text"
+import type { useUiText } from "@/lib/i18n/use-ui-text"
 
 const pages = [
   {
@@ -152,9 +152,11 @@ function getModuleItems(activeModule: WorkspaceModuleId) {
   })
 }
 
-export function useModuleCommands() {
-  const tl = useUiText()
-  return (id: WorkspaceModuleId): ModuleCommands => ({
+export function getModuleCommands(
+  id: WorkspaceModuleId,
+  tl: ReturnType<typeof useUiText>
+): ModuleCommands {
+  return {
     triggerLabel: tl("搜索页面、账单"),
     placeholder:
       id === "overview"
@@ -165,5 +167,5 @@ export function useModuleCommands() {
       title: tl.parts(item.title),
       description: tl(item.description),
     })),
-  })
+  }
 }

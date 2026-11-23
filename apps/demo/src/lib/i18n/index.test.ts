@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest"
 
+import { workspaceModules } from "@/app/workspace-modules"
 import { workspacePages } from "@/app/workspace-pages"
-import { workspaceModules } from "@/components/layout/workspace-modules"
 import { i18n } from "./index"
 import {
   applyDocumentLanguage,

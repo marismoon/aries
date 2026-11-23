@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react"
-import { cn } from "cn"
+import { cn } from "@marismoon/ui/lib/utils"
 import { Button } from "@marismoon/ui/ui/button"
 
 export function SidebarNavItem({
