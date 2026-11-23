@@ -137,10 +137,7 @@ export function AppShell({
   }, [copilotOpen, openCopilotFrom, closeCopilot])
 
   return (
-    <CommandPaletteProvider
-      activeModule={activeModule}
-      commands={getModuleCommands(activeModule)}
-    >
+    <CommandPaletteProvider commands={getModuleCommands(activeModule)}>
       <div className="app-shell" data-nav-collapsed={!navExpanded}>
         <a className="skip-link" href="#main-content">
           {tl("跳到主内容")}

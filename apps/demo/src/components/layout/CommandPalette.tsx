@@ -24,7 +24,6 @@ import {
   DialogTitle,
 } from "@marismoon/ui/ui/dialog"
 import { Input } from "@marismoon/ui/ui/input"
-import type { WorkspaceModuleId } from "./workspace-modules"
 
 export type CommandItem = {
   title: string
@@ -35,7 +34,7 @@ export type CommandItem = {
 }
 
 export type ModuleCommands = {
-  label: string
+  placeholder: string
   items: readonly CommandItem[]
 }
 
@@ -95,11 +94,9 @@ export function CommandPalette({ onNavigate }: { onNavigate?: () => void }) {
 }
 
 export function CommandPaletteProvider({
-  activeModule,
   commands,
   children,
 }: {
-  activeModule: WorkspaceModuleId
   commands: ModuleCommands
   children: ReactNode
 }) {
@@ -228,11 +225,7 @@ export function CommandPaletteProvider({
               spellCheck={false}
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder={
-                activeModule === "overview"
-                  ? tl("搜索运营总览、月账单…")
-                  : `${tl("搜索")} ${tl(commands.label)}…`
-              }
+              placeholder={commands.placeholder}
               aria-label={tl("输入页面名称")}
             />
           </form>

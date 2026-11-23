@@ -4,7 +4,7 @@ import { AppShell } from "@/components/layout/AppShell"
 import { WorkspacePage } from "@/components/layout/WorkspacePage"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import { Skeleton } from "@marismoon/ui/ui/skeleton"
-import { getModuleCommands } from "./command-items"
+import { useModuleCommands } from "./command-items"
 import { workspacePages } from "./workspace-pages"
 
 function LoadingWorkspace() {
@@ -20,9 +20,14 @@ function LoadingWorkspace() {
   )
 }
 
+function DemoShell() {
+  const getModuleCommands = useModuleCommands()
+  return <AppShell getModuleCommands={getModuleCommands} />
+}
+
 export const router = createBrowserRouter([
   {
-    element: <AppShell getModuleCommands={getModuleCommands} />,
+    element: <DemoShell />,
     HydrateFallback: LoadingWorkspace,
     children: [
       {

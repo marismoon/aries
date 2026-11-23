@@ -13,6 +13,7 @@ import {
   type WorkspaceModuleId,
 } from "@/components/layout/workspace-modules"
 import { workspacePages } from "./workspace-pages"
+import { useUiText } from "@/lib/i18n/use-ui-text"
 
 const pages = [
   {
@@ -130,11 +131,9 @@ const pages = [
   })),
 ]
 
-export function getModuleCommands(
-  activeModule: WorkspaceModuleId
-): ModuleCommands {
+function getModuleItems(activeModule: WorkspaceModuleId) {
   const module = workspaceModules[activeModule]
-  const items = module.entries.flatMap<CommandItem>((entry: WorkspaceEntry) => {
+  return module.entries.flatMap<CommandItem>((entry: WorkspaceEntry) => {
     if (entry.kind === "route") {
       return pages.filter(({ path }) => path === entry.to)
     }
@@ -151,5 +150,15 @@ export function getModuleCommands(
       { title: entry.label, description: "Demo 暂未开放", icon: entry.icon },
     ]
   })
-  return { label: module.label, items }
+}
+
+export function useModuleCommands() {
+  const tl = useUiText()
+  return (id: WorkspaceModuleId): ModuleCommands => ({
+    placeholder:
+      id === "overview"
+        ? tl("搜索运营总览、月账单…")
+        : `${tl("搜索")} ${tl(workspaceModules[id].label)}…`,
+    items: getModuleItems(id),
+  })
 }
