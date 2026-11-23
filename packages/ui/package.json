@@ -45,6 +45,7 @@
   },
   "peerDependencies": {},
   "devDependencies": {
+    "@marismoon/config": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "tailwindcss": "catalog:",

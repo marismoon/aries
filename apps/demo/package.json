@@ -34,6 +34,7 @@
     "sonner": "catalog:"
   },
   "devDependencies": {
+    "@marismoon/config": "workspace:*",
     "@playwright/test": "catalog:dev",
     "@tailwindcss/vite": "catalog:",
     "@testing-library/jest-dom": "catalog:dev",

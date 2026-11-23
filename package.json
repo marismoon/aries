@@ -27,6 +27,7 @@
     "pnpm": ">=12"
   },
   "devDependencies": {
+    "@marismoon/config": "workspace:*",
     "@eslint/js": "catalog:dev",
     "eslint": "catalog:dev",
     "eslint-plugin-jsx-a11y": "catalog:dev",
