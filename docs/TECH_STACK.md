@@ -29,12 +29,12 @@
 | 表格 | `@tanstack/react-table` | 9.3.1 | 经 `useDataTable` 封装 |
 | 数据 | `@tanstack/react-query` | 5.108.1 | Mock 服务查询 |
 | 路由 | react-router | 8.5.2 | `createBrowserRouter` + `lazy` |
-| 国际化 | i18next / react-i18next | 27.2.2 / 18.0.3 | `apps/web/src/lib/i18n` |
+| 国际化 | i18next / react-i18next | 27.2.2 / 18.0.3 | `apps/demo/src/lib/i18n` |
 | 主题 | next-themes | 0.4.6 | `attribute="class"` 切换 `.dark` |
 | 校验 | zod（仅 `@marismoon/core`） | 4.6.7 | |
 | 其他 UI | vaul 1.1.2（Drawer）、sonner 2.0.8、cmdk 1.1.1、input-otp 1.5.0、react-day-picker 10.0.2、date-fns 4.4.0、embla-carousel-react 8.6.0、react-resizable-panels 4.24.1、shiki 4.6.0 | | 均由 shadcn 组件或预览页使用 |
 | 字体 | `@fontsource-variable/inter`、`@fontsource-variable/noto-sans-sc` | | 在 `globals.css` 引入 |
-| 测试 | vitest 5.1.1、jsdom 31、Testing Library、`@playwright/test` 1.65.1 | | 单测 `src/**/*.test.{ts,tsx}`；e2e 在 `apps/web/e2e` |
+| 测试 | vitest 5.1.1、jsdom 31、Testing Library、`@playwright/test` 1.65.1 | | 单测 `src/**/*.test.{ts,tsx}`；e2e 在 `apps/demo/e2e` |
 
 ## 禁止清单（与现有栈冲突）
 

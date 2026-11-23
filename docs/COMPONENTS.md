@@ -1,6 +1,6 @@
 # 组件清单
 
-「系统设置 → 组件预览」（`/settings/components` 及六个分类页）是组件规范的**活文档**：渲染官方 shadcn 示例（`apps/web/src/features/settings/examples/*.tsx`）、图表、动效、表格模版。新增/调整组件时同步更新预览页与本文件。
+「系统设置 → 组件预览」（`/settings/components` 及六个分类页）是组件规范的**活文档**：渲染官方 shadcn 示例（`apps/demo/src/features/settings/examples/*.tsx`）、图表、动效、表格模版。新增/调整组件时同步更新预览页与本文件。
 
 导入路径总表（来自 `packages/ui/package.json` 的 `exports`）：
 
@@ -69,7 +69,7 @@ import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 | `scrollHint?` | `string`，局部横向滚动提示 |
 | `loading?` | 与行高一致的扫光骨架 |
 
-`use-data-table.ts` 导出：`dataTableFeatures`（列筛选、全局筛选、分页、行选择）、`DataTableInstance<TData>`、`createDataTableColumns<TData>()`、`useDataTable(options)`。参考 `apps/web/src/features/bills/components/BillsTable.tsx`：
+`use-data-table.ts` 导出：`dataTableFeatures`（列筛选、全局筛选、分页、行选择）、`DataTableInstance<TData>`、`createDataTableColumns<TData>()`、`useDataTable(options)`。参考 `apps/demo/src/features/bills/components/BillsTable.tsx`：
 
 ```tsx
 const column = createDataTableColumns<Bill>()
@@ -142,7 +142,7 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 - `SelectContent` 使用 `position="popper"`。
 - `Tabs` / `ToggleGroup` / `Menubar`：`--recess` 分段胶囊，选项 28px。
 
-## 6. 应用级布局组件（`apps/web/src/components/layout`）
+## 6. 应用级布局组件（`apps/demo/src/components/layout`）
 
 非共享库的一部分，随应用保留：`AppShell`、`IconRail`（用户头像沿用基础组件 `Avatar` + `AvatarBadge` 默认尺寸，不自定义尺寸、颜色与描边）、`WorkspaceNav`（`NavTree`、`NavHighlight`、`SidebarNavItem`）、`MainWorkspace`（含 `WorkspacePageLayout`）、`PageHeader({ title, breadcrumbs, breadcrumbDetail?, description? })`、`WorkspaceControls`（`DarkStyleControl` + `LanguageControl` + `BrandPaletteControl` + `ThemeSwitcher`）、`LanguageControl`（循环切换语言，见 [I18N.md](I18N.md)）、`WorkspacePage`（`WorkspacePageSlots`：`Content`、`Subtitle?`、`BreadcrumbDetail?`、`Summary?`，均为 `ComponentType`）、`CommandPalette` / `CommandPaletteProvider`。
 
@@ -160,6 +160,6 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 ## 8. 扩展规则
 
 1. 先在预览页/本文件查找可复用组件；其次组合现有组件；最后才新增。
-2. 基础组件放 `packages/ui/src/components/ui`（保持 shadcn 结构以便 CLI diff）；有业务无关的组合放 `shared`；业务组合放 `apps/web/src/features/<name>/components`。
+2. 基础组件放 `packages/ui/src/components/ui`（保持 shadcn 结构以便 CLI diff）；有业务无关的组合放 `shared`；业务组合放 `apps/demo/src/features/<name>/components`。
 3. 颜色、圆角、字号一律走令牌（见 [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)）；Button/Badge 内图标写 `data-icon="inline-start|inline-end"`，不手写图标尺寸。
 4. 包边界与提交前回归清单见 [AGENTS.md](../AGENTS.md) §1 与 §9。

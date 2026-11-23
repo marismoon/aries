@@ -5,7 +5,7 @@
   "type": "module",
   "packageManager": "pnpm@12.16.1",
   "scripts": {
-    "dev": "turbo run dev --filter=@marismoon/web",
+    "dev": "turbo run dev --filter=@marismoon/demo",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",

@@ -1,6 +1,6 @@
 # 设计系统
 
-全部样式与令牌位于 `packages/ui/src/styles/`，由 `globals.css` 汇总引入（顺序：tailwindcss → tw-animate-css → shadcn/tailwind.css → 字体 → `tokens.css` → `spectrum.css` → `materials.css` → `dark-base.css` → `dark-clean.css` → `components/ui/popup.css` → `motion.css` → `soft-edge.css` → `icon-states.css`）。应用入口 `apps/web/src/index.css` 引入它并 `@source` 应用代码。
+全部样式与令牌位于 `packages/ui/src/styles/`，由 `globals.css` 汇总引入（顺序：tailwindcss → tw-animate-css → shadcn/tailwind.css → 字体 → `tokens.css` → `spectrum.css` → `materials.css` → `dark-base.css` → `dark-clean.css` → `components/ui/popup.css` → `motion.css` → `soft-edge.css` → `icon-states.css`）。应用入口 `apps/demo/src/index.css` 引入它并 `@source` 应用代码。
 
 | 文件 | 内容 |
 | --- | --- |
@@ -101,7 +101,7 @@
 - 尺寸稳定性见 AGENTS.md §4.4；Hover/Focus 不引起布局跳动（明确的展开/收起除外）。
 - 内容溢出、空状态、加载状态由卡片内部处理，**不**拉伸列表行填满卡片，**不**裁剪重要内容。
 - 滚动内容边缘使用 `soft-edge.css` 的渐隐（容器需列入其选择器），**不**用边框/阴影/遮罩层掩盖裁剪。
-- 第三列内容区的顶部/底部渐隐在 `apps/web/src/components/layout/layout.css` 的 `.page-content-frame::before/::after`：范围只覆盖内容列并向两侧各羽化 `--workspace-fade-feather`（8px），**不得**覆盖第一、二列；改动时复核展开与收起导航两种状态的两侧。
+- 第三列内容区的顶部/底部渐隐在 `apps/demo/src/components/layout/layout.css` 的 `.page-content-frame::before/::after`：范围只覆盖内容列并向两侧各羽化 `--workspace-fade-feather`（8px），**不得**覆盖第一、二列；改动时复核展开与收起导航两种状态的两侧。
 - 阴影出血规则见 AGENTS.md §3 规则 9。
 
 ## 5. 控件视觉
@@ -130,7 +130,7 @@
 
 - 使用 `components/ui/chart.tsx`（`ChartContainer` + `ChartConfig`）封装 recharts 3.8.0；系列色只引用 `--chart-1…8`，不写死色值。
 - 图表卡片的外部尺寸固定，图例/Tab 切换不改变卡片高度；坐标轴刻度使用 `financial-number`；每个图表提供文字替代（`figcaption`/`aria-label`）。
-- 参考实现：`apps/web/src/features/overview/components/OverviewCharts.tsx` 与 `features/settings/chart-demos.tsx`、`ChartShowcase.tsx`。
+- 参考实现：`apps/demo/src/features/overview/components/OverviewCharts.tsx` 与 `features/settings/chart-demos.tsx`、`ChartShowcase.tsx`。
 
 ## 8. 响应式
 

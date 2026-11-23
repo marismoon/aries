@@ -3,7 +3,7 @@
 ## 1. 包与依赖方向
 
 ```text
-apps/web (@marismoon/web) ──► packages/ui   (@marismoon/ui)
+apps/demo (@marismoon/demo) ──► packages/ui   (@marismoon/ui)
         └──────────────► packages/core (@marismoon/core)
 packages/ui  ✗  packages/core   （互不依赖）
 ```
@@ -12,14 +12,14 @@ packages/ui  ✗  packages/core   （互不依赖）
 | --- | --- | --- |
 | `@marismoon/ui` | `./ui/*` `./shared/*` `./motion/*` `./icons` `./icons/*` `./hooks/*` `./lib/*` `./styles/*`（直接导出源码，无构建步骤） | `src/components/{ui,shared,icons,motion}`、`src/hooks/use-mobile.ts`、`src/lib/{utils,storage}.ts`、`src/styles/*.css` |
 | `@marismoon/core` | `./*` → `src/*.ts` | `format.ts`、`types/{billing,overview}.ts`、`mocks/{bills,charts,overview,period,mock-service}.ts` |
-| `@marismoon/web` | — | `src/{app,components/layout,features,lib,test}`、`e2e/` |
+| `@marismoon/demo` | — | `src/{app,components/layout,features,lib,test}`、`e2e/` |
 
 两个包都以**源码**被 Vite 直接编译；`packages/ui` 内部只用相对导入。
 
-## 2. apps/web 目录
+## 2. apps/demo 目录
 
 ```text
-apps/web/src
+apps/demo/src
 ├── main.tsx            入口：应用品牌/暗色风格偏好 → i18n → index.css → 渲染 App
 ├── index.css           @import "@marismoon/ui/styles/globals.css"; @source "./"
 ├── app/
@@ -64,12 +64,12 @@ AppShell 固定视口；body 不滚动；仅 `PageContentViewport`（第三列�
 
 | 层 | 工具 | 位置 |
 | --- | --- | --- |
-| 单测 | Vitest（jsdom） | `packages/core`、`apps/web/src/**/*.test.{ts,tsx}` |
-| e2e | Playwright（Chromium，`pnpm dev` 作为 webServer，端口 4173） | `apps/web/e2e/{app-shell,i18n,components-preview,motion,responsive,responsive-adaptation,scroll-boundary,theme,workspace-scroll}.spec.ts` |
+| 单测 | Vitest（jsdom） | `packages/core`、`apps/demo/src/**/*.test.{ts,tsx}` |
+| e2e | Playwright（Chromium，`pnpm dev` 作为 webServer，端口 4173） | `apps/demo/e2e/{app-shell,i18n,components-preview,motion,responsive,responsive-adaptation,scroll-boundary,theme,workspace-scroll}.spec.ts` |
 
 ## 8. 删除示例页面的步骤（正式开发时）
 
 1. 在 `workspace-pages.tsx` 移除 overview / bills / settings 下相应条目，并同步 `workspace-modules.ts` 与 `lib/i18n/resources.ts` 文案。
-2. 删除 `apps/web/src/features/<name>`；`providers.tsx` 中的 `DemoProviders` 随之删除。
+2. 删除 `apps/demo/src/features/<name>`；`providers.tsx` 中的 `DemoProviders` 随之删除。
 3. 若不再使用 Mock，删除 `packages/core/src/mocks`；`workspace-modules.ts` 目前从 `@marismoon/core/mocks/bills` 读取示例数量，需一并改写。
 4. 删除对应 e2e 并保留外壳/主题/滚动/响应式用例（已不含业务数据断言）。

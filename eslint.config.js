@@ -65,8 +65,8 @@ export default defineConfig([
     files: ['**/*.tsx'],
   },
   {
-    // Layering: packages/ui (ui <- shared) <- apps/web (layout <- features <- app).
-    // packages/ui must never import from apps/web, and ui must not import shared.
+    // Layering: packages/ui (ui <- shared) <- apps/demo (layout <- features <- app).
+    // packages/ui must never import from apps/demo, and ui must not import shared.
     files: ['packages/ui/src/components/ui/**', 'packages/ui/src/lib/**'],
     rules: {
       'no-restricted-imports': [
@@ -74,8 +74,8 @@ export default defineConfig([
         {
           patterns: [
             {
-              regex: '^(?:@marismoon/web|@/)|(?:\\.\\./)+shared(?:/|$)',
-              message: 'packages/ui/ui and lib must not import apps/web or shared.',
+              regex: '^(?:@marismoon/demo|@/)|(?:\\.\\./)+shared(?:/|$)',
+              message: 'packages/ui/ui and lib must not import apps/demo or shared.',
             },
             nonSolarIcons,
           ],
@@ -91,8 +91,8 @@ export default defineConfig([
         {
           patterns: [
             {
-              regex: '^(?:@marismoon/web|@/)',
-              message: 'packages/ui must not import apps/web.',
+              regex: '^(?:@marismoon/demo|@/)',
+              message: 'packages/ui must not import apps/demo.',
             },
             nonSolarIcons,
           ],
@@ -101,7 +101,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['apps/web/src/{features,app}/**', 'apps/web/src/components/layout/**'],
+    files: ['apps/demo/src/{features,app}/**', 'apps/demo/src/components/layout/**'],
     rules: {
       'no-restricted-imports': ['error', { patterns: [nonSolarIcons] }],
     },
@@ -126,7 +126,7 @@ export default defineConfig([
   },
   {
     // Official shadcn examples, kept close to upstream so they can be refreshed.
-    files: ['apps/web/src/features/settings/examples/**'],
+    files: ['apps/demo/src/features/settings/examples/**'],
     rules: {
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
@@ -141,7 +141,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['**/*.{js,mjs}', 'apps/web/e2e/**', 'apps/web/scripts/**', '**/*.config.ts'],
+    files: ['**/*.{js,mjs}', 'apps/demo/e2e/**', 'apps/demo/scripts/**', '**/*.config.ts'],
     ...tseslint.configs.disableTypeChecked,
   },
 ])

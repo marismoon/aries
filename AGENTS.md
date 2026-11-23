@@ -5,41 +5,41 @@
 
 文档优先级：本文件与 `docs/` 冲突时以本文件为准；`docs/` 提供令牌定义、组件接口与操作细节，同一规则尽量只在一处完整定义，其余位置给出链接。
 
-> 本仓库是脱敏后的启动模板。`apps/web` 中的「系统设置 → 组件预览 / 动效 / 基础页面」以及 overview、bills、copilot 是**调试与示例页面**，正式项目开发完成后会删除；`packages/*` 是需要长期保留的共享层。
+> 本仓库是脱敏后的启动模板。`apps/demo` 中的「系统设置 → 组件预览 / 动效 / 基础页面」以及 overview、bills、copilot 是**调试与示例页面**，正式项目开发完成后会删除；`packages/*` 是需要长期保留的共享层。
 
 ## 0. 速查
 
 | 项 | 值 |
 | --- | --- |
 | 包管理 / 任务 | pnpm 12.16.1（workspace）+ Turborepo；Node ^24 |
-| 包 | `@marismoon/web`（apps/web）、`@marismoon/ui`（packages/ui）、`@marismoon/core`（packages/core） |
+| 包 | `@marismoon/demo`（apps/demo）、`@marismoon/ui`（packages/ui）、`@marismoon/core`（packages/core） |
 | 启动 | `pnpm install` → `pnpm dev`（Vite，默认 <http://localhost:5173>，被占用时端口递增） |
 | 自检 | `pnpm typecheck` · `pnpm lint` · `pnpm build` · `pnpm test` · `pnpm test:ui` |
-| 单个 e2e | `pnpm --filter @marismoon/web exec playwright test e2e/<name>.spec.ts`（Playwright 自动启动 Vite，端口 4173） |
+| 单个 e2e | `pnpm --filter @marismoon/demo exec playwright test e2e/<name>.spec.ts`（Playwright 自动启动 Vite，端口 4173） |
 | 详细文档 | [架构](docs/ARCHITECTURE.md) · [技术栈](docs/TECH_STACK.md) · [设计系统](docs/DESIGN_SYSTEM.md) · [组件](docs/COMPONENTS.md) · [国际化](docs/I18N.md) |
 
 ## 1. Monorepo 边界
 
-依赖方向只能是 `apps/web → packages/ui`、`apps/web → packages/core`，`packages/ui` 与 `packages/core` 互不依赖。
+依赖方向只能是 `apps/demo → packages/ui`、`apps/demo → packages/core`，`packages/ui` 与 `packages/core` 互不依赖。
 
 | 位置 | 职责 | 禁止 |
 | --- | --- | --- |
-| `packages/ui` | shadcn 基础组件（`components/ui`）、共享组合组件（`components/shared`）、Solar 图标（`components/icons`）、动效（`components/motion`）、`lib/utils`、`lib/storage`（主题偏好）、`hooks/use-mobile`、**全部全局样式与设计令牌**（`styles/`） | MUST NOT 导入 `apps/web`、`@/` 别名、业务数据 |
+| `packages/ui` | shadcn 基础组件（`components/ui`）、共享组合组件（`components/shared`）、Solar 图标（`components/icons`）、动效（`components/motion`）、`lib/utils`、`lib/storage`（主题偏好）、`hooks/use-mobile`、**全部全局样式与设计令牌**（`styles/`） | MUST NOT 导入 `apps/demo`、`@/` 别名、业务数据 |
 | `packages/core` | 与 UI 无关的类型（zod）、格式化函数（`format.ts`）、Mock 数据与 Mock 服务 | MUST NOT 依赖 React 或 `@marismoon/ui` |
-| `apps/web` | 应用外壳（`components/layout`）、路由（`app/`）、页面与业务（`features/`）、i18n（`lib/i18n`） | MUST NOT 复制 `packages/ui` 的组件或样式 |
+| `apps/demo` | 应用外壳（`components/layout`）、路由（`app/`）、页面与业务（`features/`）、i18n（`lib/i18n`） | MUST NOT 复制 `packages/ui` 的组件或样式 |
 
 1. **MUST** 通过包导出路径使用共享层（路径总表见 [COMPONENTS.md](docs/COMPONENTS.md) 开头，映射来自各包 `package.json` 的 `exports`）；`@marismoon/core` 同理。
-2. **MUST NOT** 使用 `@marismoon/ui/src/...` 深层路径；**MUST NOT** 在 `packages/ui` 内使用 `@/` 别名（包内一律相对路径）。`@/` 只在 `apps/web` 内表示 `apps/web/src`。
-3. 应用内分层 `components/layout ← features ← app`：下层 **MUST NOT** 导入上层。`eslint.config.js` 已对 `packages/ui` 强制「不得导入 `apps/web`」与「`components/ui`、`lib` 不得导入 `shared`」。
+2. **MUST NOT** 使用 `@marismoon/ui/src/...` 深层路径；**MUST NOT** 在 `packages/ui` 内使用 `@/` 别名（包内一律相对路径）。`@/` 只在 `apps/demo` 内表示 `apps/demo/src`。
+3. 应用内分层 `components/layout ← features ← app`：下层 **MUST NOT** 导入上层。`eslint.config.js` 已对 `packages/ui` 强制「不得导入 `apps/demo`」与「`components/ui`、`lib` 不得导入 `shared`」。
 4. **MUST** 仅用 `pnpm`；**MUST NOT** 提交 `package-lock.json` / `yarn.lock`。
 
 ## 2. 新增内容的唯一入口
 
 | 需求 | 做法 |
 | --- | --- |
-| 新业务模块（第一列） | **MUST** 在 `apps/web/src/components/layout/workspace-modules.ts` 注册导航数据，由共享 Sidebar 渲染 |
-| 新页面 | **MUST** 在 `apps/web/src/app/workspace-pages.tsx` 注册 `WorkspacePageConfig`：`id`、`moduleId`、`path`、`titleKey`、`descriptionKey?`、`breadcrumbs`（`readonly { label: string; path?: string }[]`）、`load`（`() => Promise<WorkspacePageSlots>`，懒加载页面槽位）；业务组件放 `apps/web/src/features/<name>/`，文案键加入 `apps/web/src/lib/i18n/resources.ts`。要让页面出现在导航里，还需在 `workspace-modules.ts` 对应模块下增加条目（字段见该文件的 `WorkspaceEntry` 类型） |
-| 新 shadcn 组件 | **SHOULD** 用 `pnpm dlx shadcn@latest add <name>`（先 `shadcn view` 看官方实现）。`apps/web/components.json` 与 `packages/ui/components.json` 的别名均指向 `@marismoon/ui`（style `radix-rhea`、baseColor `neutral`）；拆包后该 CLI 流程**待验证**，失败时手动写入 `packages/ui/src/components/ui`。**MUST NOT** 对现有项目重新执行 `shadcn init` |
+| 新业务模块（第一列） | **MUST** 在 `apps/demo/src/components/layout/workspace-modules.ts` 注册导航数据，由共享 Sidebar 渲染 |
+| 新页面 | **MUST** 在 `apps/demo/src/app/workspace-pages.tsx` 注册 `WorkspacePageConfig`：`id`、`moduleId`、`path`、`titleKey`、`descriptionKey?`、`breadcrumbs`（`readonly { label: string; path?: string }[]`）、`load`（`() => Promise<WorkspacePageSlots>`，懒加载页面槽位）；业务组件放 `apps/demo/src/features/<name>/`，文案键加入 `apps/demo/src/lib/i18n/resources.ts`。要让页面出现在导航里，还需在 `workspace-modules.ts` 对应模块下增加条目（字段见该文件的 `WorkspaceEntry` 类型） |
+| 新 shadcn 组件 | **SHOULD** 用 `pnpm dlx shadcn@latest add <name>`（先 `shadcn view` 看官方实现）。`apps/demo/components.json` 与 `packages/ui/components.json` 的别名均指向 `@marismoon/ui`（style `radix-rhea`、baseColor `neutral`）；拆包后该 CLI 流程**待验证**，失败时手动写入 `packages/ui/src/components/ui`。**MUST NOT** 对现有项目重新执行 `shadcn init` |
 | 新共享组合组件 | **MUST** 放 `packages/ui/src/components/shared`，并同步 [docs/COMPONENTS.md](docs/COMPONENTS.md) |
 | 新图标 | **MUST** 只用 Solar：从 `@marismoon/ui/icons` 引入；缺图标时在 `components/icons/solar` 增文件并在 `index.ts` 导出。变体规则见 §3.1 |
 | 新主题色 | **MUST** 按 [DESIGN_SYSTEM §9](docs/DESIGN_SYSTEM.md) 的步骤：`tokens.css` 增亮、暗两块，`dark-base.css` 增该主题的 `--dark-hue`，`spectrum.css` 或 `tokens.css` 增 `--swatch-*`，`lib/storage.ts` 的 `paletteLabels` 登记 |
@@ -48,11 +48,11 @@
 
 以下规则对**新增与被修改的代码**生效；**MUST NOT** 为清理存量而改动已确认的视觉。存量豁免（不得扩大）：
 
-- 颜色字面量：`apps/web/src/components/layout/layout.css`、`apps/web/src/features/copilot/copilot.css`、`apps/web/src/features/overview/components/overview-workflow.css`、`apps/web/src/features/settings/` 下的 `motion-demos.css`、`interaction-demos.css`、`aceternity-demos.css`、`base-pages/base-pages.css`。
-- `dark:` 变体：`apps/web/src/features/settings/examples/*`（官方示例写法）与 `apps/web/src/lib/highlighter.tsx`（shiki 双主题）。
+- 颜色字面量：`apps/demo/src/components/layout/layout.css`、`apps/demo/src/features/copilot/copilot.css`、`apps/demo/src/features/overview/components/overview-workflow.css`、`apps/demo/src/features/settings/` 下的 `motion-demos.css`、`interaction-demos.css`、`aceternity-demos.css`、`base-pages/base-pages.css`。
+- `dark:` 变体：`apps/demo/src/features/settings/examples/*`（官方示例写法）与 `apps/demo/src/lib/highlighter.tsx`（shiki 双主题）。
 
 1. **MUST** 颜色只使用主题变量（`--primary`、`--accent`、`--muted`、`--destructive`、`--success`、`--warning`、`--danger`、`--info`、`--chart-1..8` 等，完整列表见 [DESIGN_SYSTEM §3](docs/DESIGN_SYSTEM.md)）。
-2. **MUST NOT** 在 `apps/web/src/features` 与 `components/layout` 的新代码中写十六进制、`rgb()`、`hsl()`、`oklch()` 颜色；**MUST NOT** 用 `style={{ color/background… }}` 写死颜色（动态值只能引用 `var(--token)`，如 `StatusBadge`）。颜色字面量只允许出现在 `packages/ui/src/styles/*.css` 的令牌定义中。
+2. **MUST NOT** 在 `apps/demo/src/features` 与 `components/layout` 的新代码中写十六进制、`rgb()`、`hsl()`、`oklch()` 颜色；**MUST NOT** 用 `style={{ color/background… }}` 写死颜色（动态值只能引用 `var(--token)`，如 `StatusBadge`）。颜色字面量只允许出现在 `packages/ui/src/styles/*.css` 的令牌定义中。
 3. **MUST NOT** 新增 `dark:` 变体。深色适配**优先通过令牌**（`.dark` 块）完成；`dark:` 仅允许出现在 `packages/ui/src/components/ui` 的 shadcn 组件内（沿用官方写法）。
 4. **MUST NOT** 修改已确认的亮色（Light）视觉去适配深色；深色问题只改 `.dark` 作用域。暗色共同底座在 `styles/dark-base.css`（glass 与 clean 共用），简洁暗色材质在 `styles/dark-clean.css`（作用域 `.dark[data-dark-style="clean"]`），规则见 [DESIGN_SYSTEM §2](docs/DESIGN_SYSTEM.md)。
    `marismoon-light` 为纯浅色主题，**MUST NOT** 给它增加深色分支（`tokens.css` 中已有的 `.dark[data-palette="marismoon-light"]` 块只用于让它在暗色类下保持浅色）。
@@ -81,7 +81,7 @@
 
 ## 5. 国际化
 
-1. 新增页面与组件的用户可见文案（含 `aria-label`、`title`）**MUST** 走 i18n，**MUST NOT** 在 `apps/web` 的新代码中新写死中文文案；用法见 [docs/I18N.md](docs/I18N.md)。
+1. 新增页面与组件的用户可见文案（含 `aria-label`、`title`）**MUST** 走 i18n，**MUST NOT** 在 `apps/demo` 的新代码中新写死中文文案；用法见 [docs/I18N.md](docs/I18N.md)。
 2. 页面标题/副标题用点号键（`resources.ts` 中 `zh-CN` 与 `en` **MUST** 同时新增）；导航与短文案用 `useUiText()` 的 `tl("中文原文")` 并在 `ui-en.ts` 补英文。
 3. 导航与 Mock 数据本身保持中文原文（作为翻译键），在渲染处用 `tl()` 翻译；`packages/ui` **MUST NOT** 依赖 i18next，固定文案走 `UiLabels`（`@marismoon/ui/lib/ui-labels`）与 `UiLabelsBridge`。
 4. `coverage.test.ts`（含在 `pnpm test`）检查所有 `tl("…")` 字面量有英文；`e2e/i18n.spec.ts`（含在 `pnpm test:ui`）扫描英文页面不得残留中文。
@@ -111,16 +111,16 @@ PC（1440×900、1920×1080）为视觉基线。断点与验收视口见 [DESIGN
 在仓库根目录依次执行，**全部通过**才可提交：
 
 ```bash
-pnpm typecheck     # turbo: @marismoon/core、@marismoon/ui、@marismoon/web
+pnpm typecheck     # turbo: @marismoon/core、@marismoon/ui、@marismoon/demo
 pnpm lint          # eslint .
 pnpm build
 pnpm test          # vitest（core、ui、web）
-pnpm test:ui       # playwright（首次：pnpm --filter @marismoon/web exec playwright install chromium）
+pnpm test:ui       # playwright（首次：pnpm --filter @marismoon/demo exec playwright install chromium）
 ```
 
 另需人工核对：
 
-- [ ] **令牌合规**：`git diff -U0 -- apps/web | grep -nE '^\+.*(#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(|oklch\()'` 无新增命中（豁免文件见 §3）
+- [ ] **令牌合规**：`git diff -U0 -- apps/demo | grep -nE '^\+.*(#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(|oklch\()'` 无新增命中（豁免文件见 §3）
 - [ ] **无新增 `dark:`**：`git diff -U0 -- . ':!packages/ui/src/components/ui' | grep -n '^\+.*dark:'` 无命中
 - [ ] **响应式**：[DESIGN_SYSTEM §8](docs/DESIGN_SYSTEM.md) 的验收视口下无横向溢出、无重叠（`e2e/responsive-adaptation.spec.ts` 已覆盖，改动页面再手动抽查）
 - [ ] **主题**：Light / Dark（glass 与 clean）与品牌轮换后页头控件数量、图标、位置一致
