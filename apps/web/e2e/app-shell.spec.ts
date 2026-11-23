@@ -1,4 +1,6 @@
-import { expect, test, type Locator } from "@playwright/test"
+import type { Locator } from "@playwright/test"
+
+import { expect, test } from "./fixtures"
 
 const moduleMenus = [
   [
@@ -273,10 +275,6 @@ test("七个业务模块共用目录结构、显示预定菜单并保留真实�
   const sidebar = page.locator('[data-layout-column="nav"]')
   const title = sidebar.locator(".workspace-nav-heading strong")
   const directory = sidebar.getByRole("navigation", { name: "工作区目录" })
-  const overviewEntry = directory.getByRole("link", {
-    name: "运营总览",
-    exact: true,
-  })
   const bills = directory.getByRole("link", { name: "月账单", exact: true })
   const menuLabels = directory.locator(
     ".workspace-nav-list > li > :is(a, button) > span:first-of-type"
@@ -390,7 +388,24 @@ test("七个业务模块共用目录结构、显示预定菜单并保留真实�
     rail.getByRole("button", { name: "系统设置", exact: true })
   ).toHaveAttribute("aria-current", "true")
   await expect(title).toHaveText("系统设置")
+})
 
+test("浏览器前进、后退和刷新会恢复真实路由所属的导航状态", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto("/bills")
+
+  const rail = page.getByRole("navigation", { name: "主模块" })
+  const overview = rail.getByRole("button", { name: "总览", exact: true })
+  const sidebar = page.locator('[data-layout-column="nav"]')
+  const title = sidebar.locator(".workspace-nav-heading strong")
+  const directory = sidebar.getByRole("navigation", { name: "工作区目录" })
+  const overviewEntry = directory.getByRole("link", {
+    name: "运营总览",
+    exact: true,
+  })
+  const bills = directory.getByRole("link", { name: "月账单", exact: true })
+
+  await rail.getByRole("button", { name: "系统设置", exact: true }).click()
   await rail.getByRole("link", { name: "Marismoon 工作台" }).click()
   await expect(page).toHaveURL(/\/overview$/)
   await expect(overview).toHaveAttribute("aria-current", "true")

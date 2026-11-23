@@ -1,4 +1,6 @@
-import { expect, test, type Page } from "@playwright/test"
+import type { Page } from "@playwright/test"
+
+import { expect, test } from "./fixtures"
 
 /**
  * Marismoon Responsive Adaptation Contract: every viewport reuses the same shell,

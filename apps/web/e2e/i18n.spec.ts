@@ -1,4 +1,31 @@
-import { expect, test } from "@playwright/test"
+import { expect, test } from "./fixtures"
+
+test("英文登录页加载时显示英文状态提示", async ({ page }) => {
+  await page.addInitScript(() =>
+    localStorage.setItem("marismoon-language", "en")
+  )
+  let releaseLoginModule!: () => void
+  const loginModule = new Promise<void>((resolve) => {
+    releaseLoginModule = resolve
+  })
+  await page.route("**/BasePagesPage.tsx*", async (route) => {
+    await loginModule
+    await route.continue()
+  })
+
+  try {
+    await page.goto("/settings/base/login", { waitUntil: "commit" })
+    await expect(page.locator("html")).toHaveAttribute("lang", "en")
+    await expect(
+      page.getByRole("status", { name: "Loading workspace" })
+    ).toBeVisible()
+  } finally {
+    releaseLoginModule()
+  }
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Sign-in and account"
+  )
+})
 
 test("语言控件切换中英文，刷新后保留，并同步 html lang", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })

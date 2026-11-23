@@ -100,6 +100,7 @@ export const uiEn: Record<string, string> = {
   // Shared component text (UiLabelsBridge)
   关闭: "Close",
   正在加载: "Loading",
+  正在载入工作区: "Loading workspace",
   每页条数: "Rows per page",
   上一页: "Previous",
   下一页: "Next",

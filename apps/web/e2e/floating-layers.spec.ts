@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test"
+import { expect, test } from "./fixtures"
 
 for (const colorScheme of ["light", "dark"] as const) {
   test(`${colorScheme}：对话框、抽屉与 AlertDialog 页脚的按钮统一为 32px`, async ({

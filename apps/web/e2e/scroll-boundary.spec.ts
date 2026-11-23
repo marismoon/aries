@@ -1,4 +1,6 @@
-import { expect, test, type Locator, type Page } from "@playwright/test"
+import type { Locator, Page } from "@playwright/test"
+
+import { expect, test } from "./fixtures"
 
 const workspaceContent = (page: Page) =>
   page.getByRole("region", { name: "页面内容", exact: true })

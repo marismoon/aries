@@ -1,4 +1,11 @@
-import { expect, test } from "@playwright/test"
+import type { Request } from "@playwright/test"
+
+import {
+  expect,
+  externalPlaceholderHeader,
+  sidebarAvatarUrl,
+  test,
+} from "./fixtures"
 
 const viewports = [
   { width: 1920, height: 1080 },
@@ -24,6 +31,7 @@ for (const { path, title } of routes) {
       const appOrigin = new URL(baseURL!).origin
       const errors: string[] = []
       const unexpectedRequests: string[] = []
+      const avatarRequests: Request[] = []
 
       page.on("pageerror", (error) => errors.push(error.message))
       page.on("request", (request) => {
@@ -31,6 +39,14 @@ for (const { path, title } of routes) {
         if (url.protocol !== "http:" && url.protocol !== "https:") return
 
         const type = request.resourceType()
+        if (
+          url.href === sidebarAvatarUrl &&
+          type === "image" &&
+          request.method() === "GET"
+        ) {
+          avatarRequests.push(request)
+          return
+        }
         const isApiPath = /^\/(?:api|graphql)(?:\/|$)/.test(url.pathname)
         if (
           url.origin !== appOrigin ||
@@ -91,6 +107,10 @@ for (const { path, title } of routes) {
 
       expect(errors, "页面未捕获的 JavaScript 异常").toEqual([])
       expect(unexpectedRequests, "业务接口或外部网络请求").toEqual([])
+      for (const request of avatarRequests) {
+        const response = await request.response()
+        expect(response?.headers()[externalPlaceholderHeader]).toBe("1")
+      }
     })
   }
 }
@@ -130,11 +150,17 @@ test("768px 的月账单可通过键盘搜索并选择币种", async ({ page }) 
 test("1440px 桌面三列充分利用页面宽度并保留首屏信息密度", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" })
+  const avatarResponse = page.waitForResponse(sidebarAvatarUrl)
   await page.goto("/overview")
 
   const metrics = page.getByRole("region", { name: "核心指标" })
   await expect(metrics).toBeVisible()
   const rail = page.getByRole("navigation", { name: "主模块" })
+  const avatar = rail.getByRole("img", { name: "演示用户 · 管理员" })
+  expect((await avatarResponse).status()).toBe(404)
+  await expect(avatar.getByText("M", { exact: true })).toBeVisible()
+  await expect(avatar.locator('[data-slot="avatar-badge"]')).toBeVisible()
+  await expect(avatar.locator('[data-slot="avatar-image"]')).toHaveCount(0)
   const railButton = rail.getByRole("button", { name: "收起工作区导航" })
   const nav = await page.locator('[data-layout-column="nav"]').boundingBox()
   const kpi = await metrics.boundingBox()

@@ -2,15 +2,17 @@ import { createBrowserRouter, Navigate } from "react-router"
 
 import { AppShell } from "@/components/layout/AppShell"
 import { WorkspacePage } from "@/components/layout/WorkspacePage"
+import { useUiText } from "@/lib/i18n/use-ui-text"
 import { Skeleton } from "@marismoon/ui/ui/skeleton"
 import { workspacePages } from "./workspace-pages"
 
 function LoadingWorkspace() {
+  const tl = useUiText()
   return (
     <div
       className="grid min-h-svh place-items-center"
       role="status"
-      aria-label="正在载入工作区"
+      aria-label={tl("正在载入工作区")}
     >
       <Skeleton className="h-12 w-32" />
     </div>

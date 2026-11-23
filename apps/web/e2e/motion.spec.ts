@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test"
+import { expect, test } from "./fixtures"
 
 test("减少动效时，页面与命令面板直接呈现最终态", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" })
