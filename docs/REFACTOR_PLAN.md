@@ -59,10 +59,10 @@ aries/
 ├── .github/workflows/ci.yml          # 见 §6
 ├── .changeset/                       # 预留，阶段二启用
 ├── docs/
-│   ├── guide/                        # 入门、新增页面、注册导航、复制 starter 起步
-│   ├── reference/                    # ui 组件、shell Props/Slot/ShellLabels、i18n
-│   ├── architecture/                 # 分层、依赖方向、版本治理、阶段边界
-│   └── decisions/                    # ADR，见 §7
+│   ├── ARCHITECTURE.md  TECH_STACK.md  DESIGN_SYSTEM.md  COMPONENTS.md  I18N.md   # 保持扁平（CLAUDE.md / AGENTS.md 已链接），内容按新结构更新
+│   ├── STARTER.md                    # 新增：基于 starter 起步（阶段一用法、新增页面、注册导航）
+│   ├── VERSIONING.md                 # 新增：catalog 升级、audit、overrides 应急、阶段边界与可发布清单
+│   └── decisions/                    # 新增：ADR，见 §7（shell API 以 packages/shell/README.md 为准）
 │
 ├── packages/
 │   ├── config/                       # private
@@ -90,7 +90,7 @@ aries/
 │           └── styles/layout.css     # 自带 @source；不嵌套 import ui 样式
 │
 ├── apps/demo/                        # private；原 apps/web
-│   ├── e2e/smoke/                    # CI 必跑
+│   ├── e2e/                          # 现有 E2E 保持平铺，即 CI 的 test:ui 全集
 │   └── src/
 │       ├── app/                      # App、router、providers、shell-adapter、workspace-pages
 │       ├── features/                 # overview bills copilot settings/{component-preview,motion,foundation,basic-info}
@@ -147,7 +147,7 @@ interface ShellLabels { /* 折叠、搜索占位、命令面板等外壳固定�
 - 包规范：`exports` 显式子路径；`peerDependencies` 宽范围（React、Tailwind）；实现依赖放 `dependencies`；CSS 入口声明 `sideEffects`。
 - `private: true`：`apps/demo`、`templates/starter`、`packages/config`。可发布清单仅 `ui`、`shell`。
 - 根 `package.json` 增加 `"audit": "pnpm audit --audit-level=high"`。
-- `ci.yml` 必跑：`typecheck`、`lint`、`build`、`test`、`audit`、`test:ui`（仅 smoke，覆盖 demo 与 starter）。
+- `ci.yml` 必跑：`typecheck`、`lint`、`build`、`test`、`audit`、`test:ui`（demo 现有全部 E2E + starter 冒烟）。
 - 额外检查：① 除 `ui`、`shell` 外所有包 `private: true`；② starter 的 `package.json` 不含 `@marismoon/config`；③ 无深层私有路径导入。
 
 **阶段一不做**：`export-starter.mjs`、发包、`.changeset` 实际配置。starter 阶段一的用法是复制到同仓 `apps/` 下开发。
@@ -216,7 +216,7 @@ interface ShellLabels { /* 折叠、搜索占位、命令面板等外壳固定�
 - 提交：`feat: 新增 templates/starter 起步模板`
 
 **步骤 8 文档与 CI**
-- 做：更新 `AGENTS.md`、`README.md`、`docs/`（按 §3 的 guide/reference/architecture/decisions 组织，含 §7 的 ADR）；落地 §6 的 CI 与三项检查。
+- 做：更新 `AGENTS.md`、`README.md`、`docs/`（按 §3 的 docs 结构：现有文档保持扁平并更新，新增 `STARTER.md`、`VERSIONING.md`、`decisions/`，含 §7 的 ADR）；落地 §6 的 CI 与三项检查。
 - 提交：`docs: 更新架构文档与 CI 检查`
 
 **步骤 9 终验**
@@ -243,5 +243,5 @@ interface ShellLabels { /* 折叠、搜索占位、命令面板等外壳固定�
 | `packages/core/src/format.ts` | `packages/ui/src/lib/format.ts`；删除 `packages/core` |
 | 外壳固定文案 i18n | demo 的 `lib/i18n` 映射为 `ShellLabels` |
 | 业务词条 i18n | 留在 `demo/src/lib/i18n/locales` |
-| 现有 Playwright E2E | `apps/demo/e2e/smoke` |
+| 现有 Playwright E2E | `apps/demo/e2e`（保持平铺） |
 | 颜色字面量豁免路径 | 改指向 `packages/shell/**`、`packages/ui/**`，移除旧路径 |
