@@ -69,13 +69,14 @@ aries/
 │   │   ├── eslint/                   # base / react / boundaries
 │   │   └── typescript/               # base / react / app
 │   ├── ui/
-│   │   ├── components.json           # shadcn 别名对齐 src/ui
-│   │   └── src/
-│   │       ├── index.ts
-│   │       ├── ui/                   # 扁平，沿用 shadcn CLI 结构
-│   │       ├── shared/<Name>/        # 自研组合组件，一组件一目录
-│   │       ├── icons/  motion/  hooks/
-│   │       ├── lib/                  # format.ts（来自 core）
+│   │   ├── components.json           # 保持现状（别名 @marismoon/ui/ui）
+│   │   └── src/                      # 内部结构保持现状，不重排；对外导出路径（exports）不变
+│   │       ├── components/
+│   │       │   ├── ui/               # 扁平，shadcn CLI 结构
+│   │       │   ├── shared/           # 自研组合组件（现为扁平文件，保持）
+│   │       │   └── icons/  motion/
+│   │       ├── hooks/
+│   │       ├── lib/                  # 新增 format.ts（来自 core）
 │   │       └── styles/               # 主题与材质令牌，提供 --glass-* / --sidebar-* 变量
 │   └── shell/
 │       ├── README.md                 # 职责、API、禁止事项、CSS 变量契约
@@ -153,7 +154,7 @@ interface ShellLabels { /* 折叠、搜索占位、命令面板等外壳固定�
 
 ## 7. ADR（`docs/decisions/`，每条一页）
 
-取消 `packages/core` · shell 不依赖 router 与 i18n · starter 自包含不依赖 config · CSS 两段显式导入 · shadcn 基础组件保持扁平（自研组件一组件一目录）
+取消 `packages/core` · shell 不依赖 router 与 i18n · starter 自包含不依赖 config · CSS 两段显式导入 · `packages/ui` 内部结构保持现状（shadcn 扁平），仅新建的 `packages/shell` 采用一组件一目录
 
 ## 8. 执行步骤
 
@@ -181,7 +182,7 @@ interface ShellLabels { /* 折叠、搜索占位、命令面板等外壳固定�
 - 提交：`chore: 抽出 packages/config 共享工程配置`
 
 **步骤 4 取消 core**
-- 做：`format.ts` → `packages/ui/src/lib`；`mocks/`、`types/` 迁入 `apps/demo` 对应 feature（跨 feature 的放 `demo/shared`）；删除 `packages/core`；去除 `CommandPalette` 对 `mocks/bills` 的引用（改为由 demo 注入数据）。
+- 做：`format.ts` → `packages/ui/src/lib`（同步迁移其测试，若有）；`mocks/`、`types/` 迁入 `apps/demo` 对应 feature（跨 feature 的放 `demo/shared`），**连同 `mock-service.test.ts` 等测试一并迁移，测试数量不得减少**；`zod` 等 core 独有依赖随使用方迁移，并按 catalog 规则处理；删除 `packages/core`（含 workspace 引用、lockfile importer、ESLint / 文档中的 `@marismoon/core` 路径）；去除 `CommandPalette` 对 `mocks/bills` 的引用（改为由 demo 注入数据）。
 - 提交：`refactor: 取消 packages/core，mocks 与类型迁入 demo`
 
 ### 轮次三：就地解耦（只在 demo 内改，**不搬文件**；每子步单独提交）
