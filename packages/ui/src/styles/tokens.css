@@ -247,15 +247,17 @@
     var(--foreground) 15%,
     var(--muted-foreground)
   );
-  /* Dark rows keep their accent-based fills. */
-  --option-hover: color-mix(in srgb, var(--accent) 45%, var(--popover));
-  --option-selected: color-mix(in srgb, var(--accent) 65%, var(--popover));
-  --option-selected-hover: color-mix(
-    in srgb,
-    var(--accent) 85%,
-    var(--popover)
-  );
+  /* Dark rows: shares of the brand colour over the popover, about 1.11, 1.21
+     and 1.28 to 1 like the light ladder. (Mixing --accent did not lift them:
+     the dark accent sits at the popover's own lightness.) */
+  --option-hover: color-mix(in srgb, var(--accent-source, var(--primary)) 6%, var(--popover));
+  --option-selected: color-mix(in srgb, var(--accent-source, var(--primary)) 11%, var(--popover));
+  --option-selected-hover: color-mix(in srgb, var(--accent-source, var(--primary)) 14%, var(--popover));
   --option-foreground: var(--accent-foreground);
+  /* Pill items on a surface (tabs, toggles, menu triggers, pagination). */
+  --item-hover: color-mix(in srgb, var(--accent-source, var(--primary)) 7%, transparent);
+  --item-selected: color-mix(in srgb, var(--accent-source, var(--primary)) 13%, transparent);
+  --sidebar-item-hover: var(--item-hover);
   --surface-shadow-ink: #040215;
   --surface-shadow-scale: 3;
   --surface-inset: rgb(255 255 255 / 6%);
@@ -288,9 +290,9 @@
 
   --chart-1: #7aa9ff;
   --chart-2: #2fd9b9;
-  --chart-3: #4a76c9;
+  --chart-3: #cf8ac0;
   --chart-4: #5fc0d9;
-  --chart-5: #3e6dc0;
+  --chart-5: #497eb3;
   --environment-top: hsl(218 85% 55% / 44%);
   --environment-bottom: hsl(190 80% 42% / 38%);
   --environment-side: hsl(168 70% 40% / 20%);
@@ -434,13 +436,13 @@
   --nav-active-fg: var(--accent-foreground);
   --chart-1: #9fc4d8;
   --chart-2: #8fd0a8;
-  --chart-3: #5f8499;
+  --chart-3: #5c8bb3;
   --chart-4: #b4a5d0;
-  --chart-5: #517588;
-  --environment-top: hsl(200 45% 52% / 42%);
-  --environment-bottom: hsl(160 35% 45% / 34%);
+  --chart-5: #b57da8;
+  --environment-top: hsl(262 42% 58% / 42%);
+  --environment-bottom: hsl(205 40% 48% / 34%);
   --environment-side: hsl(265 35% 60% / 30%);
-  --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
+  --hero-start: color-mix(in srgb, var(--primary) 26%, transparent);
   --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
   --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
   --hero-muted: #b6cbd8;
@@ -448,6 +450,9 @@
   --hero-bar-current: #b4a5d0;
 
   --accent-source: #b4a5d0;
+  /* Lavender is the second brand colour: glass surfaces take its hue, as the
+     clean canvas does (--dark-hue 262). */
+  --surface-source: var(--accent-source);
 }
 
 [data-palette="pet-adoption"]:not(.dark) {
@@ -517,7 +522,7 @@
   --chart-2: #8ccaa9;
   --chart-3: #ab9bcb;
   --chart-4: #4e8e80;
-  --chart-5: #a75b47;
+  --chart-5: #b3624c;
   --environment-top: hsl(14 65% 50% / 30%);
   --environment-bottom: hsl(32 70% 50% / 24%);
   --environment-side: hsl(350 50% 55% / 14%);
@@ -592,13 +597,13 @@
   --nav-active-fg: var(--accent-foreground);
   --chart-1: #4ade80;
   --chart-2: #7cc8ea;
-  --chart-3: #2f8f58;
-  --chart-4: #5db6dc;
-  --chart-5: #2c8052;
+  --chart-3: #b3ca65;
+  --chart-4: #9794e0;
+  --chart-5: #3f9086;
   --environment-top: hsl(145 60% 40% / 34%);
   --environment-bottom: hsl(190 55% 46% / 28%);
   --environment-side: hsl(120 45% 45% / 14%);
-  --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
+  --hero-start: color-mix(in srgb, var(--primary) 24%, transparent);
   --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
   --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
   --hero-muted: #b6d8c1;
@@ -683,13 +688,13 @@
   --nav-active-fg: var(--accent-foreground);
   --chart-1: #ffd47a;
   --chart-2: #5cc8b4;
-  --chart-3: #c9a14a;
-  --chart-4: #b9b46a;
-  --chart-5: #8c6c2d;
+  --chart-3: #89b373;
+  --chart-4: #7ea7dc;
+  --chart-5: #9378b2;
   --environment-top: hsl(40 85% 55% / 44%);
   --environment-bottom: hsl(12 80% 42% / 38%);
   --environment-side: hsl(350 70% 40% / 20%);
-  --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
+  --hero-start: color-mix(in srgb, var(--primary) 24%, transparent);
   --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
   --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
   --hero-muted: #d8cab6;

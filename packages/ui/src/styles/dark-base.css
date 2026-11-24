@@ -87,9 +87,9 @@
 :root.dark:not([data-dark-style="clean"]) {
   --card-l: 0.26;
   --card-c: 0.032;
-  --card: oklch(from var(--primary) var(--card-l) var(--card-c) h);
+  --card: oklch(from var(--surface-source, var(--primary)) var(--card-l) var(--card-c) h);
   --card-bottom: oklch(
-    from var(--primary) calc(var(--card-l) - 0.015) var(--card-c) h
+    from var(--surface-source, var(--primary)) calc(var(--card-l) - 0.015) var(--card-c) h
   );
 
   /* The rest of the surface ladder is tinted the same way, so buttons, fields,
@@ -98,18 +98,18 @@
   --control-l: 0.3;
   --popover-l: 0.33;
   --recess-l: 0.2;
-  --control: oklch(from var(--primary) var(--control-l) var(--card-c) h);
+  --control: oklch(from var(--surface-source, var(--primary)) var(--control-l) var(--card-c) h);
   --secondary: var(--control);
   --muted: var(--control);
-  --popover: oklch(from var(--primary) var(--popover-l) var(--card-c) h);
-  --recess: oklch(from var(--primary) var(--recess-l) var(--card-c) h);
+  --popover: oklch(from var(--surface-source, var(--primary)) var(--popover-l) var(--card-c) h);
+  --recess: oklch(from var(--surface-source, var(--primary)) var(--recess-l) var(--card-c) h);
 
   /* The page itself takes the palette hue too (the canvas under the aurora),
      so the whole screen is one colour family rather than black plus glow.
      --background stays neutral: it feeds the theme-color meta tag. */
   --base-l: 0.2;
   --base-c: 0.04;
-  --environment-base: oklch(from var(--primary) var(--base-l) var(--base-c) h);
+  --environment-base: oklch(from var(--surface-source, var(--primary)) var(--base-l) var(--base-c) h);
 
   /* Aurora: two blooms (top right, bottom left) instead of six, each a single
      soft ellipse. Dark glass only; light mode keeps its own. */
@@ -146,9 +146,9 @@
   --danger: #e480a6;
 }
 :root.dark[data-palette="health-wellness"] {
-  --success: #1dbcb5;
+  --success: #46d5cd;
 }
 :root.dark[data-palette="amber-sand"] {
   --danger: #e884aa;
-  --warning: #e28f5e;
+  --warning: #ffc29f;
 }

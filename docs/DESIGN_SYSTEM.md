@@ -27,7 +27,7 @@
 
 | 项 | 规则 |
 | --- | --- |
-| 色相 | 每个主题声明 `--dark-hue`（0–360 的色相角，不带单位）；染色饱和度默认 `--dark-tint: 6%`。静心雾蓝用薰衣草色相 262 与 9%，以便在 clean 下与远程医疗蓝（218）区分 |
+| 色相 | 每个主题声明 `--dark-hue`（0–360 的色相角，不带单位）；染色饱和度默认 `--dark-tint: 6%`。静心雾蓝用薰衣草色相 262 与 9%（薰衣草是它的第二品牌色：glass 表面经 `--surface-source` 也取这个色相）。clean 下统一把 `--dark-tint` 提到 10%，并给数据大字卡 9% 的主色，让主题在平涂表面上仍可辨认 |
 | 表面亮度（HSL L；clean 取用，glass 见 §2.2） | recess 8 < 画布（`--background`）12 < 卡片 15 < 控件 19 < 浮层 23；台阶小，主要靠发丝线分层 |
 | 文字 | 正文 L96、次级 L70（均带主题色相），不使用纯白 |
 | 发丝线（白色 alpha） | `--border-subtle` 10%、`--border` 18%、`--layout-control-border` 22%、`--input` 34%（对画布 ≥ 3:1）、`--surface-edge` 15% |
@@ -77,7 +77,7 @@
 
 ### 语义色（组件只用这些）
 
-`--background` `--foreground` `--card` `--card-bottom`（卡片渐变下端；clean 与 `--card` 相同）`--card-foreground` `--popover` `--popover-foreground` `--primary` `--primary-foreground` `--primary-hover` `--secondary` `--secondary-foreground` `--muted` `--muted-foreground` `--label-foreground`（小号标签：目录二级项、抽屉字段名等「命名一个值」的文字，次级色中混入少量前景色：亮色 25%、暗色 15%，比次级说明深一档，笔画对比约为次级色的 1.5 倍）`--option-hover` `--option-selected` `--option-selected-hover` `--option-foreground`（浮层列表行——Select、菜单、Combobox、命令面板结果——的悬停、选中、选中并悬停底色与文字色。亮色取主色 8% / 14% / 18% 混入 `--popover`，对浮层底约 1.10 / 1.20 / 1.27:1；文字为强调字 70% 与正文色混合，在最深一档上仍 ≥ 4.5:1。暗色沿用强调色混合）`--item-hover` `--item-selected`（卡片等表面上的胶囊项——页签、ToggleGroup、菜单栏与导航菜单的触发器和链接、分页——的悬停与选中底色：主色 9% / 15% 的透明混合，对卡片约 1.11 / 1.20:1。**仅亮色定义**：暗色下未定义，各组件回退到自己类名里写的取值，如 `bg-[var(--item-selected,var(--layout-control))]`。亮色下 `--sidebar-item-hover` 等于 `--item-hover`）`--accent` `--accent-foreground` `--destructive` `--border` `--border-subtle` `--input` `--ring` `--overlay` `--control` `--layout-control` `--layout-control-border` `--recess`。
+`--background` `--foreground` `--card` `--card-bottom`（卡片渐变下端；clean 与 `--card` 相同）`--card-foreground` `--popover` `--popover-foreground` `--primary` `--primary-foreground` `--primary-hover` `--secondary` `--secondary-foreground` `--muted` `--muted-foreground` `--label-foreground`（小号标签：目录二级项、抽屉字段名等「命名一个值」的文字，次级色中混入少量前景色：亮色 25%、暗色 15%，比次级说明深一档，笔画对比约为次级色的 1.5 倍）`--option-hover` `--option-selected` `--option-selected-hover` `--option-foreground`（浮层列表行——Select、菜单、Combobox、命令面板结果——的悬停、选中、选中并悬停底色与文字色。亮色取主色 8% / 14% / 18% 混入 `--popover`，对浮层底约 1.10 / 1.20 / 1.27:1；文字为强调字 70% 与正文色混合，在最深一档上仍 ≥ 4.5:1。暗色取主色 6% / 11% / 14% 混入 `--popover`，深浅与亮色一致；不要混 `--accent`，暗色强调色的明度与浮层相同，混不出层次）`--item-hover` `--item-selected`（卡片等表面上的胶囊项——页签、ToggleGroup、菜单栏与导航菜单的触发器和链接、分页——的悬停与选中底色：主色 9% / 15% 的透明混合，对卡片约 1.11 / 1.20:1。暗色为主色 7% / 13% 的透明混合。组件类名里的回退值（如 `bg-[var(--item-selected,var(--layout-control))]`）只在令牌缺失时生效。两种模式下 `--sidebar-item-hover` 都等于 `--item-hover`）`--accent` `--accent-foreground` `--destructive` `--border` `--border-subtle` `--input` `--ring` `--overlay` `--control` `--layout-control` `--layout-control-border` `--recess`。
 
 状态色：`--success` `--warning` `--danger` `--info`，及背景 `--success-bg` `--warning-bg` `--danger-bg` `--info-bg`。亮色与暗色各有一组共享默认值（信息色为蓝），与品牌撞色的主题按 §2.5 覆盖对应状态色。
 

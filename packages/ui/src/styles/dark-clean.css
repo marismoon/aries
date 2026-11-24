@@ -6,6 +6,8 @@
    the 1px hairlines. Scoped to .dark[data-dark-style="clean"] so glass and
    light mode are untouched. */
 :root.dark[data-dark-style="clean"] {
+  /* Enough tint for a palette to register on the flat surfaces. */
+  --dark-tint: 10%;
   --workspace-nav: transparent;
   --card-bottom: var(--card);
 
@@ -42,7 +44,8 @@
     var(--accent-source, var(--primary)) 14%,
     var(--background)
   );
-  --hero-start: var(--card);
+  /* A quiet brand share keeps the hero apart from an ordinary card. */
+  --hero-start: color-mix(in srgb, var(--primary) 9%, var(--card));
   --hero-end: var(--card);
   --hero-edge: var(--border);
 
