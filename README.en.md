@@ -133,7 +133,9 @@ See the [Starter guide](docs/STARTER.md) for copy commands and the full setup.
 | `pnpm test` | Run Vitest unit tests |
 | `pnpm test:coverage` | Run the Demo coverage task |
 | `pnpm test:ui` | Run Demo UI tests and the Starter smoke test |
+| `pnpm test:consumer` | Verify the packed ui and shell outside the workspace with Vite and Next.js hosts (needs network) |
 | `pnpm check:workspace` | Check workspace package boundaries |
+| `pnpm check:package` | Pack ui and shell, check contents and metadata, and run publint and attw |
 | `pnpm run audit` | Audit dependencies and fail on high or critical findings |
 | `pnpm format` | Format TS and TSX with Prettier |
 | `pnpm docs:screenshots` | Generate both Demo screenshot sets in the [screenshots directory](docs/assets/screenshots/) |

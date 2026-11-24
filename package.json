@@ -13,8 +13,10 @@
     "test": "turbo run test",
     "test:coverage": "turbo run test:coverage",
     "test:ui": "turbo run test:ui",
+    "test:consumer": "node scripts/consumer-test.mjs",
     "lint": "eslint .",
     "check:workspace": "node scripts/check-workspace.mjs",
+    "check:package": "node scripts/check-packages.mjs",
     "audit": "pnpm audit --audit-level=high",
     "docs:screenshots": "node scripts/capture-screenshots.mjs",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
@@ -47,6 +49,9 @@
     "lint-staged": "^17.6.1",
     "typescript": "catalog:",
     "@types/node": "catalog:",
-    "turbo": "^2"
+    "turbo": "^2",
+    "@arethetypeswrong/cli": "catalog:dev",
+    "@changesets/cli": "catalog:dev",
+    "publint": "catalog:dev"
   }
 }

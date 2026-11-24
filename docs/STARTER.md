@@ -36,4 +36,15 @@
    pnpm --filter @marismoon/my-workspace test:ui
    ```
 
-宿主通过公开入口消费 UI 与 Shell，样式先引入 UI 的 `globals.css` 与可选的 `fonts.css`，再引入 Shell。模板同仓运行所需的工程配置和开发约定随源码一起复制。阶段二才提供独立仓库的导出工具。见[起步应用开发契约](../templates/starter/AGENTS.md)、[Shell 接口](../packages/shell/README.md)与[版本治理](VERSIONING.md)。
+宿主通过公开入口消费 UI 与 Shell，样式先引入 UI 的 `globals.css` 与可选的 `fonts.css`，再引入 Shell。模板同仓运行所需的工程配置和开发约定随源码一起复制。见[起步应用开发契约](../templates/starter/AGENTS.md)、[Shell 接口](../packages/shell/README.md)与[版本治理](VERSIONING.md)。
+
+## 导出为独立项目
+
+`scripts/export-starter.mjs` 把模板导出到仓库之外：`workspace:*` 换成已发布的版本区间（导出前逐个确认注册表上存在），`catalog:` 换成 [pnpm-workspace.yaml](../pnpm-workspace.yaml) 中的版本，`AGENTS.md` 里指回本仓库的相对链接改为 GitHub 链接。
+
+```sh
+node scripts/export-starter.mjs ../my-app --name my-app
+```
+
+`@marismoon/ui` 与 `@marismoon/shell` 发布到 npm 之前，注册表检查会失败。此时可先 `pnpm pack` 两个包，再用 `--tarballs <目录>` 改为从本地 tarball 安装，[外部消费者测试](../scripts/consumer-test.mjs)（`pnpm test:consumer`）就是这样验证导出结果的。
+

@@ -35,6 +35,7 @@ jobs:
       - run: pnpm test
       - run: pnpm run audit
       - run: pnpm check:workspace
+      - run: pnpm check:package
       - name: Read Playwright version
         id: playwright
         run: |
@@ -53,3 +54,38 @@ jobs:
         if: ${{ steps.playwright-cache.outputs.cache-hit != 'true' }}
         run: pnpm --filter @marismoon/demo exec playwright install --with-deps chromium
       - run: pnpm test:ui
+
+  # Installs the packed packages outside the workspace and checks a Vite host
+  # (the exported starter) and a Next.js host. See scripts/consumer-test.mjs.
+  consumer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/setup@v1
+        with:
+          install: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: package.json
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+      - name: Read Playwright version
+        id: playwright
+        run: |
+          version="$(pnpm --filter @marismoon/starter exec playwright --version)"
+          printf 'version=%s\n' "${version#Version }" >> "$GITHUB_OUTPUT"
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+      - name: Install Chromium system dependencies
+        if: ${{ steps.playwright-cache.outputs.cache-hit == 'true' }}
+        run: pnpm --filter @marismoon/starter exec playwright install-deps chromium
+      - name: Install Chromium and system dependencies
+        if: ${{ steps.playwright-cache.outputs.cache-hit != 'true' }}
+        run: pnpm --filter @marismoon/starter exec playwright install --with-deps chromium
+      - run: pnpm test:consumer

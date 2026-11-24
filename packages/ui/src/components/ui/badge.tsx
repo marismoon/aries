@@ -28,7 +28,7 @@ const toneBase =
 const toneVariants = Object.fromEntries(
   Object.keys(tones).map((name) => [
     name,
-    // The colour itself is set inline (--tone): Tailwind cannot see class
+    // The colour itself comes from the --tone property: Tailwind cannot see class
     // names built at runtime.
     toneBase,
   ])

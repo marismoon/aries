@@ -89,8 +89,10 @@ export function AppShell({
   const labels = useShellLabels()
   // iPad portrait (701-899px) keeps the compact icon rail and lets the second
   // column be opened on demand; wider screens start expanded.
+  // Server rendering has no viewport and starts expanded.
   const [navExpanded, setNavExpanded] = useState(
     () =>
+      typeof window === "undefined" ||
       !window.matchMedia("(min-width: 701px) and (max-width: 899px)").matches
   )
   const [selection, setSelection] = useState({

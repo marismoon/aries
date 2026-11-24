@@ -1,6 +1,6 @@
 # 阶段二方案：发包准备
 
-> 状态：**执行中**，轮次一（步骤 0–3）与轮次二（步骤 4–5）已完成，见第 9 节。决定见第 11 节。工作区包名已统一为 `@marismoon/*`；第 2 节实验记录保留当时的 `@aries/*` 写法。本文延续 [REFACTOR_PLAN.md](REFACTOR_PLAN.md) 的执行规则（每步五项全绿再提交、每轮停下汇报）。与 [AGENTS.md](../AGENTS.md) 冲突时，以其视觉与主题红线为准。
+> 状态：**执行中**，轮次一至轮次三（步骤 0–7）已完成，见第 9 节；剩余步骤 8（首次预发布）。决定见第 11 节。工作区包名已统一为 `@marismoon/*`；第 2 节实验记录保留当时的 `@aries/*` 写法。本文延续 [REFACTOR_PLAN.md](REFACTOR_PLAN.md) 的执行规则（每步五项全绿再提交、每轮停下汇报）。与 [AGENTS.md](../AGENTS.md) 冲突时，以其视觉与主题红线为准。
 
 ## 1. 目标与范围
 
@@ -91,7 +91,7 @@
 | 二 | 5 | 包元数据、`files`、许可证随包分发；字体拆为 `@marismoon/ui/styles/fonts.css`，Demo 与 Starter 显式引入（CSS 集合零差异）；检查 Aceternity 示例不进入发布包与 Starter | `chore: 完善发布元数据` |
 | 三 | 6 | 导出脚本与外部消费者测试（Vite 与 Next.js 两类宿主，含 attw），接入 CI | `test: 新增外部消费者测试` |
 | 三 | 7 | Changesets 与 Trusted Publishing 发布工作流（先只发 `next`） | `ci: 新增发布工作流` |
-| 四 | 8 | 首次预发布与验收：用户先在 npm 创建组织 `marismoon` 并为两个包配置 Trusted Publishing，确认后再执行 | — |
+| 四 | 8 | 首次预发布与验收：`pnpm changeset version` 后由用户手动首发两个包，再在 npm 为它们配置 Trusted Publishing，之后改用 Release 工作流（见 [VERSIONING.md](VERSIONING.md)） | — |
 
 每一轮在独立分支完成，轮内每步单独提交，经 PR 合并；第 8 步前不做任何真实发布。
 
@@ -101,6 +101,13 @@
 - `files` 白名单从步骤 5 提前到步骤 4：没有它时，`.gitignore` 会把 `dist` 排除在 tarball 之外。
 - 外部消费者实验：Starter 复制到仓库外、从 tarball 安装后，typecheck、lint、test、build 与冒烟 E2E 全部通过；生产 CSS 与同仓 Starter 相比只少一条 `.inline{display:inline}`，它来自 `badge.tsx` 注释中的单词，编译后的 JS 不含注释，未被任何元素使用。
 - Next.js 宿主尚未验证（仓库内没有 Next.js 依赖），按计划放在步骤 6 的外部消费者测试中。
+
+轮次三执行记录（2026-11-24）：
+
+- Next.js 消费者测试发现 shell 在渲染阶段访问 `window`（`ShellLink`、`AppShell`），预渲染失败；已修复，并新增 Node 环境的服务端渲染用例。
+- `badge.tsx` 注释中的单词被 Tailwind 误扫为 `.inline`，改写注释后，导出 Starter 的生产 CSS 与同仓构建逐字节一致，消费者测试按严格相等比较。
+- attw 发现类型声明里的相对导入不带扩展名，`node16` 解析失败；`finalize-package.mjs` 现为其补上 `.js`，`node16` 与 `bundler` 均通过。attw 不展开 ui 的通配子路径，具体组件的类型解析由消费者测试覆盖。
+- npm 只能为已存在的包配置 Trusted Publisher，因此首发必须手动完成。Release 工作流用 `pnpm -r publish`（只发布注册表上还没有的版本）而非 changesets/action，便于审计。
 
 ## 10. 风险
 

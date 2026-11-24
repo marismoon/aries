@@ -10,6 +10,17 @@
 2. 在根目录用项目锁定的 pnpm 执行 `pnpm install`。检查 `pnpm-lock.yaml` 的 importer、packages 与 snapshots 的差异，确认解析变化都能归因于此次升级。recharts 的升级还需核对共享图表组件，见[技术栈](TECH_STACK.md)。
 3. 运行根目录五项自检、`pnpm check:workspace` 和 `pnpm run audit`，将清单与 lockfile 一起提交。大版本升级单独提交，记录受影响的包和兼容性。五项命令见[开发契约](../AGENTS.md)。
 
+## 发布
+
+`@marismoon/ui` 与 `@marismoon/shell` 由 [Changesets](../.changeset/README.md) 管理版本，二者同版本发布，当前处于 `next` 预发布模式。
+
+1. 改动影响发布包时，在 PR 中附带 changeset（`pnpm changeset`）。
+2. 发版时运行 `pnpm changeset version`，更新版本号与 `CHANGELOG.md`，单独提 PR 合并到 `main`。
+3. 发布前在本地跑五项自检、`pnpm check:package`（打包内容、publint、attw）与 `pnpm test:consumer`（仓库外的 Vite 与 Next.js 宿主）。
+4. **首次发布由维护者手动完成，每个包只做一次**：npm 只能为已存在的包配置 Trusted Publisher。维护者以有 `marismoon` 组织发布权限的账号登录（`npm login`），在仓库根目录运行 `pnpm -r --filter @marismoon/ui --filter @marismoon/shell publish --access public --tag next`。随后在 npmjs.com 两个包的设置中添加 Trusted Publisher：GitHub Actions、组织 `marismoon`、仓库 `aries`、工作流 `release.yml`。npm 要求新配置在 2 天内完成首次可信发布，否则过期需重建。
+5. 此后在 GitHub Actions 中手动运行 **Release** 工作流（[release.yml](../.github/workflows/release.yml)，`dist-tag` 默认 `next`）。它用 OIDC 发布，不需要令牌，自动附带 provenance，只发布注册表上还没有的版本。
+6. 发首个正式版前运行 `pnpm changeset pre exit`，再 `pnpm changeset version`，以 `latest` 发布。
+
 ## 安全公告与临时覆盖
 
 CI 运行 `pnpm run audit`，调用 `pnpm audit --audit-level=high`。高危和严重级别公告会阻断流水线。用 `pnpm why -r <包名>` 追踪上游依赖，核对公告中的受影响范围、修复版本与实际解析版本。

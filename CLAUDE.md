@@ -13,4 +13,4 @@
 - [docs/VERSIONING.md](docs/VERSIONING.md) — catalog、审计、应急修复与阶段边界
 - [docs/decisions/](docs/decisions/) — 五项架构决策
 
-常用命令（仓库根目录）：`pnpm dev` · `pnpm typecheck` · `pnpm lint` · `pnpm build` · `pnpm test` · `pnpm test:ui` · `pnpm check:workspace`。
+常用命令（仓库根目录）：`pnpm dev` · `pnpm typecheck` · `pnpm lint` · `pnpm build` · `pnpm test` · `pnpm test:ui` · `pnpm check:workspace` · `pnpm check:package`。
