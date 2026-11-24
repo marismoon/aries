@@ -5,8 +5,12 @@ export function ShellLink(props: ShellLinkProps) {
   if (renderLink) return renderLink(props)
 
   const { to, end, onClick, className, children, ...anchor } = props
-  const url = new URL(to, window.location.href)
-  const local = url.origin === window.location.origin
+  // Server rendering has no window: resolve against a placeholder origin, so
+  // relative links count as local and absolute ones as external.
+  const here =
+    typeof window === "undefined" ? "http://localhost/" : window.location.href
+  const url = new URL(to, here)
+  const local = url.origin === new URL(here).origin
   const path = activePath.toLowerCase()
   const destination = url.pathname.toLowerCase()
   const active =
