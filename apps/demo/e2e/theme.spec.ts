@@ -65,6 +65,231 @@ async function recordIconTransition(
   ) as IconFrame[]
 }
 
+type IconRole = "outgoing" | "incoming" | "other"
+
+type IconSwitch = {
+  /** 每次 DOM 变化后按钮内图标数量的最大值。 */
+  maxIcons: number
+  /** 新图标插入时的行内 transform，即 motion 的进入起点。 */
+  incomingFrom: string | null
+  /** 切换期间 motion 写入的行内 transform（退出终点、进入终点）。 */
+  writes: { icon: IconRole; transform: string }[]
+  /** 落在图标上的每条 WAAPI 关键帧效果在起点、中点、终点的状态。 */
+  effects: {
+    icon: IconRole
+    start: IconFrame
+    middle: IconFrame
+    end: IconFrame
+  }[]
+  /** 动画全部结束后的计算样式。 */
+  final: IconFrame
+}
+
+type IconSwitchWindow = Window & {
+  __e2eIconEffects?: KeyframeEffect[]
+  __e2eIconSwitch?: {
+    outgoing: Element | null
+    incoming: Element | null
+    incomingFrom: string | null
+    from: number
+    maxIcons: number
+    writes: { element: Element; transform: string }[]
+    observer: MutationObserver
+  }
+}
+
+/**
+ * 在页面脚本执行前登记所有 Web Animations 关键帧效果。motion 把独立的
+ * rotate/scale 合并成一条 WAAPI transform 动画（`new KeyframeEffect`），
+ * 登记在创建时同步完成，与 runner 速度和帧率无关。
+ */
+function trackKeyframeEffects() {
+  const win = window as IconSwitchWindow
+  const effects: KeyframeEffect[] = []
+  win.__e2eIconEffects = effects
+  const NativeEffect = window.KeyframeEffect
+  window.KeyframeEffect = class extends NativeEffect {
+    // KeyframeEffect 有两个构造重载，参数原样转交。
+    constructor(...args: unknown[]) {
+      super(...(args as ConstructorParameters<typeof NativeEffect>))
+      effects.push(this)
+    }
+  }
+  const nativeAnimate = Element.prototype.animate
+  Element.prototype.animate = function (keyframes, options) {
+    const animation = nativeAnimate.call(this, keyframes, options)
+    if (animation.effect instanceof NativeEffect) effects.push(animation.effect)
+    return animation
+  }
+}
+
+/** 解析 motion 写入的 `scale(…) rotate(…)`，scale(0) 时矩阵无法体现旋转。 */
+function parseIconTransform(transform: string) {
+  const rotate = /rotate\((-?[\d.]+)deg\)/.exec(transform)?.[1]
+  const scale = /scale\((-?[\d.]+)\)/.exec(transform)?.[1]
+  return {
+    rotating: rotate != null && Number(rotate) !== 0,
+    scaling: scale != null && Number(scale) !== 1,
+  }
+}
+
+/**
+ * 激活开关并记录一次图标切换。全部信号都是同步登记的，不依赖采样恰好落在
+ * 动画中段：
+ * - MutationObserver 记录每次 DOM 变化后的图标数量与 motion 的行内 transform；
+ * - motion 按时间推进，慢 runner 上首帧迟于退出时长（85ms）时会直接写入
+ *   退出终点而不创建 WAAPI 动画，所以两端状态以行内写入为准；
+ * - 实际创建的每条关键帧效果用暂停的副本按进度取值，检查中点同时旋转和缩放。
+ */
+async function recordIconSwitch(
+  button: Locator,
+  activate: () => Promise<void>
+): Promise<IconSwitch> {
+  await button.evaluate((control) => {
+    const win = window as IconSwitchWindow
+    const iconHost = (node: Node) =>
+      node instanceof HTMLElement && node.querySelector(":scope > svg")
+        ? node
+        : null
+    const observer = new MutationObserver((records) => {
+      const state = win.__e2eIconSwitch!
+      for (const record of records) {
+        record.addedNodes.forEach((node) => {
+          const host = iconHost(node)
+          if (!host) return
+          state.incoming = host
+          state.incomingFrom = host.style.transform || null
+        })
+        const host = iconHost(record.target)
+        if (record.type === "attributes" && host) {
+          state.writes.push({ element: host, transform: host.style.transform })
+        }
+      }
+      state.maxIcons = Math.max(
+        state.maxIcons,
+        control.querySelectorAll("svg").length
+      )
+    })
+    observer.observe(control, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["style"],
+    })
+    win.__e2eIconSwitch = {
+      outgoing: control.querySelector("svg")?.parentElement ?? null,
+      incoming: null,
+      incomingFrom: null,
+      from: win.__e2eIconEffects!.length,
+      maxIcons: control.querySelectorAll("svg").length,
+      writes: [],
+      observer,
+    }
+  })
+  await activate()
+  // 结束信号：新图标已插入、motion 已写入它的进入终点，且没有图标动画在运行。
+  await expect
+    .poll(
+      () =>
+        button.evaluate((control) => {
+          const win = window as IconSwitchWindow
+          const state = win.__e2eIconSwitch!
+          const effects = win.__e2eIconEffects!.slice(state.from)
+          const running = control
+            .getAnimations({ subtree: true })
+            .some(
+              ({ effect }) =>
+                effect instanceof KeyframeEffect && effects.includes(effect)
+            )
+          return (
+            state.incoming != null &&
+            state.incoming.isConnected &&
+            state.writes.some(({ element }) => element === state.incoming) &&
+            !running
+          )
+        }),
+      { message: "新图标应插入并完成进入动画，且图标动画全部结束" }
+    )
+    .toBe(true)
+  return button.evaluate((control) => {
+    const win = window as IconSwitchWindow
+    const state = win.__e2eIconSwitch!
+    state.observer.disconnect()
+    const roleOf = (element: Element | null): IconRole =>
+      element === state.outgoing
+        ? "outgoing"
+        : element === state.incoming
+          ? "incoming"
+          : "other"
+    const frameOf = (element: Element): IconFrame => {
+      const { transform } = getComputedStyle(element)
+      const { a, b, c } = new DOMMatrixReadOnly(
+        transform === "none" ? undefined : transform
+      )
+      return {
+        count: 1,
+        rotating: Math.abs(b) > 0.001 || Math.abs(c) > 0.001,
+        scaling: Math.abs(Math.hypot(a, b) - 1) > 0.001,
+      }
+    }
+    const probe = document.createElement("span")
+    probe.style.cssText = "position:fixed;display:block;width:20px;height:20px"
+    document.body.append(probe)
+    const effects = win
+      .__e2eIconEffects!.slice(state.from)
+      .flatMap((effect): IconSwitch["effects"] => {
+        const host =
+          effect.target instanceof SVGElement
+            ? effect.target.parentElement
+            : effect.target
+        if (host !== state.outgoing && host !== state.incoming) return []
+        const keyframes = effect.getKeyframes().map((keyframe) => {
+          const copy: Record<string, unknown> = { ...keyframe }
+          delete copy.computedOffset
+          return copy as Keyframe
+        })
+        if (!keyframes.some((keyframe) => "transform" in keyframe)) return []
+        const { delay, activeDuration } = effect.getComputedTiming()
+        const replay = probe.animate(keyframes, {
+          ...effect.getTiming(),
+          fill: "both",
+        })
+        replay.pause()
+        const at = (progress: number) => {
+          replay.currentTime = Number(delay) + Number(activeDuration) * progress
+          return frameOf(probe)
+        }
+        const sampled = {
+          icon: roleOf(host),
+          start: at(0),
+          middle: at(0.5),
+          end: at(1),
+        }
+        replay.cancel()
+        return [sampled]
+      })
+    probe.remove()
+    const icons = control.querySelectorAll("svg")
+    const final = [icons[0], icons[0]?.parentElement]
+      .filter((element) => element != null)
+      .map(frameOf)
+    return {
+      maxIcons: state.maxIcons,
+      incomingFrom: state.incomingFrom,
+      writes: state.writes.map(({ element, transform }) => ({
+        icon: roleOf(element),
+        transform,
+      })),
+      effects,
+      final: {
+        count: icons.length,
+        rotating: final.some(({ rotating }) => rotating),
+        scaling: final.some(({ scaling }) => scaling),
+      },
+    }
+  })
+}
+
 test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => {
   await page.emulateMedia({ colorScheme: "dark" })
   await page.goto("/")
@@ -349,6 +574,7 @@ test("主题图标首次静止，鼠标切换逐一旋转缩放", async ({ page 
     colorScheme: "light",
     reducedMotion: "no-preference",
   })
+  await page.addInitScript(trackKeyframeEffects)
   await page.addInitScript(() => {
     function observeFirstIcon() {
       const button = document.querySelector(
@@ -382,12 +608,26 @@ test("主题图标首次静止，鼠标切换逐一旋转缩放", async ({ page 
     [moonIcon, "切换到浅色模式"],
     [sunIcon, "切换到深色模式"],
   ]) {
-    const frames = await recordIconTransition(toggle, () => toggle.click())
-    expect(frames.every(({ count }) => count <= 1)).toBe(true)
-    expect(frames.some(({ rotating, scaling }) => rotating && scaling)).toBe(
-      true
-    )
-    expect(frames.at(-1)).toEqual({ count: 1, rotating: false, scaling: false })
+    const switched = await recordIconSwitch(toggle, () => toggle.click())
+    const still = { count: 1, rotating: false, scaling: false }
+    const moving = { rotating: true, scaling: true }
+    // 逐一出现：任何一次 DOM 变化后按钮内都最多只有一个图标。
+    expect(switched.maxIcons).toBe(1)
+    // 旧图标退到「旋转且缩小」的终点后移除，新图标从同样的状态进入并回到原位。
+    expect(switched.writes.map(({ icon }) => icon)).toEqual([
+      "outgoing",
+      "incoming",
+    ])
+    expect(parseIconTransform(switched.writes[0]!.transform)).toEqual(moving)
+    expect(parseIconTransform(switched.incomingFrom ?? "")).toEqual(moving)
+    expect(switched.writes[1]!.transform).toBe("none")
+    // 进入动画实际运行，且 motion 创建的每条动画在中点都同时旋转和缩放。
+    expect(switched.effects.some(({ icon }) => icon === "incoming")).toBe(true)
+    for (const { middle } of switched.effects) {
+      expect(middle).toEqual({ count: 1, ...moving })
+    }
+    // 结束后静止。
+    expect(switched.final).toEqual(still)
     await expect(toggle.locator(icon)).toBeVisible()
     await expect(toggle).toHaveAccessibleName(label)
   }
