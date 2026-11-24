@@ -17,7 +17,7 @@
 1. 改动影响发布包时，在 PR 中附带 changeset（`pnpm changeset`）。
 2. 发版时运行 `pnpm changeset version`，更新版本号与 `CHANGELOG.md`，单独提 PR 合并到 `main`。
 3. 发布前在本地跑五项自检、`pnpm check:package`（打包内容、publint、attw）与 `pnpm test:consumer`（仓库外的 Vite 与 Next.js 宿主）。
-4. **首次发布由维护者手动完成，每个包只做一次**：npm 只能为已存在的包配置 Trusted Publisher。维护者以有 `marismoon` 组织发布权限的账号登录（`npm login`），在仓库根目录运行 `pnpm -r --filter @marismoon/ui --filter @marismoon/shell publish --access public --tag next`。随后在 npmjs.com 两个包的设置中添加 Trusted Publisher：GitHub Actions、组织 `marismoon`、仓库 `aries`、工作流 `release.yml`。npm 要求新配置在 2 天内完成首次可信发布，否则过期需重建。
+4. **首次发布由维护者手动完成，每个包只做一次**：npm 只能为已存在的包配置 Trusted Publisher。维护者以有 `marismoon` 组织发布权限的账号登录（`npm login`），在仓库根目录运行 `pnpm -r --filter @marismoon/ui --filter @marismoon/shell publish --access public --tag next`。随后在 npmjs.com 两个包的设置中添加 Trusted Publisher：GitHub Actions、组织 `marismoon`、仓库 `aries`、工作流 `release.yml`。npm 要求新配置在 2 天内完成首次可信发布，否则过期需重建。首发记录（2026-11-24，`0.1.0-next.0`）：发布要求账号开启 2FA，否则返回 403；新包首次发布时注册表会先出现公开的占位版本 `0.0.0-stage`，约 5 分钟后真实版本才可见，`latest` 与 `next` 均指向首个真实版本，占位版本保留在版本列表中。
 5. 此后在 GitHub Actions 中手动运行 **Release** 工作流（[release.yml](../.github/workflows/release.yml)，`dist-tag` 默认 `next`）。它用 OIDC 发布，不需要令牌，自动附带 provenance，只发布注册表上还没有的版本。
 6. 发首个正式版前运行 `pnpm changeset pre exit`，再 `pnpm changeset version`，以 `latest` 发布。
 
