@@ -77,7 +77,7 @@
 
 ### 语义色（组件只用这些）
 
-`--background` `--foreground` `--card` `--card-bottom`（卡片渐变下端；clean 与 `--card` 相同）`--card-foreground` `--popover` `--popover-foreground` `--primary` `--primary-foreground` `--primary-hover` `--secondary` `--secondary-foreground` `--muted` `--muted-foreground` `--label-foreground`（小号标签：目录二级项、抽屉字段名等「命名一个值」的文字，取前景色 78% 与次级色混合，介于正文与次级说明之间）`--accent` `--accent-foreground` `--destructive` `--border` `--border-subtle` `--input` `--ring` `--overlay` `--control` `--layout-control` `--layout-control-border` `--recess`。
+`--background` `--foreground` `--card` `--card-bottom`（卡片渐变下端；clean 与 `--card` 相同）`--card-foreground` `--popover` `--popover-foreground` `--primary` `--primary-foreground` `--primary-hover` `--secondary` `--secondary-foreground` `--muted` `--muted-foreground` `--label-foreground`（小号标签：目录二级项、抽屉字段名等「命名一个值」的文字，次级色中混入少量前景色：亮色 25%、暗色 15%，比次级说明深一档，笔画对比约为次级色的 1.5 倍）`--accent` `--accent-foreground` `--destructive` `--border` `--border-subtle` `--input` `--ring` `--overlay` `--control` `--layout-control` `--layout-control-border` `--recess`。
 
 状态色：`--success` `--warning` `--danger` `--info`，及背景 `--success-bg` `--warning-bg` `--danger-bg` `--info-bg`。亮色与暗色各有一组共享默认值（信息色为蓝），与品牌撞色的主题按 §2.5 覆盖对应状态色。
 

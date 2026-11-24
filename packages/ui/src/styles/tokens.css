@@ -1,9 +1,10 @@
 :root {
   /* Small labels that name a value (directory leaves, drawer field names):
-     between body text and muted meta text, so thin CJK strokes stay solid. */
+     a step darker than muted meta text, so thin CJK strokes stay solid
+     without reading as body text. About 1.5x the stroke contrast of muted. */
   --label-foreground: color-mix(
     in srgb,
-    var(--foreground) 78%,
+    var(--foreground) 25%,
     var(--muted-foreground)
   );
   /* Focus / glow edge shared by the AI composer and every text field. */
@@ -223,6 +224,13 @@
 
 .dark {
   color-scheme: dark;
+  /* Light-on-dark text gains more from the same mix: a smaller share keeps
+     labels at the strength they have in light mode. */
+  --label-foreground: color-mix(
+    in srgb,
+    var(--foreground) 15%,
+    var(--muted-foreground)
+  );
   --surface-shadow-ink: #040215;
   --surface-shadow-scale: 3;
   --surface-inset: rgb(255 255 255 / 6%);
