@@ -75,8 +75,8 @@
   [data-slot="combobox-item"],
   [data-slot="command-item"]
 ):is([data-highlighted], [data-selected="true"], [data-state="open"]) {
-  background-color: color-mix(in srgb, var(--accent) 45%, var(--popover));
-  color: var(--accent-foreground);
+  background-color: var(--option-hover);
+  color: var(--option-foreground);
 }
 
 :is(

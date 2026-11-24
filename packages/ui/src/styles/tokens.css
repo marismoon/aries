@@ -7,6 +7,22 @@
     var(--foreground) 25%,
     var(--muted-foreground)
   );
+  /* Rows of a floating list (select, menus, combobox, command): hover,
+     selected, and both, as shares of the primary over the popover. Against
+     the popover they read about 1.10, 1.20 and 1.27 to 1; the label colour
+     keeps 4.5:1 on the deepest of them. */
+  --option-hover: color-mix(in srgb, var(--primary) 8%, var(--popover));
+  --option-selected: color-mix(in srgb, var(--primary) 14%, var(--popover));
+  --option-selected-hover: color-mix(
+    in srgb,
+    var(--primary) 18%,
+    var(--popover)
+  );
+  --option-foreground: color-mix(
+    in srgb,
+    var(--accent-foreground) 70%,
+    var(--foreground)
+  );
   /* Focus / glow edge shared by the AI composer and every text field. */
   --glow-line: linear-gradient(
     270deg,
@@ -231,6 +247,15 @@
     var(--foreground) 15%,
     var(--muted-foreground)
   );
+  /* Dark rows keep their accent-based fills. */
+  --option-hover: color-mix(in srgb, var(--accent) 45%, var(--popover));
+  --option-selected: color-mix(in srgb, var(--accent) 65%, var(--popover));
+  --option-selected-hover: color-mix(
+    in srgb,
+    var(--accent) 85%,
+    var(--popover)
+  );
+  --option-foreground: var(--accent-foreground);
   --surface-shadow-ink: #040215;
   --surface-shadow-scale: 3;
   --surface-inset: rgb(255 255 255 / 6%);

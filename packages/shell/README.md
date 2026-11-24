@@ -69,7 +69,7 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 |---|---|---|
 | 页面与控件的语义颜色 | `--accent` | `tokens.css`、`dark-clean.css` |
 | 页面与控件的语义颜色 | `--accent-foreground`、`--primary`、`--ring` | `tokens.css` |
-| 页面与控件的语义颜色 | `--background`、`--border`、`--border-subtle`、`--control`、`--foreground`、`--layout-control-border`、`--label-foreground`、`--muted`、`--muted-foreground`、`--popover`、`--recess` | `tokens.css`、`dark-base.css` |
+| 页面与控件的语义颜色 | `--background`、`--border`、`--border-subtle`、`--control`、`--foreground`、`--layout-control-border`、`--label-foreground`、`--muted`、`--muted-foreground`、`--option-foreground`、`--option-hover`、`--popover`、`--recess` | `tokens.css`、`dark-base.css` |
 | 页面与控件的语义颜色 | `--field-shadow` | `tokens.css`、`dark-clean.css` |
 | 页面与控件的语义颜色 | `--field-surface`、`--layout-control`、`--popover-foreground` | `tokens.css` |
 | 外壳尺寸与安全边距 | `--column-height`、`--icon-rail-width`、`--rail-block-end`、`--rail-block-start`、`--rail-item-gap`、`--rail-logo-center`、`--rail-logo-gap`、`--rail-start-inset`、`--workspace-column-gap`、`--workspace-inset-end`、`--workspace-inset-start`、`--workspace-nav-width`、`--workspace-safe-block-end`、`--workspace-safe-inline-end` | `tokens.css` |

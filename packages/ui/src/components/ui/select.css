@@ -15,18 +15,15 @@
   border-radius: calc(var(--radius-control) - var(--space-1) - 2px);
 }
 
-[data-slot="select-item"][data-popper][data-highlighted] {
-  background-color: color-mix(in srgb, var(--accent) 35%, var(--popover));
-}
-
+/* Hover comes from the shared row rule in popup.css (--option-hover). */
 [data-slot="select-item"][data-popper][data-state="checked"] {
-  background-color: color-mix(in srgb, var(--accent) 65%, var(--popover));
-  color: var(--accent-foreground);
+  background-color: var(--option-selected);
+  color: var(--option-foreground);
   font-weight: 620;
 }
 
 [data-slot="select-item"][data-popper][data-state="checked"][data-highlighted] {
-  background-color: color-mix(in srgb, var(--accent) 85%, var(--popover));
+  background-color: var(--option-selected-hover);
 }
 
 [data-slot="select-item-text"] {

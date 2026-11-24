@@ -911,8 +911,8 @@
 
 .command-result:hover,
 .command-result:focus-visible {
-  background: color-mix(in srgb, var(--accent) 45%, var(--popover));
-  color: var(--accent-foreground);
+  background: var(--option-hover);
+  color: var(--option-foreground);
 }
 
 .command-result-icon {
