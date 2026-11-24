@@ -1,0 +1,53 @@
+name: Release
+
+# Publishes @marismoon/ui and @marismoon/shell with npm Trusted Publishing
+# (OIDC, no stored token; provenance is attached automatically). Run it by hand
+# from main after `pnpm changeset version` has been merged. Only versions that
+# are not on the registry yet are published. The very first release of each
+# package is done once by hand (see docs/VERSIONING.md), because a trusted
+# publisher can only be configured for a package that already exists.
+on:
+  workflow_dispatch:
+    inputs:
+      dist-tag:
+        description: npm dist-tag for this release
+        type: choice
+        options: [next, latest]
+        default: next
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/setup@v1
+        with:
+          install: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: package.json
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+          registry-url: https://registry.npmjs.org
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm check:package
+      - name: Publish packages that are not on the registry yet
+        run: >-
+          pnpm -r --filter @marismoon/ui --filter @marismoon/shell
+          publish --access public --tag "$DIST_TAG" --no-git-checks
+        env:
+          DIST_TAG: ${{ inputs.dist-tag }}

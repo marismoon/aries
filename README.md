@@ -135,6 +135,7 @@ Demo 与 Starter 使用 Shell 和 UI 的公开入口，Shell 依赖 UI。 [架�
 | `pnpm test:ui` | 运行 Demo 的 UI 测试和 Starter 冒烟测试 |
 | `pnpm test:consumer` | 在仓库外以 Vite 与 Next.js 宿主验证打包后的 ui 与 shell（需要联网） |
 | `pnpm check:workspace` | 检查工作区包边界 |
+| `pnpm check:package` | 打包 ui 与 shell，检查内容与元数据，并运行 publint 与 attw |
 | `pnpm run audit` | 审计依赖，高危及以上问题使检查失败 |
 | `pnpm format` | 用 Prettier 格式化 TS 和 TSX |
 | `pnpm docs:screenshots` | 生成中英文 Demo 截图，写入[截图目录](docs/assets/screenshots/) |
