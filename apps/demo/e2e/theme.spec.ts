@@ -715,8 +715,9 @@ for (const [width, height] of [
       expect(bottom).toBeCloseTo(height - 16, 1)
     expect(edges.railBottom).toBeCloseTo(height - 20, 1)
     expect(edges.rightGap).toBeCloseTo(0, 1)
-    expect(edges.railLeft).toBe(16)
-    expect(edges.railToSidebar).toBe(10)
+    // The rail plate sits centered between the viewport edge and the sidebar.
+    expect(edges.railLeft).toBe(13)
+    expect(edges.railToSidebar).toBe(13)
     expect(edges.sidebarToContent).toBe(14)
     expect(edges.copilotWidth).toBe(368)
   })
