@@ -74,6 +74,7 @@ Demo 的 `@/shared/mocks/mock-service` 导出 `getDemoAttentionItems` 和 `getDe
 | --- | --- |
 | `pnpm test` | UI 图标、Demo 的业务和翻译、Starter 的双语资源 |
 | `pnpm test:ui` | Demo 在 4173 运行 `apps/demo/e2e/*.spec.ts` 全集；Starter 在 4174 运行 [smoke.spec.ts](../templates/starter/e2e/smoke.spec.ts) |
+| `pnpm test:consumer` | 打包 ui 与 shell，在仓库外分别以导出的 Starter（Vite）与 Next.js 应用安装并验证；需要联网，见 [consumer-test.mjs](../scripts/consumer-test.mjs) |
 | `pnpm check:workspace` | 校验发布清单外的包、Starter 的工程依赖、全仓共享包导入路径，以及 Aceternity 示例不进入 ui、shell 与 Starter |
 
 Demo 的示例与用例是共享框架的回归基线。新项目复制 Starter 到同仓的 `apps/`，操作见[起步指南](STARTER.md)。依赖方向、CSS 入口与目录结构的取舍见[架构决策](decisions/)。

@@ -14,10 +14,7 @@ for (const file of styles) {
   const target = join(dist, file)
   cpSync(join(src, file), target)
   const css = readFileSync(target, "utf8")
-  const compiled = css.replace(
-    /(@source\s+"[^"]*)\.tsx("\s*;)/g,
-    "$1.js$2"
-  )
+  const compiled = css.replace(/(@source\s+"[^"]*)\.tsx("\s*;)/g, "$1.js$2")
   if (compiled !== css) writeFileSync(target, compiled)
 }
 

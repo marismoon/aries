@@ -13,6 +13,7 @@
     "test": "turbo run test",
     "test:coverage": "turbo run test:coverage",
     "test:ui": "turbo run test:ui",
+    "test:consumer": "node scripts/consumer-test.mjs",
     "lint": "eslint .",
     "check:workspace": "node scripts/check-workspace.mjs",
     "audit": "pnpm audit --audit-level=high",
