@@ -16,6 +16,7 @@
   <img src="https://img.shields.io/badge/TypeScript-6.0.3-3178C6?style=flat-square" alt="TypeScript 6.0.3">
   <img src="https://img.shields.io/badge/Tailwind_CSS-4.3.5-06B6D4?style=flat-square" alt="Tailwind CSS 4.3.5">
   <img src="https://img.shields.io/badge/Vite-8.3.8-646CFF?style=flat-square" alt="Vite 8.3.8">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT license"></a>
 </p>
 
 <p align="center">
@@ -186,3 +187,7 @@ pnpm test:ui
 ## Environment variables
 
 `VITE_API_BASE_URL` is a placeholder for connecting Demo to a real backend. You can run Demo with its current mock data without setting it. [Example environment file](.env.example)
+
+## License
+
+The code in this repository is released under the [MIT License](LICENSE). Bundled Solar icons are licensed under CC BY 4.0; shadcn/ui code, fonts and other third-party content follow their own licenses. See [Third-party notices](THIRD_PARTY_NOTICES.md).

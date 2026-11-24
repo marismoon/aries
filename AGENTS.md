@@ -16,7 +16,7 @@
 | 启动 | `pnpm install` → `pnpm dev`（Vite，默认 <http://localhost:5173>，被占用时端口递增）；`pnpm dev:starter` 启动模板（默认 5174） |
 | 自检 | `pnpm typecheck` · `pnpm lint` · `pnpm build` · `pnpm test` · `pnpm test:ui` · `pnpm check:workspace` |
 | 单个 e2e | `pnpm --filter @aries/demo exec playwright test e2e/<name>.spec.ts`（Playwright 自动启动 Vite，端口 4173） |
-| 详细文档 | [架构](docs/ARCHITECTURE.md) · [技术栈](docs/TECH_STACK.md) · [设计系统](docs/DESIGN_SYSTEM.md) · [组件](docs/COMPONENTS.md) · [国际化](docs/I18N.md) · [Starter](docs/STARTER.md) · [版本治理](docs/VERSIONING.md) |
+| 详细文档 | [架构](docs/ARCHITECTURE.md) · [技术栈](docs/TECH_STACK.md) · [设计系统](docs/DESIGN_SYSTEM.md) · [组件](docs/COMPONENTS.md) · [国际化](docs/I18N.md) · [Starter](docs/STARTER.md) · [版本治理](docs/VERSIONING.md) · [架构决策](docs/decisions/) |
 
 ## 1. Monorepo 边界
 
@@ -45,7 +45,7 @@ Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 U
 | 新页面 | **MUST** 在 `apps/demo/src/app/workspace-pages.tsx` 注册 `WorkspacePageConfig`：`id`、`moduleId`、`path`、`titleKey`、`descriptionKey?`、`breadcrumbs`（`readonly { label: string; path?: string }[]`）、`load`（`() => Promise<WorkspacePageSlots>`，懒加载页面槽位）；业务组件放 `apps/demo/src/features/<name>/`，文案键加入 `apps/demo/src/lib/i18n/resources.ts`。要让页面出现在导航里，还需在 `apps/demo/src/app/workspace-modules.ts` 对应模块下增加条目（字段见该文件的 `WorkspaceEntry` 类型） |
 | 新 shadcn 组件 | **SHOULD** 用 `pnpm dlx shadcn@latest add <name>`（先 `shadcn view` 看官方实现）。`apps/demo/components.json` 与 `packages/ui/components.json` 的别名均指向 `@aries/ui`（style `radix-rhea`、baseColor `neutral`）；拆包后该 CLI 流程**待验证**，失败时手动写入 `packages/ui/src/components/ui`。**MUST NOT** 对现有项目重新执行 `shadcn init` |
 | 新共享组合组件 | **MUST** 放 `packages/ui/src/components/shared`，并同步 [docs/COMPONENTS.md](docs/COMPONENTS.md) |
-| 新图标 | **MUST** 只用 Solar：从 `@aries/ui/icons` 引入；缺图标时在 `components/icons/solar` 增文件并在 `index.ts` 导出。变体规则见 §3.1 |
+| 新图标 | **MUST** 只用 Solar：从 `@aries/ui/icons` 引入；缺图标时在 `components/icons/solar` 增文件并在 `index.ts` 导出，新文件首行 **MUST** 保留来源与许可证注释（CC BY 4.0，见 [第三方许可声明](THIRD_PARTY_NOTICES.md)）。变体规则见 §3.1 |
 | 新主题色 | **MUST** 按 [DESIGN_SYSTEM §9](docs/DESIGN_SYSTEM.md) 的步骤：`tokens.css` 增亮、暗两块，`dark-base.css` 增该主题的 `--dark-hue`，`spectrum.css` 或 `tokens.css` 增 `--swatch-*`，`lib/storage.ts` 的 `paletteLabels` 登记 |
 
 ## 3. 视觉与主题红线
