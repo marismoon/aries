@@ -506,7 +506,7 @@
   min-height: 0;
   gap: var(--space-2);
   padding: var(--space-1) var(--space-2);
-  color: var(--muted-foreground);
+  color: var(--label-foreground);
   font-size: var(--text-label);
   font-weight: inherit;
 }

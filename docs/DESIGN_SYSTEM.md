@@ -4,7 +4,7 @@
 
 | 文件 | 内容 |
 | --- | --- |
-| `tokens.css` | `:root` 基础令牌（亮色）、`.dark` 暗色（含玻璃的填充、描边、模糊参数）、各品牌主题 `[data-palette="…"]` 与 `--swatch-*`。`:root` / `.dark` 中的颜色是未选主题时的兜底值，运行时总会写入一个品牌主题 |
+| `tokens.css` | `:root` 基础令牌（亮色）、`.dark` 暗色（含玻璃的填充、描边、模糊参数）、各品牌主题 `[data-palette="…"]` 与 `--swatch-*`。默认主题远程医疗蓝同时是兜底：它的亮色块选择器含 `:root:not(.dark)`，暗色值写在 `.dark`，所以未设置或设置了未知 `data-palette` 时渲染为远程医疗蓝；其他主题在其后覆盖 |
 | `materials.css` | 玻璃材质：`.surface`、`.surface-inset`、`.frost-divider`、`.hero-surface`、页面环境光 |
 | `dark-base.css` | 暗色共同底座（glass 与 clean 共用）+ glass 的染色令牌（`--card-l` 等）与极光；选择器用 `:root.dark` 以保持高于主题块的优先级 |
 | `dark-clean.css` | 简洁暗色材质（`.dark[data-dark-style="clean"]`）：关闭模糊、光晕、阴影 |
@@ -77,11 +77,13 @@
 
 ### 语义色（组件只用这些）
 
-`--background` `--foreground` `--card` `--card-bottom`（卡片渐变下端；clean 与 `--card` 相同）`--card-foreground` `--popover` `--popover-foreground` `--primary` `--primary-foreground` `--primary-hover` `--secondary` `--secondary-foreground` `--muted` `--muted-foreground` `--accent` `--accent-foreground` `--destructive` `--border` `--border-subtle` `--input` `--ring` `--overlay` `--control` `--layout-control` `--layout-control-border` `--recess`。
+`--background` `--foreground` `--card` `--card-bottom`（卡片渐变下端；clean 与 `--card` 相同）`--card-foreground` `--popover` `--popover-foreground` `--primary` `--primary-foreground` `--primary-hover` `--secondary` `--secondary-foreground` `--muted` `--muted-foreground` `--label-foreground`（小号标签：目录二级项、抽屉字段名等「命名一个值」的文字，取前景色 78% 与次级色混合，介于正文与次级说明之间）`--accent` `--accent-foreground` `--destructive` `--border` `--border-subtle` `--input` `--ring` `--overlay` `--control` `--layout-control` `--layout-control-border` `--recess`。
 
-状态色：`--success` `--warning` `--danger` `--info`，及背景 `--success-bg` `--warning-bg` `--danger-bg` `--info-bg`（暗色下四种语义色全主题固定，由 `dark-base.css` 定义，与品牌无关）。
+状态色：`--success` `--warning` `--danger` `--info`，及背景 `--success-bg` `--warning-bg` `--danger-bg` `--info-bg`。亮色与暗色各有一组共享默认值（信息色为蓝），与品牌撞色的主题按 §2.5 覆盖对应状态色。
 
-图表色：`--chart-1` … `--chart-5`（Tailwind 映射 `--color-chart-1…5`；`--color-chart-6…8` 的映射保留但各主题未定义，不要使用）。
+图表色：`--chart-1` … `--chart-5`（Tailwind 映射 `--color-chart-1…5`）。
+
+shadcn `Sidebar` 组件的 `--sidebar*` 颜色令牌是语义令牌的别名（`--sidebar` → `--card`、`--sidebar-accent` → `--accent`、`--sidebar-border` → `--border` 等），随主题变化，不单独维护。
 
 ### 材质与表面
 
@@ -95,7 +97,7 @@
 | 控件高度 | `--control-size-small` 1.75rem（28px，Button `small`）、`--control-size-dense` 2rem（32px，默认）、`--control-size-compact` 2.25rem（36px，Button `sm`）、`--control-size` 2.5rem（40px，Button `default`）、`--control-size-touch` 2.75rem（Button `lg`）；`pointer: coarse` 下 dense、compact 放大到 2.5rem，`--control-size` 放大到 2.75rem |
 | 圆角 | `--radius` 1rem、`--radius-control` 1rem、`--radius-workspace-control` 1.125rem、`--radius-panel` 1.5rem；Tailwind 的 `rounded-lg` → `--radius-control`，`rounded-2xl` → `--radius-panel` |
 | 字号 | 阶梯 11 / 12 / 13 / 14 / 15 / 20px；指标数值 `--metric-value-size`（24px）是唯一例外；`--text-label` 0.75rem、`--text-body` 0.875rem、`--metric-label-size` 0.8125rem、`--metric-value-size` 1.5rem（字重 720、字距 -0.042em）、`--metric-note-size` 0.6875rem |
-| 字体 | `Inter Variable`、`Noto Sans SC Variable`、`system-ui`；金额/数字使用 `financial-number`（`tabular-nums lining-nums`） |
+| 字体 | `Inter Variable`、`Noto Sans SC Variable`、`system-ui`；金额/数字使用 `financial-number`（`tabular-nums lining-nums`）。**不设置** `-webkit-font-smoothing: antialiased`：macOS 的灰度平滑会让 12–13px 的中文笔画变细发虚，保留平台默认平滑。小号中文标签不要同时用 400 字重与次级灰，改用 `--label-foreground` |
 
 控件与表格正文 13px，表头与标签 12px，字重 620 用于分段胶囊选项。
 

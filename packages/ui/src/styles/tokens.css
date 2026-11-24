@@ -1,4 +1,11 @@
 :root {
+  /* Small labels that name a value (directory leaves, drawer field names):
+     between body text and muted meta text, so thin CJK strokes stay solid. */
+  --label-foreground: color-mix(
+    in srgb,
+    var(--foreground) 78%,
+    var(--muted-foreground)
+  );
   /* Focus / glow edge shared by the AI composer and every text field. */
   --glow-line: linear-gradient(
     270deg,
@@ -93,31 +100,10 @@
   --radius-control: 1rem;
   --radius-workspace-control: 1.125rem;
   --radius-panel: 1.5rem;
-  --background: #f4f5fb;
-  --foreground: #141224;
-  --card: rgb(255 255 255 / 65%);
-  --card-bottom: rgb(255 255 255 / 49%);
   --card-foreground: var(--foreground);
-  --workspace-nav: linear-gradient(
-    157deg,
-    rgb(255 255 255 / 34%),
-    rgb(255 255 255 / 22%)
-  );
   --nav-filter: blur(26px) saturate(145%);
-  --popover: #fbfaff;
   --popover-foreground: var(--foreground);
-  --control: rgb(255 255 255 / 76%);
   --layout-control: var(--control);
-  --layout-control-border: #d9d2f4;
-  --secondary: #eeebf9;
-  --secondary-foreground: #352952;
-  --muted: #efedf8;
-  --muted-foreground: #615c78;
-  --recess: rgb(255 255 255 / 41%);
-  --border: #e0d9f2;
-  --border-subtle: rgb(77 67 146 / 12%);
-  --input: #8c809b;
-  --surface-edge: rgb(255 255 255 / 78%);
   --sidebar-edge: var(--glass-edge);
   --sidebar-background-clip: padding-box;
   --sidebar-radius: 1.375rem;
@@ -187,15 +173,14 @@
   /* One hairline for every glass surface; kept faint so it never reads as a white outline. */
   --glass-edge: transparent;
   --environment-strength: 100%;
-  --floating-shadow: 0 18px 60px rgb(41 24 74 / 18%);
-  --overlay: rgb(28 16 52 / 42%);
+  --floating-shadow: 0 18px 60px
+    color-mix(in srgb, var(--foreground) 18%, transparent);
 
   --swatch-telemedicine: #306bdb;
   --swatch-mental-health: #4c7388;
   --swatch-pet-adoption: #b6543a;
   --swatch-health-wellness: #008136;
   --swatch-amber-sand: #966b05;
-  --primary: #5b3df5;
   --primary-foreground: #fff;
   --primary-hover: color-mix(
     in oklch,
@@ -203,9 +188,6 @@
     var(--primary-foreground) 12%
   );
   --primary-surface: var(--primary);
-  --accent: #ebe7fc;
-  --accent-foreground: #4c29d7;
-  --ring: #704be5;
   --rail-control-size: 44px;
   --rail-backplate-size: 38px;
   --rail-icon-size: 22px;
@@ -215,31 +197,7 @@
   --nav-active-bg: var(--accent);
   --nav-active-fg: var(--accent-foreground);
   --scope-selected: var(--layout-control);
-  --rail-logo-bg: #19162b;
   --rail-logo-fg: #fff;
-
-  --chart-1: #5b3df5;
-  --chart-2: #805df0;
-  --chart-3: #c5b6ee;
-  --chart-4: #7f70a3;
-  --chart-5: #ddd4f2;
-  --environment-top: rgb(204 173 246 / 27%);
-  --environment-bottom: rgb(132 126 230 / 43%);
-  --environment-side: rgb(150 214 231 / 26%);
-  --environment-base: linear-gradient(
-    37deg,
-    #ded9f6,
-    #faf8ff 49%,
-    #f0f6fb 78%,
-    #e9edf7
-  );
-  --hero-start: #eae4ff;
-  --hero-end: rgb(255 255 255 / 53%);
-  --hero-edge: #d7caff;
-  --hero-ink: #171427;
-  --hero-muted: #5b5375;
-  --hero-bar: linear-gradient(180deg, #865ff9, #7454ed);
-  --hero-bar-current: #391e8f;
 
   --success: #176045;
   --success-bg: #e4f6ed;
@@ -247,10 +205,20 @@
   --warning-bg: #fff1df;
   --danger: #b12a3f;
   --danger-bg: #feefef;
-  --info: #4937af;
-  --info-bg: #edefff;
+  --info: #386acb;
+  --info-bg: #eef4ff;
   --destructive: var(--danger);
   --destructive-foreground: #fff;
+
+  /* shadcn Sidebar component (ui/sidebar): aliases of the semantic tokens. */
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
 }
 
 .dark {
@@ -275,44 +243,41 @@
   --environment-strength: 100%;
   --floating-shadow: 0 18px 60px rgb(2 0 15 / 55%);
 
-  --primary: #704bf0;
-  --primary-foreground: #fff;
-  --primary-surface: linear-gradient(110deg, #6545ed, #7652f6);
+  --primary: #7aa9ff;
+  --primary-foreground: #0a1d44;
+  --primary-surface: var(--primary);
   --accent: color-mix(in srgb, var(--primary) 20%, var(--background));
-  --accent-foreground: #e1d6ff;
-  --ring: #b99cff;
-  --nav-active-fg: #fff;
+  --accent-foreground: #c4dbff;
+  --ring: #7aa9ff;
+  --nav-active-fg: var(--accent-foreground);
   --scope-selected: var(--accent);
-  --rail-logo-bg: #252230;
+  --rail-logo-bg: hsl(var(--dark-hue) 17% 16%);
 
-  --chart-1: #9470fc;
-  --chart-2: #8a69f9;
-  --chart-3: #7a639f;
-  --chart-4: #a281ff;
-  --chart-5: #7962ad;
-  --environment-top: hsl(269 70% 46% / 50%);
-  --environment-bottom: hsl(239 65% 42% / 58%);
-  --environment-side: hsl(255 55% 38% / 24%);
+  --chart-1: #7aa9ff;
+  --chart-2: #2fd9b9;
+  --chart-3: #4a76c9;
+  --chart-4: #5fc0d9;
+  --chart-5: #3e6dc0;
+  --environment-top: hsl(218 85% 55% / 44%);
+  --environment-bottom: hsl(190 80% 42% / 38%);
+  --environment-side: hsl(168 70% 40% / 20%);
   --environment-base: var(--background);
   --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
   --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
   --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
   --hero-ink: var(--foreground);
-  --hero-muted: #d7cdee;
-  --hero-bar: linear-gradient(180deg, #a276ff, #7652f6);
-  --hero-bar-current: linear-gradient(180deg, #d783ff, #a25aef);
+  --hero-muted: #b6c5d8;
+  --hero-bar: linear-gradient(180deg, #6b9dff, #4f8cff);
+  --hero-bar-current: #2fe0c0;
 
   --destructive-foreground: #391224;
-}
-
-.dark:not([data-palette]) {
-  --primary-hover: #7350e9;
-}
-
-.dark[data-palette] {
+  --nav-active-bg: var(--accent);
   --rail-active-bg: color-mix(in srgb, var(--primary) 50%, var(--background));
 }
 
+/* Telemedicine is the default palette: its light block also applies when no
+   (or an unknown) palette is set, and its dark values are the `.dark` base. */
+:root:not(.dark),
 [data-palette="telemedicine"]:not(.dark) {
   --background: #f4f8ff;
   --foreground: #1e293b;
@@ -359,36 +324,14 @@
   --hero-muted: #3d4f66;
   --hero-bar: linear-gradient(180deg, #79a8ff, #4f8cff);
   --hero-bar-current: #00c9a7;
-
-  /* Status colours keep >=30deg (OKLCH hue) from the brand primary; see DESIGN_SYSTEM §2.5. */
-  --info: #8059bb;
-  --info-bg: #f5f1fe;
 }
 
-.dark[data-palette="telemedicine"] {
-
-  --primary: #7aa9ff;
-  --primary-foreground: #0a1d44;
-  --primary-surface: var(--primary);
-  --accent: color-mix(in srgb, var(--primary) 20%, var(--background));
-  --accent-foreground: #c4dbff;
-  --ring: #7aa9ff;
-  --nav-active-bg: var(--accent);
-  --nav-active-fg: var(--accent-foreground);
-  --chart-1: #7aa9ff;
-  --chart-2: #2fd9b9;
-  --chart-3: #4a76c9;
-  --chart-4: #5fc0d9;
-  --chart-5: #3e6dc0;
-  --environment-top: hsl(218 85% 55% / 44%);
-  --environment-bottom: hsl(190 80% 42% / 38%);
-  --environment-side: hsl(168 70% 40% / 20%);
-  --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
-  --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
-  --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
-  --hero-muted: #b6c5d8;
-  --hero-bar: linear-gradient(180deg, #6b9dff, #4f8cff);
-  --hero-bar-current: #2fe0c0;
+/* The shared info colour is blue; with a blue brand it moves to violet
+   (hue separation, DESIGN_SYSTEM §2.5). */
+:root:not([data-palette], .dark),
+[data-palette="telemedicine"]:not(.dark) {
+  --info: #8059bb;
+  --info-bg: #f5f1fe;
 }
 
 [data-palette="mental-health"]:not(.dark) {
@@ -440,7 +383,6 @@
 }
 
 .dark[data-palette="mental-health"] {
-
   --primary: #9fc4d8;
   --primary-foreground: #0f2530;
   --primary-surface: var(--primary);
@@ -522,7 +464,6 @@
 }
 
 .dark[data-palette="pet-adoption"] {
-
   --primary: #f2a08a;
   --primary-foreground: #3a1308;
   --primary-surface: var(--primary);
@@ -600,7 +541,6 @@
 }
 
 .dark[data-palette="health-wellness"] {
-
   --primary: #4ade80;
   --primary-foreground: #06301a;
   --primary-surface: var(--primary);
@@ -692,7 +632,6 @@
 }
 
 .dark[data-palette="amber-sand"] {
-
   --primary: #ffd47a;
   --primary-foreground: #44330a;
   --primary-surface: var(--primary);

@@ -47,7 +47,7 @@
 }
 
 .bill-drawer-amounts dt {
-  color: var(--muted-foreground);
+  color: var(--label-foreground);
   font-size: 0.75rem;
 }
 
@@ -94,7 +94,7 @@
 }
 
 .bill-drawer-rows dt {
-  color: var(--muted-foreground);
+  color: var(--label-foreground);
 }
 
 .bill-drawer-rows dd {
