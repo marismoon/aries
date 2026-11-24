@@ -43,7 +43,7 @@ apps/demo/src
 ## 3. 启动与运行时
 
 1. `main.tsx` 调用 `applyStoredPalette()` / `applyStoredDarkStyle()`（来自 `@aries/ui/lib/storage`）在首帧前写入 `data-palette` / `data-dark-style`。
-2. `AppProviders`：React Query → next-themes（`.dark` 类，存储键 `marismoon-theme`，默认跟随系统）→ motion（`LazyMotion` + `domAnimation`，`MotionConfig reducedMotion="user"`）→ TooltipProvider → 演示数据上下文。`ThemeColor` 监听 `class`/`data-palette` 同步 `<meta name="theme-color">`。
+2. `AppProviders`：React Query → next-themes（`.dark` 类，存储键 `aries-theme`，默认跟随系统）→ motion（`LazyMotion` + `domAnimation`，`MotionConfig reducedMotion="user"`）→ TooltipProvider → 演示数据上下文。`ThemeColor` 监听 `class`/`data-palette` 同步 `<meta name="theme-color">`。
 3. `router.tsx`：`DemoShell` 连接布局路由与 `AppShell`。子路由由 `workspacePages` 生成，通过 `page.load()` 动态导入页面，并向 `WorkspacePage` 传入已翻译的页面信息和内容槽位。
 
 ## 4. 三列外壳

@@ -1,4 +1,4 @@
-const paletteStorageKey = "marismoon-palette"
+const paletteStorageKey = "aries-palette"
 const defaultPalette = "saas-analytics-spectrum"
 
 export const paletteLabels = {
@@ -10,7 +10,7 @@ export const paletteLabels = {
   "violet-aurora": "紫罗兰极光",
   "amber-sand": "琥珀暖沙",
   "rose-quartz": "玫瑰石英",
-  "marismoon-light": "Marismoon 浅色海渊",
+  "aries-light": "Marismoon 浅色海渊",
 } as const
 
 type Palette = keyof typeof paletteLabels
@@ -50,7 +50,7 @@ export function setStoredPalette(palette: Palette) {
   }
 }
 
-const darkStyleStorageKey = "marismoon-dark-style"
+const darkStyleStorageKey = "aries-dark-style"
 
 export type DarkStyle = "glass" | "clean"
 

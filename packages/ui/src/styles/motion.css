@@ -10,11 +10,11 @@
     [data-slot="dialog-overlay"],
     [data-slot="dialog-content"]
   )[data-state="closed"]:not([data-motion="instant"]) {
-  animation: marismoon-dialog-exit var(--duration-exit) var(--ease-feedback)
+  animation: aries-dialog-exit var(--duration-exit) var(--ease-feedback)
     both;
 }
 
-@keyframes marismoon-dialog-exit {
+@keyframes aries-dialog-exit {
   to {
     opacity: 0;
   }

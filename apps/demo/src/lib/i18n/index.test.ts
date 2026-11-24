@@ -60,7 +60,7 @@ describe("本地化文案", () => {
     expect(getStoredLanguage()).toBe("zh-CN")
     setStoredLanguage("en")
     expect(getStoredLanguage()).toBe("en")
-    localStorage.setItem("marismoon-language", "xx")
+    localStorage.setItem("aries-language", "xx")
     expect(getStoredLanguage()).toBe("zh-CN")
     applyDocumentLanguage("en")
     expect(document.documentElement.lang).toBe("en")

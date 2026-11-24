@@ -339,7 +339,7 @@
 
 /* A full turn (0 to 360deg): both ends are the same gradient position, so the
    loop has no seam. Half a turn would snap back at the end of every cycle. */
-@keyframes marismoon-glow-spin {
+@keyframes aries-glow-spin {
   from {
     --glow-angle: 0deg;
   }
@@ -408,7 +408,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   :is(.copilot-glow, .glow-ring)::before {
-    animation: marismoon-glow-spin 5s linear infinite;
+    animation: aries-glow-spin 5s linear infinite;
   }
 }
 

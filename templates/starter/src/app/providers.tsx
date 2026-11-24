@@ -37,7 +37,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider
         attribute="class"
-        storageKey="marismoon-theme"
+        storageKey="aries-theme"
         defaultTheme="system"
         enableSystem
         disableTransitionOnChange

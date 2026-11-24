@@ -9,8 +9,8 @@
 
    Ladder (HSL lightness): recess 8 < canvas 12 < card 15 < control 19 < popover 23.
    Steps are small by design; hairlines carry the separation, not lightness.
-   Excluded: the light-only marismoon-light palette. */
-.dark:not([data-palette="marismoon-light"]) {
+   Excluded: the light-only aries-light palette. */
+.dark:not([data-palette="aries-light"]) {
   --dark-hue: 255;
   --dark-tint: 6%;
 }
@@ -40,7 +40,7 @@
   --dark-hue: 342;
 }
 
-.dark:not([data-palette="marismoon-light"]) {
+.dark:not([data-palette="aries-light"]) {
   /* Browser-drawn parts follow the palette too. */
   scrollbar-color: rgb(255 255 255 / 24%) transparent;
 
@@ -93,7 +93,7 @@
    hole. Clean keeps neutral cards (it has no aurora). Set --card-c to 0 for a
    neutral card; raise --card-l and the chart / input-edge contrast checks
    start to fail (see the dark contrast check, run locally). */
-.dark:not([data-dark-style="clean"]):not([data-palette="marismoon-light"]) {
+.dark:not([data-dark-style="clean"]):not([data-palette="aries-light"]) {
   --card-l: 0.26;
   --card-c: 0.032;
   --card: oklch(from var(--primary) var(--card-l) var(--card-c) h);

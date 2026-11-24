@@ -17,7 +17,7 @@ type Palette = keyof typeof paletteLabels
 const paletteOrder = Object.keys(paletteLabels).filter(isPalette)
 
 // Palettes with no dark rendering (see DESIGN_SYSTEM §1): dark mode skips them.
-const lightOnlyPalettes: ReadonlySet<Palette> = new Set(["marismoon-light"])
+const lightOnlyPalettes: ReadonlySet<Palette> = new Set(["aries-light"])
 
 function getNextPalette(palette: Palette, dark: boolean): Palette {
   const order = dark

@@ -1,9 +1,7 @@
 import { expect, test } from "./fixtures"
 
 test("英文登录页加载时显示英文状态提示", async ({ page }) => {
-  await page.addInitScript(() =>
-    localStorage.setItem("marismoon-language", "en")
-  )
+  await page.addInitScript(() => localStorage.setItem("aries-language", "en"))
   let releaseLoginModule!: () => void
   const loginModule = new Promise<void>((resolve) => {
     releaseLoginModule = resolve
@@ -70,9 +68,7 @@ for (const path of [
 ]) {
   test(`英文下 ${path} 没有遗留中文`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 })
-    await page.addInitScript(() =>
-      localStorage.setItem("marismoon-language", "en")
-    )
+    await page.addInitScript(() => localStorage.setItem("aries-language", "en"))
     await page.goto(path)
     await expect(page.locator("html")).toHaveAttribute("lang", "en")
     await expect(page.locator("main, [role=main], body").first()).toBeVisible()
@@ -108,9 +104,7 @@ test("英文下概览的标签、徽标与操作按钮不重叠、不超出容�
     [1280, 800],
   ] as const) {
     await page.setViewportSize({ width, height })
-    await page.addInitScript(() =>
-      localStorage.setItem("marismoon-language", "en")
-    )
+    await page.addInitScript(() => localStorage.setItem("aries-language", "en"))
     await page.goto("/overview")
     await expect(page.locator(".attention-row").first()).toBeVisible()
     const problems = await page.evaluate(() => {
@@ -152,7 +146,7 @@ test("暗色下切换暗色风格后，滚动边缘的渐隐与页面背景一�
   await page.setViewportSize({ width: 1650, height: 1060 })
   await page.emulateMedia({ colorScheme: "dark" })
   await page.addInitScript(() =>
-    localStorage.setItem("marismoon-dark-style", "clean")
+    localStorage.setItem("aries-dark-style", "clean")
   )
   await page.goto("/overview")
   await page.getByRole("button", { name: "暗色风格" }).click()
