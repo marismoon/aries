@@ -996,3 +996,53 @@
   --info-bg: #edefff;
   --destructive-foreground: #fff;
 }
+
+.app-shell {
+  --rail-start-inset: var(--space-4);
+  --rail-block-start: 1.375rem;
+  --rail-block-end: max(var(--space-5), var(--workspace-safe-block-end));
+  --rail-item-gap: var(--space-2);
+  --rail-logo-gap: var(--space-5);
+  --rail-logo-center: calc(
+    var(--rail-block-start) + var(--rail-control-size) / 2
+  );
+  --icon-rail-width: calc(var(--rail-start-inset) + var(--rail-backplate-size));
+  --workspace-nav-width: 256px;
+  --workspace-column-gap: 10px;
+  --column-height: 100dvh;
+}
+
+.workspace-main {
+  --workspace-inset-start: clamp(var(--space-3), 1.25vw, var(--space-6));
+  --workspace-inset-end: var(--workspace-safe-inline-end);
+}
+
+.page-content-frame {
+  --workspace-edge-size: 16px;
+  /* The top and bottom fade strips span the content columns plus this feather
+     on each side, and fade out horizontally over it, so they never show a hard
+     end or paint over the neighbouring columns (rail, nav). */
+  --workspace-fade-feather: 8px;
+  /* Card shadows must fade out inside the clipping viewport. Widen the clip
+     edge by the bleed and pull the frame back by the same amount so card
+     positions and scroll length stay unchanged. */
+  --workspace-bleed-inline: max(
+    0px,
+    var(--space-4) - var(--workspace-inset-start)
+  );
+  --workspace-bleed-block: var(--space-4);
+}
+
+.page-header {
+  --breadcrumb-leading: 1.5;
+}
+
+.workspace-nav--mobile > .workspace-nav {
+  --sidebar-leaf-height: var(--control-size-compact);
+}
+
+@media (min-width: 701px) {
+  .workspace-main {
+    --workspace-inset-start: var(--space-1);
+  }
+}

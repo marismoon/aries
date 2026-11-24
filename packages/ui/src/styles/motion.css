@@ -118,3 +118,15 @@
     opacity: 0;
   }
 }
+
+@property --ai-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes rail-ai-flow {
+  to {
+    --ai-angle: 360deg;
+  }
+}

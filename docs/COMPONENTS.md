@@ -1,6 +1,6 @@
 # 组件清单
 
-「系统设置 → 组件预览」（`/settings/components` 及六个分类页）是组件规范的**活文档**：渲染官方 shadcn 示例（`apps/web/src/features/settings/examples/*.tsx`）、图表、动效、表格模版。新增/调整组件时同步更新预览页与本文件。
+「系统设置 → 组件预览」（`/settings/components` 及六个分类页）是组件规范的**活文档**：渲染官方 shadcn 示例（`apps/demo/src/features/settings/examples/*.tsx`）、图表、动效、表格模版。新增/调整组件时同步更新预览页与本文件。
 
 导入路径总表（来自 `packages/ui/package.json` 的 `exports`）：
 
@@ -11,7 +11,7 @@
 | `@marismoon/ui/shared/use-data-table` | `src/components/shared/use-data-table.ts` |
 | `@marismoon/ui/motion/<Name>`、`@marismoon/ui/motion/motion-tokens` | `src/components/motion/*` |
 | `@marismoon/ui/icons` | `src/components/icons/index.ts` |
-| `@marismoon/ui/lib/utils`、`@marismoon/ui/lib/storage`、`@marismoon/ui/lib/ui-labels` | `src/lib/*.ts` |
+| `@marismoon/ui/lib/utils`、`@marismoon/ui/lib/format`、`@marismoon/ui/lib/storage`、`@marismoon/ui/lib/ui-labels` | `src/lib/*.ts` |
 | `@marismoon/ui/hooks/use-mobile` | `src/hooks/use-mobile.ts` |
 
 ## 1. 共享组合组件（`@marismoon/ui/shared/*`）
@@ -69,7 +69,7 @@ import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 | `scrollHint?` | `string`，局部横向滚动提示 |
 | `loading?` | 与行高一致的扫光骨架 |
 
-`use-data-table.ts` 导出：`dataTableFeatures`（列筛选、全局筛选、分页、行选择）、`DataTableInstance<TData>`、`createDataTableColumns<TData>()`、`useDataTable(options)`。参考 `apps/web/src/features/bills/components/BillsTable.tsx`：
+`use-data-table.ts` 导出：`dataTableFeatures`（列筛选、全局筛选、分页、行选择）、`DataTableInstance<TData>`、`createDataTableColumns<TData>()`、`useDataTable(options)`。参考 `apps/demo/src/features/bills/components/BillsTable.tsx`：
 
 ```tsx
 const column = createDataTableColumns<Bill>()
@@ -114,6 +114,7 @@ const table = useDataTable({
 ## 4. 工具与 Hook
 
 - `lib/utils`：`cn`（重导出自 `cn` 包）。
+- `lib/format` 提供万元数值格式化 `formatWan`、金额格式化 `formatCurrency` 和活动时间格式化 `formatActivityTime`。
 - `lib/storage`：`paletteLabels`、`isPalette`、`getStoredPalette`、`applyStoredPalette`、`getActivePalette`、`setStoredPalette`、`DarkStyle`、`getActiveDarkStyle`、`applyStoredDarkStyle`、`setStoredDarkStyle`。
 - `hooks/use-mobile`：`useIsMobile()`。
 - `lib/ui-labels`：`UiLabels`、`defaultUiLabels`（中文）、`UiLabelsProvider`、`useUiLabels()`；共享组件的固定文案（Dialog 关闭、表格底栏与分页、主题/品牌/暗色控件等）由此读取，应用通过 `UiLabelsBridge` 提供翻译。
@@ -142,9 +143,9 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 - `SelectContent` 使用 `position="popper"`。
 - `Tabs` / `ToggleGroup` / `Menubar`：`--recess` 分段胶囊，选项 28px。
 
-## 6. 应用级布局组件（`apps/web/src/components/layout`）
+## 6. 工作区布局组件（`@marismoon/shell`）
 
-非共享库的一部分，随应用保留：`AppShell`、`IconRail`（用户头像沿用基础组件 `Avatar` + `AvatarBadge` 默认尺寸，不自定义尺寸、颜色与描边）、`WorkspaceNav`（`NavTree`、`NavHighlight`、`SidebarNavItem`）、`MainWorkspace`（含 `WorkspacePageLayout`）、`PageHeader({ title, breadcrumbs, breadcrumbDetail?, description? })`、`WorkspaceControls`（`DarkStyleControl` + `LanguageControl` + `BrandPaletteControl` + `ThemeSwitcher`）、`LanguageControl`（循环切换语言，见 [I18N.md](I18N.md)）、`WorkspacePage`（`WorkspacePageSlots`：`Content`、`Subtitle?`、`BreadcrumbDetail?`、`Summary?`，均为 `ComponentType`）、`CommandPalette` / `CommandPaletteProvider`。
+工作区布局、导航、页头和命令面板由 `@marismoon/shell` 根入口导出。组件清单、Props、插槽、导航与语言适配统一见 [Shell README](../packages/shell/README.md)。Demo 的用户头像沿用基础组件 `Avatar` + `AvatarBadge` 的默认尺寸、颜色与描边。
 
 ## 7. 示例实现（可参考，正式开发时删除）
 
@@ -160,6 +161,6 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 ## 8. 扩展规则
 
 1. 先在预览页/本文件查找可复用组件；其次组合现有组件；最后才新增。
-2. 基础组件放 `packages/ui/src/components/ui`（保持 shadcn 结构以便 CLI diff）；有业务无关的组合放 `shared`；业务组合放 `apps/web/src/features/<name>/components`。
+2. 基础组件放 `packages/ui/src/components/ui`（保持 shadcn 结构以便 CLI diff）；有业务无关的组合放 `shared`；业务组合放 `apps/demo/src/features/<name>/components`。
 3. 颜色、圆角、字号一律走令牌（见 [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)）；Button/Badge 内图标写 `data-icon="inline-start|inline-end"`，不手写图标尺寸。
 4. 包边界与提交前回归清单见 [AGENTS.md](../AGENTS.md) §1 与 §9。

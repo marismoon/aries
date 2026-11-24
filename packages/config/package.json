@@ -1,0 +1,22 @@
+{
+  "name": "@marismoon/config",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    "./eslint/*": "./eslint/*.js",
+    "./typescript/*.json": "./typescript/*.json"
+  },
+  "peerDependencies": {
+    "@eslint/js": "catalog:dev",
+    "eslint": "catalog:dev",
+    "eslint-import-resolver-typescript": "catalog:dev",
+    "eslint-plugin-import-x": "catalog:dev",
+    "eslint-plugin-jsx-a11y": "catalog:dev",
+    "eslint-plugin-react-hooks": "catalog:dev",
+    "eslint-plugin-react-refresh": "catalog:dev",
+    "globals": "catalog:dev",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:dev"
+  }
+}

@@ -1,49 +1,49 @@
-# Marismoon Aries — 工作区前端启动模板
+# Marismoon Aries
 
-基于真实项目脱敏裁剪的 React 工作区模板：三列 AppShell、玻璃质感设计系统（9 套品牌主题，亮色 + 暗色两种风格：玻璃 / 简洁）、基于 shadcn 的共享组件库、TanStack 数据表模板、图表与动效规范。可直接 `pnpm dev` 运行。
+Aries 是一个从真实项目脱敏提取的 React 工作区框架。运行 Demo 可查看九套品牌、明暗主题、账单、TanStack 数据表、图表与基于 shadcn 的组件示例，业务数据来自本地 Mock。新应用从包含首页与设置页的 Starter 起步。
 
-> `apps/web` 里的 overview、bills、copilot 与「系统设置」下的组件预览、动效、基础页面是**示例与调试页面**，用于开发期对照规范；正式项目开发完成后可删除。`packages/*` 为长期保留的共享层。全部数据为本地 Mock。
+| 层 | 位置 | 职责 |
+| --- | --- | --- |
+| 设计系统 | `packages/ui` | shadcn 组件、Solar 图标、动效、主题和材质令牌 |
+| 工作区外壳 | `packages/shell` | 三列布局、导航、页头和命令面板 |
+| 完整示例 | `apps/demo` | 带本地 Mock 的示例页面与框架回归用例 |
+| 起步模板 | `templates/starter` | 接好主题、路由、React Query 和双语文案的最小应用 |
 
-## 仓库结构
+`packages/config` 提供仓库内部使用的 ESLint 与 TypeScript 配置。Starter 自带工程配置。
 
-```text
-.
-├── apps/web            @marismoon/web  应用：外壳布局、路由、页面（features）、i18n、e2e
-├── packages/ui         @marismoon/ui   shadcn 组件、共享组合组件、Solar 图标、动效、设计令牌与全局样式
-├── packages/core       @marismoon/core 类型（zod）、格式化、Mock 数据与服务
-├── docs/               架构 / 技术栈 / 设计系统 / 组件文档
-├── AGENTS.md           开发契约（人与 AI 助手共同遵守）
-└── CLAUDE.md           指向 AGENTS.md 的精简入口
-```
+## 启动
 
-## 快速开始
+使用 Node.js 24 和根 `packageManager` 锁定的 pnpm。先在根目录运行 `pnpm install`，再选择应用。
 
-环境：Node.js ^24，pnpm 12（`packageManager: pnpm@12.16.1`）。
+| 命令 | 应用 | 默认地址 |
+| --- | --- | --- |
+| `pnpm dev` | Demo | <http://localhost:5173> |
+| `pnpm dev:starter` | Starter | <http://localhost:5174> |
 
-```bash
-pnpm install
-pnpm dev          # http://localhost:5173
-```
+在同一 workspace 下创建应用、修改端口、添加页面和注册导航，见[从 Starter 创建应用](docs/STARTER.md)。
 
-## 脚本（根目录）
+## 验证
 
-| 命令 | 作用 |
+| 根命令 | 检查内容 |
 | --- | --- |
-| `pnpm dev` | `turbo run dev --filter=@marismoon/web` |
-| `pnpm build` | 各包 build（web：`tsc -b && vite build`） |
-| `pnpm typecheck` | 各包类型检查 |
-| `pnpm lint` | `eslint .` |
-| `pnpm test` / `pnpm test:coverage` | Vitest |
-| `pnpm test:ui` | Playwright e2e（首次 `pnpm --filter @marismoon/web exec playwright install chromium`） |
-| `pnpm format` | Prettier 写入 `**/*.{ts,tsx}` |
+| `pnpm typecheck`、`pnpm lint` | 工作区类型与源码规则 |
+| `pnpm build` | 构建 Demo 和 Starter |
+| `pnpm test`、`pnpm test:coverage` | Vitest 单测；后者运行已配置的覆盖率任务 |
+| `pnpm test:ui` | Demo 全集（4173）与 Starter 冒烟（4174） |
+| `pnpm check:workspace` | 包的私有标记、模板独立性、共享包公开导入路径 |
+| `pnpm run audit` | 运行高危及以上级别阻断的依赖审计 |
+| `pnpm format` | 用 Prettier 格式化 TypeScript 和 TSX |
 
-提交时 husky 运行 lint-staged（Prettier + `eslint --fix`）；需要先 `git init`。
+提交钩子使用 husky 和 lint-staged，对暂存的 TypeScript 与 TSX 运行 Prettier 和 ESLint。流程见[持续集成工作流](.github/workflows/ci.yml)。
+
+首次运行 UI 测试前执行 `pnpm --filter @marismoon/demo exec playwright install chromium`。两套测试共用该浏览器版本。
 
 ## 文档
 
-- [AGENTS.md](AGENTS.md) — 开发契约
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [docs/TECH_STACK.md](docs/TECH_STACK.md) · [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) · [docs/COMPONENTS.md](docs/COMPONENTS.md) · [docs/I18N.md](docs/I18N.md)
+- [开发契约](AGENTS.md) · [架构](docs/ARCHITECTURE.md) · [技术栈](docs/TECH_STACK.md)
+- [设计系统](docs/DESIGN_SYSTEM.md) · [UI 组件](docs/COMPONENTS.md) · [Shell API 与 CSS 变量](packages/shell/README.md) · [国际化](docs/I18N.md)
+- [版本治理与阶段边界](docs/VERSIONING.md) · [架构决策](docs/decisions/)
 
 ## 环境变量
 
-仅 `.env.example` 的 `VITE_API_BASE_URL`（占位，Mock 服务替换为真实后端后使用）。不要提交 `.env`。
+`.env.example` 中的 `VITE_API_BASE_URL` 是替换 Demo Mock 服务时使用的占位值。密钥与本地 `.env` 不提交。
