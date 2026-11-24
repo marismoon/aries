@@ -1,6 +1,6 @@
 # 阶段二方案：发包准备
 
-> 状态：**执行中**，轮次一至轮次三（步骤 0–7）已完成，见第 9 节；剩余步骤 8（首次预发布）。决定见第 11 节。工作区包名已统一为 `@marismoon/*`；第 2 节实验记录保留当时的 `@aries/*` 写法。本文延续 [REFACTOR_PLAN.md](REFACTOR_PLAN.md) 的执行规则（每步五项全绿再提交、每轮停下汇报）。与 [AGENTS.md](../AGENTS.md) 冲突时，以其视觉与主题红线为准。
+> 状态：**阶段二已完成**（2026-11-24）。步骤 0–8 全部落地，`@marismoon/ui` 与 `@marismoon/shell` 已以 `next` 标签发布 `0.1.0-next.0`（手动首发）与 `0.1.0-next.1`（Release 工作流，Trusted Publishing）。本文保留为历史记录与决策依据，后续规则以 [AGENTS.md](../AGENTS.md) 与 [VERSIONING.md](VERSIONING.md) 为准。决定见第 11 节。工作区包名已统一为 `@marismoon/*`；第 2 节实验记录保留当时的 `@aries/*` 写法。本文延续 [REFACTOR_PLAN.md](REFACTOR_PLAN.md) 的执行规则（每步五项全绿再提交、每轮停下汇报）。与 [AGENTS.md](../AGENTS.md) 冲突时，以其视觉与主题红线为准。
 
 ## 1. 目标与范围
 
@@ -108,6 +108,13 @@
 - `badge.tsx` 注释中的单词被 Tailwind 误扫为 `.inline`，改写注释后，导出 Starter 的生产 CSS 与同仓构建逐字节一致，消费者测试按严格相等比较。
 - attw 发现类型声明里的相对导入不带扩展名，`node16` 解析失败；`finalize-package.mjs` 现为其补上 `.js`，`node16` 与 `bundler` 均通过。attw 不展开 ui 的通配子路径，具体组件的类型解析由消费者测试覆盖。
 - npm 只能为已存在的包配置 Trusted Publisher，因此首发必须手动完成。Release 工作流用 `pnpm -r publish`（只发布注册表上还没有的版本）而非 changesets/action，便于审计。
+
+轮次四执行记录（2026-11-24）：
+
+- `0.1.0-next.0` 由维护者手动首发（PR #10 合并后）。首次尝试因账号未开启 2FA 返回 403，未发布任何版本；开启 2FA 并通过网页认证后发布成功。
+- 新包首次发布时，注册表先出现公开的占位版本 `0.0.0-stage`，约 5 分钟后真实版本可见；`latest` 与 `next` 均指向 `0.1.0-next.0`，占位版本保留在版本列表中。
+- 从 npm 安装的导出 Starter（注册表模式）通过 typecheck、lint、test 与 build；ui 包内含 `THIRD_PARTY_NOTICES.md`。
+- 维护者为两个包配置 Trusted Publisher 后，`0.1.0-next.1`（PR #11，包内容不变）由 Release 工作流发布：GitHub OIDC 认证、无令牌，两个包均带 SLSA provenance v1；`next` 指向 `0.1.0-next.1`，`latest` 保持 `0.1.0-next.0`。在干净目录安装后 `npm audit signatures` 校验通过。
 
 ## 10. 风险
 
