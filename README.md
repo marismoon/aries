@@ -16,6 +16,7 @@
   <img src="https://img.shields.io/badge/TypeScript-6.0.3-3178C6?style=flat-square" alt="TypeScript 6.0.3">
   <img src="https://img.shields.io/badge/Tailwind_CSS-4.3.5-06B6D4?style=flat-square" alt="Tailwind CSS 4.3.5">
   <img src="https://img.shields.io/badge/Vite-8.3.8-646CFF?style=flat-square" alt="Vite 8.3.8">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT 许可证"></a>
 </p>
 
 <p align="center">
@@ -186,3 +187,7 @@ pnpm test:ui
 ## 环境变量
 
 `VITE_API_BASE_URL` 是将 Demo 模拟服务接入真实后端时使用的占位变量。运行当前 Demo 无需填写。 [环境变量示例](.env.example)
+
+## 许可证
+
+本仓库自有代码以 [MIT 许可证](LICENSE) 发布。内嵌的 Solar 图标遵循 CC BY 4.0，shadcn/ui 代码与字体等第三方内容遵循各自的许可证，详见[第三方许可声明](THIRD_PARTY_NOTICES.md)。
