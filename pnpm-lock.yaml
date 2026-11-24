@@ -490,9 +490,15 @@ importers:
       '@aries/config':
         specifier: workspace:*
         version: link:../config
+      '@testing-library/react':
+        specifier: catalog:dev
+        version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@types/react':
         specifier: 'catalog:'
         version: 19.3.0
+      jsdom:
+        specifier: catalog:dev
+        version: 31.0.1
       react:
         specifier: 'catalog:'
         version: 19.3.1

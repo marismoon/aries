@@ -24,7 +24,9 @@
   },
   "devDependencies": {
     "@aries/config": "workspace:*",
+    "@testing-library/react": "catalog:dev",
     "@types/react": "catalog:",
+    "jsdom": "catalog:dev",
     "react": "catalog:",
     "react-dom": "catalog:",
     "tailwindcss": "catalog:",
