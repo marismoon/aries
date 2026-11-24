@@ -1,9 +1,17 @@
 // Completes a package build after Vite (JS) and tsc (declarations):
 // copies stylesheets into dist, points Tailwind's @source at the compiled
-// JavaScript, and drops CSS side-effect imports from declaration files so
-// hosts do not need a `*.css` module declaration to type-check.
-import { cpSync, globSync, readFileSync, writeFileSync } from "node:fs"
-import { join, resolve } from "node:path"
+// JavaScript, and cleans the declaration files: CSS side-effect imports are
+// dropped (hosts need no `*.css` module declaration to type-check) and
+// relative imports get explicit `.js` extensions, so the types also resolve
+// under Node's ESM rules (`moduleResolution: "node16"`), not only bundlers.
+import {
+  cpSync,
+  existsSync,
+  globSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs"
+import { dirname, join, resolve } from "node:path"
 
 const packageDir = resolve(process.argv[2] ?? ".")
 const src = join(packageDir, "src")
@@ -18,18 +26,32 @@ for (const file of styles) {
   if (compiled !== css) writeFileSync(target, compiled)
 }
 
+function withExtension(file, specifier) {
+  if (/\.(?:js|json)$/.test(specifier)) return specifier
+  const base = join(dirname(file), specifier)
+  if (existsSync(`${base}.d.ts`)) return `${specifier}.js`
+  if (existsSync(join(base, "index.d.ts"))) return `${specifier}/index.js`
+  throw new Error(`${file}: cannot resolve ${specifier} to a declaration file`)
+}
+
 const declarations = globSync("**/*.d.ts", { cwd: dist })
-let stripped = 0
+let cleaned = 0
 for (const file of declarations) {
   const path = join(dist, file)
   const text = readFileSync(path, "utf8")
-  const next = text.replace(/^import\s+["'][^"']+\.css["'];?\r?\n/gm, "")
+  const next = text
+    .replace(/^import\s+["'][^"']+\.css["'];?\r?\n/gm, "")
+    .replace(
+      /(\bfrom\s+|\bimport\s*\(\s*)(["'])(\.{1,2}\/[^"']+)\2/g,
+      (_, lead, quote, specifier) =>
+        `${lead}${quote}${withExtension(path, specifier)}${quote}`
+    )
   if (next !== text) {
     writeFileSync(path, next)
-    stripped += 1
+    cleaned += 1
   }
 }
 
 console.log(
-  `${packageDir}: copied ${styles.length} stylesheets, cleaned ${stripped} declaration files`
+  `${packageDir}: copied ${styles.length} stylesheets, cleaned ${cleaned} declaration files`
 )

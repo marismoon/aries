@@ -35,6 +35,7 @@ jobs:
       - run: pnpm test
       - run: pnpm run audit
       - run: pnpm check:workspace
+      - run: pnpm check:package
       - name: Read Playwright version
         id: playwright
         run: |
