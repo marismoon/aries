@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "license": "MIT",
   "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
   "exports": {
     ".": "./src/index.ts",
     "./styles": "./src/styles/layout.css"
@@ -11,6 +17,7 @@
     "./src/styles/*.css"
   ],
   "scripts": {
+    "build": "vite build -c vite.build.config.ts && tsc -p tsconfig.build.json && node ../../scripts/finalize-package.mjs .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests"
   },
@@ -33,5 +40,15 @@
     "typescript": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:dev"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./styles": "./dist/styles/layout.css"
+    }
   }
 }

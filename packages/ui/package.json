@@ -4,6 +4,12 @@
   "version": "0.0.1",
   "license": "MIT",
   "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
   "exports": {
     "./ui/*": "./src/components/ui/*.tsx",
     "./shared/use-data-table": "./src/components/shared/use-data-table.ts",
@@ -17,6 +23,7 @@
     "./styles/*": "./src/styles/*"
   },
   "scripts": {
+    "build": "vite build -c vite.build.config.ts && tsc -p tsconfig.build.json && node ../../scripts/finalize-package.mjs .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests"
   },
@@ -58,5 +65,47 @@
     "@types/node": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      "./ui/*": {
+        "types": "./dist/components/ui/*.d.ts",
+        "default": "./dist/components/ui/*.js"
+      },
+      "./shared/use-data-table": {
+        "types": "./dist/components/shared/use-data-table.d.ts",
+        "default": "./dist/components/shared/use-data-table.js"
+      },
+      "./shared/*": {
+        "types": "./dist/components/shared/*.d.ts",
+        "default": "./dist/components/shared/*.js"
+      },
+      "./motion/motion-tokens": {
+        "types": "./dist/components/motion/motion-tokens.d.ts",
+        "default": "./dist/components/motion/motion-tokens.js"
+      },
+      "./motion/*": {
+        "types": "./dist/components/motion/*.d.ts",
+        "default": "./dist/components/motion/*.js"
+      },
+      "./icons": {
+        "types": "./dist/components/icons/index.d.ts",
+        "default": "./dist/components/icons/index.js"
+      },
+      "./icons/*": {
+        "types": "./dist/components/icons/*.d.ts",
+        "default": "./dist/components/icons/*.js"
+      },
+      "./hooks/*": {
+        "types": "./dist/hooks/*.d.ts",
+        "default": "./dist/hooks/*.js"
+      },
+      "./lib/*": {
+        "types": "./dist/lib/*.d.ts",
+        "default": "./dist/lib/*.js"
+      },
+      "./styles/*": "./dist/styles/*"
+    }
   }
 }
