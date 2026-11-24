@@ -1,6 +1,6 @@
 # 阶段二方案：发包准备
 
-> 状态：**执行中**，轮次一（步骤 0–3）已完成，见第 9 节。决定见第 11 节。工作区包名已统一为 `@marismoon/*`；第 2 节实验记录保留当时的 `@aries/*` 写法。本文延续 [REFACTOR_PLAN.md](REFACTOR_PLAN.md) 的执行规则（每步五项全绿再提交、每轮停下汇报）。与 [AGENTS.md](../AGENTS.md) 冲突时，以其视觉与主题红线为准。
+> 状态：**执行中**，轮次一（步骤 0–3）与轮次二（步骤 4–5）已完成，见第 9 节。决定见第 11 节。工作区包名已统一为 `@marismoon/*`；第 2 节实验记录保留当时的 `@aries/*` 写法。本文延续 [REFACTOR_PLAN.md](REFACTOR_PLAN.md) 的执行规则（每步五项全绿再提交、每轮停下汇报）。与 [AGENTS.md](../AGENTS.md) 冲突时，以其视觉与主题红线为准。
 
 ## 1. 目标与范围
 
@@ -94,6 +94,13 @@
 | 四 | 8 | 首次预发布与验收：用户先在 npm 创建组织 `marismoon` 并为两个包配置 Trusted Publishing，确认后再执行 | — |
 
 每一轮在独立分支完成，轮内每步单独提交，经 PR 合并；第 8 步前不做任何真实发布。
+
+轮次二执行记录（2026-11-24）：
+
+- 构建采用仓库已有的 Vite（按模块输出 ESM，保留 `"use client"`）与 `tsc`（类型声明），未新增依赖。
+- `files` 白名单从步骤 5 提前到步骤 4：没有它时，`.gitignore` 会把 `dist` 排除在 tarball 之外。
+- 外部消费者实验：Starter 复制到仓库外、从 tarball 安装后，typecheck、lint、test、build 与冒烟 E2E 全部通过；生产 CSS 与同仓 Starter 相比只少一条 `.inline{display:inline}`，它来自 `badge.tsx` 注释中的单词，编译后的 JS 不含注释，未被任何元素使用。
+- Next.js 宿主尚未验证（仓库内没有 Next.js 依赖），按计划放在步骤 6 的外部消费者测试中。
 
 ## 10. 风险
 
