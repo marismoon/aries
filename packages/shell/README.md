@@ -37,7 +37,7 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 | `ShellLabels` | 外壳固定文案均为宿主已翻译的字符串。提供导航、范围与帮助文案，页面内容区、面包屑和语言控件的无障碍名称，以及搜索面板的标题、说明、输入框、结果列表与空态文案。完整字段见 [labels.ts](src/types/labels.ts)。 |
 | `LanguageControlProps` | 传入当前语言 `value`、有序的 `options: { value, label }[]` 与 `onChange(value)`。宿主处理语言切换和持久化。 |
 
-`useShellRouter()`、`useShellLabels()` 和 `useShellLanguageControl()` 读取对应 Provider 的值。宿主可通过 `NavHighlightContext` 定制导航高亮。渲染函数接收 `NavHighlightRects`，其中 `active` 与 `hover` 分别为选中项、悬停项的 `HighlightRect` 或 `null`。
+`useShellRouter()`、`useShellLabels()` 和 `useShellLanguageControl()` 读取对应 Provider 的值。第二列导航的选中与悬停高亮默认由 `@marismoon/ui/motion/NavPills` 绘制：两块底板以临界阻尼弹簧（`navPillSpring`）滑动，遵循减少动效偏好。它和页面过渡一样使用 `motion` 的 `m.*` 组件，宿主须在 `LazyMotion` 内渲染外壳。需要换成其他样式时，通过 `NavHighlightContext` 提供渲染函数；它接收 `NavHighlightRects`，其中 `active` 与 `hover` 分别为选中项、悬停项的 `HighlightRect` 或 `null`。
 
 ## 外壳与页面
 
@@ -48,7 +48,10 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 | `headerExtra` | 通过 `HeaderExtraContext` 传至页头操作区，在工作区控制按钮之前渲染。 |
 | `overlays` | 布局网格外，供宿主挂载浮层。 |
 | `rightPanel`、`rightPanelOpen` | 右栏位于网格外。传入节点时按受控开合状态挂载或卸载。传入 `(open) => ReactNode` 时每次都调用，由宿主保留退出动画。 |
-| `renderRightPanelTrigger`、`onRightPanelOpenChange` | 在图标栏渲染入口，接收 `{ open, onToggle }`。入口将触发元素交给 `onToggle`，宿主收到 `(open, launcher)` 后更新状态。 |
+| `renderRightPanelTrigger`、`onRightPanelOpenChange` | 在图标栏渲染入口，接收 `{ open, onToggle, keyShortcuts }`。入口将触发元素交给 `onToggle`，宿主收到 `(open, launcher)` 后更新状态；`keyShortcuts` 用于入口的 `aria-keyshortcuts`。 |
+| `rightPanelShortcut` | 默认 `true`：提供了 `rightPanel` 与 `onRightPanelOpenChange` 时，⌘⇧K / Ctrl+Shift+K（`rightPanelKeyShortcuts`）切换右栏；其他对话框打开时不响应。`launcher` 为当前焦点元素，焦点在页面上时为入口按钮。传 `false` 关闭。 |
+
+`useDocumentTitle(title)` 在浏览器中把 `document.title` 同步为传入的字符串，宿主通常写 `` useDocumentTitle(`${页面标题} · 产品名`) ``。
 
 页面用 `WorkspacePage` 接收页面元信息（`id`、已翻译的 `title`、可选 `description`、`breadcrumbs: readonly Breadcrumb[]`）和 `WorkspacePageSlots`。必填的 `Content` 与可选的 `Subtitle`、`BreadcrumbDetail`、`Summary` 均为组件。
 
@@ -73,9 +76,6 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 | 轨道按钮的尺寸与材质 | `--icon-control-hover-bg`、`--rail-active-bg`、`--rail-active-fg`、`--rail-backplate-size`、`--rail-control-size`、`--rail-icon-size`、`--rail-logo-fg` | `tokens.css` |
 | 轨道按钮的尺寸与材质 | `--rail-fill` | `materials.css` |
 | 轨道按钮的尺寸与材质 | `--rail-logo-bg` | `tokens.css`、`spectrum.css` |
-| 右栏入口的渐变与动效 | `--ai-angle` | `motion.css` |
-| 右栏入口的渐变与动效 | `--ai-blue`、`--ai-cyan`、`--ai-pink`、`--ai-violet` | `materials.css` |
-| 右栏入口的渐变与动效 | `--ai-blue-base`、`--ai-cyan-base`、`--ai-pink-base`、`--ai-violet-base` | `tokens.css` |
 | 侧栏表面与导航状态 | `--nav-active-fill`、`--nav-active-shadow`、`--nav-border-width`、`--nav-hover-fill`、`--nav-hover-shadow` | `dark-clean.css` |
 | 侧栏表面与导航状态 | `--nav-filter`、`--sidebar-background-clip`、`--sidebar-edge`、`--sidebar-radius`、`--sidebar-shadow` | `tokens.css`、`dark-clean.css` |
 | 侧栏表面与导航状态 | `--nav-tree-line` | `materials.css` |
@@ -99,6 +99,6 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 
 - `.app-shell` 建立轨道宽度、列距和整列高度。`.workspace-main` 建立内容区起止边距，起始边距在视口宽度达到 701px 时切换。`.page-content-frame` 提供出血与渐隐距离，`.page-header` 提供面包屑行高。各变量继承原有元素上的值。
 - `--rail-fill` 按品牌入口、常规、悬停和选中四种选择器赋值。`--nav-tree-line` 在目录子树上赋值，悬停或选中的分支仅在其 `li::after` 上加深。`--sidebar-leaf-height` 在移动目录内使用紧凑控件高度。
-- 四个 `--ai-*-base` 色值与主色在 `.icon-rail` 上混合。`--ai-angle` 注册为不继承的角度，初值 0deg。`rail-ai-flow` 在入口伪元素上将其动画至 360deg。
+- `--ai-*` 色值、`--ai-angle` 与 `rail-ai-flow` 仍由 `@marismoon/ui` 提供，外壳的右栏入口已不再使用。
 - `--nav-active-*`、`--nav-hover-*`、`--nav-border-width` 等按主题提供，未声明时沿用消费处的 `var()` 回退。`--field-shadow` 另有 `.copilot-composer` 私有覆盖，作用于输入框自身。
 - `IconRail.tsx` 通过控件的内联样式逐帧写入 `--dock`（缩放）、`--dock-t`（悬停强度）和 `--dock-dy`（纵向位移）。指针离开后移除，CSS 回退依次为 1、0 和 0px。

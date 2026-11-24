@@ -978,7 +978,12 @@
   }
 
   .icon-rail {
-    padding-inline-start: var(--rail-start-inset);
+    /* Center the controls between the viewport edge and the second column,
+       i.e. across the rail track plus the column gap after it (collapsed, two
+       half gaps add up to the same width). Controls are centered in the
+       content box, so a start padding equal to the gap puts that box's center
+       at (rail + gap) / 2. */
+    padding-inline-start: var(--workspace-column-gap);
     /* The 38px plate is centered within the 44px hit area. */
     padding-block-end: calc(
       var(--rail-block-end) -
@@ -1185,71 +1190,16 @@
   }
 }
 
-/* AI assistant: a continuous, soft multi-colour flow (blue, violet, pink,
-   cyan) round the ring plus a blurred halo that breathes. Calm at rest, richer
-   and faster on hover / focus / while the panel is open. Only this control. */
-/* No disc behind the AI control (not even on hover / when open): only the thin
-   ring and a tight halo along it. The gradient reads --ai-angle on the
-   pseudo-element itself, so the animated angle really moves it. */
-.rail-ai::after {
-  position: absolute;
-  z-index: -1;
-  margin: auto;
-  border-radius: inherit;
-  background: conic-gradient(
-    from var(--ai-angle),
-    var(--ai-blue),
-    var(--ai-violet),
-    var(--ai-pink),
-    var(--ai-cyan),
-    var(--ai-blue)
-  );
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-  content: "";
-}
-
-/* Crisp 1.5px ring. */
-.rail-ai::after {
-  inset: 0;
-  width: var(--rail-backplate-size);
-  height: var(--rail-backplate-size);
-  padding: 1.5px;
-  opacity: 0.9;
-  scale: var(--dock, 1);
-  translate: calc((var(--dock, 1) - 1) * 10px) var(--dock-dy, 0px);
-  transition: opacity 240ms ease-out;
-}
-
-/* No halo and no backplate: the control's own disc stays empty (also on hover
-   and while the panel is open); only the thin flowing ring remains. */
-.rail-control.rail-ai::before {
-  background: transparent;
-  box-shadow: none;
-}
-
-.rail-ai:is(:hover, :focus-visible, [aria-expanded="true"])::after {
-  opacity: 1;
-}
-
-/* Follow-the-pointer growth, capped near 1.17 (the dock reaches 1.22). */
-.rail-ai > svg,
-.rail-ai::after {
+/* AI assistant: no ring or colour of its own; it shares the standard rail
+   backplate and hover feedback. The glyph grows a little less than the rest
+   of the dock (capped near 1.17; the dock reaches 1.22). */
+.rail-ai > svg {
   scale: calc(1 + (var(--dock, 1) - 1) * 0.77);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .rail-ai::after {
-    animation:
-      rail-ai-flow 3.6s linear infinite,
-      rail-ai-hop 5.2s ease-in-out infinite;
-  }
-
-  /* An occasional small hop (the ring and the stars together), so the control
-     reads as awake without drawing the eye. */
+  /* An occasional small hop, so the control reads as awake without drawing
+     the eye. */
   .rail-ai > svg {
     animation: rail-ai-hop 5.2s ease-in-out infinite;
   }

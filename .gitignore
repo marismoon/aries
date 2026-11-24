@@ -34,3 +34,7 @@ coverage/
 
 # Copied into the package only while packing (see packages/ui prepack).
 packages/ui/THIRD_PARTY_NOTICES.md
+
+# Built while packing create-aries (see packages/create-aries/build-template.mjs).
+packages/create-aries/template
+packages/create-aries/LICENSE

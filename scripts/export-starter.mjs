@@ -40,7 +40,8 @@ export function readCatalogs() {
     }
     const entry = /^(\s+)"?([^":]+?)"?:\s*(\S+)?\s*$/.exec(line)
     if (!entry) continue
-    const [, indent, key, value] = entry
+    const [, indent, key, rawValue] = entry
+    const value = rawValue?.replace(/^(["'])(.*)\1$/, "$2")
     if (section === "catalog" && indent.length === 2 && value) {
       catalogs[""][key] = value
     } else if (section === "catalogs" && indent.length === 2 && !value) {
@@ -48,6 +49,21 @@ export function readCatalogs() {
       catalogs[named] = {}
     } else if (section === "catalogs" && named && indent.length === 4) {
       catalogs[named][key] = value
+    }
+  }
+  // The parser only understands the flat layout used today; fail loudly
+  // instead of exporting a project with missing versions.
+  if (!Object.keys(catalogs[""]).length || !catalogs.dev) {
+    throw new Error(
+      "Could not read catalog/catalogs.dev from pnpm-workspace.yaml; update readCatalogs()."
+    )
+  }
+  for (const [name, entries] of Object.entries(catalogs)) {
+    for (const [key, version] of Object.entries(entries)) {
+      if (!version)
+        throw new Error(
+          `Catalog "${name || "default"}" has no version for ${key}.`
+        )
     }
   }
   return catalogs

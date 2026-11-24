@@ -4,9 +4,11 @@
 //   pnpm test:consumer            # Vite (exported starter) and Next.js
 //   pnpm test:consumer -- --vite  # Vite only
 //
-// 1. Vite: exports the starter with scripts/export-starter.mjs, then runs its
-//    typecheck, lint, test, build and smoke E2E, and requires its production
-//    CSS to be byte-identical to the in-workspace starter build.
+// 1. Vite: scaffolds a project with the @marismoon/create-aries CLI (its
+//    template built by scripts/export-starter.mjs), then runs its typecheck,
+//    lint (incl. the layout guard), test, build and E2E (smoke and layout
+//    contract), and requires its production CSS to be byte-identical to the
+//    in-workspace starter build.
 // 2. Next.js: builds a minimal App Router app that renders UI and Shell
 //    components (server and client), and checks the prerendered HTML and CSS.
 //
@@ -24,7 +26,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { fileURLToPath } from "node:url"
 
-import { exportStarter, readCatalogs } from "./export-starter.mjs"
+import { readCatalogs } from "./export-starter.mjs"
 
 const root = fileURLToPath(new URL("../", import.meta.url))
 const NEXT_VERSION = "16.4.6"
@@ -66,12 +68,17 @@ step("pack @marismoon/ui and @marismoon/shell", () => {
   }
 })
 
-// --- Vite host: the exported starter -------------------------------------
-const starter = exportStarter({
-  target: join(work, "starter"),
-  name: "aries-consumer-starter",
-  tarballs,
-})
+// --- Vite host: a project created by @marismoon/create-aries ---------------
+// Builds the create-aries template from the tarballs, then scaffolds with the
+// CLI exactly as `npm create @marismoon/aries` would (install runs below).
+const createAries = join(root, "packages", "create-aries")
+step("create-aries: build template from tarballs", () =>
+  run("node", ["build-template.mjs", "--tarballs", tarballs], createAries)
+)
+const starter = join(work, "aries-consumer-starter")
+step("create-aries: scaffold a project", () =>
+  run("node", [join(createAries, "index.mjs"), starter, "--no-install"], work)
+)
 // Use a port of its own so it never reuses a dev server from the workspace.
 const playwright = join(starter, "playwright.config.ts")
 writeFileSync(
@@ -85,7 +92,7 @@ step("starter: install from tarballs", () =>
 for (const script of ["typecheck", "lint", "test", "build"]) {
   step(`starter: ${script}`, () => run("pnpm", ["run", script], starter))
 }
-step("starter: smoke E2E", () =>
+step("starter: smoke and layout E2E", () =>
   run("pnpm", ["run", "test:ui"], starter, { CI: "1" })
 )
 step("starter: production CSS matches the workspace build", () => {

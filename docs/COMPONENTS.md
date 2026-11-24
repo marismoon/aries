@@ -101,6 +101,7 @@ const table = useDataTable({
 ## 2. 动效（`@marismoon/ui/motion/*`）
 
 - `MotionSurface({ children })`：路由进入过渡（`data-motion-surface="route"`，`useReducedMotion` 时无初始态）。
+- `NavPills({ active, hover })`：第二列导航的选中与悬停底板，`@marismoon/shell` 默认渲染，宿主一般无需直接使用。弹簧 `navPillSpring` 为临界阻尼，`useReducedMotion` 时瞬时移动。
 - `motion-tokens`：`routeEntry`、`dialogEntry`、`overlayEntry`（缓动 `[0.23, 1, 0.32, 1]`）。
 
 ## 3. 图标（`@marismoon/ui/icons`）

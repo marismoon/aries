@@ -2,11 +2,20 @@
   "$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [["@marismoon/ui", "@marismoon/shell"]],
+  "fixed": [
+    [
+      "@marismoon/ui",
+      "@marismoon/shell",
+      "@marismoon/create-aries"
+    ]
+  ],
   "linked": [],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": [],
-  "privatePackages": { "version": false, "tag": false }
+  "privatePackages": {
+    "version": false,
+    "tag": false
+  }
 }

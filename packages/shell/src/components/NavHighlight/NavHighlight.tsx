@@ -3,12 +3,14 @@ import {
   NavHighlightContext,
   type HighlightRect,
 } from "../../context/nav-highlight"
+import { NavPills } from "@marismoon/ui/motion/NavPills"
 
 const ITEM = ".workspace-nav-item"
 
 /** Two shared pills behind the directory items: one glides to the selected
  * route, one follows the pointer over the other items. Items keep their own
- * text and focus ring; only the backgrounds are drawn here. */
+ * text and focus ring; only the backgrounds are drawn here. `NavPills` draws
+ * them unless the host supplies a renderer through `NavHighlightContext`. */
 export function NavHighlight({
   containerRef,
 }: {
@@ -94,5 +96,9 @@ export function NavHighlight({
     }
   }, [containerRef])
 
-  return renderHighlight?.({ active, hover })
+  return renderHighlight ? (
+    renderHighlight({ active, hover })
+  ) : (
+    <NavPills active={active} hover={hover} />
+  )
 }

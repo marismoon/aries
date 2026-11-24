@@ -26,6 +26,7 @@ import {
 import { ShellLink } from "../ShellLink"
 import type { NavModule, WorkspaceNavigation } from "../../types/nav"
 import { useShellLabels } from "../../types/labels"
+import { dockAiSpring, dockSpring } from "./dock-spring"
 
 export function RailTooltip({
   label,
@@ -100,8 +101,8 @@ export function IconRail({
 
   // Floating dock, as in the motion examples: the pointer's y drives a target
   // scale per control (distance mapped linearly), and every control follows its
-  // target on a spring (stiffness 260, damping 20), so growth and release are
-  // smooth rather than stepped. Written as --dock per control, which keeps the
+  // target on a critically damped spring (see dock-spring.ts), so growth and
+  // release are smooth rather than stepped, with no bounce. Written as --dock per control, which keeps the
   // buttons' own hover and press styles untouched.
   useEffect(() => {
     const nav = rail.current
@@ -128,10 +129,9 @@ export function IconRail({
       last = now
       let moving = false
       for (const [control, item] of state) {
-        // The AI control is a little springier than the rest.
-        const [stiffness, damping] = control.classList.contains("rail-ai")
-          ? [240, 13]
-          : [260, 20]
+        const { stiffness, damping } = control.classList.contains("rail-ai")
+          ? dockAiSpring
+          : dockSpring
         item.velocity +=
           (-stiffness * (item.value - item.target) - damping * item.velocity) *
           dt

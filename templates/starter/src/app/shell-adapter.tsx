@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import {
   Link,
@@ -13,11 +12,11 @@ import {
   ShellRouterProvider,
   type ShellLinkProps,
   type WorkspaceNavigation,
+  useDocumentTitle,
 } from "@marismoon/shell"
 import { AppIcon } from "@marismoon/ui/icons"
 
 import { ShellLabelsBridge } from "../lib/i18n/ShellLabelsBridge"
-import { NavHighlightProvider } from "./nav-highlight"
 import { workspaceModules } from "./workspace-modules"
 
 function renderLink({ end, ...props }: ShellLinkProps) {
@@ -37,9 +36,7 @@ export function StarterShell() {
     workspaceModules.find(({ id }) => id === routeId) ?? workspaceModules[0]
   const title = t(page.titleKey)
 
-  useEffect(() => {
-    document.title = `${title} · Aries`
-  }, [title])
+  useDocumentTitle(`${title} · Aries`)
 
   const navigation: WorkspaceNavigation = {
     modules: workspaceModules.map(
@@ -89,11 +86,9 @@ export function StarterShell() {
       }}
     >
       <ShellLabelsBridge>
-        <NavHighlightProvider>
-          <AppShell navigation={navigation} routeModule={page.id}>
-            <Outlet />
-          </AppShell>
-        </NavHighlightProvider>
+        <AppShell navigation={navigation} routeModule={page.id}>
+          <Outlet />
+        </AppShell>
       </ShellLabelsBridge>
     </ShellRouterProvider>
   )

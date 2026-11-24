@@ -44,7 +44,7 @@ Aries 提供构建工作区应用所需的共享组件和外壳。Demo 使用本
 - **工作区外壳**。三列布局包含模块入口、工作区导航和业务内容，命令面板可查找当前模块的页面，并打开可用条目。
 - **中英双语**。工作区外壳和主要 Demo 页面支持简体中文与英文。
 - **Copilot 示例**。右栏助手基于本地模拟数据回答示例问题。
-- **Starter**。复制带首页和设置页的模板，在同一工作区开发新应用。
+- **Starter**。带首页和设置页的模板，用 `pnpm create:app` 或 `npm create @marismoon/aries` 创建新应用，布局受契约保护。
 
 ## 预览
 
@@ -94,7 +94,7 @@ pnpm dev
 pnpm dev:starter
 ```
 
-阶段一采用同仓源码消费。`@marismoon/ui` 和 `@marismoon/shell` 尚未发布到 npm。 [版本治理与阶段边界](docs/VERSIONING.md)
+同仓开发直接消费 `@marismoon/ui` 与 `@marismoon/shell` 的源码；两个包也以 `next` 标签发布到 npm，供仓库外项目安装。[版本治理与发布](docs/VERSIONING.md)
 
 ## 项目结构
 
@@ -105,6 +105,7 @@ aries/
 ├── packages/
 │   ├── ui/            设计系统
 │   ├── shell/         工作区外壳
+│   ├── create-aries/  创建命令（npm create @marismoon/aries）
 │   └── config/        共享工程配置
 └── templates/
     └── starter/       起步模板
@@ -114,12 +115,15 @@ Demo 与 Starter 使用 Shell 和 UI 的公开入口，Shell 依赖 UI。 [架�
 
 ## 基于 Starter 创建应用
 
-1. 将 `templates/starter` 复制到 `apps/` 下的新目录。
-2. 修改工作区包名，为开发服务和 Playwright 测试分配可用端口。
-3. 添加页面组件和中英文资源。
-4. 在工作区模块注册表登记路由与导航。
+```sh
+# 在本仓库 apps/ 下新建（自动命名包、分配端口并安装）
+pnpm create:app my-app
 
-复制命令和完整接线见[从 Starter 创建应用](docs/STARTER.md)。
+# 在仓库外新建独立项目
+npm create @marismoon/aries@next my-app
+```
+
+生成的项目与 Demo 使用相同的三列外壳。在 `src/features/` 中写页面，在 `src/app/workspace-modules.ts` 注册路由与导航。外壳布局受布局契约保护：`pnpm lint` 与 `pnpm test:ui` 会拦截任何改变布局的代码，包括 AI 助手生成的内容。详见[创建应用](docs/STARTER.md)。
 
 ## 常用命令
 
@@ -127,15 +131,16 @@ Demo 与 Starter 使用 Shell 和 UI 的公开入口，Shell 依赖 UI。 [架�
 | --- | --- |
 | `pnpm dev` | 启动 Demo |
 | `pnpm dev:starter` | 启动 Starter |
+| `pnpm create:app <名称>` | 从 Starter 在 `apps/` 下新建应用 |
 | `pnpm build` | 构建 Demo 与 Starter |
 | `pnpm typecheck` | 检查工作区类型 |
 | `pnpm lint` | 检查源码规则 |
 | `pnpm test` | 运行 Vitest 单测 |
 | `pnpm test:coverage` | 运行 Demo 的覆盖率任务 |
-| `pnpm test:ui` | 运行 Demo 的 UI 测试和 Starter 冒烟测试 |
-| `pnpm test:consumer` | 在仓库外以 Vite 与 Next.js 宿主验证打包后的 ui 与 shell（需要联网） |
-| `pnpm check:workspace` | 检查工作区包边界 |
-| `pnpm check:package` | 打包 ui 与 shell，检查内容与元数据，并运行 publint 与 attw |
+| `pnpm test:ui` | 运行 Demo 的 UI 测试和 Starter 的冒烟与布局契约测试 |
+| `pnpm test:consumer` | 在仓库外验证打包后的 ui 与 shell：用 create-aries 创建 Vite 项目并跑全部检查，再构建 Next.js 宿主（需要联网） |
+| `pnpm check:workspace` | 检查工作区包边界，并运行各应用的布局守卫 |
+| `pnpm check:package` | 打包 ui、shell 与 create-aries，检查内容与元数据，并运行 publint 与 attw |
 | `pnpm run audit` | 审计依赖，高危及以上问题使检查失败 |
 | `pnpm format` | 用 Prettier 格式化 TS 和 TSX |
 | `pnpm docs:screenshots` | 生成中英文 Demo 截图，写入[截图目录](docs/assets/screenshots/) |
@@ -183,7 +188,7 @@ pnpm test:ui
 
 - [架构](docs/ARCHITECTURE.md) · [技术栈](docs/TECH_STACK.md) · [设计系统](docs/DESIGN_SYSTEM.md)
 - [UI 组件](docs/COMPONENTS.md) · [Shell API 与 CSS 变量](packages/shell/README.md) · [国际化](docs/I18N.md)
-- [从 Starter 创建应用](docs/STARTER.md) · [版本治理与阶段边界](docs/VERSIONING.md) · [架构决策](docs/decisions/)
+- [从 Starter 创建应用](docs/STARTER.md) · [版本治理与发布](docs/VERSIONING.md) · [架构决策](docs/decisions/)
 - [开发契约](AGENTS.md) · [CI 工作流](.github/workflows/ci.yml)
 
 ## 环境变量

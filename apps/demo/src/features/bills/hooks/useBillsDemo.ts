@@ -29,7 +29,10 @@ export function sumBillsByCurrency(bills: readonly Bill[]) {
 }
 
 export function useBillsDemoState() {
-  const { data } = useQuery({ queryKey: ["bills"], queryFn: getDemoBills })
+  const { data, isError, refetch } = useQuery({
+    queryKey: ["bills"],
+    queryFn: getDemoBills,
+  })
   const bills = data ?? null
   const [filters, setFilters] = useState(initialBillFilters)
 
@@ -43,7 +46,9 @@ export function useBillsDemoState() {
   const totals = useMemo(() => sumBillsByCurrency(bills ?? []), [bills])
 
   return {
-    loading: bills === null,
+    loading: bills === null && !isError,
+    error: bills === null && isError,
+    retry: () => void refetch(),
     count: bills?.length ?? 0,
     rows: bills ?? [],
     vendors,
