@@ -3,7 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query"
 import { domAnimation, LazyMotion, MotionConfig } from "motion/react"
 import { ThemeProvider } from "next-themes"
 
-import { TooltipProvider } from "@marismoon/ui/ui/tooltip"
+import { TooltipProvider } from "@aries/ui/ui/tooltip"
 import { queryClient } from "../shared/query-client"
 
 function ThemeColor() {
@@ -37,7 +37,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider
         attribute="class"
-        storageKey="marismoon-theme"
+        storageKey="aries-theme"
         defaultTheme="system"
         enableSystem
         disableTransitionOnChange

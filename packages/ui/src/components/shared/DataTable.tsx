@@ -57,7 +57,7 @@ export interface DataTableProps<TData extends RowData> {
 }
 
 /**
- * The Marismoon table template: shadcn Table + TanStack Table, a quiet sticky
+ * The Aries table template: shadcn Table + TanStack Table, a quiet sticky
  * header, per-column alignment, row selection and a footer with the row range
  * and round pagination. Features pass columns and cell content only.
  */

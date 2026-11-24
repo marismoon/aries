@@ -19,7 +19,7 @@ import {
   SolarRefreshCcw,
   SolarShieldAlert,
   type AppIconComponent,
-} from "@marismoon/ui/icons"
+} from "@aries/ui/icons"
 import { demoBills } from "@/shared/mocks/bills"
 
 interface WorkspaceLeaf {

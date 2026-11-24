@@ -1,5 +1,5 @@
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@marismoon/ui/ui/button"
+import { Button } from "@aries/ui/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -7,9 +7,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@marismoon/ui/ui/dialog"
-import { Field, FieldGroup, FieldLabel } from "@marismoon/ui/ui/field"
-import { Input } from "@marismoon/ui/ui/input"
+} from "@aries/ui/ui/dialog"
+import { Field, FieldGroup, FieldLabel } from "@aries/ui/ui/field"
+import { Input } from "@aries/ui/ui/input"
 import {
   Popover,
   PopoverContent,
@@ -17,7 +17,7 @@ import {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-} from "@marismoon/ui/ui/popover"
+} from "@aries/ui/ui/popover"
 
 export default function PopoverExample() {
   return (

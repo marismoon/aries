@@ -6,16 +6,16 @@
 apps/demo         ─┬─► packages/shell ──► packages/ui
 templates/starter ─┘
 两种宿主也可直接使用 packages/ui 的公开入口。
-根 ESLint 配置、Demo、Shell 与 UI 的 TypeScript 配置 ──► packages/config (@marismoon/config)
+根 ESLint 配置、Demo、Shell 与 UI 的 TypeScript 配置 ──► packages/config (@aries/config)
 ```
 
 | 包 | 入口（`exports`） | 内容 |
 | --- | --- | --- |
-| `@marismoon/ui` | `./ui/*` `./shared/*` `./motion/*` `./icons` `./icons/*` `./hooks/*` `./lib/*` `./styles/*`（直接导出源码，无构建步骤） | `src/components/{ui,shared,icons,motion}`、`src/hooks/use-mobile.ts`、`src/lib/{utils,format,storage}.ts`、`src/styles/*.css` |
-| `@marismoon/shell` | `.`、`./styles`（源码） | 三列外壳、页面布局和命令面板，见 [公开 API 与 CSS 变量契约](../packages/shell/README.md) |
-| `@marismoon/config` | `./eslint/*`、`./typescript/*.json` | ESLint 的 base、react、boundaries 和 TypeScript 的 base、react、app 配置 |
-| `@marismoon/demo` | — | `src/{app,features,shared,lib,test}`、`e2e/` |
-| `@marismoon/starter` | — | 首页、设置、独立工程配置和冒烟测试，见[起步指南](STARTER.md) |
+| `@aries/ui` | `./ui/*` `./shared/*` `./motion/*` `./icons` `./icons/*` `./hooks/*` `./lib/*` `./styles/*`（直接导出源码，无构建步骤） | `src/components/{ui,shared,icons,motion}`、`src/hooks/use-mobile.ts`、`src/lib/{utils,format,storage}.ts`、`src/styles/*.css` |
+| `@aries/shell` | `.`、`./styles`（源码） | 三列外壳、页面布局和命令面板，见 [公开 API 与 CSS 变量契约](../packages/shell/README.md) |
+| `@aries/config` | `./eslint/*`、`./typescript/*.json` | ESLint 的 base、react、boundaries 和 TypeScript 的 base、react、app 配置 |
+| `@aries/demo` | — | `src/{app,features,shared,lib,test}`、`e2e/` |
+| `@aries/starter` | — | 首页、设置、独立工程配置和冒烟测试，见[起步指南](STARTER.md) |
 
 两个宿主通过包导出路径引用 UI 和 Shell 的源码，由 Vite 直接编译。`packages/ui` 内部只用相对导入。
 
@@ -24,7 +24,7 @@ templates/starter ─┘
 ```text
 apps/demo/src
 ├── main.tsx            入口：载入 index.css 与应用模块，应用已保存的主题偏好后渲染 App
-├── index.css           依次引入 @marismoon/ui/styles/globals.css 和 @marismoon/shell/styles，@source "./" 扫描应用代码
+├── index.css           依次引入 @aries/ui/styles/globals.css 和 @aries/shell/styles，@source "./" 扫描应用代码
 ├── app/
 │   ├── App.tsx         AppProviders + RouterProvider
 │   ├── providers.tsx   QueryClient、next-themes、LazyMotion/MotionConfig（`reducedMotion="user"`）、TooltipProvider、演示状态；命令面板由 `AppShell` 内的 `CommandPaletteProvider` 提供
@@ -42,8 +42,8 @@ apps/demo/src
 
 ## 3. 启动与运行时
 
-1. `main.tsx` 调用 `applyStoredPalette()` / `applyStoredDarkStyle()`（来自 `@marismoon/ui/lib/storage`）在首帧前写入 `data-palette` / `data-dark-style`。
-2. `AppProviders`：React Query → next-themes（`.dark` 类，存储键 `marismoon-theme`，默认跟随系统）→ motion（`LazyMotion` + `domAnimation`，`MotionConfig reducedMotion="user"`）→ TooltipProvider → 演示数据上下文。`ThemeColor` 监听 `class`/`data-palette` 同步 `<meta name="theme-color">`。
+1. `main.tsx` 调用 `applyStoredPalette()` / `applyStoredDarkStyle()`（来自 `@aries/ui/lib/storage`）在首帧前写入 `data-palette` / `data-dark-style`。
+2. `AppProviders`：React Query → next-themes（`.dark` 类，存储键 `aries-theme`，默认跟随系统）→ motion（`LazyMotion` + `domAnimation`，`MotionConfig reducedMotion="user"`）→ TooltipProvider → 演示数据上下文。`ThemeColor` 监听 `class`/`data-palette` 同步 `<meta name="theme-color">`。
 3. `router.tsx`：`DemoShell` 连接布局路由与 `AppShell`。子路由由 `workspacePages` 生成，通过 `page.load()` 动态导入页面，并向 `WorkspacePage` 传入已翻译的页面信息和内容槽位。
 
 ## 4. 三列外壳

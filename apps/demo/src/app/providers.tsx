@@ -5,7 +5,7 @@ import { ThemeProvider } from "next-themes"
 
 import { UiLabelsBridge } from "@/lib/i18n/UiLabelsBridge"
 import { createQueryClient } from "@/lib/query-client"
-import { TooltipProvider } from "@marismoon/ui/ui/tooltip"
+import { TooltipProvider } from "@aries/ui/ui/tooltip"
 import {
   BillsDemoContext,
   useBillsDemoState,
@@ -57,7 +57,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider
         attribute="class"
-        storageKey="marismoon-theme"
+        storageKey="aries-theme"
         defaultTheme="system"
         enableSystem
         disableTransitionOnChange

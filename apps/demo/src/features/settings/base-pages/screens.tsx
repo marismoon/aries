@@ -17,17 +17,17 @@ import {
   SolarVerifiedCheck,
   SolarBuildings2,
   type AppIconComponent,
-} from "@marismoon/ui/icons"
-import { Badge } from "@marismoon/ui/ui/badge"
+} from "@aries/ui/icons"
+import { Badge } from "@aries/ui/ui/badge"
 import {
   Item,
   ItemContent,
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from "@marismoon/ui/ui/item"
-import { RadioGroup, RadioGroupItem } from "@marismoon/ui/ui/radio-group"
-import { Button } from "@marismoon/ui/ui/button"
+} from "@aries/ui/ui/item"
+import { RadioGroup, RadioGroupItem } from "@aries/ui/ui/radio-group"
+import { Button } from "@aries/ui/ui/button"
 import {
   Account,
   Actions,
@@ -96,7 +96,7 @@ function Login() {
   }
   return (
     <Screen>
-      <Heading title={tl("登录 Marismoon")}>
+      <Heading title={tl("登录 Aries")}>
         {tl(
           "使用本地账号登录，登录后需输入动态口令；如已启用企业 SSO，也可用企业账号登录。"
         )}

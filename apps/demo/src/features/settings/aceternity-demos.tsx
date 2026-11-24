@@ -8,8 +8,8 @@ import {
 } from "motion/react"
 import * as m from "motion/react-m"
 
-import { Button } from "@marismoon/ui/ui/button"
-import { Input } from "@marismoon/ui/ui/input"
+import { Button } from "@aries/ui/ui/button"
+import { Input } from "@aries/ui/ui/input"
 import { Demo, useReplay } from "./motion-shared"
 import "./aceternity-demos.css"
 

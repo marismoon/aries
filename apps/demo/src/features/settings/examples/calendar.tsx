@@ -6,17 +6,13 @@ import { type DateRange } from "react-day-picker"
 import { es } from "react-day-picker/locale"
 
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@marismoon/ui/ui/button"
-import { Calendar, CalendarDayButton } from "@marismoon/ui/ui/calendar"
-import { Card, CardContent, CardFooter } from "@marismoon/ui/ui/card"
-import { Field, FieldGroup, FieldLabel } from "@marismoon/ui/ui/field"
-import { TimePicker } from "@marismoon/ui/ui/date-picker"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@marismoon/ui/ui/popover"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+import { Button } from "@aries/ui/ui/button"
+import { Calendar, CalendarDayButton } from "@aries/ui/ui/calendar"
+import { Card, CardContent, CardFooter } from "@aries/ui/ui/card"
+import { Field, FieldGroup, FieldLabel } from "@aries/ui/ui/field"
+import { TimePicker } from "@aries/ui/ui/date-picker"
+import { Popover, PopoverContent, PopoverTrigger } from "@aries/ui/ui/popover"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 export default function CalendarExample() {
   return (

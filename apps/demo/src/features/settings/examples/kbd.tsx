@@ -1,17 +1,13 @@
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@marismoon/ui/ui/button"
+import { Button } from "@aries/ui/ui/button"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@marismoon/ui/ui/input-group"
-import { Kbd, KbdGroup } from "@marismoon/ui/ui/kbd"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@marismoon/ui/ui/tooltip"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/input-group"
+import { Kbd, KbdGroup } from "@aries/ui/ui/kbd"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@aries/ui/ui/tooltip"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 export default function KbdExample() {
   return (

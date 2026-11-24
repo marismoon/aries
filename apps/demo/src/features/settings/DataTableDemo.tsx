@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 import "@/features/bills/bills.css"
-import { FrostCard } from "@marismoon/ui/shared/FrostCard"
+import { FrostCard } from "@aries/ui/shared/FrostCard"
 import { BillsTable } from "@/features/bills/components/BillsTable"
 import { demoBills, initialBillFilters } from "@/shared/mocks/bills"
 

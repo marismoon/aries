@@ -1,6 +1,6 @@
 import { Example, ExampleWrapper } from "./example"
-import { Badge } from "@marismoon/ui/ui/badge"
-import { Button } from "@marismoon/ui/ui/button"
+import { Badge } from "@aries/ui/ui/badge"
+import { Button } from "@aries/ui/ui/button"
 import {
   Empty,
   EmptyContent,
@@ -8,15 +8,15 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@marismoon/ui/ui/empty"
-import { Field, FieldLabel } from "@marismoon/ui/ui/field"
+} from "@aries/ui/ui/empty"
+import { Field, FieldLabel } from "@aries/ui/ui/field"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@marismoon/ui/ui/input-group"
-import { Spinner } from "@marismoon/ui/ui/spinner"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/input-group"
+import { Spinner } from "@aries/ui/ui/spinner"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 export default function SpinnerExample() {
   return (

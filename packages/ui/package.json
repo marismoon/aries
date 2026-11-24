@@ -1,5 +1,5 @@
 {
-  "name": "@marismoon/ui",
+  "name": "@aries/ui",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -45,7 +45,7 @@
   },
   "peerDependencies": {},
   "devDependencies": {
-    "@marismoon/config": "workspace:*",
+    "@aries/config": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "tailwindcss": "catalog:",

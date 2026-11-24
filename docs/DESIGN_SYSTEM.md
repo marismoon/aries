@@ -1,13 +1,13 @@
 # 设计系统
 
-共享主题样式与令牌位于 `packages/ui/src/styles/`，由 `globals.css` 汇总引入（顺序：tailwindcss → tw-animate-css → shadcn/tailwind.css → 字体 → `tokens.css` → `spectrum.css` → `materials.css` → `dark-base.css` → `dark-clean.css` → `components/ui/popup.css` → `motion.css` → `soft-edge.css` → `icon-states.css`）。应用入口 `apps/demo/src/index.css` 先引入它，再引入 `@marismoon/shell/styles`，并用 `@source` 扫描应用代码。
+共享主题样式与令牌位于 `packages/ui/src/styles/`，由 `globals.css` 汇总引入（顺序：tailwindcss → tw-animate-css → shadcn/tailwind.css → 字体 → `tokens.css` → `spectrum.css` → `materials.css` → `dark-base.css` → `dark-clean.css` → `components/ui/popup.css` → `motion.css` → `soft-edge.css` → `icon-states.css`）。应用入口 `apps/demo/src/index.css` 先引入它，再引入 `@aries/shell/styles`，并用 `@source` 扫描应用代码。
 
 | 文件 | 内容 |
 | --- | --- |
 | `tokens.css` | `:root` 基础令牌（亮色）、`.dark` 暗色（含玻璃的填充、描边、模糊参数）、各品牌主题 `[data-palette="…"]` |
 | `spectrum.css` | 默认主题（saas-analytics-spectrum）、图表/强调色谱 `--spectrum-*` 与 `--swatch-*` |
 | `materials.css` | 玻璃材质：`.surface`、`.surface-inset`、`.frost-divider`、`.hero-surface`、页面环境光 |
-| `dark-base.css` | 暗色共同底座（glass 与 clean 共用）+ glass 的染色令牌（`--card-l` 等）与极光；不含 `marismoon-light` |
+| `dark-base.css` | 暗色共同底座（glass 与 clean 共用）+ glass 的染色令牌（`--card-l` 等）与极光；不含 `aries-light` |
 | `dark-clean.css` | 简洁暗色材质（`.dark[data-dark-style="clean"]`）：关闭模糊、光晕、阴影 |
 | `motion.css` | 缓动/时长令牌、对话框退出、`prefers-reduced-motion`、`.shimmer-text`/`.shimmer-block` |
 | `soft-edge.css` | 滚动容器边缘渐隐（scroll-driven animation，不支持时降级） |
@@ -16,8 +16,8 @@
 ## 1. 主题与模式
 
 - **模式**：`next-themes`（`attribute="class"`）切换 `.dark`；`:root` 声明 `color-scheme: light`。
-- **品牌主题**（`<html data-palette="…">`，localStorage 键 `marismoon-palette`）：以 `lib/storage.ts` 的 `paletteLabels` 为准，默认 `saas-analytics-spectrum`。`marismoon-light` 为**纯浅色**主题（`color-scheme: light`，暗色块也保持浅色）。暗色模式下品牌轮换跳过它。
-- **暗色风格**（`<html data-dark-style="glass|clean">`，键 `marismoon-dark-style`）：`glass` 毛玻璃（默认）、`clean` 简洁。详见 §2。
+- **品牌主题**（`<html data-palette="…">`，localStorage 键 `aries-palette`）：以 `lib/storage.ts` 的 `paletteLabels` 为准，默认 `saas-analytics-spectrum`。`aries-light` 为**纯浅色**主题（`color-scheme: light`，暗色块也保持浅色）。暗色模式下品牌轮换跳过它。
+- **暗色风格**（`<html data-dark-style="glass|clean">`，键 `aries-dark-style`）：`glass` 毛玻璃（默认）、`clean` 简洁。详见 §2。
 - 切换控件：`BrandPaletteControl`（轮换主题）、`DarkStyleControl`（仅暗色模式显示）、`ThemeSwitcher`（明暗）。
 
 ## 2. 暗色体系
@@ -69,7 +69,7 @@
 
 ## 3. 令牌
 
-> 令牌以**语义令牌**为主，没有全局 50–950 色阶；`--marismoon-primary-50…950` 与 `--marismoon-neutral-50…950` 只存在于 `marismoon-light` 主题内。业务代码引用语义令牌，不引用色阶。
+> 令牌以**语义令牌**为主，没有全局 50–950 色阶；`--aries-primary-50…950` 与 `--aries-neutral-50…950` 只存在于 `aries-light` 主题内。业务代码引用语义令牌，不引用色阶。
 
 ### 语义色（组件只用这些）
 

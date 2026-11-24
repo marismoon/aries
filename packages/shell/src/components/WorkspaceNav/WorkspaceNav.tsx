@@ -3,7 +3,7 @@ import {
   SolarChatSquare,
   SolarPlus,
   SolarQuestionCircle,
-} from "@marismoon/ui/icons"
+} from "@aries/ui/icons"
 import { useRef } from "react"
 
 import { useShellLabels } from "../../types/labels"
@@ -14,8 +14,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@marismoon/ui/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@marismoon/ui/ui/tabs"
+} from "@aries/ui/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@aries/ui/ui/tabs"
 import { CommandPalette } from "../CommandPalette"
 import { NavHighlight } from "../NavHighlight"
 import { NavTree } from "../NavTree"

@@ -1,4 +1,4 @@
-# AGENTS.md — Marismoon 工作区开发契约
+# AGENTS.md — Aries 工作区开发契约
 
 本文件是给人类开发者和 AI 编程助手的**可执行契约**。所有路径、包名、脚本、变量名均来自本仓库真实代码。
 关键词含义：**MUST** 必须；**SHOULD** 应当（有充分理由可例外并在 PR 说明）；**MUST NOT** 严禁。
@@ -12,15 +12,15 @@
 | 项 | 值 |
 | --- | --- |
 | 包管理 / 任务 | pnpm 12.16.1（workspace）+ Turborepo；Node ^24 |
-| 包 | `@marismoon/demo`（apps/demo）、`@marismoon/starter`（templates/starter）、`@marismoon/shell`（packages/shell）、`@marismoon/ui`（packages/ui）、`@marismoon/config`（packages/config） |
+| 包 | `@aries/demo`（apps/demo）、`@aries/starter`（templates/starter）、`@aries/shell`（packages/shell）、`@aries/ui`（packages/ui）、`@aries/config`（packages/config） |
 | 启动 | `pnpm install` → `pnpm dev`（Vite，默认 <http://localhost:5173>，被占用时端口递增）；`pnpm dev:starter` 启动模板（默认 5174） |
 | 自检 | `pnpm typecheck` · `pnpm lint` · `pnpm build` · `pnpm test` · `pnpm test:ui` · `pnpm check:workspace` |
-| 单个 e2e | `pnpm --filter @marismoon/demo exec playwright test e2e/<name>.spec.ts`（Playwright 自动启动 Vite，端口 4173） |
+| 单个 e2e | `pnpm --filter @aries/demo exec playwright test e2e/<name>.spec.ts`（Playwright 自动启动 Vite，端口 4173） |
 | 详细文档 | [架构](docs/ARCHITECTURE.md) · [技术栈](docs/TECH_STACK.md) · [设计系统](docs/DESIGN_SYSTEM.md) · [组件](docs/COMPONENTS.md) · [国际化](docs/I18N.md) · [Starter](docs/STARTER.md) · [版本治理](docs/VERSIONING.md) |
 
 ## 1. Monorepo 边界
 
-Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 UI。应用之间不得互相导入。Demo、Shell 与 UI 的 TypeScript 配置、根 ESLint 配置通过开发依赖引用 `@marismoon/config`。
+Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 UI。应用之间不得互相导入。Demo、Shell 与 UI 的 TypeScript 配置、根 ESLint 配置通过开发依赖引用 `@aries/config`。
 
 | 位置 | 职责 | 禁止 |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 U
 | `apps/demo` | 外壳接线与路由（`app/`）、页面与业务（`features/`）、跨功能 Mock 与业务类型（`shared/`）、i18n（`lib/i18n`） | MUST NOT 复制 `packages/ui` 的组件或样式 |
 
 1. **MUST** 通过包导出路径使用共享层（UI 路径总表见 [COMPONENTS.md](docs/COMPONENTS.md) 开头，映射来自各包 `package.json` 的 `exports`）。
-2. **MUST NOT** 使用 `@marismoon/ui/src/...` 或 `@marismoon/shell/src/...` 深层路径；**MUST NOT** 在 `packages/ui` 内使用 `@/` 别名（包内一律相对路径）。Demo 与 Starter 的 `@/` 均指向各自的 `src/`。
+2. **MUST NOT** 使用 `@aries/ui/src/...` 或 `@aries/shell/src/...` 深层路径；**MUST NOT** 在 `packages/ui` 内使用 `@/` 别名（包内一律相对路径）。Demo 与 Starter 的 `@/` 均指向各自的 `src/`。
 3. 分层 `packages/shell ← apps/demo/src/features ← apps/demo/src/app`：下层 **MUST NOT** 导入上层。`eslint.config.js` 已对 `packages/ui` 强制「不得导入 `apps/demo`」与「`components/ui`、`lib` 不得导入 `shared`」。
 4. **MUST** 仅用 `pnpm`；**MUST NOT** 提交 `package-lock.json` / `yarn.lock`。
 
@@ -43,9 +43,9 @@ Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 U
 | --- | --- |
 | 新业务模块（第一列） | **MUST** 在 `apps/demo/src/app/workspace-modules.ts` 注册导航数据，由 Demo 构造已翻译的导航 Schema 后交给共享 Sidebar 渲染 |
 | 新页面 | **MUST** 在 `apps/demo/src/app/workspace-pages.tsx` 注册 `WorkspacePageConfig`：`id`、`moduleId`、`path`、`titleKey`、`descriptionKey?`、`breadcrumbs`（`readonly { label: string; path?: string }[]`）、`load`（`() => Promise<WorkspacePageSlots>`，懒加载页面槽位）；业务组件放 `apps/demo/src/features/<name>/`，文案键加入 `apps/demo/src/lib/i18n/resources.ts`。要让页面出现在导航里，还需在 `apps/demo/src/app/workspace-modules.ts` 对应模块下增加条目（字段见该文件的 `WorkspaceEntry` 类型） |
-| 新 shadcn 组件 | **SHOULD** 用 `pnpm dlx shadcn@latest add <name>`（先 `shadcn view` 看官方实现）。`apps/demo/components.json` 与 `packages/ui/components.json` 的别名均指向 `@marismoon/ui`（style `radix-rhea`、baseColor `neutral`）；拆包后该 CLI 流程**待验证**，失败时手动写入 `packages/ui/src/components/ui`。**MUST NOT** 对现有项目重新执行 `shadcn init` |
+| 新 shadcn 组件 | **SHOULD** 用 `pnpm dlx shadcn@latest add <name>`（先 `shadcn view` 看官方实现）。`apps/demo/components.json` 与 `packages/ui/components.json` 的别名均指向 `@aries/ui`（style `radix-rhea`、baseColor `neutral`）；拆包后该 CLI 流程**待验证**，失败时手动写入 `packages/ui/src/components/ui`。**MUST NOT** 对现有项目重新执行 `shadcn init` |
 | 新共享组合组件 | **MUST** 放 `packages/ui/src/components/shared`，并同步 [docs/COMPONENTS.md](docs/COMPONENTS.md) |
-| 新图标 | **MUST** 只用 Solar：从 `@marismoon/ui/icons` 引入；缺图标时在 `components/icons/solar` 增文件并在 `index.ts` 导出。变体规则见 §3.1 |
+| 新图标 | **MUST** 只用 Solar：从 `@aries/ui/icons` 引入；缺图标时在 `components/icons/solar` 增文件并在 `index.ts` 导出。变体规则见 §3.1 |
 | 新主题色 | **MUST** 按 [DESIGN_SYSTEM §9](docs/DESIGN_SYSTEM.md) 的步骤：`tokens.css` 增亮、暗两块，`dark-base.css` 增该主题的 `--dark-hue`，`spectrum.css` 或 `tokens.css` 增 `--swatch-*`，`lib/storage.ts` 的 `paletteLabels` 登记 |
 
 ## 3. 视觉与主题红线
@@ -59,7 +59,7 @@ Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 U
 2. **MUST NOT** 在 `apps/demo/src/features` 与 `packages/shell/src` 的新代码中写十六进制、`rgb()`、`hsl()`、`oklch()` 颜色；**MUST NOT** 用 `style={{ color/background… }}` 写死颜色（动态值只能引用 `var(--token)`，如 `StatusBadge`）。颜色字面量只允许出现在 `packages/ui/src/styles/*.css` 的令牌定义中。
 3. **MUST NOT** 新增 `dark:` 变体。深色适配**优先通过令牌**（`.dark` 块）完成；`dark:` 仅允许出现在 `packages/ui/src/components/ui` 的 shadcn 组件内（沿用官方写法）。
 4. **MUST NOT** 修改已确认的亮色（Light）视觉去适配深色；深色问题只改 `.dark` 作用域。暗色共同底座在 `styles/dark-base.css`（glass 与 clean 共用），简洁暗色材质在 `styles/dark-clean.css`（作用域 `.dark[data-dark-style="clean"]`），规则见 [DESIGN_SYSTEM §2](docs/DESIGN_SYSTEM.md)。
-   `marismoon-light` 为纯浅色主题，**MUST NOT** 给它增加深色分支（`tokens.css` 中已有的 `.dark[data-palette="marismoon-light"]` 块只用于让它在暗色类下保持浅色）。
+   `aries-light` 为纯浅色主题，**MUST NOT** 给它增加深色分支（`tokens.css` 中已有的 `.dark[data-palette="aries-light"]` 块只用于让它在暗色类下保持浅色）。
 5. **MUST** 以「系统设置 → 组件预览」（模板阶段）与 [COMPONENTS.md](docs/COMPONENTS.md) 为组件规范；预览页删除后以 COMPONENTS.md 为准。不写 `size` 的 `Button/Input/SelectTrigger` 即 32px 标准控件；页面级主操作用 `size="default"`（40px），小浮层用 `size="small"`（28px），适用范围见 [COMPONENTS §5](docs/COMPONENTS.md)。字号与控件高度只使用 [DESIGN_SYSTEM §3](docs/DESIGN_SYSTEM.md) 的令牌。
 6. **MUST** 圆角走令牌：控件 `--radius-workspace-control`，卡片/面板 `--radius-panel`，卡片内分组 `--radius-control`；**MUST NOT** 使用方角。
 7. **MUST** 表单控件统一 `field-surface` 外观，聚焦样式唯一，**MUST NOT** 叠加 outline/ring；规则与暗色边框见 [DESIGN_SYSTEM §2.4、§5](docs/DESIGN_SYSTEM.md)。
@@ -81,13 +81,13 @@ Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 U
 2. `PageHeader` 右侧控件由 `WorkspaceControls` 统一渲染，顺序为 `DarkStyleControl`（仅暗色模式显示）、`LanguageControl`、`BrandPaletteControl`、`ThemeSwitcher`；页面专属操作 **MUST** 放在业务区。
 3. **滚动**：AppShell 固定在视口内，body 不滚动；第三列只有 `PageContentViewport` 做业务纵向滚动；第二列只有导航内容区滚动；AI 助手只有消息区滚动。**MUST NOT** 页面自建冲突滚动层，**MUST NOT** 用全局事件拦截滚动/输入。
 4. **卡片**：同一卡片在相同视口与断点下外部尺寸稳定；Tabs、筛选、分页、加载不改变卡片宽高；内容溢出、空状态、加载状态由卡片内部负责；**MUST NOT** 拉伸列表行填满卡片。
-5. **表格**：**MUST** 通过 `@marismoon/ui/shared/DataTable` + `useDataTable`（TanStack Table + shadcn Table）渲染，业务只提供列、单元格和列宽（`--column-fraction`）；**MUST NOT** 复制 Table JSX/CSS；每列用 `columnAlign` 声明对齐；行内操作用文字按钮打开抽屉，不用二级菜单。
+5. **表格**：**MUST** 通过 `@aries/ui/shared/DataTable` + `useDataTable`（TanStack Table + shadcn Table）渲染，业务只提供列、单元格和列宽（`--column-fraction`）；**MUST NOT** 复制 Table JSX/CSS；每列用 `columnAlign` 声明对齐；行内操作用文字按钮打开抽屉，不用二级菜单。
 
 ## 5. 国际化
 
 1. 新增页面与组件的用户可见文案（含 `aria-label`、`title`）**MUST** 走 i18n，**MUST NOT** 在 `apps/demo` 的新代码中新写死中文文案；用法见 [docs/I18N.md](docs/I18N.md)。
 2. 页面标题/副标题用点号键（`resources.ts` 中 `zh-CN` 与 `en` **MUST** 同时新增）；导航与短文案用 `useUiText()` 的 `tl("中文原文")` 并在 `ui-en.ts` 补英文。
-3. 导航与 Mock 数据本身保持中文原文（作为翻译键），在渲染处用 `tl()` 翻译；`packages/ui` **MUST NOT** 依赖 i18next，固定文案走 `UiLabels`（`@marismoon/ui/lib/ui-labels`）与 `UiLabelsBridge`。
+3. 导航与 Mock 数据本身保持中文原文（作为翻译键），在渲染处用 `tl()` 翻译；`packages/ui` **MUST NOT** 依赖 i18next，固定文案走 `UiLabels`（`@aries/ui/lib/ui-labels`）与 `UiLabelsBridge`。
 4. `coverage.test.ts`（含在 `pnpm test`）检查所有 `tl("…")` 字面量有英文；`e2e/i18n.spec.ts`（含在 `pnpm test:ui`）扫描英文页面不得残留中文。
 
 ## 6. 动效与无障碍
@@ -106,7 +106,7 @@ PC（1440×900、1920×1080）为视觉基线。断点与验收视口见 [DESIGN
 
 - TypeScript strict，`noUncheckedIndexedAccess`、`erasableSyntaxOnly`（不使用 enum/namespace）；Prettier（无分号、双引号、`prettier-plugin-tailwindcss`）。
 - `import-x/no-cycle` 为 error。
-- **SHOULD** 先复用 `@marismoon/ui` 现有组件，其次组合，最后才新增。
+- **SHOULD** 先复用 `@aries/ui` 现有组件，其次组合，最后才新增。
 - **MUST NOT** 引入与现有栈冲突的库（见 [TECH_STACK](docs/TECH_STACK.md) 的「禁止清单」）。
 - **MUST NOT** 提交密钥、真实客户/账单数据；环境变量只放 `.env.example` 的占位（`VITE_API_BASE_URL`）。
 

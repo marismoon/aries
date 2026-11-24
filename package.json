@@ -1,12 +1,12 @@
 {
-  "name": "marismoon",
+  "name": "aries",
   "private": true,
   "version": "0.0.1",
   "type": "module",
   "packageManager": "pnpm@12.16.1",
   "scripts": {
-    "dev": "turbo run dev --filter=@marismoon/demo",
-    "dev:starter": "turbo run dev --filter=@marismoon/starter",
+    "dev": "turbo run dev --filter=@aries/demo",
+    "dev:starter": "turbo run dev --filter=@aries/starter",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
@@ -29,7 +29,7 @@
     "pnpm": ">=12"
   },
   "devDependencies": {
-    "@marismoon/config": "workspace:*",
+    "@aries/config": "workspace:*",
     "@eslint/js": "catalog:dev",
     "eslint": "catalog:dev",
     "eslint-plugin-jsx-a11y": "catalog:dev",

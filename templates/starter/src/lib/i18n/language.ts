@@ -7,7 +7,7 @@ export const languages = {
 export type Language = keyof typeof languages
 
 export const defaultLanguage: Language = "zh-CN"
-const languageStorageKey = "marismoon-language"
+const languageStorageKey = "aries-language"
 
 export function isLanguage(
   value: string | null | undefined

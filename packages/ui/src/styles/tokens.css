@@ -197,7 +197,7 @@
   --swatch-violet-aurora: #934fff;
   --swatch-amber-sand: #d9901a;
   --swatch-rose-quartz: #e03a73;
-  --swatch-marismoon-light: #0369a1;
+  --swatch-aries-light: #0369a1;
   --primary: #5b3df5;
   --primary-foreground: #fff;
   --primary-hover: color-mix(
@@ -872,41 +872,41 @@
   --hero-bar: linear-gradient(180deg, #f27aa0, #e03a73);
 }
 
-/* Marismoon Light: a light-only palette. Semantic roles follow Realtime Colors
+/* Aries Light: a light-only palette. Semantic roles follow Realtime Colors
    (background / surface / text / primary / secondary / accent); the 50-950
    ramps follow the UI Colors convention (sky for the primary, slate for the
    neutrals). Usage: 50-100 soft fills and hovers, 200-300 hairlines, 400-500
    icons and secondary chart marks, 600-700 primary fills and highlights,
    800-950 headings only, never large backgrounds. Status colours are the
    shared semantic tokens and are intentionally not overridden here. */
-[data-palette="marismoon-light"],
-.dark[data-palette="marismoon-light"] {
+[data-palette="aries-light"],
+.dark[data-palette="aries-light"] {
   color-scheme: light;
-  --marismoon-primary-50: #f0f9ff;
-  --marismoon-primary-100: #e0f2fe;
-  --marismoon-primary-200: #bae6fd;
-  --marismoon-primary-300: #7dd3fc;
-  --marismoon-primary-400: #38bdf8;
-  --marismoon-primary-500: #0ea5e9;
-  --marismoon-primary-600: #0284c7;
-  --marismoon-primary-700: #0369a1;
-  --marismoon-primary-800: #075985;
-  --marismoon-primary-900: #0c4a6e;
-  --marismoon-primary-950: #082f49;
-  --marismoon-neutral-50: #f8fafc;
-  --marismoon-neutral-100: #f1f5f9;
-  --marismoon-neutral-200: #e2e8f0;
-  --marismoon-neutral-300: #cbd5e1;
-  --marismoon-neutral-400: #94a3b8;
-  --marismoon-neutral-500: #64748b;
-  --marismoon-neutral-600: #475569;
-  --marismoon-neutral-700: #334155;
-  --marismoon-neutral-800: #1e293b;
-  --marismoon-neutral-900: #0f172a;
-  --marismoon-neutral-950: #020617;
+  --aries-primary-50: #f0f9ff;
+  --aries-primary-100: #e0f2fe;
+  --aries-primary-200: #bae6fd;
+  --aries-primary-300: #7dd3fc;
+  --aries-primary-400: #38bdf8;
+  --aries-primary-500: #0ea5e9;
+  --aries-primary-600: #0284c7;
+  --aries-primary-700: #0369a1;
+  --aries-primary-800: #075985;
+  --aries-primary-900: #0c4a6e;
+  --aries-primary-950: #082f49;
+  --aries-neutral-50: #f8fafc;
+  --aries-neutral-100: #f1f5f9;
+  --aries-neutral-200: #e2e8f0;
+  --aries-neutral-300: #cbd5e1;
+  --aries-neutral-400: #94a3b8;
+  --aries-neutral-500: #64748b;
+  --aries-neutral-600: #475569;
+  --aries-neutral-700: #334155;
+  --aries-neutral-800: #1e293b;
+  --aries-neutral-900: #0f172a;
+  --aries-neutral-950: #020617;
 
-  --background: var(--marismoon-neutral-50);
-  --foreground: var(--marismoon-neutral-900);
+  --background: var(--aries-neutral-50);
+  --foreground: var(--aries-neutral-900);
   --card: rgb(255 255 255 / 80%);
   --card-bottom: rgb(255 255 255 / 64%);
   --workspace-nav: linear-gradient(
@@ -916,53 +916,53 @@
   );
   --popover: #ffffff;
   --control: rgb(255 255 255 / 82%);
-  --layout-control-border: var(--marismoon-neutral-300);
-  --secondary: var(--marismoon-neutral-100);
-  --secondary-foreground: var(--marismoon-neutral-700);
-  --muted: var(--marismoon-neutral-100);
-  --muted-foreground: var(--marismoon-neutral-500);
+  --layout-control-border: var(--aries-neutral-300);
+  --secondary: var(--aries-neutral-100);
+  --secondary-foreground: var(--aries-neutral-700);
+  --muted: var(--aries-neutral-100);
+  --muted-foreground: var(--aries-neutral-500);
   --recess: rgb(241 245 249 / 62%);
-  --border: var(--marismoon-neutral-200);
+  --border: var(--aries-neutral-200);
   --border-subtle: rgb(15 23 42 / 6%);
-  --input: var(--marismoon-neutral-500);
+  --input: var(--aries-neutral-500);
   --surface-edge: rgb(255 255 255 / 88%);
   --overlay: rgb(15 23 42 / 42%);
 
-  --primary: var(--marismoon-primary-700);
-  --primary-hover: var(--marismoon-primary-800);
-  --accent: color-mix(in srgb, var(--marismoon-primary-600) 9%, white);
-  --accent-foreground: var(--marismoon-primary-800);
+  --primary: var(--aries-primary-700);
+  --primary-hover: var(--aries-primary-800);
+  --accent: color-mix(in srgb, var(--aries-primary-600) 9%, white);
+  --accent-foreground: var(--aries-primary-800);
   --rail-logo-bg: linear-gradient(
     135deg,
-    var(--marismoon-primary-500),
-    var(--marismoon-primary-800)
+    var(--aries-primary-500),
+    var(--aries-primary-800)
   );
-  --ring: var(--marismoon-primary-600);
-  --chart-1: var(--marismoon-primary-600);
+  --ring: var(--aries-primary-600);
+  --chart-1: var(--aries-primary-600);
   --chart-2: #6366f1;
-  --chart-3: var(--marismoon-primary-300);
+  --chart-3: var(--aries-primary-300);
   --chart-4: #a5b4fc;
-  --chart-5: var(--marismoon-primary-100);
+  --chart-5: var(--aries-primary-100);
   --environment-top: rgb(14 165 233 / 18%);
   --environment-bottom: rgb(99 102 241 / 14%);
   --environment-side: rgb(148 163 184 / 18%);
   --environment-base: linear-gradient(37deg, #eef2f7, #f8fafc 55%, #f1f5f9);
-  --hero-start: var(--marismoon-primary-100);
+  --hero-start: var(--aries-primary-100);
   --hero-end: rgb(255 255 255 / 56%);
-  --hero-edge: var(--marismoon-primary-200);
+  --hero-edge: var(--aries-primary-200);
   --hero-ink: var(--foreground);
-  --hero-muted: var(--marismoon-neutral-600);
+  --hero-muted: var(--aries-neutral-600);
   --hero-bar: linear-gradient(
     180deg,
-    var(--marismoon-primary-400),
-    var(--marismoon-primary-600)
+    var(--aries-primary-400),
+    var(--aries-primary-600)
   );
-  --hero-bar-current: var(--marismoon-primary-800);
+  --hero-bar-current: var(--aries-primary-800);
 }
 
 /* Light-only: under the dark class this palette keeps every light value the
    dark base would have replaced (surfaces, shadows, status tones). */
-.dark[data-palette="marismoon-light"] {
+.dark[data-palette="aries-light"] {
   --surface-shadow-ink: var(--foreground);
   --surface-shadow-scale: 1;
   --surface-inset: rgb(255 255 255 / 72%);

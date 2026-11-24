@@ -60,6 +60,6 @@ export const BillsDemoContext = createContext<ReturnType<
 
 export function useBillsDemo() {
   const demo = useContext(BillsDemoContext)
-  if (!demo) throw new Error("Marismoon demo provider is unavailable.")
+  if (!demo) throw new Error("Aries demo provider is unavailable.")
   return demo
 }

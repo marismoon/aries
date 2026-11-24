@@ -4,8 +4,8 @@ import { useState } from "react"
 import { REGEXP_ONLY_DIGITS } from "input-otp"
 
 import { Example, ExampleWrapper } from "./example"
-import { Badge } from "@marismoon/ui/ui/badge"
-import { Checkbox } from "@marismoon/ui/ui/checkbox"
+import { Badge } from "@aries/ui/ui/badge"
+import { Checkbox } from "@aries/ui/ui/checkbox"
 import {
   Field,
   FieldContent,
@@ -15,20 +15,20 @@ import {
   FieldLegend,
   FieldSet,
   FieldTitle,
-} from "@marismoon/ui/ui/field"
-import { Input } from "@marismoon/ui/ui/input"
+} from "@aries/ui/ui/field"
+import { Input } from "@aries/ui/ui/input"
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@marismoon/ui/ui/input-otp"
+} from "@aries/ui/ui/input-otp"
 import {
   NativeSelect,
   NativeSelectOptGroup,
   NativeSelectOption,
-} from "@marismoon/ui/ui/native-select"
-import { RadioGroup, RadioGroupItem } from "@marismoon/ui/ui/radio-group"
+} from "@aries/ui/ui/native-select"
+import { RadioGroup, RadioGroupItem } from "@aries/ui/ui/radio-group"
 import {
   Select,
   SelectContent,
@@ -36,10 +36,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@marismoon/ui/ui/select"
-import { Slider } from "@marismoon/ui/ui/slider"
-import { Switch } from "@marismoon/ui/ui/switch"
-import { Textarea } from "@marismoon/ui/ui/textarea"
+} from "@aries/ui/ui/select"
+import { Slider } from "@aries/ui/ui/slider"
+import { Switch } from "@aries/ui/ui/switch"
+import { Textarea } from "@aries/ui/ui/textarea"
 
 export default function FieldExample() {
   return (

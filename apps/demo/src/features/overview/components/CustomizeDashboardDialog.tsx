@@ -1,5 +1,5 @@
-import { Button } from "@marismoon/ui/ui/button"
-import { Checkbox } from "@marismoon/ui/ui/checkbox"
+import { Button } from "@aries/ui/ui/button"
+import { Checkbox } from "@aries/ui/ui/checkbox"
 import {
   Dialog,
   DialogClose,
@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@marismoon/ui/ui/dialog"
+} from "@aries/ui/ui/dialog"
 import { cardOptions } from "../hooks/useDashboardDemo"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 

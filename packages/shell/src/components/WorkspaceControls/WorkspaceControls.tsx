@@ -1,7 +1,7 @@
-import { BrandPaletteControl } from "@marismoon/ui/shared/BrandPaletteControl"
-import { DarkStyleControl } from "@marismoon/ui/shared/DarkStyleControl"
+import { BrandPaletteControl } from "@aries/ui/shared/BrandPaletteControl"
+import { DarkStyleControl } from "@aries/ui/shared/DarkStyleControl"
 import { LanguageControl } from "../LanguageControl"
-import { ThemeSwitcher } from "@marismoon/ui/shared/ThemeSwitcher"
+import { ThemeSwitcher } from "@aries/ui/shared/ThemeSwitcher"
 import { useShellLanguageControl } from "../../types/labels"
 
 export function WorkspaceControls() {

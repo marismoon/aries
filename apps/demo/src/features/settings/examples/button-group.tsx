@@ -3,8 +3,8 @@
 import { useState } from "react"
 
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@marismoon/ui/ui/button"
-import { ButtonGroup, ButtonGroupText } from "@marismoon/ui/ui/button-group"
+import { Button } from "@aries/ui/ui/button"
+import { ButtonGroup, ButtonGroupText } from "@aries/ui/ui/button-group"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,15 +12,15 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@marismoon/ui/ui/dropdown-menu"
-import { Field, FieldGroup } from "@marismoon/ui/ui/field"
-import { Input } from "@marismoon/ui/ui/input"
+} from "@aries/ui/ui/dropdown-menu"
+import { Field, FieldGroup } from "@aries/ui/ui/field"
+import { Input } from "@aries/ui/ui/input"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@marismoon/ui/ui/input-group"
-import { Label } from "@marismoon/ui/ui/label"
+} from "@aries/ui/ui/input-group"
+import { Label } from "@aries/ui/ui/label"
 import {
   Select,
   SelectContent,
@@ -28,13 +28,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@marismoon/ui/ui/select"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@marismoon/ui/ui/tooltip"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/select"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@aries/ui/ui/tooltip"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 export default function ButtonGroupExample() {
   return (

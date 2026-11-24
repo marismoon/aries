@@ -38,7 +38,7 @@ export const uiEn: Record<string, string> = {
   紫罗兰极光: "Violet aurora",
   琥珀暖沙: "Amber sand",
   玫瑰石英: "Rose quartz",
-  "Marismoon 浅色海渊": "Marismoon Light Abyss",
+  "Aries 浅色海渊": "Aries Light Abyss",
   我的待办: "My to-dos",
   全部数据: "All data",
   工作区范围: "Workspace scope",

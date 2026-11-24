@@ -1,5 +1,5 @@
 {
-  "name": "@marismoon/shell",
+  "name": "@aries/shell",
   "version": "0.0.1",
   "type": "module",
   "exports": {
@@ -14,7 +14,7 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@marismoon/ui": "workspace:*"
+    "@aries/ui": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19",
@@ -22,7 +22,7 @@
     "tailwindcss": "^4"
   },
   "devDependencies": {
-    "@marismoon/config": "workspace:*",
+    "@aries/config": "workspace:*",
     "@types/react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",

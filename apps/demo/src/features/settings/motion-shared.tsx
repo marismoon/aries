@@ -1,8 +1,8 @@
 import { useState, type ReactNode } from "react"
 
-import { SolarRefreshCcw } from "@marismoon/ui/icons"
-import { Button } from "@marismoon/ui/ui/button"
-import { Card, CardContent, CardTitle } from "@marismoon/ui/ui/card"
+import { SolarRefreshCcw } from "@aries/ui/icons"
+import { Button } from "@aries/ui/ui/button"
+import { Card, CardContent, CardTitle } from "@aries/ui/ui/card"
 import "./components-preview.css"
 
 export const spring = { type: "spring", stiffness: 380, damping: 30 } as const

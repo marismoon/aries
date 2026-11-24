@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
 import { AnimatePresence, useReducedMotion } from "motion/react"
 import { span as MotionSpan } from "motion/react-m"
-import { NavHighlightContext, type NavHighlightRects } from "@marismoon/shell"
+import { NavHighlightContext, type NavHighlightRects } from "@aries/shell"
 
 const slide = { type: "spring", stiffness: 420, damping: 40 } as const
 

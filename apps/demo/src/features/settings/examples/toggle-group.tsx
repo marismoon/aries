@@ -3,8 +3,8 @@
 import * as React from "react"
 
 import { Example, ExampleWrapper } from "./example"
-import { Field, FieldDescription, FieldLabel } from "@marismoon/ui/ui/field"
-import { Input } from "@marismoon/ui/ui/input"
+import { Field, FieldDescription, FieldLabel } from "@aries/ui/ui/field"
+import { Input } from "@aries/ui/ui/input"
 import {
   Select,
   SelectContent,
@@ -12,9 +12,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@marismoon/ui/ui/select"
-import { ToggleGroup, ToggleGroupItem } from "@marismoon/ui/ui/toggle-group"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/select"
+import { ToggleGroup, ToggleGroupItem } from "@aries/ui/ui/toggle-group"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 export default function ToggleGroupExample() {
   return (

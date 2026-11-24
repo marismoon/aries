@@ -4,9 +4,9 @@ import {
   AlertAction,
   AlertDescription,
   AlertTitle,
-} from "@marismoon/ui/ui/alert"
-import { Badge } from "@marismoon/ui/ui/badge"
-import { Button } from "@marismoon/ui/ui/button"
+} from "@aries/ui/ui/alert"
+import { Badge } from "@aries/ui/ui/badge"
+import { Button } from "@aries/ui/ui/button"
 import {
   Card,
   CardContent,
@@ -14,16 +14,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@marismoon/ui/ui/card"
-import { Field, FieldGroup, FieldLabel } from "@marismoon/ui/ui/field"
-import { Input } from "@marismoon/ui/ui/input"
+} from "@aries/ui/ui/card"
+import { Field, FieldGroup, FieldLabel } from "@aries/ui/ui/field"
+import { Input } from "@aries/ui/ui/input"
 import {
   Item,
   ItemContent,
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from "@marismoon/ui/ui/item"
+} from "@aries/ui/ui/item"
 import {
   Select,
   SelectContent,
@@ -31,8 +31,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@marismoon/ui/ui/select"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/select"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 export default function AlertExample() {
   return (

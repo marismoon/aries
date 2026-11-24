@@ -30,14 +30,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@marismoon/ui/ui/card"
+} from "@aries/ui/ui/card"
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@marismoon/ui/ui/chart"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/chart"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 const areaChartData = [
   { month: "January", desktop: 186 },

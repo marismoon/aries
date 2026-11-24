@@ -1,4 +1,4 @@
-import { Badge, badgeTones } from "@marismoon/ui/ui/badge"
+import { Badge, badgeTones } from "@aries/ui/ui/badge"
 import { Example, ExampleWrapper } from "./examples/example"
 
 const tones = Object.keys(badgeTones) as (keyof typeof badgeTones)[]

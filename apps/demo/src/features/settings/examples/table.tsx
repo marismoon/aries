@@ -1,13 +1,13 @@
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@marismoon/ui/ui/button"
+import { Button } from "@aries/ui/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@marismoon/ui/ui/dropdown-menu"
-import { Input } from "@marismoon/ui/ui/input"
+} from "@aries/ui/ui/dropdown-menu"
+import { Input } from "@aries/ui/ui/input"
 import {
   Select,
   SelectContent,
@@ -15,7 +15,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@marismoon/ui/ui/select"
+} from "@aries/ui/ui/select"
 import {
   Table,
   TableBody,
@@ -25,8 +25,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@marismoon/ui/ui/table"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/table"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 const invoices = [
   {

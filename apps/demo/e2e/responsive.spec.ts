@@ -191,7 +191,7 @@ for (const [width, height] of [
     await page.goto("/overview")
     const main = page.getByRole("main")
     const viewport = main.locator(".page-content-viewport")
-    const logo = page.getByRole("link", { name: "Marismoon 工作台" })
+    const logo = page.getByRole("link", { name: "Aries 工作台" })
     const breadcrumb = main.getByRole("navigation", { name: "面包屑" })
     const heading = main.locator(".page-header-title-row")
     const title = heading.getByRole("heading", {

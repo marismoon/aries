@@ -1,5 +1,5 @@
 import { expect, it } from "vitest"
-import { paletteLabels } from "@marismoon/ui/lib/storage"
+import { paletteLabels } from "@aries/ui/lib/storage"
 import shellBridge from "./ShellLabelsBridge.tsx?raw"
 import uiBridge from "./UiLabelsBridge.tsx?raw"
 import { resources } from "./resources"

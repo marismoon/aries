@@ -1,6 +1,6 @@
 # 版本治理
 
-阶段一在 pnpm workspace 内通过 `workspace:*` 消费源码。可发布清单只有 `@marismoon/ui` 和 `@marismoon/shell`。UI 当前仍标记为 private。其他工作区包必须保留 `private: true`。阶段二再处理独立导出、发布构建与 Changesets。起步流程见 [STARTER.md](STARTER.md)。
+阶段一在 pnpm workspace 内通过 `workspace:*` 消费源码。可发布清单只有 `@aries/ui` 和 `@aries/shell`。UI 当前仍标记为 private。其他工作区包必须保留 `private: true`。阶段二再处理独立导出、发布构建与 Changesets。起步流程见 [STARTER.md](STARTER.md)。
 
 ## 升级依赖
 

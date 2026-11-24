@@ -1,15 +1,15 @@
 import { useId, useRef } from "react"
 
-import { AppIcon, SolarSearch } from "@marismoon/ui/icons"
-import { Button } from "@marismoon/ui/ui/button"
-import { Input } from "@marismoon/ui/ui/input"
+import { AppIcon, SolarSearch } from "@aries/ui/icons"
+import { Button } from "@aries/ui/ui/button"
+import { Input } from "@aries/ui/ui/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@marismoon/ui/ui/select"
+} from "@aries/ui/ui/select"
 import { billStatusMeta, initialBillFilters } from "@/shared/mocks/bills"
 import type { BillFilters, BillStatus, Currency } from "@/shared/types/billing"
 

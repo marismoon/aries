@@ -1,5 +1,5 @@
 import { sumBillsByCurrency } from "@/features/bills/hooks/useBillsDemo"
-import { formatCurrency } from "@marismoon/ui/lib/format"
+import { formatCurrency } from "@aries/ui/lib/format"
 import { billStatusMeta, demoBills } from "@/shared/mocks/bills"
 import {
   attentionItems,

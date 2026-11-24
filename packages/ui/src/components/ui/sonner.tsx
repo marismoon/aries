@@ -3,7 +3,7 @@ import { Toaster as Sonner, type ToasterProps } from "sonner"
 
 import { IconPlaceholder } from "../icons/icon-placeholder"
 
-// Marismoon switches themes with a `dark` class on <html>, not next-themes.
+// Aries switches themes with a `dark` class on <html>, not next-themes.
 function subscribeToTheme(onChange: () => void) {
   const observer = new MutationObserver(onChange)
   observer.observe(document.documentElement, {

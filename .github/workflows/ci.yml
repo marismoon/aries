@@ -26,5 +26,5 @@ jobs:
       - run: pnpm test
       - run: pnpm run audit
       - run: pnpm check:workspace
-      - run: pnpm --filter @marismoon/demo exec playwright install --with-deps chromium
+      - run: pnpm --filter @aries/demo exec playwright install --with-deps chromium
       - run: pnpm test:ui

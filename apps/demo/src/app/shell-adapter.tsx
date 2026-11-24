@@ -14,9 +14,9 @@ import {
   RailTooltip,
   ShellRouterProvider,
   type ShellLinkProps,
-} from "@marismoon/shell"
-import { AppIcon, SolarSparkles } from "@marismoon/ui/icons"
-import { Button } from "@marismoon/ui/ui/button"
+} from "@aries/shell"
+import { AppIcon, SolarSparkles } from "@aries/ui/icons"
+import { Button } from "@aries/ui/ui/button"
 import { CopilotPanel } from "@/features/copilot/CopilotPanel"
 import { useCopilot } from "@/features/copilot/useCopilot"
 import { useUiText } from "@/lib/i18n/use-ui-text"
@@ -52,7 +52,7 @@ export function DemoShell() {
   } = copilot
 
   useEffect(() => {
-    document.title = `${pageName} · Marismoon`
+    document.title = `${pageName} · Aries`
   }, [pageName])
 
   useEffect(() => {
@@ -118,7 +118,7 @@ export function DemoShell() {
                   size="icon"
                   className="rail-control rail-ai"
                   data-copilot-trigger="rail"
-                  aria-label={tl("Marismoon 智算助手")}
+                  aria-label={tl("Aries 智算助手")}
                   aria-expanded={open}
                   aria-controls={open ? copilot.panelId : undefined}
                   aria-keyshortcuts="Meta+Shift+K Control+Shift+K"

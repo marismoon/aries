@@ -10,7 +10,7 @@ const brandCycle = [
   "violet-aurora",
   "amber-sand",
   "rose-quartz",
-  "marismoon-light",
+  "aries-light",
   "saas-analytics-spectrum",
 ] as const
 
@@ -115,7 +115,7 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
   await expect(root).toHaveClass(/\bdark\b/)
   await expect(page.getByRole("menu")).toHaveCount(0)
   const storedTheme = () =>
-    page.evaluate(() => localStorage.getItem("marismoon-theme"))
+    page.evaluate(() => localStorage.getItem("aries-theme"))
   await expect.poll(storedTheme).toBe("dark")
 
   for (const shortcut of ["Shift+Enter", "Shift+Space"]) {
@@ -184,7 +184,7 @@ for (const mode of ["light", "dark"] as const) {
     // Dark mode skips the light-only palette when cycling.
     const cycle =
       mode === "dark"
-        ? brandCycle.filter((value) => value !== "marismoon-light")
+        ? brandCycle.filter((value) => value !== "aries-light")
         : brandCycle
 
     for (const value of cycle) {

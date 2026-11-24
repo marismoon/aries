@@ -5,9 +5,9 @@ import {
   FieldDescription,
   FieldLabel,
   FieldTitle,
-} from "@marismoon/ui/ui/field"
-import { Label } from "@marismoon/ui/ui/label"
-import { Switch } from "@marismoon/ui/ui/switch"
+} from "@aries/ui/ui/field"
+import { Label } from "@aries/ui/ui/label"
+import { Switch } from "@aries/ui/ui/switch"
 
 export default function SwitchExample() {
   return (

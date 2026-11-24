@@ -12,8 +12,8 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@marismoon/ui/ui/navigation-menu"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/navigation-menu"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 const components: { title: string; href: string; description: string }[] = [
   {

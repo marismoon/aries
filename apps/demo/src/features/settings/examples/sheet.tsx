@@ -1,7 +1,7 @@
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@marismoon/ui/ui/button"
-import { Field, FieldGroup, FieldLabel } from "@marismoon/ui/ui/field"
-import { Input } from "@marismoon/ui/ui/input"
+import { Button } from "@aries/ui/ui/button"
+import { Field, FieldGroup, FieldLabel } from "@aries/ui/ui/field"
+import { Input } from "@aries/ui/ui/input"
 import {
   Sheet,
   SheetClose,
@@ -11,7 +11,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@marismoon/ui/ui/sheet"
+} from "@aries/ui/ui/sheet"
 
 export default function SheetExample() {
   return (

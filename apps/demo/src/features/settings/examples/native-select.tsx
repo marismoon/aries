@@ -1,10 +1,10 @@
 import { Example, ExampleWrapper } from "./example"
-import { Field, FieldDescription, FieldLabel } from "@marismoon/ui/ui/field"
+import { Field, FieldDescription, FieldLabel } from "@aries/ui/ui/field"
 import {
   NativeSelect,
   NativeSelectOptGroup,
   NativeSelectOption,
-} from "@marismoon/ui/ui/native-select"
+} from "@aries/ui/ui/native-select"
 
 export default function NativeSelectExample() {
   return (

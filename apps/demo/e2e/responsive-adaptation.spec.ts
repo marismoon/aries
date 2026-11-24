@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test"
 import { expect, test } from "./fixtures"
 
 /**
- * Marismoon Responsive Adaptation Contract: every viewport reuses the same shell,
+ * Aries Responsive Adaptation Contract: every viewport reuses the same shell,
  * has no global horizontal scroll, keeps navigation reachable and keeps
  * overlays inside the screen.
  */

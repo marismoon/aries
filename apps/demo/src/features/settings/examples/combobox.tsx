@@ -4,8 +4,8 @@ import * as React from "react"
 import { toast } from "sonner"
 
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@marismoon/ui/ui/button"
-import { Card, CardContent, CardFooter } from "@marismoon/ui/ui/card"
+import { Button } from "@aries/ui/ui/button"
+import { Card, CardContent, CardFooter } from "@aries/ui/ui/card"
 import {
   Combobox,
   ComboboxChip,
@@ -23,7 +23,7 @@ import {
   ComboboxTrigger,
   ComboboxValue,
   useComboboxAnchor,
-} from "@marismoon/ui/ui/combobox"
+} from "@aries/ui/ui/combobox"
 import {
   Dialog,
   DialogContent,
@@ -32,26 +32,26 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@marismoon/ui/ui/dialog"
+} from "@aries/ui/ui/dialog"
 import {
   Field,
   FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "@marismoon/ui/ui/field"
-import { Input } from "@marismoon/ui/ui/input"
+} from "@aries/ui/ui/field"
+import { Input } from "@aries/ui/ui/input"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@marismoon/ui/ui/input-group"
+} from "@aries/ui/ui/input-group"
 import {
   Item,
   ItemContent,
   ItemDescription,
   ItemTitle,
-} from "@marismoon/ui/ui/item"
+} from "@aries/ui/ui/item"
 import {
   Select,
   SelectContent,
@@ -59,8 +59,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@marismoon/ui/ui/select"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/select"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 export default function ComboboxExample() {
   return (

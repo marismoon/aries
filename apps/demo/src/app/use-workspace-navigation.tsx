@@ -1,6 +1,6 @@
 import { useMemo } from "react"
-import { AppIcon } from "@marismoon/ui/icons"
-import type { NavModule, NavNode, WorkspaceNavigation } from "@marismoon/shell"
+import { AppIcon } from "@aries/ui/icons"
+import type { NavModule, NavNode, WorkspaceNavigation } from "@aries/shell"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import { getModuleCommands } from "./command-items"
 import {
@@ -62,7 +62,7 @@ export function useWorkspaceNavigation(): WorkspaceNavigation {
       directoryDescription: tl("切换模块，或打开运营总览、月账单。"),
       createLabel: tl("新建采集计划，Demo 暂未开放"),
       unavailableLabel: tl("Demo 暂未开放"),
-      brandLabel: tl("Marismoon 工作台"),
+      brandLabel: tl("Aries 工作台"),
       brandPath: workspacePages.overview.path,
       brandMark: "fH",
       userLabel: tl("演示用户 · 管理员"),

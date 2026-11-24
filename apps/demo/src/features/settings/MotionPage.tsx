@@ -2,9 +2,9 @@ import { useEffect, useState } from "react"
 import { AnimatePresence, animate, useMotionValue } from "motion/react"
 import * as m from "motion/react-m"
 
-import { Badge } from "@marismoon/ui/ui/badge"
-import { Switch } from "@marismoon/ui/ui/switch"
-import { Button } from "@marismoon/ui/ui/button"
+import { Badge } from "@aries/ui/ui/badge"
+import { Switch } from "@aries/ui/ui/switch"
+import { Button } from "@aries/ui/ui/button"
 import {
   AreaDemo,
   ColorBarDemo,

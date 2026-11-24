@@ -378,7 +378,7 @@ export const uiEnFeatures: Record<string, string> = {
   登录: "Sign in",
   返回上一步: "Back",
   "动态口令丢失？": "Lost your one-time code?",
-  "登录 Marismoon": "Sign in to Marismoon",
+  "登录 Aries": "Sign in to Aries",
   "使用本地账号登录，登录后需输入动态口令；如已启用企业 SSO，也可用企业账号登录。":
     "Sign in with a local account; you'll enter a one-time code afterwards. If enterprise SSO is on, you can also use your company account.",
   邮箱: "Email",
@@ -825,7 +825,7 @@ export const uiEnFeatures: Record<string, string> = {
   "51–200 人": "51–200 people",
   "7 年": "7 years",
   "7 月": "July",
-  "Marismoon 科技有限公司": "Marismoon Technology Co., Ltd.",
+  "Aries 科技有限公司": "Aries Technology Co., Ltd.",
   "¥123.46 万": "¥1.23M",
   "上海市浦东新区张江路 88 号 3 号楼 12 层":
     "Floor 12, Building 3, 88 Zhangjiang Road, Pudong, Shanghai",

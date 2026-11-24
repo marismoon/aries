@@ -1,4 +1,4 @@
-import { formatWan } from "@marismoon/ui/lib/format"
+import { formatWan } from "@aries/ui/lib/format"
 import { dashboardMetrics, issuedTrend } from "@/shared/mocks/overview"
 
 import "./copilot-summary.css"

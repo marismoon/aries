@@ -1,5 +1,5 @@
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@marismoon/ui/ui/button"
+import { Button } from "@aries/ui/ui/button"
 import {
   Empty,
   EmptyContent,
@@ -7,14 +7,14 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@marismoon/ui/ui/empty"
+} from "@aries/ui/ui/empty"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@marismoon/ui/ui/input-group"
-import { Kbd } from "@marismoon/ui/ui/kbd"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/input-group"
+import { Kbd } from "@aries/ui/ui/kbd"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 export default function EmptyExample() {
   return (
