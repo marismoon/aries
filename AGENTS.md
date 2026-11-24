@@ -12,8 +12,8 @@
 | 项 | 值 |
 | --- | --- |
 | 包管理 / 任务 | pnpm 12.16.1（workspace）+ Turborepo；Node ^24 |
-| 包 | `@marismoon/demo`（apps/demo）、`@marismoon/starter`（templates/starter）、`@marismoon/shell`（packages/shell）、`@marismoon/ui`（packages/ui）、`@marismoon/config`（packages/config） |
-| 启动 | `pnpm install` → `pnpm dev`（Vite，默认 <http://localhost:5173>，被占用时端口递增）；`pnpm dev:starter` 启动模板（默认 5174） |
+| 包 | `@marismoon/demo`（apps/demo）、`@marismoon/starter`（templates/starter）、`@marismoon/shell`（packages/shell）、`@marismoon/ui`（packages/ui）、`@marismoon/create-aries`（packages/create-aries，创建命令）、`@marismoon/config`（packages/config） |
+| 启动 | `pnpm install` → `pnpm dev`（Vite，默认 <http://localhost:5173>，被占用时端口递增）；`pnpm dev:starter` 启动模板（默认 5174）；`pnpm create:app <名称>` 从模板新建应用 |
 | 自检 | `pnpm typecheck` · `pnpm lint` · `pnpm build` · `pnpm test` · `pnpm test:ui` · `pnpm check:workspace` · `pnpm check:package` |
 | 单个 e2e | `pnpm --filter @marismoon/demo exec playwright test e2e/<name>.spec.ts`（Playwright 自动启动 Vite，端口 4173） |
 | 详细文档 | [架构](docs/ARCHITECTURE.md) · [技术栈](docs/TECH_STACK.md) · [设计系统](docs/DESIGN_SYSTEM.md) · [组件](docs/COMPONENTS.md) · [国际化](docs/I18N.md) · [Starter](docs/STARTER.md) · [版本治理](docs/VERSIONING.md) · [架构决策](docs/decisions/) |

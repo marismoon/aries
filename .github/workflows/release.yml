@@ -1,6 +1,6 @@
 name: Release
 
-# Publishes @marismoon/ui and @marismoon/shell with npm Trusted Publishing
+# Publishes @marismoon/ui, @marismoon/shell and @marismoon/create-aries with npm Trusted Publishing
 # (OIDC, no stored token; provenance is attached automatically). Run it by hand
 # from main after `pnpm changeset version` has been merged. Only versions that
 # are not on the registry yet are published. The very first release of each
@@ -48,6 +48,6 @@ jobs:
       - name: Publish packages that are not on the registry yet
         run: >-
           pnpm -r --filter @marismoon/ui --filter @marismoon/shell
-          publish --access public --tag "$DIST_TAG" --no-git-checks
+          --filter @marismoon/create-aries publish --access public --tag "$DIST_TAG" --no-git-checks
         env:
           DIST_TAG: ${{ inputs.dist-tag }}

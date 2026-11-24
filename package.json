@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "turbo run dev --filter=@marismoon/demo",
     "dev:starter": "turbo run dev --filter=@marismoon/starter",
+    "create:app": "node scripts/create-app.mjs",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",

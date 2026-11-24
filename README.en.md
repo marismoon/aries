@@ -44,7 +44,7 @@ Aries provides the shared components and application shell for building workspac
 - **Workspace shell.** The three-column layout contains module shortcuts, workspace navigation, and page content. The command palette finds pages in the current module and opens available entries.
 - **Two languages.** The workspace shell and primary Demo pages support Simplified Chinese and English.
 - **Copilot demo.** The assistant panel answers sample questions using local mock data.
-- **Starter.** Copy the template with a home page and a settings page to build an app within the workspace.
+- **Starter.** A template with a home page and a settings page. Create apps from it with `pnpm create:app` or `npm create @marismoon/aries`; a layout contract protects the shell.
 
 ## Previews
 
@@ -105,6 +105,7 @@ aries/
 ├── packages/
 │   ├── ui/            Design system
 │   ├── shell/         Workspace shell
+│   ├── create-aries/  Create command (npm create @marismoon/aries)
 │   └── config/        Shared tooling configuration
 └── templates/
     └── starter/       Starter template
@@ -114,12 +115,15 @@ Demo and Starter use public exports from Shell and UI. Shell depends on UI. [Arc
 
 ## Create an app from Starter
 
-1. Copy `templates/starter` to a new directory under `apps/`.
-2. Rename the workspace package and assign available ports for development and Playwright tests.
-3. Add page components and their Simplified Chinese and English resources.
-4. Register routes and navigation in the workspace module registry.
+```sh
+# New app under apps/ in this repository (names the package, picks ports, installs)
+pnpm create:app my-app
 
-See the [Starter guide](docs/STARTER.md) for copy commands and the full setup.
+# Standalone project outside the repository
+npm create @marismoon/aries@next my-app
+```
+
+The generated project uses the same three-column shell as Demo. Write pages in `src/features/` and register routes and navigation in `src/app/workspace-modules.ts`. A layout contract protects the shell: `pnpm lint` and `pnpm test:ui` reject any code that changes the layout, including content written by AI assistants. See [Create an app](docs/STARTER.md).
 
 ## Commands
 
@@ -127,15 +131,16 @@ See the [Starter guide](docs/STARTER.md) for copy commands and the full setup.
 | --- | --- |
 | `pnpm dev` | Start Demo |
 | `pnpm dev:starter` | Start Starter |
+| `pnpm create:app <name>` | Create an app under `apps/` from Starter |
 | `pnpm build` | Build Demo and Starter |
 | `pnpm typecheck` | Check workspace types |
 | `pnpm lint` | Lint the source |
 | `pnpm test` | Run Vitest unit tests |
 | `pnpm test:coverage` | Run the Demo coverage task |
-| `pnpm test:ui` | Run Demo UI tests and the Starter smoke test |
-| `pnpm test:consumer` | Verify the packed ui and shell outside the workspace with Vite and Next.js hosts (needs network) |
-| `pnpm check:workspace` | Check workspace package boundaries |
-| `pnpm check:package` | Pack ui and shell, check contents and metadata, and run publint and attw |
+| `pnpm test:ui` | Run Demo UI tests and the Starter smoke and layout-contract tests |
+| `pnpm test:consumer` | Verify the packed ui and shell outside the workspace: scaffold a Vite project with create-aries and run all its checks, then build a Next.js host (needs network) |
+| `pnpm check:workspace` | Check workspace package boundaries and run each app's layout guard |
+| `pnpm check:package` | Pack ui, shell and create-aries, check contents and metadata, and run publint and attw |
 | `pnpm run audit` | Audit dependencies and fail on high or critical findings |
 | `pnpm format` | Format TS and TSX with Prettier |
 | `pnpm docs:screenshots` | Generate both Demo screenshot sets in the [screenshots directory](docs/assets/screenshots/) |

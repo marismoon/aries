@@ -4,7 +4,7 @@ import { accessibility, exampleRules, react, shadcnRules } from '@marismoon/conf
 import { demoImports, publicImports, shellImports, sourceImports, starterImports, uiImports, uiPrimitiveImports, uiSharedImports, uiSourceImports } from '@marismoon/config/eslint/boundaries'
 
 export default defineConfig([
-  globalIgnores(['**/dist', '**/coverage', '**/playwright-report', '**/test-results', '**/artifacts']),
+  globalIgnores(['**/dist', '**/coverage', '**/playwright-report', '**/test-results', '**/artifacts', 'packages/create-aries/template']),
   { rules: publicImports },
   {
     files: ['**/*.{ts,tsx}'],

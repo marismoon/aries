@@ -1,0 +1,43 @@
+{
+  "name": "@marismoon/create-aries",
+  "version": "0.1.0-next.1",
+  "description": "创建 Aries 工作区应用：三列外壳、主题、中英文与布局契约开箱即用。用法：npm create @marismoon/aries@next my-app",
+  "keywords": [
+    "create",
+    "scaffold",
+    "react",
+    "app-shell",
+    "aries"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marismoon/aries.git",
+    "directory": "packages/create-aries"
+  },
+  "homepage": "https://github.com/marismoon/aries/tree/main/packages/create-aries#readme",
+  "bugs": {
+    "url": "https://github.com/marismoon/aries/issues"
+  },
+  "type": "module",
+  "bin": {
+    "create-aries": "./index.mjs"
+  },
+  "files": [
+    "index.mjs",
+    "template",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node build-template.mjs",
+    "test": "node --test index.test.mjs",
+    "prepack": "pnpm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

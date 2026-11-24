@@ -1,12 +1,14 @@
-// Release gate for the publishable packages. Packs @marismoon/ui and
-// @marismoon/shell exactly as `pnpm publish` would (prepack builds dist), then
-// checks the tarballs:
+// Release gate for the publishable packages. Packs @marismoon/ui,
+// @marismoon/shell and @marismoon/create-aries exactly as `pnpm publish` would
+// (prepack builds dist / the template), then checks the tarballs:
 //   - contents: dist, README and LICENSE ship; source and tests do not;
 //     ui also carries THIRD_PARTY_NOTICES.md (Solar icons, CC BY 4.0)
 //   - manifest: not private, no workspace:/catalog: specifiers, exports only
 //     point into dist
 //   - publint (strict) and @arethetypeswrong/cli (ESM consumers: node16 and
 //     bundler resolution; stylesheet entry points are skipped)
+//   - create-aries: the bundled template is complete (layout contract
+//     included) and depends on the ui/shell versions of the same release
 import { execFileSync } from "node:child_process"
 import { mkdtempSync, readdirSync } from "node:fs"
 import { tmpdir } from "node:os"
@@ -102,6 +104,65 @@ for (const pkg of packages) {
     } catch (error) {
       fail(`${tool} failed\n${error.stdout ?? ""}${error.stderr ?? ""}`)
     }
+  }
+  console.log(`${name}: ${files.length} files checked`)
+}
+
+// @marismoon/create-aries ships a CLI and the starter template, not a library:
+// check the template it would scaffold instead of exports and types.
+{
+  const name = "@marismoon/create-aries"
+  const fail = (message) => errors.push(`${name}: ${message}`)
+  const cwd = join(root, "packages", "create-aries")
+  execFileSync("pnpm", ["pack", "--pack-destination", out], {
+    cwd,
+    stdio: "ignore",
+  })
+  const tarball = join(
+    out,
+    readdirSync(out).find((file) => file.startsWith("marismoon-create-aries-"))
+  )
+  const files = execFileSync("tar", ["-tzf", tarball], { encoding: "utf8" })
+    .split("\n")
+    .filter(Boolean)
+  for (const required of [
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "index.mjs",
+    "template/package.json",
+    "template/pnpm-workspace.yaml",
+    "template/AGENTS.md",
+    "template/scripts/check-layout.mjs",
+    "template/e2e/layout.spec.ts",
+    "template/e2e/smoke.spec.ts",
+    "template/src/main.tsx",
+  ]) {
+    if (!files.includes(`package/${required}`))
+      fail(`tarball is missing ${required}`)
+  }
+  const read = (file) =>
+    execFileSync("tar", ["-xzOf", tarball, `package/${file}`], {
+      encoding: "utf8",
+    })
+  const manifest = JSON.parse(read("package.json"))
+  if (manifest.private) fail("package is private")
+  const template = read("template/package.json")
+  const specifier = template.match(/"(?:workspace|catalog|file):[^"]*"/)
+  if (specifier) fail(`template/package.json keeps ${specifier[0]}`)
+  const deps = JSON.parse(template).dependencies ?? {}
+  for (const dep of ["@marismoon/ui", "@marismoon/shell"]) {
+    if (deps[dep] !== `^${manifest.version}`)
+      fail(
+        `template depends on ${dep}@${deps[dep]}, expected ^${manifest.version} (same release)`
+      )
+  }
+  if (/\]\(\.\.\/\.\.\//.test(read("template/AGENTS.md")))
+    fail("template/AGENTS.md still links into the repository")
+  try {
+    bin("publint", ["run", tarball, "--strict"])
+  } catch (error) {
+    fail(`publint failed\n${error.stdout ?? ""}${error.stderr ?? ""}`)
   }
   console.log(`${name}: ${files.length} files checked`)
 }

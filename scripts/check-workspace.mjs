@@ -1,11 +1,15 @@
 import { execFileSync } from "node:child_process"
-import { existsSync, readFileSync } from "node:fs"
+import { existsSync, globSync, readFileSync } from "node:fs"
 import { join, relative } from "node:path"
 import { fileURLToPath } from "node:url"
 import ts from "typescript"
 
 const root = fileURLToPath(new URL("../", import.meta.url))
-const publishable = new Set(["@marismoon/ui", "@marismoon/shell"])
+const publishable = new Set([
+  "@marismoon/ui",
+  "@marismoon/shell",
+  "@marismoon/create-aries",
+])
 const privateSource = /^@marismoon\/(?:ui|shell)\/src(?:\/|$)/
 const errors = []
 
@@ -115,11 +119,23 @@ for (const file of files) {
   else checkScript(file, text)
 }
 
+// Apps created from the starter carry its layout guard; run each copy.
+for (const guard of globSync(
+  "{templates/starter,apps/*}/scripts/check-layout.mjs",
+  { cwd: root }
+)) {
+  try {
+    execFileSync("node", [guard], { cwd: root, stdio: "pipe" })
+  } catch (error) {
+    errors.push(`${guard}:\n${String(error.stderr ?? error.message).trim()}`)
+  }
+}
+
 if (errors.length) {
   console.error(errors.join("\n"))
   process.exitCode = 1
 } else {
   console.log(
-    "Workspace packages, starter configuration, public imports and demo-only examples passed."
+    "Workspace packages, starter configuration, public imports, demo-only examples and app layout guards passed."
   )
 }

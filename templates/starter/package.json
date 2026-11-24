@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint .",
+    "lint": "eslint . && node scripts/check-layout.mjs",
+    "check:layout": "node scripts/check-layout.mjs",
     "test": "vitest run --dir src",
     "test:ui": "playwright test"
   },
