@@ -1,4 +1,4 @@
-# Marismoon Aries
+# Aries
 
 Aries 是一个从真实项目脱敏提取的 React 工作区框架。运行 Demo 可查看九套品牌、明暗主题、账单、TanStack 数据表、图表与基于 shadcn 的组件示例，业务数据来自本地 Mock。新应用从包含首页与设置页的 Starter 起步。
 

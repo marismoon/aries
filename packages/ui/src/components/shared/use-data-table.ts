@@ -12,7 +12,7 @@ import {
   type RowData,
 } from "@tanstack/react-table"
 
-/** The one TanStack feature set every Marismoon table is built on. */
+/** The one TanStack feature set every Aries table is built on. */
 export const dataTableFeatures = tableFeatures({
   columnFilteringFeature,
   globalFilteringFeature,

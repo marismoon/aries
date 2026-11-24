@@ -15,7 +15,7 @@ export function ExampleWrapper({ className, ...props }: ComponentProps<"div">) {
   )
 }
 
-/** One titled example, set on a Marismoon glass card. */
+/** One titled example, set on a Aries glass card. */
 export function Example({
   title,
   children,

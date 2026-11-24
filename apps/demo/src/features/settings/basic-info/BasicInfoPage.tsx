@@ -331,7 +331,7 @@ export function BasicInfoPage() {
             M
           </span>
           <div className="basic-identity-text">
-            <strong>{tl("Marismoon 科技有限公司")}</strong>
+            <strong>{tl("Aries 科技有限公司")}</strong>
             <span>{tl("标志建议 256×256，PNG 或 SVG，不超过 1 MB")}</span>
           </div>
           <Button type="button" variant="outline">
@@ -339,13 +339,10 @@ export function BasicInfoPage() {
           </Button>
         </div>
         <SettingRow id="basic-org-name" label={tl("组织名称")} width="lg">
-          <Input
-            id="basic-org-name"
-            defaultValue={tl("Marismoon 科技有限公司")}
-          />
+          <Input id="basic-org-name" defaultValue={tl("Aries 科技有限公司")} />
         </SettingRow>
         <SettingRow id="basic-org-short" label={tl("组织简称")} width="md">
-          <Input id="basic-org-short" defaultValue="Marismoon" />
+          <Input id="basic-org-short" defaultValue="Aries" />
         </SettingRow>
         <SettingRow id="basic-industry" label={tl("所属行业")} width="md">
           <SelectControl

@@ -53,7 +53,7 @@ export function Brand() {
         <AppIcon icon={SolarHomeSmileAngle} size={20} aria-hidden="true" />
       </span>
       <div>
-        <b>Marismoon</b>
+        <b>Aries</b>
         <small>{tl("运营管理平台")}</small>
       </div>
     </div>

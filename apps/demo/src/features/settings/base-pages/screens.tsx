@@ -96,7 +96,7 @@ function Login() {
   }
   return (
     <Screen>
-      <Heading title={tl("登录 Marismoon")}>
+      <Heading title={tl("登录 Aries")}>
         {tl(
           "使用本地账号登录，登录后需输入动态口令；如已启用企业 SSO，也可用企业账号登录。"
         )}

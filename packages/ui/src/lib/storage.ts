@@ -10,7 +10,7 @@ export const paletteLabels = {
   "violet-aurora": "紫罗兰极光",
   "amber-sand": "琥珀暖沙",
   "rose-quartz": "玫瑰石英",
-  "aries-light": "Marismoon 浅色海渊",
+  "aries-light": "Aries 浅色海渊",
 } as const
 
 type Palette = keyof typeof paletteLabels

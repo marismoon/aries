@@ -52,7 +52,7 @@ export function DemoShell() {
   } = copilot
 
   useEffect(() => {
-    document.title = `${pageName} · Marismoon`
+    document.title = `${pageName} · Aries`
   }, [pageName])
 
   useEffect(() => {
@@ -118,7 +118,7 @@ export function DemoShell() {
                   size="icon"
                   className="rail-control rail-ai"
                   data-copilot-trigger="rail"
-                  aria-label={tl("Marismoon 智算助手")}
+                  aria-label={tl("Aries 智算助手")}
                   aria-expanded={open}
                   aria-controls={open ? copilot.panelId : undefined}
                   aria-keyshortcuts="Meta+Shift+K Control+Shift+K"

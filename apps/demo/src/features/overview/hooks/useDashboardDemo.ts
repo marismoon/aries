@@ -107,6 +107,6 @@ export const DashboardDemoContext = createContext<ReturnType<
 
 export function useDashboardDemo() {
   const demo = useContext(DashboardDemoContext)
-  if (!demo) throw new Error("Marismoon demo provider is unavailable.")
+  if (!demo) throw new Error("Aries demo provider is unavailable.")
   return demo
 }

@@ -8,7 +8,7 @@ const nonSolarIcons = {
     'react-icons',
     'react-icons/*',
   ],
-  message: 'Marismoon only uses Solar icons: import from @aries/ui/icons.',
+  message: 'Aries only uses Solar icons: import from @aries/ui/icons.',
 }
 
 const sourceIcons = {

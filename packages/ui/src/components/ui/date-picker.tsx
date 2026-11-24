@@ -12,7 +12,7 @@ import { useUiLabels } from "../../lib/ui-labels"
 
 /**
  * Themed replacements for the browser's native date and time pickers (whose
- * popups cannot be styled): a field-style trigger that opens Marismoon's own
+ * popups cannot be styled): a field-style trigger that opens Aries's own
  * Calendar or time list inside a glass popover.
  */
 function DatePicker({

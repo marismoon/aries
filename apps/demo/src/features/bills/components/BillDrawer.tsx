@@ -159,7 +159,7 @@ function Row({
   )
 }
 
-/** One drawer for a bill, laid out like the Marismoon vendor drawer. */
+/** One drawer for a bill, laid out like the Aries vendor drawer. */
 export function BillDrawer({
   bill,
   open,

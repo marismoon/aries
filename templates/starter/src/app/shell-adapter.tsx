@@ -38,7 +38,7 @@ export function StarterShell() {
   const title = t(page.titleKey)
 
   useEffect(() => {
-    document.title = `${title} · Marismoon`
+    document.title = `${title} · Aries`
   }, [title])
 
   const navigation: WorkspaceNavigation = {

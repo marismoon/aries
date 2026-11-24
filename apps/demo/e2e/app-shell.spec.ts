@@ -210,7 +210,7 @@ test("桌面导航默认展开，只有手动切换能改变状态", async ({ pa
   const initialMain = await main.boundingBox()
   await expect(sidebar.getByText("账单周报订阅")).toHaveCount(0)
   await expect(
-    sidebar.getByRole("button", { name: "Marismoon 智算助手" })
+    sidebar.getByRole("button", { name: "Aries 智算助手" })
   ).toHaveCount(0)
   await page.keyboard.press("Control+Shift+k")
   await expect(panel).toBeVisible()
@@ -253,7 +253,7 @@ test("桌面导航默认展开，只有手动切换能改变状态", async ({ pa
   await command.getByRole("searchbox").press("Escape")
   await expect(command).toBeHidden()
   await expect(expand).toBeFocused()
-  await rail.getByRole("link", { name: "Marismoon 工作台" }).click()
+  await rail.getByRole("link", { name: "Aries 工作台" }).click()
   await expect(page).toHaveURL(/\/overview$/)
   await expectWorkspacePage("运营总览")
   await expect(sidebar).toBeHidden()
@@ -406,7 +406,7 @@ test("浏览器前进、后退和刷新会恢复真实路由所属的导航状�
   const bills = directory.getByRole("link", { name: "月账单", exact: true })
 
   await rail.getByRole("button", { name: "系统设置", exact: true }).click()
-  await rail.getByRole("link", { name: "Marismoon 工作台" }).click()
+  await rail.getByRole("link", { name: "Aries 工作台" }).click()
   await expect(page).toHaveURL(/\/overview$/)
   await expect(overview).toHaveAttribute("aria-current", "true")
   await page.goBack()

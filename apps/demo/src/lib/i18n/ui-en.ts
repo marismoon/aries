@@ -137,7 +137,7 @@ export const uiEn: Record<string, string> = {
   紫罗兰极光: "Violet aurora",
   琥珀暖沙: "Amber sand",
   玫瑰石英: "Rose quartz",
-  "Marismoon 浅色海渊": "Marismoon Light Abyss",
+  "Aries 浅色海渊": "Aries Light Abyss",
   // Shell
   "Demo 暂未开放": "Not available in this demo",
   "新建采集计划，Demo 暂未开放":
@@ -160,9 +160,9 @@ export const uiEn: Record<string, string> = {
   收起工作区导航: "Collapse workspace navigation",
   展开工作区导航: "Expand workspace navigation",
   主模块: "Main modules",
-  "Marismoon 工作台": "Marismoon workspace",
+  "Aries 工作台": "Aries workspace",
   "AI 助手": "AI assistant",
-  "Marismoon 智算助手": "Marismoon AI assistant",
+  "Aries 智算助手": "Aries AI assistant",
   "演示用户 · 管理员": "Demo user · Admin",
   语言: "Language",
   // Command palette

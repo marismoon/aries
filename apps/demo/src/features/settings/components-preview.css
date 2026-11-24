@@ -189,7 +189,7 @@
   letter-spacing: -0.015em;
 }
 
-/* Official chart examples use the Marismoon categorical palette on this page. */
+/* Official chart examples use the Aries categorical palette on this page. */
 #component-chart {
   --chart-1: var(--chart-soft-1);
   --chart-2: var(--chart-soft-2);
