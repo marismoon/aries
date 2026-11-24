@@ -17,6 +17,9 @@ type WorkspaceScrollContext = {
   onScroll: (event: UIEvent<HTMLDivElement>) => void
 }
 
+/** Scroll positions kept for back/forward restoration; older visits start at the top. */
+const maxRememberedScrolls = 50
+
 const WorkspaceScroll = createContext<WorkspaceScrollContext | null>(null)
 
 function updateScrollEdge(viewport: HTMLDivElement) {
@@ -92,7 +95,14 @@ export function MainWorkspace({ children }: { children: ReactNode }) {
   }, [locationKey])
 
   function onScroll({ currentTarget }: UIEvent<HTMLDivElement>) {
-    workspaceScroll.current.set(locationKey, currentTarget.scrollTop)
+    const positions = workspaceScroll.current
+    // Re-insert so the Map keeps visits in recency order, then drop the oldest.
+    positions.delete(locationKey)
+    positions.set(locationKey, currentTarget.scrollTop)
+    if (positions.size > maxRememberedScrolls) {
+      const oldest = positions.keys().next().value
+      if (oldest !== undefined) positions.delete(oldest)
+    }
     updateScrollEdge(currentTarget)
   }
 

@@ -194,6 +194,9 @@ export const uiEnFeatures: Record<string, string> = {
   "不与 CNY 混算 · 筛选仅影响明细":
     "Not mixed with CNY · filters affect the register only",
   正在加载账单: "Loading bills",
+  重试: "Retry",
+  账单加载失败: "Bills failed to load",
+  "请检查网络后重试。": "Check your connection and try again.",
   "API 接口": "API",
   "RPA 自动化": "RPA automation",
   邮件: "Email",

@@ -4,6 +4,15 @@ import type { ReactNode } from "react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 import { TooltipProvider } from "@marismoon/ui/ui/tooltip"
 
+import {
+  CommandPalette,
+  CommandPaletteProvider,
+} from "./components/CommandPalette"
+import {
+  dampingRatio,
+  dockAiSpring,
+  dockSpring,
+} from "./components/IconRail/dock-spring"
 import { LanguageControl } from "./components/LanguageControl"
 import { NavTree } from "./components/NavTree"
 import { ShellLink } from "./components/ShellLink"
@@ -212,5 +221,42 @@ describe("NavTree", () => {
     fireEvent.click(toggle)
     expect(toggle.getAttribute("aria-expanded")).toBe("false")
     expect(list?.hidden).toBe(true)
+  })
+})
+
+describe("IconRail dock spring", () => {
+  it("所有弹簧至少临界阻尼，不回弹（AGENTS §6）", () => {
+    for (const spring of [dockSpring, dockAiSpring]) {
+      expect(dampingRatio(spring)).toBeGreaterThanOrEqual(1)
+    }
+  })
+})
+
+describe("CommandPaletteProvider", () => {
+  it("回车跳到第一条带路径的结果", () => {
+    const onNavigate = vi.fn()
+    renderShell(
+      <CommandPaletteProvider
+        commands={{
+          triggerLabel: "搜索",
+          placeholder: "搜索",
+          items: [
+            { title: "未开放", description: "", icon: () => null },
+            {
+              title: "账单",
+              description: "",
+              path: "/bills",
+              icon: () => null,
+            },
+          ],
+        }}
+      >
+        <CommandPalette />
+      </CommandPaletteProvider>,
+      { onNavigate }
+    )
+    fireEvent.click(screen.getByRole("button", { name: "label:commandSearch" }))
+    fireEvent.submit(screen.getByRole("search"))
+    expect(onNavigate).toHaveBeenCalledWith("/bills")
   })
 })

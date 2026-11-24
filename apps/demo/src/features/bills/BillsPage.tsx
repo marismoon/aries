@@ -2,7 +2,10 @@ import { useCallback, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { FrostCard } from "@marismoon/ui/shared/FrostCard"
+import { EmptyState } from "@marismoon/ui/shared/EmptyState"
 import { MetricCard } from "@marismoon/ui/shared/MetricCard"
+import { SolarCircleAlert } from "@marismoon/ui/icons"
+import { Button } from "@marismoon/ui/ui/button"
 import { Skeleton } from "@marismoon/ui/ui/skeleton"
 import { formatCurrency } from "@marismoon/ui/lib/format"
 import { demoPeriod, demoPeriodLabel } from "@/shared/mocks/period"
@@ -46,14 +49,16 @@ export function BillsTotals() {
         featured
         label={tl("CNY 合计已出账")}
         value={
-          bills.loading ? (
+          bills.error ? (
+            "—"
+          ) : bills.loading ? (
             <Skeleton className="h-[1.65rem] w-32" />
           ) : (
             formatCurrency(bills.totals.CNY, "CNY")
           )
         }
         description={
-          bills.loading
+          bills.loading || bills.error
             ? tl("全部演示样例")
             : tl("全部 {{count}} 条演示样例", { count: bills.count })
         }
@@ -62,7 +67,9 @@ export function BillsTotals() {
         density="compact"
         label={tl("外币已出账（单列）")}
         value={
-          bills.loading ? (
+          bills.error ? (
+            "—"
+          ) : bills.loading ? (
             <Skeleton className="h-[1.65rem] w-48 max-w-full" />
           ) : (
             <span className="bills-foreign-total">
@@ -117,7 +124,20 @@ export function BillsPage() {
         <h2 id="bills-register-heading" className="sr-only">
           {t("bills.register")}
         </h2>
-        {bills.loading ? (
+        {bills.error ? (
+          <div role="alert">
+            <EmptyState
+              icon={SolarCircleAlert}
+              title={tl("账单加载失败")}
+              description={tl("请检查网络后重试。")}
+              action={
+                <Button variant="outline" onClick={bills.retry}>
+                  {tl("重试")}
+                </Button>
+              }
+            />
+          </div>
+        ) : bills.loading ? (
           <div
             className="bills-loading"
             role="status"

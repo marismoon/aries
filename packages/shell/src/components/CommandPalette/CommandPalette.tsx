@@ -5,6 +5,7 @@ import {
   useId,
   useRef,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react"
 import {
@@ -47,7 +48,17 @@ const CommandContext = createContext<{
   launch: (element: HTMLButtonElement, onNavigate?: () => void) => void
 } | null>(null)
 
-const isAppleDevice = /Macintosh|iPhone|iPad/.test(navigator.userAgent)
+const noSubscription = () => () => {}
+
+/** Reads the platform after hydration, so server and first client render
+ * agree (both show "Ctrl K") and Apple devices switch to "⌘ K" afterwards. */
+function useIsAppleDevice() {
+  return useSyncExternalStore(
+    noSubscription,
+    () => /Macintosh|iPhone|iPad/.test(navigator.userAgent),
+    () => false
+  )
+}
 
 function getFocusFallback() {
   for (const selector of [
@@ -66,6 +77,7 @@ export function CommandPalette({ onNavigate }: { onNavigate?: () => void }) {
   const labels = useShellLabels()
   const command = useContext(CommandContext)
   const expanded = command?.open ?? false
+  const isAppleDevice = useIsAppleDevice()
 
   return (
     <Button
@@ -164,10 +176,13 @@ export function CommandPaletteProvider({
   async function selectPage(path: string) {
     selectedRoute.current =
       path !== activePath || Boolean(onLaunchNavigate.current)
-    if (onNavigate) await onNavigate(path)
-    else window.location.assign(path)
-    onLaunchNavigate.current?.()
-    setOpen(false)
+    try {
+      if (onNavigate) await onNavigate(path)
+      else window.location.assign(path)
+      onLaunchNavigate.current?.()
+    } finally {
+      setOpen(false)
+    }
   }
 
   return (
@@ -203,7 +218,7 @@ export function CommandPaletteProvider({
             className="command-search field-surface"
             onSubmit={(event) => {
               event.preventDefault()
-              const path = matches[0]?.path
+              const path = matches.find((item) => item.path)?.path
               if (path) void selectPage(path)
             }}
           >
