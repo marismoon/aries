@@ -11,6 +11,7 @@ import {
   existsSync,
   readFileSync,
   readdirSync,
+  realpathSync,
   writeFileSync,
 } from "node:fs"
 import { basename, relative, resolve } from "node:path"
@@ -52,10 +53,21 @@ function hasPnpm() {
   }
 }
 
-if (
-  process.argv[1] &&
-  resolve(process.argv[1]) === fileURLToPath(import.meta.url)
-) {
+/** True when run as a command. npm and pnpm start the CLI through a symlink in
+ * node_modules/.bin, so compare real paths, not the path as invoked. */
+function isEntryPoint() {
+  if (!process.argv[1]) return false
+  try {
+    return (
+      realpathSync(process.argv[1]) ===
+      realpathSync(fileURLToPath(import.meta.url))
+    )
+  } catch {
+    return false
+  }
+}
+
+if (isEntryPoint()) {
   const args = process.argv.slice(2)
   const directory = args.find((arg) => !arg.startsWith("-"))
   try {
