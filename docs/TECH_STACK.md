@@ -14,6 +14,8 @@
 | Prettier | 3.10.1 | + `prettier-plugin-tailwindcss`（函数 `cn`、`cva`） |
 | husky / lint-staged | 9.1.7 / ^17.6 | 提交前对暂存的 ts/tsx 运行 Prettier 与 `eslint --fix` |
 
+TypeScript 的 `target` 与 `lib` 统一使用 ES2024。Demo 和 Starter 的浏览器构建目标由 Vite 的 `build.target` 独立控制，目前沿用默认值 `baseline-widely-available`。
+
 ## 应用依赖
 
 | 类别 | 库 | 版本 | 选型原因 |

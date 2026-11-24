@@ -1,6 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2023",
+    "target": "ES2024",
+    "lib": [
+      "ES2024",
+      "DOM",
+      "WebWorker.ImportScripts",
+      "ScriptHost",
+      "DOM.Iterable",
+      "DOM.AsyncIterable"
+    ],
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
