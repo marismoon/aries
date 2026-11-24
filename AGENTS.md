@@ -34,6 +34,8 @@ Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 U
 2. **MUST NOT** 使用 `@marismoon/ui/src/...` 或 `@marismoon/shell/src/...` 深层路径；**MUST NOT** 在 `packages/ui` 内使用 `@/` 别名（包内一律相对路径）。Demo 与 Starter 的 `@/` 均指向各自的 `src/`。
 3. 分层 `packages/shell ← apps/demo/src/features ← apps/demo/src/app`：下层 **MUST NOT** 导入上层。`eslint.config.js` 已对 `packages/ui` 强制「不得导入 `apps/demo`」与「`components/ui`、`lib` 不得导入 `shared`」。
 4. **MUST** 仅用 `pnpm`；**MUST NOT** 提交 `package-lock.json` / `yarn.lock`。
+5. **改动放在哪一层**：所有应用都应受益的视觉或交互改动 **MUST** 在 `packages/ui` 或 `packages/shell` 中修改，再用 Demo（`pnpm dev`）验证效果；**MUST NOT** 只改在 `apps/demo`，否则 Starter 与已创建的应用拿不到。`apps/demo` 只改示例页面自身的内容。
+6. Demo 与 Starter 各有一份宿主接线副本（`src/app/` 下的 `shell-adapter.tsx`、`nav-highlight.tsx`、`providers.tsx` 等），不会互相同步。改动其中一方的通用行为时，**MUST** 同步修改 `templates/starter` 中的对应文件，或把该行为下沉到 `packages/shell`。
 
 ## 2. 新增内容的唯一入口
 
