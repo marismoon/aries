@@ -14,6 +14,7 @@ import {
   dockSpring,
 } from "./components/IconRail/dock-spring"
 import { LanguageControl } from "./components/LanguageControl"
+import { navPillSpring } from "@marismoon/ui/motion/NavPills"
 import { NavTree } from "./components/NavTree"
 import { ShellLink } from "./components/ShellLink"
 import {
@@ -258,5 +259,11 @@ describe("CommandPaletteProvider", () => {
     fireEvent.click(screen.getByRole("button", { name: "label:commandSearch" }))
     fireEvent.submit(screen.getByRole("search"))
     expect(onNavigate).toHaveBeenCalledWith("/bills")
+  })
+})
+
+describe("NavPills", () => {
+  it("高亮弹簧至少临界阻尼，不回弹（AGENTS §6）", () => {
+    expect(dampingRatio(navPillSpring)).toBeGreaterThanOrEqual(1)
   })
 })

@@ -17,7 +17,6 @@ import {
 import { AppIcon } from "@marismoon/ui/icons"
 
 import { ShellLabelsBridge } from "../lib/i18n/ShellLabelsBridge"
-import { NavHighlightProvider } from "./nav-highlight"
 import { workspaceModules } from "./workspace-modules"
 
 function renderLink({ end, ...props }: ShellLinkProps) {
@@ -89,11 +88,9 @@ export function StarterShell() {
       }}
     >
       <ShellLabelsBridge>
-        <NavHighlightProvider>
-          <AppShell navigation={navigation} routeModule={page.id}>
-            <Outlet />
-          </AppShell>
-        </NavHighlightProvider>
+        <AppShell navigation={navigation} routeModule={page.id}>
+          <Outlet />
+        </AppShell>
       </ShellLabelsBridge>
     </ShellRouterProvider>
   )

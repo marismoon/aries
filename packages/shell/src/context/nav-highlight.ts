@@ -12,6 +12,7 @@ export interface NavHighlightRects {
   hover: HighlightRect | null
 }
 
+/** Optional: replaces the default animated pills (`NavPills`). */
 export const NavHighlightContext = createContext<
   ((rects: NavHighlightRects) => ReactNode) | null
 >(null)

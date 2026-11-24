@@ -37,7 +37,7 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 | `ShellLabels` | 外壳固定文案均为宿主已翻译的字符串。提供导航、范围与帮助文案，页面内容区、面包屑和语言控件的无障碍名称，以及搜索面板的标题、说明、输入框、结果列表与空态文案。完整字段见 [labels.ts](src/types/labels.ts)。 |
 | `LanguageControlProps` | 传入当前语言 `value`、有序的 `options: { value, label }[]` 与 `onChange(value)`。宿主处理语言切换和持久化。 |
 
-`useShellRouter()`、`useShellLabels()` 和 `useShellLanguageControl()` 读取对应 Provider 的值。宿主可通过 `NavHighlightContext` 定制导航高亮。渲染函数接收 `NavHighlightRects`，其中 `active` 与 `hover` 分别为选中项、悬停项的 `HighlightRect` 或 `null`。
+`useShellRouter()`、`useShellLabels()` 和 `useShellLanguageControl()` 读取对应 Provider 的值。第二列导航的选中与悬停高亮默认由 `@marismoon/ui/motion/NavPills` 绘制：两块底板以临界阻尼弹簧（`navPillSpring`）滑动，遵循减少动效偏好。它和页面过渡一样使用 `motion` 的 `m.*` 组件，宿主须在 `LazyMotion` 内渲染外壳。需要换成其他样式时，通过 `NavHighlightContext` 提供渲染函数；它接收 `NavHighlightRects`，其中 `active` 与 `hover` 分别为选中项、悬停项的 `HighlightRect` 或 `null`。
 
 ## 外壳与页面
 
