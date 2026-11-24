@@ -1,6 +1,6 @@
 import { useMemo } from "react"
-import { AppIcon } from "@marismoon/ui/icons"
-import type { NavModule, NavNode, WorkspaceNavigation } from "@marismoon/shell"
+import { AppIcon } from "@aries/ui/icons"
+import type { NavModule, NavNode, WorkspaceNavigation } from "@aries/shell"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import { getModuleCommands } from "./command-items"
 import {

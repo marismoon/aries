@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@marismoon/ui/ui/button"
+import { Button } from "@aries/ui/ui/button"
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -19,7 +19,7 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-} from "@marismoon/ui/ui/context-menu"
+} from "@aries/ui/ui/context-menu"
 import {
   Dialog,
   DialogContent,
@@ -27,8 +27,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@marismoon/ui/ui/dialog"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/dialog"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 export default function ContextMenuExample() {
   return (

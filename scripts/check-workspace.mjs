@@ -5,8 +5,8 @@ import { fileURLToPath } from "node:url"
 import ts from "typescript"
 
 const root = fileURLToPath(new URL("../", import.meta.url))
-const publishable = new Set(["@marismoon/ui", "@marismoon/shell"])
-const privateSource = /^@marismoon\/(?:ui|shell)\/src(?:\/|$)/
+const publishable = new Set(["@aries/ui", "@aries/shell"])
+const privateSource = /^@aries\/(?:ui|shell)\/src(?:\/|$)/
 const errors = []
 
 const packages = JSON.parse(
@@ -28,11 +28,11 @@ for (const pkg of packages) {
 const starterManifest = "templates/starter/package.json"
 if (
   readFileSync(join(root, starterManifest), "utf8").includes(
-    "@marismoon/config"
+    "@aries/config"
   )
 ) {
   errors.push(
-    `${starterManifest}: starter must provide its own configuration. Remove @marismoon/config.`
+    `${starterManifest}: starter must provide its own configuration. Remove @aries/config.`
   )
 }
 

@@ -3,7 +3,7 @@
 import { toast } from "sonner"
 
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@marismoon/ui/ui/button"
+import { Button } from "@aries/ui/ui/button"
 
 export default function SonnerExample() {
   return (

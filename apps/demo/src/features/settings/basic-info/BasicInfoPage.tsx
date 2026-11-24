@@ -15,18 +15,18 @@ import {
   SolarGlobal,
   SolarWallet,
   type AppIconComponent,
-} from "@marismoon/ui/icons"
-import { FrostCard } from "@marismoon/ui/shared/FrostCard"
-import { StatusBadge } from "@marismoon/ui/shared/StatusBadge"
-import { Button } from "@marismoon/ui/ui/button"
-import { Input } from "@marismoon/ui/ui/input"
+} from "@aries/ui/icons"
+import { FrostCard } from "@aries/ui/shared/FrostCard"
+import { StatusBadge } from "@aries/ui/shared/StatusBadge"
+import { Button } from "@aries/ui/ui/button"
+import { Input } from "@aries/ui/ui/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@marismoon/ui/ui/select"
+} from "@aries/ui/ui/select"
 import {
   Drawer,
   DrawerClose,
@@ -36,10 +36,10 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@marismoon/ui/ui/drawer"
-import { useIsMobile } from "@marismoon/ui/hooks/use-mobile"
-import { Switch } from "@marismoon/ui/ui/switch"
-import { Textarea } from "@marismoon/ui/ui/textarea"
+} from "@aries/ui/ui/drawer"
+import { useIsMobile } from "@aries/ui/hooks/use-mobile"
+import { Switch } from "@aries/ui/ui/switch"
+import { Textarea } from "@aries/ui/ui/textarea"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 
 import "../../bills/components/bill-drawer.css"
@@ -393,7 +393,7 @@ export function BasicInfoPage() {
           <Input
             id="basic-email"
             type="email"
-            defaultValue="finops@marismoon.example"
+            defaultValue="finops@aries.example"
           />
         </SettingRow>
         <SettingRow id="basic-address" label={tl("办公地址")} width="lg">

@@ -1,14 +1,14 @@
-import { AppIcon, SolarMail, SolarSearch } from "@marismoon/ui/icons"
-import { Badge } from "@marismoon/ui/ui/badge"
-import { Button } from "@marismoon/ui/ui/button"
-import { Input } from "@marismoon/ui/ui/input"
+import { AppIcon, SolarMail, SolarSearch } from "@aries/ui/icons"
+import { Badge } from "@aries/ui/ui/badge"
+import { Button } from "@aries/ui/ui/button"
+import { Input } from "@aries/ui/ui/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@marismoon/ui/ui/select"
+} from "@aries/ui/ui/select"
 import type { PreviewItem } from "./preview-types"
 
 const heights = [

@@ -7,13 +7,13 @@ import {
   SolarHomeSmileAngle,
   SolarCircleAlert,
   type AppIconComponent,
-} from "@marismoon/ui/icons"
-import { Alert, AlertDescription } from "@marismoon/ui/ui/alert"
-import { Avatar, AvatarFallback } from "@marismoon/ui/ui/avatar"
-import { Button } from "@marismoon/ui/ui/button"
-import { Card, CardContent } from "@marismoon/ui/ui/card"
-import { Checkbox } from "@marismoon/ui/ui/checkbox"
-import { EmptyMedia } from "@marismoon/ui/ui/empty"
+} from "@aries/ui/icons"
+import { Alert, AlertDescription } from "@aries/ui/ui/alert"
+import { Avatar, AvatarFallback } from "@aries/ui/ui/avatar"
+import { Button } from "@aries/ui/ui/button"
+import { Card, CardContent } from "@aries/ui/ui/card"
+import { Checkbox } from "@aries/ui/ui/checkbox"
+import { EmptyMedia } from "@aries/ui/ui/empty"
 import {
   Item,
   ItemActions,
@@ -21,15 +21,11 @@ import {
   ItemDescription,
   ItemGroup,
   ItemTitle,
-} from "@marismoon/ui/ui/item"
-import { Field, FieldDescription, FieldLabel } from "@marismoon/ui/ui/field"
-import { Input } from "@marismoon/ui/ui/input"
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@marismoon/ui/ui/input-otp"
-import { cn } from "@marismoon/ui/lib/utils"
+} from "@aries/ui/ui/item"
+import { Field, FieldDescription, FieldLabel } from "@aries/ui/ui/field"
+import { Input } from "@aries/ui/ui/input"
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@aries/ui/ui/input-otp"
+import { cn } from "@aries/ui/lib/utils"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 
 /** Navigation inside the full-screen preview (the page itself is static). */

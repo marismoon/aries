@@ -9,7 +9,7 @@
 | Node.js | ^24（`engines`） | |
 | pnpm | 12.16.1 | workspace：`apps/*`、`packages/*`、`templates/*` |
 | Turborepo | 2.11.13 | 任务：dev（无缓存、常驻）、build、typecheck、test、test:coverage、test:ui |
-| TypeScript | 6.0.3 | UI、Shell 与 Demo 通过 `@marismoon/config` 共享编译配置，Starter 自带 tsconfig。业务代码启用 strict、`noUncheckedIndexedAccess`、`erasableSyntaxOnly` |
+| TypeScript | 6.0.3 | UI、Shell 与 Demo 通过 `@aries/config` 共享编译配置，Starter 自带 tsconfig。业务代码启用 strict、`noUncheckedIndexedAccess`、`erasableSyntaxOnly` |
 | ESLint | 9.39.5 | typescript-eslint（type-checked）、react-hooks、react-refresh、jsx-a11y、import-x（`no-cycle`） |
 | Prettier | 3.10.1 | + `prettier-plugin-tailwindcss`（函数 `cn`、`cva`） |
 | husky / lint-staged | 9.1.7 / ^17.6 | 提交前对暂存的 ts/tsx 运行 Prettier 与 `eslint --fix` |
@@ -33,14 +33,14 @@ TypeScript 的 `target` 与 `lib` 统一使用 ES2024。Demo 和 Starter 的浏�
 | 路由 | react-router | 8.5.2 | `createBrowserRouter` + `lazy` |
 | 国际化 | i18next / react-i18next | 27.2.2 / 18.0.3 | `apps/demo/src/lib/i18n` |
 | 主题 | next-themes | 0.4.6 | `attribute="class"` 切换 `.dark` |
-| 校验 | zod（`@marismoon/demo`） | 4.6.7 | 校验账单与概览数据 |
+| 校验 | zod（`@aries/demo`） | 4.6.7 | 校验账单与概览数据 |
 | 其他 UI | vaul 1.1.2（Drawer）、sonner 2.0.8、cmdk 1.1.1、input-otp 1.5.0、react-day-picker 10.0.2、date-fns 4.4.0、embla-carousel-react 8.6.0、react-resizable-panels 4.24.1、shiki 4.6.0 | | 均由 shadcn 组件或预览页使用 |
 | 字体 | `@fontsource-variable/inter`、`@fontsource-variable/noto-sans-sc` | | 在 `globals.css` 引入 |
 | 测试 | vitest 5.1.1、jsdom 31、Testing Library、`@playwright/test` 1.65.1 | | 单测 `src/**/*.test.{ts,tsx}`；e2e 在 `apps/demo/e2e` 和 `templates/starter/e2e` |
 
 ## 禁止清单（与现有栈冲突）
 
-- **图标**：lucide-react、`@tabler/*`、`@phosphor-icons/*`、`@hugeicons/*`、`@remixicon/*`、react-icons（ESLint 已禁止）。只用 `@marismoon/ui/icons`（Solar）。
+- **图标**：lucide-react、`@tabler/*`、`@phosphor-icons/*`、`@hugeicons/*`、`@remixicon/*`、react-icons（ESLint 已禁止）。只用 `@aries/ui/icons`（Solar）。
 - **样式方案**：styled-components、emotion、CSS Modules、Sass/Less、Tailwind v3 配置文件（`tailwind.config.js`）、其他 UI 库（Ant Design、MUI、Chakra、Mantine）。
 - **动画**：framer-motion（已由 `motion` 取代）、GSAP、react-spring（与「无弹簧回弹」冲突）。
 - **表格/图表**：ag-grid、react-table v7/8、echarts、chart.js、visx（与 TanStack Table + recharts 重复）。

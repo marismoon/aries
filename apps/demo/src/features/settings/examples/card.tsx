@@ -9,8 +9,8 @@ import {
   AvatarGroup,
   AvatarGroupCount,
   AvatarImage,
-} from "@marismoon/ui/ui/avatar"
-import { Button } from "@marismoon/ui/ui/button"
+} from "@aries/ui/ui/avatar"
+import { Button } from "@aries/ui/ui/button"
 import {
   Card,
   CardAction,
@@ -19,11 +19,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@marismoon/ui/ui/card"
-import { Field, FieldGroup, FieldLabel } from "@marismoon/ui/ui/field"
-import { Input } from "@marismoon/ui/ui/input"
-import { ToggleGroup, ToggleGroupItem } from "@marismoon/ui/ui/toggle-group"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/card"
+import { Field, FieldGroup, FieldLabel } from "@aries/ui/ui/field"
+import { Input } from "@aries/ui/ui/input"
+import { ToggleGroup, ToggleGroupItem } from "@aries/ui/ui/toggle-group"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 const spacingOptions = [
   {

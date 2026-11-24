@@ -36,7 +36,7 @@ Aries 是一个从真实项目脱敏提取的 React 工作区框架。运行 Dem
 
 提交钩子使用 husky 和 lint-staged，对暂存的 TypeScript 与 TSX 运行 Prettier 和 ESLint。流程见[持续集成工作流](.github/workflows/ci.yml)。
 
-首次运行 UI 测试前执行 `pnpm --filter @marismoon/demo exec playwright install chromium`。两套测试共用该浏览器版本。
+首次运行 UI 测试前执行 `pnpm --filter @aries/demo exec playwright install chromium`。两套测试共用该浏览器版本。
 
 ## 文档
 

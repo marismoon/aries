@@ -6,7 +6,7 @@ import reactHooks from "eslint-plugin-react-hooks"
 import globals from "globals"
 import tseslint from "typescript-eslint"
 
-const privateSource = "^@marismoon/(?:ui|shell)/src(?:/|$)"
+const privateSource = "^@aries/(?:ui|shell)/src(?:/|$)"
 const publicEntryMessage =
   "Import UI and shell through their public entry points."
 const literalSource = `/${privateSource.replaceAll("/", "\\u002F")}/i`

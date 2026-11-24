@@ -1,5 +1,5 @@
 {
-  "name": "@marismoon/starter",
+  "name": "@aries/starter",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -12,8 +12,8 @@
     "test:ui": "playwright test"
   },
   "dependencies": {
-    "@marismoon/shell": "workspace:*",
-    "@marismoon/ui": "workspace:*",
+    "@aries/shell": "workspace:*",
+    "@aries/ui": "workspace:*",
     "@tanstack/react-query": "^5.108.0",
     "i18next": "^27.1.5",
     "motion": "catalog:",

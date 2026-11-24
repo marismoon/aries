@@ -8,7 +8,7 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@marismoon/ui/ui/resizable"
+} from "@aries/ui/ui/resizable"
 
 export default function ResizableExample() {
   return (

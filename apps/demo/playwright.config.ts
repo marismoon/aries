@@ -6,7 +6,7 @@ export default defineConfig({
   workers: 2,
   use: {
     ...devices["Desktop Chrome"],
-    channel: process.env.MARISMOON_BROWSER === "chrome" ? "chrome" : undefined,
+    channel: process.env.ARIES_BROWSER === "chrome" ? "chrome" : undefined,
     baseURL: "http://127.0.0.1:4173",
     serviceWorkers: "block",
     trace: "retain-on-failure",

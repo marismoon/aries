@@ -1,5 +1,5 @@
 {
-  "extends": "@marismoon/config/typescript/base.json",
+  "extends": "@aries/config/typescript/base.json",
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },

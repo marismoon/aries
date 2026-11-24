@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { Example, ExampleWrapper } from "./example"
-import { Checkbox } from "@marismoon/ui/ui/checkbox"
+import { Checkbox } from "@aries/ui/ui/checkbox"
 import {
   Field,
   FieldContent,
@@ -11,7 +11,7 @@ import {
   FieldGroup,
   FieldLabel,
   FieldTitle,
-} from "@marismoon/ui/ui/field"
+} from "@aries/ui/ui/field"
 import {
   Table,
   TableBody,
@@ -19,7 +19,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@marismoon/ui/ui/table"
+} from "@aries/ui/ui/table"
 
 export default function CheckboxExample() {
   return (

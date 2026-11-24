@@ -3,7 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query"
 import { domAnimation, LazyMotion, MotionConfig } from "motion/react"
 import { ThemeProvider } from "next-themes"
 
-import { TooltipProvider } from "@marismoon/ui/ui/tooltip"
+import { TooltipProvider } from "@aries/ui/ui/tooltip"
 import { queryClient } from "../shared/query-client"
 
 function ThemeColor() {

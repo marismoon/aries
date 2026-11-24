@@ -1,6 +1,6 @@
 # 设计系统
 
-共享主题样式与令牌位于 `packages/ui/src/styles/`，由 `globals.css` 汇总引入（顺序：tailwindcss → tw-animate-css → shadcn/tailwind.css → 字体 → `tokens.css` → `spectrum.css` → `materials.css` → `dark-base.css` → `dark-clean.css` → `components/ui/popup.css` → `motion.css` → `soft-edge.css` → `icon-states.css`）。应用入口 `apps/demo/src/index.css` 先引入它，再引入 `@marismoon/shell/styles`，并用 `@source` 扫描应用代码。
+共享主题样式与令牌位于 `packages/ui/src/styles/`，由 `globals.css` 汇总引入（顺序：tailwindcss → tw-animate-css → shadcn/tailwind.css → 字体 → `tokens.css` → `spectrum.css` → `materials.css` → `dark-base.css` → `dark-clean.css` → `components/ui/popup.css` → `motion.css` → `soft-edge.css` → `icon-states.css`）。应用入口 `apps/demo/src/index.css` 先引入它，再引入 `@aries/shell/styles`，并用 `@source` 扫描应用代码。
 
 | 文件 | 内容 |
 | --- | --- |

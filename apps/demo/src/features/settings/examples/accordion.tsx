@@ -4,16 +4,16 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@marismoon/ui/ui/accordion"
-import { Button } from "@marismoon/ui/ui/button"
+} from "@aries/ui/ui/accordion"
+import { Button } from "@aries/ui/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@marismoon/ui/ui/card"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/card"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 export default function AccordionExample() {
   return (

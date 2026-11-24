@@ -12,16 +12,16 @@ import {
   SolarArrowUpRight,
   SolarSearch,
   type AppIconComponent,
-} from "@marismoon/ui/icons"
-import { Button } from "@marismoon/ui/ui/button"
+} from "@aries/ui/icons"
+import { Button } from "@aries/ui/ui/button"
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@marismoon/ui/ui/dialog"
-import { Input } from "@marismoon/ui/ui/input"
+} from "@aries/ui/ui/dialog"
+import { Input } from "@aries/ui/ui/input"
 import { ShellLink } from "../ShellLink"
 import { useShellRouter } from "../../types/adapter"
 import { useShellLabels } from "../../types/labels"

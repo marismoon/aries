@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { Example, ExampleWrapper } from "./example"
-import { Field, FieldLabel } from "@marismoon/ui/ui/field"
+import { Field, FieldLabel } from "@aries/ui/ui/field"
 import {
   Item,
   ItemActions,
@@ -11,10 +11,10 @@ import {
   ItemGroup,
   ItemMedia,
   ItemTitle,
-} from "@marismoon/ui/ui/item"
-import { Progress } from "@marismoon/ui/ui/progress"
-import { Slider } from "@marismoon/ui/ui/slider"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/item"
+import { Progress } from "@aries/ui/ui/progress"
+import { Slider } from "@aries/ui/ui/slider"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 export default function ProgressExample() {
   return (

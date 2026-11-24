@@ -1,9 +1,9 @@
 import type { ReactNode } from "react"
 
-import { UiLabelsProvider, type UiLabels } from "@marismoon/ui/lib/ui-labels"
+import { UiLabelsProvider, type UiLabels } from "@aries/ui/lib/ui-labels"
 import { useUiText } from "./use-ui-text"
 
-/** Feeds translated text to the shared components in `@marismoon/ui`. */
+/** Feeds translated text to the shared components in `@aries/ui`. */
 export function UiLabelsBridge({ children }: { children: ReactNode }) {
   const tl = useUiText()
   // Rebuilt on every render of the bridge, which follows the language.

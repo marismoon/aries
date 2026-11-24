@@ -4,7 +4,7 @@ import { useState } from "react"
 import { toast } from "sonner"
 
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@marismoon/ui/ui/button"
+import { Button } from "@aries/ui/ui/button"
 import {
   Card,
   CardContent,
@@ -12,20 +12,20 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@marismoon/ui/ui/card"
+} from "@aries/ui/ui/card"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@marismoon/ui/ui/dropdown-menu"
+} from "@aries/ui/ui/dropdown-menu"
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@marismoon/ui/ui/field"
-import { Input } from "@marismoon/ui/ui/input"
+} from "@aries/ui/ui/field"
+import { Input } from "@aries/ui/ui/input"
 import {
   InputGroup,
   InputGroupAddon,
@@ -33,8 +33,8 @@ import {
   InputGroupInput,
   InputGroupText,
   InputGroupTextarea,
-} from "@marismoon/ui/ui/input-group"
-import { Kbd, KbdGroup } from "@marismoon/ui/ui/kbd"
+} from "@aries/ui/ui/input-group"
+import { Kbd, KbdGroup } from "@aries/ui/ui/kbd"
 import {
   Popover,
   PopoverContent,
@@ -42,15 +42,11 @@ import {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-} from "@marismoon/ui/ui/popover"
-import { Spinner } from "@marismoon/ui/ui/spinner"
-import { Textarea } from "@marismoon/ui/ui/textarea"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@marismoon/ui/ui/tooltip"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/popover"
+import { Spinner } from "@aries/ui/ui/spinner"
+import { Textarea } from "@aries/ui/ui/textarea"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@aries/ui/ui/tooltip"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 export default function InputGroupExample() {
   const [country, setCountry] = useState("+1")

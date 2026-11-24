@@ -1,8 +1,8 @@
 import { useState, type CSSProperties } from "react"
 
-import { FrostCard } from "@marismoon/ui/shared/FrostCard"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@marismoon/ui/ui/tabs"
-import { formatActivityTime, formatWan } from "@marismoon/ui/lib/format"
+import { FrostCard } from "@aries/ui/shared/FrostCard"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@aries/ui/ui/tabs"
+import { formatActivityTime, formatWan } from "@aries/ui/lib/format"
 import { defaultActivity, issuedTrend } from "@/shared/mocks/overview"
 import type { ActivityEvent } from "@/shared/types/overview"
 

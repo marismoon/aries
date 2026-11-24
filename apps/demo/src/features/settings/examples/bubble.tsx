@@ -9,11 +9,11 @@ import {
   BubbleContent,
   BubbleGroup,
   BubbleReactions,
-} from "@marismoon/ui/ui/bubble"
-import { Button } from "@marismoon/ui/ui/button"
-import { Collapsible, CollapsibleTrigger } from "@marismoon/ui/ui/collapsible"
-import { Marker, MarkerContent } from "@marismoon/ui/ui/marker"
-import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+} from "@aries/ui/ui/bubble"
+import { Button } from "@aries/ui/ui/button"
+import { Collapsible, CollapsibleTrigger } from "@aries/ui/ui/collapsible"
+import { Marker, MarkerContent } from "@aries/ui/ui/marker"
+import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
 
 export default function BubbleExample() {
   return (

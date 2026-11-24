@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react"
 
 /**
- * User-visible text that lives inside shared components. `@marismoon/ui` has no
+ * User-visible text that lives inside shared components. `@aries/ui` has no
  * i18n dependency: the app supplies translated labels through
  * `UiLabelsProvider`; without a provider the Chinese defaults below apply.
  */
