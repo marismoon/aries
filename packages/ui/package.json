@@ -1,14 +1,34 @@
 {
   "name": "@marismoon/ui",
-  "private": true,
   "version": "0.0.1",
+  "description": "Aries 设计系统：基于 shadcn 的 React 组件、Solar 图标、动效与九套品牌主题令牌（Tailwind CSS v4）。",
+  "keywords": [
+    "react",
+    "design-system",
+    "shadcn",
+    "tailwindcss",
+    "components",
+    "aries"
+  ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marismoon/aries.git",
+    "directory": "packages/ui"
+  },
+  "homepage": "https://github.com/marismoon/aries/tree/main/packages/ui#readme",
+  "bugs": {
+    "url": "https://github.com/marismoon/aries/issues"
+  },
   "type": "module",
   "files": [
     "dist",
     "README.md",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md"
+  ],
+  "sideEffects": [
+    "**/*.css"
   ],
   "exports": {
     "./ui/*": "./src/components/ui/*.tsx",
@@ -25,7 +45,9 @@
   "scripts": {
     "build": "vite build -c vite.build.config.ts && tsc -p tsconfig.build.json && node ../../scripts/finalize-package.mjs .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "prepack": "pnpm run build && node -e \"require('node:fs').copyFileSync('../../THIRD_PARTY_NOTICES.md','THIRD_PARTY_NOTICES.md')\"",
+    "postpack": "node -e \"require('node:fs').rmSync('THIRD_PARTY_NOTICES.md',{force:true})\""
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

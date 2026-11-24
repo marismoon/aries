@@ -6,8 +6,8 @@
 | --- | --- | --- | --- | --- |
 | [Solar 图标](https://www.figma.com/community/file/1166831539721848736) | 480 Design | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | `packages/ui/src/components/icons/solar/`（133 个文件） | 已从 SVG 转换为 React 组件 |
 | [shadcn/ui](https://github.com/shadcn-ui/ui) | shadcn | MIT | `packages/ui/src/components/ui/`、`packages/ui/src/styles/shadcn.css`、`apps/demo/src/features/settings/examples/` | 组件按项目设计令牌调整；`shadcn.css` 原样内置自 shadcn 包的 `dist/tailwind.css`；示例尽量贴近上游 |
-| [Inter](https://github.com/rsms/inter) | The Inter Project Authors | [SIL OFL 1.1](https://openfontlicense.org/) | 未内嵌，经 npm 包 `@fontsource-variable/inter` 引入 | 无 |
-| [Noto Sans SC](https://github.com/notofonts/noto-cjk) | Google Inc. | [SIL OFL 1.1](https://openfontlicense.org/) | 未内嵌，经 npm 包 `@fontsource-variable/noto-sans-sc` 引入 | 无 |
+| [Inter](https://github.com/rsms/inter) | The Inter Project Authors | [SIL OFL 1.1](https://openfontlicense.org/) | 未内嵌，经 npm 包 `@fontsource-variable/inter` 引入，由可选入口 `@marismoon/ui/styles/fonts.css` 加载 | 无 |
+| [Noto Sans SC](https://github.com/notofonts/noto-cjk) | Google Inc. | [SIL OFL 1.1](https://openfontlicense.org/) | 未内嵌，经 npm 包 `@fontsource-variable/noto-sans-sc` 引入，由可选入口 `@marismoon/ui/styles/fonts.css` 加载 | 无 |
 
 ## 使用义务
 

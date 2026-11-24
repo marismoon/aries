@@ -101,6 +101,16 @@ for (const file of files) {
   const path = join(root, file)
   if (!existsSync(path)) continue
   const text = readFileSync(path, "utf8")
+  // The Aceternity-style demos stay in apps/demo; their licence does not allow
+  // redistributing them as templates or package source.
+  if (
+    /^(?:packages\/(?:ui|shell)|templates\/starter)\//.test(file) &&
+    /aceternity/i.test(file + text)
+  ) {
+    errors.push(
+      `${file}: Aceternity examples must stay in apps/demo and must not ship in packages or the starter.`
+    )
+  }
   if (file.endsWith(".css")) checkStylesheet(file, text)
   else checkScript(file, text)
 }
@@ -110,6 +120,6 @@ if (errors.length) {
   process.exitCode = 1
 } else {
   console.log(
-    "Workspace packages, starter configuration and public imports passed."
+    "Workspace packages, starter configuration, public imports and demo-only examples passed."
   )
 }

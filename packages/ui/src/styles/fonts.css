@@ -1,0 +1,6 @@
+/* Optional font entry: Inter and Noto Sans SC (SIL OFL 1.1), self-hosted via
+   Fontsource. Hosts import it next to globals.css to use the design fonts, or
+   skip it and provide their own. The font stacks in tokens.css fall back to
+   system-ui. */
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/noto-sans-sc";

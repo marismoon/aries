@@ -36,4 +36,4 @@
    pnpm --filter @marismoon/my-workspace test:ui
    ```
 
-宿主通过公开入口消费 UI 与 Shell，样式先引入 UI 的 `globals.css`，再引入 Shell。模板同仓运行所需的工程配置和开发约定随源码一起复制。阶段二才提供独立仓库的导出工具。见[起步应用开发契约](../templates/starter/AGENTS.md)、[Shell 接口](../packages/shell/README.md)与[版本治理](VERSIONING.md)。
+宿主通过公开入口消费 UI 与 Shell，样式先引入 UI 的 `globals.css` 与可选的 `fonts.css`，再引入 Shell。模板同仓运行所需的工程配置和开发约定随源码一起复制。阶段二才提供独立仓库的导出工具。见[起步应用开发契约](../templates/starter/AGENTS.md)、[Shell 接口](../packages/shell/README.md)与[版本治理](VERSIONING.md)。

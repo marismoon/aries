@@ -35,7 +35,7 @@ TypeScript 的 `target` 与 `lib` 统一使用 ES2024。Demo 和 Starter 的浏�
 | 主题 | next-themes | 0.4.6 | `attribute="class"` 切换 `.dark` |
 | 校验 | zod（`@marismoon/demo`） | 4.6.7 | 校验账单与概览数据 |
 | 其他 UI | vaul 1.1.2（Drawer）、sonner 2.0.8、cmdk 1.1.1、input-otp 1.5.0、react-day-picker 10.0.2、date-fns 4.4.0、embla-carousel-react 8.6.0、react-resizable-panels 4.24.1、shiki 4.6.0 | | 均由 shadcn 组件或预览页使用 |
-| 字体 | `@fontsource-variable/inter`、`@fontsource-variable/noto-sans-sc` | | 在 `globals.css` 引入 |
+| 字体 | `@fontsource-variable/inter`、`@fontsource-variable/noto-sans-sc` | | 在可选入口 `@marismoon/ui/styles/fonts.css` 引入，Demo 与 Starter 默认启用 |
 | 测试 | vitest 5.1.1、jsdom 31、Testing Library、`@playwright/test` 1.65.1 | | 单测 `src/**/*.test.{ts,tsx}`；e2e 在 `apps/demo/e2e` 和 `templates/starter/e2e` |
 
 ## 禁止清单（与现有栈冲突）
