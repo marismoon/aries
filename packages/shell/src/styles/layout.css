@@ -978,7 +978,12 @@
   }
 
   .icon-rail {
-    padding-inline-start: var(--rail-start-inset);
+    /* Center the controls between the viewport edge and the second column,
+       i.e. across the rail track plus the column gap after it (collapsed, two
+       half gaps add up to the same width). Controls are centered in the
+       content box, so a start padding equal to the gap puts that box's center
+       at (rail + gap) / 2. */
+    padding-inline-start: var(--workspace-column-gap);
     /* The 38px plate is centered within the 44px hit area. */
     padding-block-end: calc(
       var(--rail-block-end) -
