@@ -1,7 +1,15 @@
 import assert from "node:assert/strict"
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs"
+import { execFileSync } from "node:child_process"
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  symlinkSync,
+  writeFileSync,
+} from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
+import { fileURLToPath } from "node:url"
 import { test } from "node:test"
 
 import { packageNameFor, scaffold } from "./index.mjs"
@@ -36,4 +44,23 @@ test("复制模板并以目录名命名包，拒绝非空目录", () => {
     "export {}\n"
   )
   assert.throws(() => scaffold({ directory: target, templateDir }), /not empty/)
+})
+
+test("经 node_modules/.bin 的符号链接调用时也会执行（npm create 的方式）", () => {
+  const work = mkdtempSync(join(tmpdir(), "create-aries-bin-"))
+  const bin = join(work, "create-aries")
+  symlinkSync(fileURLToPath(new URL("./index.mjs", import.meta.url)), bin)
+  writeFileSync(join(work, "occupied"), "")
+  // A non-empty target makes the CLI exit with an error before copying, which
+  // proves the command ran without needing the built template.
+  let output = ""
+  try {
+    execFileSync(process.execPath, [bin, work, "--no-install"], {
+      encoding: "utf8",
+      stdio: "pipe",
+    })
+  } catch (error) {
+    output = String(error.stderr)
+  }
+  assert.match(output, /not empty/)
 })

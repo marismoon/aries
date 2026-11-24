@@ -16,10 +16,12 @@
 // Chromium for the starter smoke test.
 import { execFileSync } from "node:child_process"
 import {
+  existsSync,
   globSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  symlinkSync,
   writeFileSync,
 } from "node:fs"
 import { tmpdir } from "node:os"
@@ -76,9 +78,16 @@ step("create-aries: build template from tarballs", () =>
   run("node", ["build-template.mjs", "--tarballs", tarballs], createAries)
 )
 const starter = join(work, "aries-consumer-starter")
-step("create-aries: scaffold a project", () =>
-  run("node", [join(createAries, "index.mjs"), starter, "--no-install"], work)
-)
+// npm and pnpm start the CLI through a symlink in node_modules/.bin; call it
+// the same way, so an entry-point check that compares paths is exercised.
+const bin = join(work, "node_modules", ".bin", "create-aries")
+mkdirSync(join(work, "node_modules", ".bin"), { recursive: true })
+symlinkSync(join(createAries, "index.mjs"), bin)
+step("create-aries: scaffold a project through the bin symlink", () => {
+  run("node", [bin, starter, "--no-install"], work)
+  if (!existsSync(join(starter, "package.json")))
+    throw new Error("create-aries did not create the project")
+})
 // Use a port of its own so it never reuses a dev server from the workspace.
 const playwright = join(starter, "playwright.config.ts")
 writeFileSync(
