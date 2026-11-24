@@ -1,5 +1,11 @@
 # @marismoon/shell
 
+## 0.1.0-next.3
+
+### Patch Changes
+
+- @marismoon/ui@0.1.0-next.3
+
 ## 0.1.0-next.2
 
 ### Minor Changes
