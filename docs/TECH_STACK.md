@@ -27,7 +27,7 @@ TypeScript 的 `target` 与 `lib` 统一使用 ES2024。Demo 和 Starter 的浏�
 | 变体 | class-variance-authority / `cn` | 0.7.1 / ^0.5.2 | `lib/utils.ts` 重导出 `cn` |
 | 动画 | motion | 14.14.0 | `LazyMotion` + `domAnimation`；不使用 layout 动画 |
 | 动画样式 | tw-animate-css | 1.4.0 | |
-| 图表 | recharts | 3.8.0（默认 catalog 精确锁定） | 与 `components/ui/chart.tsx` 配套 |
+| 图表 | recharts | 3.8.0（默认 catalog 声明 `^3.8.0`，lockfile 锁定） | 与 `components/ui/chart.tsx` 配套 |
 | 表格 | `@tanstack/react-table` | 9.3.1 | 经 `useDataTable` 封装 |
 | 数据 | `@tanstack/react-query` | 5.108.1 | Mock 服务查询 |
 | 路由 | react-router | 8.5.2 | `createBrowserRouter` + `lazy` |
