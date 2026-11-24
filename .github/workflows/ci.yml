@@ -1,6 +1,15 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  # Give each main push a separate group so pending runs are kept too.
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.ref == 'refs/heads/main' && github.run_id || 'latest' }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 permissions:
   contents: read
@@ -26,5 +35,21 @@ jobs:
       - run: pnpm test
       - run: pnpm run audit
       - run: pnpm check:workspace
-      - run: pnpm --filter @aries/demo exec playwright install --with-deps chromium
+      - name: Read Playwright version
+        id: playwright
+        run: |
+          version="$(pnpm --filter @aries/demo exec playwright --version)"
+          printf 'version=%s\n' "${version#Version }" >> "$GITHUB_OUTPUT"
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+      - name: Install Chromium system dependencies
+        if: ${{ steps.playwright-cache.outputs.cache-hit == 'true' }}
+        run: pnpm --filter @aries/demo exec playwright install-deps chromium
+      - name: Install Chromium and system dependencies
+        if: ${{ steps.playwright-cache.outputs.cache-hit != 'true' }}
+        run: pnpm --filter @aries/demo exec playwright install --with-deps chromium
       - run: pnpm test:ui
