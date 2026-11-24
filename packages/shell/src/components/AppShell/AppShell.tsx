@@ -1,13 +1,13 @@
 import { useState, type ReactNode } from "react"
-import { AppIcon, SolarPanelLeftOpen } from "@aries/ui/icons"
-import { Button } from "@aries/ui/ui/button"
+import { AppIcon, SolarPanelLeftOpen } from "@marismoon/ui/icons"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from "@aries/ui/ui/dialog"
+} from "@marismoon/ui/ui/dialog"
 import { CommandPaletteProvider } from "../CommandPalette"
 import { IconRail } from "../IconRail"
 import { MainWorkspace } from "../MainWorkspace"

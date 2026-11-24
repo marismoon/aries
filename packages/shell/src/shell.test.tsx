@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { renderHook } from "@testing-library/react"
 import type { ReactNode } from "react"
 import { afterEach, describe, expect, it, vi } from "vitest"
-import { TooltipProvider } from "@aries/ui/ui/tooltip"
+import { TooltipProvider } from "@marismoon/ui/ui/tooltip"
 
 import { LanguageControl } from "./components/LanguageControl"
 import { NavTree } from "./components/NavTree"

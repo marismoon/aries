@@ -1,7 +1,7 @@
 "use client"
 
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@aries/ui/ui/button"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   Drawer,
   DrawerClose,
@@ -11,7 +11,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@aries/ui/ui/drawer"
+} from "@marismoon/ui/ui/drawer"
 
 export default function DrawerExample() {
   return (

@@ -94,7 +94,7 @@ In a second terminal, start Starter from the repository root.
 pnpm dev:starter
 ```
 
-Phase 1 uses package source directly from the workspace. `@aries/ui` and `@aries/shell` are not yet published to npm. [Versioning and release phases](docs/VERSIONING.md)
+Phase 1 uses package source directly from the workspace. `@marismoon/ui` and `@marismoon/shell` are not yet published to npm. [Versioning and release phases](docs/VERSIONING.md)
 
 ## Project structure
 
@@ -165,7 +165,7 @@ UI tests and the screenshot script use Playwright's Chromium build. Install the 
 
 ```sh
 # Install Chromium for the workspace's Playwright version
-pnpm --filter @aries/demo exec playwright install chromium
+pnpm --filter @marismoon/demo exec playwright install chromium
 ```
 
 ### A UI test port is already in use

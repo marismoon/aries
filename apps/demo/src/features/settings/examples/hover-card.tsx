@@ -1,5 +1,5 @@
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@aries/ui/ui/button"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -7,12 +7,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@aries/ui/ui/dialog"
+} from "@marismoon/ui/ui/dialog"
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@aries/ui/ui/hover-card"
+} from "@marismoon/ui/ui/hover-card"
 
 export default function HoverCardExample() {
   return (

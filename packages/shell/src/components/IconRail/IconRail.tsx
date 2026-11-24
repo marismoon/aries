@@ -9,16 +9,20 @@ import {
   AppIcon,
   SolarPanelLeftClose,
   SolarPanelLeftOpen,
-} from "@aries/ui/icons"
+} from "@marismoon/ui/icons"
 import {
   Avatar,
   AvatarBadge,
   AvatarFallback,
   AvatarImage,
-} from "@aries/ui/ui/avatar"
-import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
-import { Button } from "@aries/ui/ui/button"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@aries/ui/ui/tooltip"
+} from "@marismoon/ui/ui/avatar"
+import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
+import { Button } from "@marismoon/ui/ui/button"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@marismoon/ui/ui/tooltip"
 import { ShellLink } from "../ShellLink"
 import type { NavModule, WorkspaceNavigation } from "../../types/nav"
 import { useShellLabels } from "../../types/labels"

@@ -13,11 +13,11 @@
   "iconLibrary": "solar",
   "rtl": false,
   "aliases": {
-    "components": "@aries/ui",
-    "utils": "@aries/ui/lib/utils",
-    "ui": "@aries/ui/ui",
-    "lib": "@aries/ui/lib",
-    "hooks": "@aries/ui/hooks"
+    "components": "@marismoon/ui",
+    "utils": "@marismoon/ui/lib/utils",
+    "ui": "@marismoon/ui/ui",
+    "lib": "@marismoon/ui/lib",
+    "hooks": "@marismoon/ui/hooks"
   },
   "menuColor": "default",
   "menuAccent": "subtle",

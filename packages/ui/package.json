@@ -1,5 +1,5 @@
 {
-  "name": "@aries/ui",
+  "name": "@marismoon/ui",
   "private": true,
   "version": "0.0.1",
   "license": "MIT",
@@ -47,7 +47,7 @@
     "react-dom": "^19"
   },
   "devDependencies": {
-    "@aries/config": "workspace:*",
+    "@marismoon/config": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "tailwindcss": "catalog:",

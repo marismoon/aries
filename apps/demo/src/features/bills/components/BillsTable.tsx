@@ -1,15 +1,15 @@
 import { useMemo } from "react"
 
-import { AppIcon, SolarEye, SolarFileSearch } from "@aries/ui/icons"
-import { DataTable } from "@aries/ui/shared/DataTable"
-import { EmptyState } from "@aries/ui/shared/EmptyState"
-import { StatusBadge } from "@aries/ui/shared/StatusBadge"
+import { AppIcon, SolarEye, SolarFileSearch } from "@marismoon/ui/icons"
+import { DataTable } from "@marismoon/ui/shared/DataTable"
+import { EmptyState } from "@marismoon/ui/shared/EmptyState"
+import { StatusBadge } from "@marismoon/ui/shared/StatusBadge"
 import {
   createDataTableColumns,
   useDataTable,
-} from "@aries/ui/shared/use-data-table"
-import { Button } from "@aries/ui/ui/button"
-import { formatCurrency } from "@aries/ui/lib/format"
+} from "@marismoon/ui/shared/use-data-table"
+import { Button } from "@marismoon/ui/ui/button"
+import { formatCurrency } from "@marismoon/ui/lib/format"
 import { billStatusMeta } from "@/shared/mocks/bills"
 import type { Bill, BillFilters } from "@/shared/types/billing"
 import { matchesBillFilters } from "../hooks/useBillsDemo"

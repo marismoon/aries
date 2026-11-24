@@ -1,5 +1,5 @@
 import { useId, useState, type ReactNode } from "react"
-import { AppIcon, SolarChevronDown } from "@aries/ui/icons"
+import { AppIcon, SolarChevronDown } from "@marismoon/ui/icons"
 import { SidebarNavItem } from "../SidebarNavItem"
 
 export function NavTree({

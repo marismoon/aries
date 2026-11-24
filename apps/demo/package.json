@@ -1,5 +1,5 @@
 {
-  "name": "@aries/demo",
+  "name": "@marismoon/demo",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -13,8 +13,8 @@
     "test:ui": "playwright test"
   },
   "dependencies": {
-    "@aries/shell": "workspace:*",
-    "@aries/ui": "workspace:*",
+    "@marismoon/shell": "workspace:*",
+    "@marismoon/ui": "workspace:*",
     "@tanstack/react-query": "^5.108.0",
     "cn": "catalog:",
     "date-fns": "catalog:",
@@ -35,7 +35,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@aries/config": "workspace:*",
+    "@marismoon/config": "workspace:*",
     "@playwright/test": "catalog:dev",
     "@tailwindcss/vite": "catalog:",
     "@testing-library/jest-dom": "catalog:dev",

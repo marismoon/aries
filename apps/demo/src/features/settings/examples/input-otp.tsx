@@ -4,7 +4,7 @@ import * as React from "react"
 import { REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp"
 
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@aries/ui/ui/button"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   Card,
   CardContent,
@@ -12,20 +12,20 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@aries/ui/ui/card"
+} from "@marismoon/ui/ui/card"
 import {
   Field,
   FieldDescription,
   FieldError,
   FieldLabel,
-} from "@aries/ui/ui/field"
+} from "@marismoon/ui/ui/field"
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@aries/ui/ui/input-otp"
-import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
+} from "@marismoon/ui/ui/input-otp"
+import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
 
 export default function InputOTPExample() {
   return (

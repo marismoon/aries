@@ -1,19 +1,19 @@
 import { useRef, useState, useSyncExternalStore } from "react"
 
-import { AppIcon, SolarCheckmark, SolarCopy } from "@aries/ui/icons"
+import { AppIcon, SolarCheckmark, SolarCopy } from "@marismoon/ui/icons"
 
-import { StatusBadge } from "@aries/ui/shared/StatusBadge"
-import { Button } from "@aries/ui/ui/button"
-import { Field, FieldLabel } from "@aries/ui/ui/field"
-import { Input } from "@aries/ui/ui/input"
+import { StatusBadge } from "@marismoon/ui/shared/StatusBadge"
+import { Button } from "@marismoon/ui/ui/button"
+import { Field, FieldLabel } from "@marismoon/ui/ui/field"
+import { Input } from "@marismoon/ui/ui/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@aries/ui/ui/select"
-import { Textarea } from "@aries/ui/ui/textarea"
+} from "@marismoon/ui/ui/select"
+import { Textarea } from "@marismoon/ui/ui/textarea"
 import {
   Drawer,
   DrawerClose,
@@ -22,8 +22,8 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-} from "@aries/ui/ui/drawer"
-import { formatCurrency } from "@aries/ui/lib/format"
+} from "@marismoon/ui/ui/drawer"
+import { formatCurrency } from "@marismoon/ui/lib/format"
 import { billStatusMeta } from "@/shared/mocks/bills"
 import type { Bill, BillStatus } from "@/shared/types/billing"
 

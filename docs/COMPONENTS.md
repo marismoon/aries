@@ -6,22 +6,22 @@
 
 | 导入 | 源文件 |
 | --- | --- |
-| `@aries/ui/ui/<name>` | `src/components/ui/<name>.tsx` |
-| `@aries/ui/shared/<Name>` | `src/components/shared/<Name>.tsx` |
-| `@aries/ui/shared/use-data-table` | `src/components/shared/use-data-table.ts` |
-| `@aries/ui/motion/<Name>`、`@aries/ui/motion/motion-tokens` | `src/components/motion/*` |
-| `@aries/ui/icons` | `src/components/icons/index.ts` |
-| `@aries/ui/lib/utils`、`@aries/ui/lib/format`、`@aries/ui/lib/storage`、`@aries/ui/lib/ui-labels` | `src/lib/*.ts` |
-| `@aries/ui/hooks/use-mobile` | `src/hooks/use-mobile.ts` |
+| `@marismoon/ui/ui/<name>` | `src/components/ui/<name>.tsx` |
+| `@marismoon/ui/shared/<Name>` | `src/components/shared/<Name>.tsx` |
+| `@marismoon/ui/shared/use-data-table` | `src/components/shared/use-data-table.ts` |
+| `@marismoon/ui/motion/<Name>`、`@marismoon/ui/motion/motion-tokens` | `src/components/motion/*` |
+| `@marismoon/ui/icons` | `src/components/icons/index.ts` |
+| `@marismoon/ui/lib/utils`、`@marismoon/ui/lib/format`、`@marismoon/ui/lib/storage`、`@marismoon/ui/lib/ui-labels` | `src/lib/*.ts` |
+| `@marismoon/ui/hooks/use-mobile` | `src/hooks/use-mobile.ts` |
 
-## 1. 共享组合组件（`@aries/ui/shared/*`）
+## 1. 共享组合组件（`@marismoon/ui/shared/*`）
 
 ### FrostCard
 
 玻璃材质卡片，基于 `ui/card` 的 `Card`。Props：`ComponentProps<"div">`。内置类 `surface gap-0 overflow-visible bg-transparent p-0 shadow-none ring-0`。
 
 ```tsx
-import { FrostCard } from "@aries/ui/shared/FrostCard"
+import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 <FrostCard className="p-(--card-inset)">…</FrostCard>
 ```
 
@@ -98,12 +98,12 @@ const table = useDataTable({
 | `BrandPaletteControl()` | 轮换 `paletteLabels` 中的品牌主题并写入 localStorage；暗色模式下跳过纯浅色主题 `aries-light` |
 | `DarkStyleControl()` | 仅暗色模式显示，切换 `glass` / `clean` |
 
-## 2. 动效（`@aries/ui/motion/*`）
+## 2. 动效（`@marismoon/ui/motion/*`）
 
 - `MotionSurface({ children })`：路由进入过渡（`data-motion-surface="route"`，`useReducedMotion` 时无初始态）。
 - `motion-tokens`：`routeEntry`、`dialogEntry`、`overlayEntry`（缓动 `[0.23, 1, 0.32, 1]`）。
 
-## 3. 图标（`@aries/ui/icons`）
+## 3. 图标（`@marismoon/ui/icons`）
 
 只用 Solar。`AppIcon({ icon, size = 20, stateful?, … })` 渲染图标（有 `aria-label` 时 `role="img"`，否则 `aria-hidden`）；`AppIconComponent` 为图标类型。`Solar*` 命名导出来自 `components/icons/solar/*`（如 `SolarCog`、`SolarBell`、`SolarSearch`、`SolarMoon`、`SolarSun`、`SolarInbox`）。`IconPlaceholder`（`icon-placeholder.tsx`）把 shadcn CLI 生成的占位映射到 Solar。新增：加文件到 `solar/` 并在 `index.ts` 导出。
 
@@ -119,7 +119,7 @@ const table = useDataTable({
 - `hooks/use-mobile`：`useIsMobile()`。
 - `lib/ui-labels`：`UiLabels`、`defaultUiLabels`（中文）、`UiLabelsProvider`、`useUiLabels()`；共享组件的固定文案（Dialog 关闭、表格底栏与分页、主题/品牌/暗色控件等）由此读取，应用通过 `UiLabelsBridge` 提供翻译。
 
-## 5. 基础组件（`@aries/ui/ui/*`，64 个组件 + 3 个样式文件）
+## 5. 基础组件（`@marismoon/ui/ui/*`，64 个组件 + 3 个样式文件）
 
 shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 
@@ -143,9 +143,9 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 - `SelectContent` 使用 `position="popper"`。
 - `Tabs` / `ToggleGroup` / `Menubar`：`--recess` 分段胶囊，选项 28px。
 
-## 6. 工作区布局组件（`@aries/shell`）
+## 6. 工作区布局组件（`@marismoon/shell`）
 
-工作区布局、导航、页头和命令面板由 `@aries/shell` 根入口导出。组件清单、Props、插槽、导航与语言适配统一见 [Shell README](../packages/shell/README.md)。Demo 的用户头像沿用基础组件 `Avatar` + `AvatarBadge` 的默认尺寸、颜色与描边。
+工作区布局、导航、页头和命令面板由 `@marismoon/shell` 根入口导出。组件清单、Props、插槽、导航与语言适配统一见 [Shell README](../packages/shell/README.md)。Demo 的用户头像沿用基础组件 `Avatar` + `AvatarBadge` 的默认尺寸、颜色与描边。
 
 ## 7. 示例实现（可参考，正式开发时删除）
 

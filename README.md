@@ -94,7 +94,7 @@ pnpm dev
 pnpm dev:starter
 ```
 
-阶段一采用同仓源码消费。`@aries/ui` 和 `@aries/shell` 尚未发布到 npm。 [版本治理与阶段边界](docs/VERSIONING.md)
+阶段一采用同仓源码消费。`@marismoon/ui` 和 `@marismoon/shell` 尚未发布到 npm。 [版本治理与阶段边界](docs/VERSIONING.md)
 
 ## 项目结构
 
@@ -165,7 +165,7 @@ UI 测试和截图脚本使用 Playwright 安装的 Chromium。首次运行前�
 
 ```sh
 # 安装仓库锁定的 Playwright 所对应的 Chromium
-pnpm --filter @aries/demo exec playwright install chromium
+pnpm --filter @marismoon/demo exec playwright install chromium
 ```
 
 ### UI 测试端口已被占用

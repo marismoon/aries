@@ -1,15 +1,15 @@
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@aries/ui/ui/button"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@aries/ui/ui/dropdown-menu"
-import { Input } from "@aries/ui/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@aries/ui/ui/tabs"
-import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
+} from "@marismoon/ui/ui/dropdown-menu"
+import { Input } from "@marismoon/ui/ui/input"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@marismoon/ui/ui/tabs"
+import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
 
 export default function TabsExample() {
   return (

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 
-import { FrostCard } from "@aries/ui/shared/FrostCard"
+import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 import {
   annualBudget,
   billingTypeSeries,
@@ -13,7 +13,7 @@ import {
   topAccounts,
   yearMonthly,
 } from "@/features/overview/mocks/charts"
-import { formatWan } from "@aries/ui/lib/format"
+import { formatWan } from "@marismoon/ui/lib/format"
 
 import "./overview-charts.css"
 import { useUiText } from "@/lib/i18n/use-ui-text"

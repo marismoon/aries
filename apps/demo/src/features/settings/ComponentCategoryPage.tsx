@@ -1,8 +1,8 @@
 import { lazy, Suspense, type ComponentType } from "react"
 import { useParams } from "react-router"
 
-import { Skeleton } from "@aries/ui/ui/skeleton"
-import { Toaster } from "@aries/ui/ui/sonner"
+import { Skeleton } from "@marismoon/ui/ui/skeleton"
+import { Toaster } from "@marismoon/ui/ui/sonner"
 import { componentCategories } from "./categories"
 import { BadgeColorsDemo } from "./BadgeColorsDemo"
 import { ChartShowcase } from "./ChartShowcase"

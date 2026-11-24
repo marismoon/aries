@@ -1,18 +1,18 @@
-# @aries/shell
+# @marismoon/shell
 
 React 工作区外壳提供三列导航与页面布局、命令面板和独立滚动区。宿主负责路由、翻译、菜单数据与业务面板。外壳禁止导入应用代码、路由库和翻译库，消费方从公开入口导入组件和样式，禁止深层导入包内文件。
 
 ## 接入
 
-组件和类型从 `@aries/shell` 具名导入。宿主在 CSS 入口依次引入 UI 的令牌、材质和外壳样式，然后加载业务样式。
+组件和类型从 `@marismoon/shell` 具名导入。宿主在 CSS 入口依次引入 UI 的令牌、材质和外壳样式，然后加载业务样式。
 
 ```css
-@import "@aries/ui/styles/globals.css";
-@import "@aries/shell/styles";
+@import "@marismoon/ui/styles/globals.css";
+@import "@marismoon/shell/styles";
 ```
 
 ```tsx
-import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@aries/shell"
+import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/shell"
 
 <ShellRouterProvider value={adapter}>
   <ShellLabelsProvider value={{ labels, languageControl }}>
@@ -59,7 +59,7 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@aries/shell
 
 ## CSS 变量契约
 
-轮次三起点的 `layout.css` 包含 255 次 `var()` 引用，涉及 91 个变量。下表包含移入 UI 的派生变量所依赖的令牌。样式文件均位于 `packages/ui/src/styles/`，宿主通过 `@aries/ui/styles/globals.css` 引入。已有主题层叠顺序为 `tokens.css` → `spectrum.css` → `materials.css` → `dark-base.css` → `dark-clean.css`，动效令牌位于其后的 `motion.css`。
+轮次三起点的 `layout.css` 包含 255 次 `var()` 引用，涉及 91 个变量。下表包含移入 UI 的派生变量所依赖的令牌。样式文件均位于 `packages/ui/src/styles/`，宿主通过 `@marismoon/ui/styles/globals.css` 引入。已有主题层叠顺序为 `tokens.css` → `spectrum.css` → `materials.css` → `dark-base.css` → `dark-clean.css`，动效令牌位于其后的 `motion.css`。
 
 | 用途 | 变量 | 定义或主题覆盖文件 |
 |---|---|---|

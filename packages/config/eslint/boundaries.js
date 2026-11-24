@@ -8,7 +8,7 @@ const nonSolarIcons = {
     'react-icons',
     'react-icons/*',
   ],
-  message: 'Aries only uses Solar icons: import from @aries/ui/icons.',
+  message: 'Aries only uses Solar icons: import from @marismoon/ui/icons.',
 }
 
 const sourceIcons = {
@@ -17,37 +17,37 @@ const sourceIcons = {
 }
 
 const primitiveLayers = {
-  regex: '^(?:@aries/demo|@/)|(?:\\.\\./)+shared(?:/|$)',
+  regex: '^(?:@marismoon/demo|@/)|(?:\\.\\./)+shared(?:/|$)',
   message: 'packages/ui/ui and lib must not import apps/demo or shared.',
 }
 
 const sharedLayers = {
-  regex: '^(?:@aries/demo|@/)',
+  regex: '^(?:@marismoon/demo|@/)',
   message: 'packages/ui must not import apps/demo.',
 }
 
 const privateSources = {
-  regex: '^@aries/(?:ui|shell)/src(?:/|$)',
+  regex: '^@marismoon/(?:ui|shell)/src(?:/|$)',
   message: 'Use a public entry point of the workspace package.',
 }
 
 const appImports = {
-  regex: '^(?:@aries/demo(?:/|$)|/?(?:\\.\\.?/)*apps/)',
+  regex: '^(?:@marismoon/demo(?:/|$)|/?(?:\\.\\.?/)*apps/)',
   message: 'Import application code only from its own application.',
 }
 
 const starterAndAppAliases = {
-  regex: '^(?:@/|@aries/starter(?:/|$)|/?(?:\\.\\.?/)*templates/starter(?:/|$))',
+  regex: '^(?:@/|@marismoon/starter(?:/|$)|/?(?:\\.\\.?/)*templates/starter(?:/|$))',
   message: 'Shared packages must not import the starter or an application alias.',
 }
 
 const shellFromUi = {
-  regex: '^(?:@aries/shell|/?packages/shell|(?:\\.\\./)+(?:packages/)?shell)(?:/|$)',
+  regex: '^(?:@marismoon/shell|/?packages/shell|(?:\\.\\./)+(?:packages/)?shell)(?:/|$)',
   message: 'The UI package must not depend on the shell.',
 }
 
 const hostDependencies = {
-  regex: '^(?:react-router(?:-dom)?|i18next|react-i18next|@aries/core|motion)(?:/|$)',
+  regex: '^(?:react-router(?:-dom)?|i18next|react-i18next|@marismoon/core|motion)(?:/|$)',
   message: 'The shell receives routing, translated text and host integrations through its public API.',
 }
 

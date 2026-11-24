@@ -1,12 +1,12 @@
 import { Example, ExampleWrapper } from "./example"
-import { Card, CardContent } from "@aries/ui/ui/card"
+import { Card, CardContent } from "@marismoon/ui/ui/card"
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@aries/ui/ui/carousel"
+} from "@marismoon/ui/ui/carousel"
 
 export default function CarouselExample() {
   return (

@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@aries/ui/ui/button"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -11,21 +11,24 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@aries/ui/ui/dialog"
+} from "@marismoon/ui/ui/dialog"
 import {
   Field,
   FieldDescription,
   FieldError,
   FieldLabel,
-} from "@aries/ui/ui/field"
-import { Input } from "@aries/ui/ui/input"
+} from "@marismoon/ui/ui/field"
+import { Input } from "@marismoon/ui/ui/input"
 import {
   Item,
   ItemContent,
   ItemDescription,
   ItemTitle,
-} from "@aries/ui/ui/item"
-import { NativeSelect, NativeSelectOption } from "@aries/ui/ui/native-select"
+} from "@marismoon/ui/ui/item"
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@marismoon/ui/ui/native-select"
 import {
   Select,
   SelectContent,
@@ -35,8 +38,8 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "@aries/ui/ui/select"
-import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
+} from "@marismoon/ui/ui/select"
+import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
 
 export default function SelectExample() {
   return (

@@ -15,9 +15,9 @@ import {
   SolarPlus,
   SolarSparkles,
   SolarX,
-} from "@aries/ui/icons"
-import { Button } from "@aries/ui/ui/button"
-import { Input } from "@aries/ui/ui/input"
+} from "@marismoon/ui/icons"
+import { Button } from "@marismoon/ui/ui/button"
+import { Input } from "@marismoon/ui/ui/input"
 import { Demo, spring, useReplay } from "./motion-shared"
 import "./interaction-demos.css"
 

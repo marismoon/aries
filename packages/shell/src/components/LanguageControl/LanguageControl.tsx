@@ -1,6 +1,10 @@
-import { AppIcon, SolarGlobal } from "@aries/ui/icons"
-import { Button } from "@aries/ui/ui/button"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@aries/ui/ui/tooltip"
+import { AppIcon, SolarGlobal } from "@marismoon/ui/icons"
+import { Button } from "@marismoon/ui/ui/button"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@marismoon/ui/ui/tooltip"
 
 import { useShellLabels, type LanguageControlProps } from "../../types/labels"
 

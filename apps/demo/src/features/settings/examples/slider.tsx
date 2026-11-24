@@ -3,8 +3,8 @@
 import * as React from "react"
 
 import { Example, ExampleWrapper } from "./example"
-import { Label } from "@aries/ui/ui/label"
-import { Slider } from "@aries/ui/ui/slider"
+import { Label } from "@marismoon/ui/ui/label"
+import { Slider } from "@marismoon/ui/ui/slider"
 
 export default function SliderExample() {
   return (

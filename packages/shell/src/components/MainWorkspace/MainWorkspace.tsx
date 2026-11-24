@@ -8,7 +8,7 @@ import {
   type UIEvent,
 } from "react"
 
-import { MotionSurface } from "@aries/ui/motion/MotionSurface"
+import { MotionSurface } from "@marismoon/ui/motion/MotionSurface"
 import { useShellRouter } from "../../types/adapter"
 import { useShellLabels } from "../../types/labels"
 

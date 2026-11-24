@@ -2,8 +2,8 @@ import {
   SolarLayoutGrid,
   SolarPalette,
   SolarReceiptText,
-} from "@aries/ui/icons"
-import type { CommandItem, ModuleCommands } from "@aries/shell"
+} from "@marismoon/ui/icons"
+import type { CommandItem, ModuleCommands } from "@marismoon/shell"
 import {
   workspaceModules,
   type WorkspaceEntry,

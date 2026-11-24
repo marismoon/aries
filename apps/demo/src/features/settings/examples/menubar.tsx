@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@aries/ui/ui/button"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@aries/ui/ui/dialog"
+} from "@marismoon/ui/ui/dialog"
 import {
   Menubar,
   MenubarCheckboxItem,
@@ -28,8 +28,8 @@ import {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger,
-} from "@aries/ui/ui/menubar"
-import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
+} from "@marismoon/ui/ui/menubar"
+import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
 
 export default function MenubarExample() {
   return (

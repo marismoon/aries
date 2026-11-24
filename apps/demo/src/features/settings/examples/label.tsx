@@ -1,9 +1,9 @@
 import { Example, ExampleWrapper } from "./example"
-import { Checkbox } from "@aries/ui/ui/checkbox"
-import { Field } from "@aries/ui/ui/field"
-import { Input } from "@aries/ui/ui/input"
-import { Label } from "@aries/ui/ui/label"
-import { Textarea } from "@aries/ui/ui/textarea"
+import { Checkbox } from "@marismoon/ui/ui/checkbox"
+import { Field } from "@marismoon/ui/ui/field"
+import { Input } from "@marismoon/ui/ui/input"
+import { Label } from "@marismoon/ui/ui/label"
+import { Textarea } from "@marismoon/ui/ui/textarea"
 
 export default function LabelExample() {
   return (

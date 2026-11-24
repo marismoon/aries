@@ -1,4 +1,4 @@
-import { FrostCard } from "@aries/ui/shared/FrostCard"
+import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 import { specPreviews } from "./previews-spec"
 import "./components-preview.css"
 

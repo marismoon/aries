@@ -1,5 +1,5 @@
 import { Fragment, useContext, type ReactNode } from "react"
-import { AppIcon, SolarChevronRight } from "@aries/ui/icons"
+import { AppIcon, SolarChevronRight } from "@marismoon/ui/icons"
 import { ShellLink } from "../ShellLink"
 import { WorkspaceControls } from "../WorkspaceControls"
 import { useShellLabels } from "../../types/labels"

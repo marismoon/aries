@@ -3,7 +3,7 @@
 import { Image } from "./shims"
 
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@aries/ui/ui/button"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   Drawer,
   DrawerContent,
@@ -11,7 +11,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@aries/ui/ui/drawer"
+} from "@marismoon/ui/ui/drawer"
 import {
   Item,
   ItemActions,
@@ -23,8 +23,8 @@ import {
   ItemMedia,
   ItemSeparator,
   ItemTitle,
-} from "@aries/ui/ui/item"
-import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
+} from "@marismoon/ui/ui/item"
+import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
 
 export default function ItemExample() {
   return (
