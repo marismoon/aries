@@ -2,6 +2,8 @@
 
 阶段一在 pnpm workspace 内通过 `workspace:*` 消费源码。可发布清单只有 `@marismoon/ui` 和 `@marismoon/shell`。UI 当前仍标记为 private。其他工作区包必须保留 `private: true`。阶段二再处理独立导出、发布构建与 Changesets。发包前须确认 [LICENSE](../LICENSE) 与 [第三方许可声明](../THIRD_PARTY_NOTICES.md) 随包分发，`@marismoon/ui` 须携带 Solar 图标的 CC BY 4.0 署名。起步流程见 [STARTER.md](STARTER.md)。
 
+`@marismoon/ui` 与 `@marismoon/shell` 的 `pnpm build` 产出 `dist`（ESM JavaScript、类型声明与样式），只用于发布：Vite 按模块输出并保留 `"use client"`，`tsc` 生成声明，[finalize-package.mjs](../scripts/finalize-package.mjs) 复制样式、把 `@source` 指向编译后的 `.js`，并移除声明文件中的 CSS 导入。同仓开发继续通过 `exports` 直接消费源码；打包时 `publishConfig.exports` 替换为 `dist` 路径，`files` 限定只发布 `dist`、README 与许可证文件。
+
 ## 升级依赖
 
 1. 在根 [pnpm-workspace.yaml](../pnpm-workspace.yaml) 的默认 `catalog` 更新核心栈版本，在 `catalogs.dev` 更新测试或 lint 工具。默认 catalog 中被可发布包（`@marismoon/ui`）用作运行时依赖的条目写兼容区间（如 `^3.8.0`），发布后宿主可与之去重；其余条目写精确版本。实际安装版本一律由 `pnpm-lock.yaml` 锁定。React 与 React DOM 是 ui 的 `peerDependencies`（`^19`）。使用方继续写 `catalog:` 或 `catalog:dev`。直接写在包清单中的依赖在相应清单更新，并核对其他使用方和公共包的 peer 范围。

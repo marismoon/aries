@@ -31,3 +31,6 @@ playwright-report/
 !.env.example
 coverage/
 .turbo
+
+# Copied into the package only while packing (see packages/ui prepack).
+packages/ui/THIRD_PARTY_NOTICES.md

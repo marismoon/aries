@@ -8,6 +8,7 @@ React 工作区外壳提供三列导航与页面布局、命令面板和独立�
 
 ```css
 @import "@marismoon/ui/styles/globals.css";
+@import "@marismoon/ui/styles/fonts.css"; /* 可选：设计字体 */
 @import "@marismoon/shell/styles";
 ```
 

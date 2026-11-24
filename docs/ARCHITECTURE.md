@@ -24,7 +24,7 @@ templates/starter ─┘
 ```text
 apps/demo/src
 ├── main.tsx            入口：载入 index.css 与应用模块，应用已保存的主题偏好后渲染 App
-├── index.css           依次引入 @marismoon/ui/styles/globals.css 和 @marismoon/shell/styles，@source "./" 扫描应用代码
+├── index.css           依次引入 @marismoon/ui/styles/globals.css、可选的 @marismoon/ui/styles/fonts.css 和 @marismoon/shell/styles，@source "./" 扫描应用代码
 ├── app/
 │   ├── App.tsx         AppProviders + RouterProvider
 │   ├── providers.tsx   QueryClient、next-themes、LazyMotion/MotionConfig（`reducedMotion="user"`）、TooltipProvider、演示状态；命令面板由 `AppShell` 内的 `CommandPaletteProvider` 提供
@@ -74,6 +74,6 @@ Demo 的 `@/shared/mocks/mock-service` 导出 `getDemoAttentionItems` 和 `getDe
 | --- | --- |
 | `pnpm test` | UI 图标、Demo 的业务和翻译、Starter 的双语资源 |
 | `pnpm test:ui` | Demo 在 4173 运行 `apps/demo/e2e/*.spec.ts` 全集；Starter 在 4174 运行 [smoke.spec.ts](../templates/starter/e2e/smoke.spec.ts) |
-| `pnpm check:workspace` | 校验发布清单外的包、Starter 的工程依赖以及全仓共享包导入路径 |
+| `pnpm check:workspace` | 校验发布清单外的包、Starter 的工程依赖、全仓共享包导入路径，以及 Aceternity 示例不进入 ui、shell 与 Starter |
 
 Demo 的示例与用例是共享框架的回归基线。新项目复制 Starter 到同仓的 `apps/`，操作见[起步指南](STARTER.md)。依赖方向、CSS 入口与目录结构的取舍见[架构决策](decisions/)。
