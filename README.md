@@ -37,7 +37,7 @@
 
 Aries 提供构建工作区应用所需的共享组件和外壳。Demo 使用本地模拟数据展示概览、账单和组件，Starter 则提供接好外壳的首页与设置页。
 
-- **品牌主题**。内置九套品牌主题，可从页头轮换。Aries 浅色海渊仅在亮色模式下可选。
+- **品牌主题**。内置五套品牌主题（远程医疗蓝、静心雾蓝、暖陶土、清新草绿、琥珀暖沙），默认远程医疗蓝，可从页头轮换，明暗模式均可用。
 - **明暗与材质**。支持亮色与暗色，暗色提供 glass 和 clean 两种材质。
 - **组件与图标**。使用基于 shadcn 的组件与 Solar 图标，Demo 提供组件预览。
 - **表格与图表**。使用 TanStack Table 展示账单数据，使用 Recharts 展示指标趋势。
@@ -66,8 +66,7 @@ Aries 提供构建工作区应用所需的共享组件和外壳。Demo 使用本
     <td><img src="docs/assets/screenshots/palette-health-wellness.zh-CN.jpg" width="320" alt="使用清新草绿品牌主题的总览"><br>清新草绿下的总览。</td>
   </tr>
   <tr>
-    <td><img src="docs/assets/screenshots/palette-rose-quartz.zh-CN.jpg" width="320" alt="使用玫瑰石英品牌主题的总览"><br>玫瑰石英下的总览。</td>
-    <td align="center"><img src="docs/assets/screenshots/mobile.zh-CN.jpg" width="139" alt="导航抽屉收起时的手机总览"><br>390 px 视口的总览，导航抽屉收起。</td>
+    <td colspan="2" align="center"><img src="docs/assets/screenshots/mobile.zh-CN.jpg" width="139" alt="导航抽屉收起时的手机总览"><br>390 px 视口的总览，导航抽屉收起。</td>
   </tr>
 </table>
 

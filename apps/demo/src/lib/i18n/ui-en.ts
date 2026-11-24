@@ -134,10 +134,7 @@ export const uiEn: Record<string, string> = {
   静心雾蓝: "Calm mist blue",
   暖陶土: "Warm terracotta",
   清新草绿: "Fresh grass green",
-  紫罗兰极光: "Violet aurora",
   琥珀暖沙: "Amber sand",
-  玫瑰石英: "Rose quartz",
-  "Aries 浅色海渊": "Aries Light Abyss",
   // Shell
   "Demo 暂未开放": "Not available in this demo",
   "新建采集计划，Demo 暂未开放":

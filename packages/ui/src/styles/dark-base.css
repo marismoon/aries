@@ -2,22 +2,19 @@
 
    One tonal skeleton for every palette: a lightness ladder tinted with the
    palette hue at one saturation, white-alpha hairlines, one set of semantic
-   colours. A palette block in tokens.css / spectrum.css only supplies its
+   colours. A palette block in tokens.css only supplies its
    primary, accent, charts, aurora and hero tokens. The two dark styles differ
    only in material: glass adds blur, aurora and a specular rim (tokens.css,
    materials.css); clean turns all of it off (dark-clean.css).
 
    Ladder (HSL lightness): recess 8 < canvas 12 < card 15 < control 19 < popover 23.
    Steps are small by design; hairlines carry the separation, not lightness.
-   Excluded: the light-only aries-light palette. */
-.dark:not([data-palette="aries-light"]) {
+   `:root.dark` keeps these rules above the palette blocks in tokens.css. */
+:root.dark {
   --dark-hue: 255;
   --dark-tint: 6%;
 }
 
-.dark[data-palette="saas-analytics-spectrum"] {
-  --dark-hue: 220;
-}
 .dark[data-palette="telemedicine"] {
   --dark-hue: 218;
 }
@@ -30,17 +27,11 @@
 .dark[data-palette="health-wellness"] {
   --dark-hue: 142;
 }
-.dark[data-palette="violet-aurora"] {
-  --dark-hue: 262;
-}
 .dark[data-palette="amber-sand"] {
   --dark-hue: 40;
 }
-.dark[data-palette="rose-quartz"] {
-  --dark-hue: 342;
-}
 
-.dark:not([data-palette="aries-light"]) {
+:root.dark {
   /* Browser-drawn parts follow the palette too. */
   scrollbar-color: rgb(255 255 255 / 24%) transparent;
 
@@ -93,7 +84,7 @@
    hole. Clean keeps neutral cards (it has no aurora). Set --card-c to 0 for a
    neutral card; raise --card-l and the chart / input-edge contrast checks
    start to fail (see the dark contrast check, run locally). */
-.dark:not([data-dark-style="clean"]):not([data-palette="aries-light"]) {
+:root.dark:not([data-dark-style="clean"]) {
   --card-l: 0.26;
   --card-c: 0.032;
   --card: oklch(from var(--primary) var(--card-l) var(--card-c) h);

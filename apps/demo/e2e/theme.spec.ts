@@ -2,16 +2,14 @@ import type { Locator } from "@playwright/test"
 
 import { expect, test } from "./fixtures"
 
+// Cycle order starting from the default palette (telemedicine).
+const defaultPalette = "telemedicine"
 const brandCycle = [
-  "telemedicine",
   "mental-health",
   "pet-adoption",
   "health-wellness",
-  "violet-aurora",
   "amber-sand",
-  "rose-quartz",
-  "aries-light",
-  "saas-analytics-spectrum",
+  "telemedicine",
 ] as const
 
 const sunIcon = 'svg:has(circle[cx="12"][cy="12"][r="6"])'
@@ -297,7 +295,8 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
   const root = page.locator("html")
   const chromeColor = page.locator('meta[name="theme-color"]')
   await expect(root).toHaveClass(/\bdark\b/)
-  await expect(chromeColor).toHaveAttribute("content", "hsl(220 6% 12%)")
+  // Default palette (telemedicine) dark canvas: --dark-hue 218.
+  await expect(chromeColor).toHaveAttribute("content", "hsl(218 6% 12%)")
 
   const switchToLight = page.getByRole("button", { name: "切换到浅色模式" })
   const switchToDark = page.getByRole("button", { name: "切换到深色模式" })
@@ -306,7 +305,8 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
   await expect(page.getByRole("menu")).toHaveCount(0)
   await expect(switchToDark).toHaveAttribute("title", /切换到深色模式.*Shift/)
   await expect(root).toHaveClass(/\blight\b/)
-  await expect(chromeColor).toHaveAttribute("content", "#f2f6fc")
+  // Default palette (telemedicine) light canvas.
+  await expect(chromeColor).toHaveAttribute("content", "#f4f8ff")
   await page
     .getByRole("navigation", { name: "工作区目录" })
     .getByRole("link", { name: "月账单", exact: true })
@@ -319,9 +319,9 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
   await palette.focus()
   await expect(palette).toHaveCSS("outline-style", "solid")
   await palette.press("Enter")
-  await expect(root).toHaveAttribute("data-palette", "telemedicine")
+  await expect(root).toHaveAttribute("data-palette", "mental-health")
   await expect(palette).toBeFocused()
-  for (const brand of ["mental-health", "pet-adoption"]) {
+  for (const brand of ["pet-adoption"]) {
     await palette.click()
     await expect(root).toHaveAttribute("data-palette", brand)
   }
@@ -331,7 +331,7 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
     getComputedStyle(element).getPropertyValue("--background").trim()
   )
   await expect(chromeColor).toHaveAttribute("content", petLight)
-  expect(petLight).not.toBe("#f2f6fc")
+  expect(petLight).not.toBe("#f4f8ff")
 
   await page.reload()
   await expect(root).toHaveClass(/\blight\b/)
@@ -406,11 +406,7 @@ for (const mode of ["light", "dark"] as const) {
     const statusColors = await readTokens(statusTokens)
     const brandStyles: string[][] = []
 
-    // Dark mode skips the light-only palette when cycling.
-    const cycle =
-      mode === "dark"
-        ? brandCycle.filter((value) => value !== "aries-light")
-        : brandCycle
+    const cycle = brandCycle
 
     for (const value of cycle) {
       await palette.click()
@@ -444,10 +440,7 @@ for (const [width, height] of [
     const root = page.locator("html")
     await page.evaluate(() => document.fonts.ready)
     const palette = page.getByRole("button", { name: "品牌配色", exact: true })
-    await expect(root).toHaveAttribute(
-      "data-palette",
-      "saas-analytics-spectrum"
-    )
+    await expect(root).toHaveAttribute("data-palette", defaultPalette)
     const original = await palette.boundingBox()
     if (!original) throw new Error("Palette switcher unavailable")
     expect(original.width).toEqual(original.height)
@@ -456,7 +449,7 @@ for (const [width, height] of [
     await palette.focus()
     await expect(palette).toHaveCSS("outline-style", "solid")
     await palette.press("Enter")
-    await expect(root).toHaveAttribute("data-palette", "telemedicine")
+    await expect(root).toHaveAttribute("data-palette", brandCycle[0])
     await expect(page.getByRole("menu")).toHaveCount(0)
     await expect(palette).toBeFocused()
 
@@ -477,7 +470,7 @@ for (const [width, height] of [
         await palette.hover()
         await expect(
           page.locator('[data-slot="tooltip-content"]')
-        ).toContainText("当前配色为清新草绿，下一个配色为紫罗兰极光")
+        ).toContainText("当前配色为清新草绿，下一个配色为琥珀暖沙")
       }
     }
   })

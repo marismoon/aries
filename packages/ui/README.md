@@ -1,6 +1,6 @@
 # @marismoon/ui
 
-Aries 的设计系统：基于 shadcn 的 React 组件、Solar 图标、动效，以及九套品牌主题与 glass/clean 材质令牌。样式基于 Tailwind CSS v4。
+Aries 的设计系统：基于 shadcn 的 React 组件、Solar 图标、动效，以及五套品牌主题与 glass/clean 材质令牌。样式基于 Tailwind CSS v4。
 
 ## 接入
 

@@ -37,7 +37,7 @@ The Demo overview in the default brand palette, shown in light mode and dark gla
 
 Aries provides the shared components and application shell for building workspaces. Demo uses local mock data to show the overview, billing, and component screens. Starter supplies a home page and a settings page wired into the same shell.
 
-- **Brand palettes.** Switch palettes from the page header. The nine built-in palettes include Aries Light Abyss, a light-only palette.
+- **Brand palettes.** Five built-in palettes (Telemedicine blue, Calm mist blue, Warm terracotta, Fresh grass green, Amber sand), Telemedicine blue by default. Switch them from the page header in light or dark mode.
 - **Modes and surfaces.** Use light or dark mode, with glass and clean options for dark mode.
 - **Components and icons.** Build with shadcn-based components and Solar icons. Demo includes a component showcase.
 - **Tables and charts.** Review billing records in a TanStack Table and explore metric trends in Recharts.
@@ -66,8 +66,7 @@ Aries provides the shared components and application shell for building workspac
     <td><img src="docs/assets/screenshots/palette-health-wellness.en.jpg" width="320" alt="Overview with the Fresh grass green brand palette"><br>Overview in Fresh grass green.</td>
   </tr>
   <tr>
-    <td><img src="docs/assets/screenshots/palette-rose-quartz.en.jpg" width="320" alt="Overview with the Rose quartz brand palette"><br>Overview in Rose quartz.</td>
-    <td align="center"><img src="docs/assets/screenshots/mobile.en.jpg" width="139" alt="Mobile overview with the navigation drawer closed"><br>Overview at 390 px with the navigation drawer closed.</td>
+    <td colspan="2" align="center"><img src="docs/assets/screenshots/mobile.en.jpg" width="139" alt="Mobile overview with the navigation drawer closed"><br>Overview at 390 px with the navigation drawer closed.</td>
   </tr>
 </table>
 

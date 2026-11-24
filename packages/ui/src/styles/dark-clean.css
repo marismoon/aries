@@ -4,8 +4,8 @@
    dark-base.css and is shared with glass. This file only switches the material
    off: no backdrop blur, no glow or aurora, no stacked shadows; separation is
    the 1px hairlines. Scoped to .dark[data-dark-style="clean"] so glass and
-   light mode are untouched; the light-only aries-light palette is excluded. */
-.dark[data-dark-style="clean"]:not([data-palette="aries-light"]) {
+   light mode are untouched. */
+:root.dark[data-dark-style="clean"] {
   --workspace-nav: transparent;
   --card-bottom: var(--card);
 

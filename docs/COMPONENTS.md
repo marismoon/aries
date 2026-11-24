@@ -95,7 +95,7 @@ const table = useDataTable({
 | 组件 | 说明 |
 | --- | --- |
 | `ThemeSwitcher({ className? })` | 明/暗切换（next-themes），带图标旋转缩放；遵守减少动态效果 |
-| `BrandPaletteControl()` | 轮换 `paletteLabels` 中的品牌主题并写入 localStorage；暗色模式下跳过纯浅色主题 `aries-light` |
+| `BrandPaletteControl()` | 按 `paletteLabels` 的顺序轮换品牌主题并写入 localStorage |
 | `DarkStyleControl()` | 仅暗色模式显示，切换 `glass` / `clean` |
 
 ## 2. 动效（`@marismoon/ui/motion/*`）

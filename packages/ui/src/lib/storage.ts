@@ -1,16 +1,12 @@
 const paletteStorageKey = "aries-palette"
-const defaultPalette = "saas-analytics-spectrum"
+const defaultPalette = "telemedicine"
 
 export const paletteLabels = {
-  "saas-analytics-spectrum": "SaaS Analytics Spectrum",
   telemedicine: "远程医疗蓝",
   "mental-health": "静心雾蓝",
   "pet-adoption": "暖陶土",
   "health-wellness": "清新草绿",
-  "violet-aurora": "紫罗兰极光",
   "amber-sand": "琥珀暖沙",
-  "rose-quartz": "玫瑰石英",
-  "aries-light": "Aries 浅色海渊",
 } as const
 
 type Palette = keyof typeof paletteLabels

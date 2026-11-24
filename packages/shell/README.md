@@ -63,24 +63,24 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 
 ## CSS 变量契约
 
-轮次三起点的 `layout.css` 包含 255 次 `var()` 引用，涉及 91 个变量。下表包含移入 UI 的派生变量所依赖的令牌。样式文件均位于 `packages/ui/src/styles/`，宿主通过 `@marismoon/ui/styles/globals.css` 引入。已有主题层叠顺序为 `tokens.css` → `spectrum.css` → `materials.css` → `dark-base.css` → `dark-clean.css`，动效令牌位于其后的 `motion.css`。
+轮次三起点的 `layout.css` 包含 255 次 `var()` 引用，涉及 91 个变量。下表包含移入 UI 的派生变量所依赖的令牌。样式文件均位于 `packages/ui/src/styles/`，宿主通过 `@marismoon/ui/styles/globals.css` 引入。已有主题层叠顺序为 `tokens.css` → `materials.css` → `dark-base.css` → `dark-clean.css`，动效令牌位于其后的 `motion.css`。
 
 | 用途 | 变量 | 定义或主题覆盖文件 |
 |---|---|---|
-| 页面与控件的语义颜色 | `--accent` | `tokens.css`、`spectrum.css`、`dark-clean.css` |
-| 页面与控件的语义颜色 | `--accent-foreground`、`--primary`、`--ring` | `tokens.css`、`spectrum.css` |
-| 页面与控件的语义颜色 | `--background`、`--border`、`--border-subtle`、`--control`、`--foreground`、`--layout-control-border`、`--muted`、`--muted-foreground`、`--popover`、`--recess` | `tokens.css`、`spectrum.css`、`dark-base.css` |
+| 页面与控件的语义颜色 | `--accent` | `tokens.css`、`dark-clean.css` |
+| 页面与控件的语义颜色 | `--accent-foreground`、`--primary`、`--ring` | `tokens.css` |
+| 页面与控件的语义颜色 | `--background`、`--border`、`--border-subtle`、`--control`、`--foreground`、`--layout-control-border`、`--muted`、`--muted-foreground`、`--popover`、`--recess` | `tokens.css`、`dark-base.css` |
 | 页面与控件的语义颜色 | `--field-shadow` | `tokens.css`、`dark-clean.css` |
 | 页面与控件的语义颜色 | `--field-surface`、`--layout-control`、`--popover-foreground` | `tokens.css` |
 | 外壳尺寸与安全边距 | `--column-height`、`--icon-rail-width`、`--rail-block-end`、`--rail-block-start`、`--rail-item-gap`、`--rail-logo-center`、`--rail-logo-gap`、`--rail-start-inset`、`--workspace-column-gap`、`--workspace-inset-end`、`--workspace-inset-start`、`--workspace-nav-width`、`--workspace-safe-block-end`、`--workspace-safe-inline-end` | `tokens.css` |
 | 轨道按钮的尺寸与材质 | `--icon-control-hover-bg`、`--rail-active-bg`、`--rail-active-fg`、`--rail-backplate-size`、`--rail-control-size`、`--rail-icon-size`、`--rail-logo-fg` | `tokens.css` |
 | 轨道按钮的尺寸与材质 | `--rail-fill` | `materials.css` |
-| 轨道按钮的尺寸与材质 | `--rail-logo-bg` | `tokens.css`、`spectrum.css` |
+| 轨道按钮的尺寸与材质 | `--rail-logo-bg` | `tokens.css` |
 | 侧栏表面与导航状态 | `--nav-active-fill`、`--nav-active-shadow`、`--nav-border-width`、`--nav-hover-fill`、`--nav-hover-shadow` | `dark-clean.css` |
 | 侧栏表面与导航状态 | `--nav-filter`、`--sidebar-background-clip`、`--sidebar-edge`、`--sidebar-radius`、`--sidebar-shadow` | `tokens.css`、`dark-clean.css` |
 | 侧栏表面与导航状态 | `--nav-tree-line` | `materials.css` |
 | 侧栏表面与导航状态 | `--scope-selected`、`--sidebar-item-height`、`--sidebar-item-hover`、`--sidebar-item-radius`、`--sidebar-leaf-height` | `tokens.css` |
-| 侧栏表面与导航状态 | `--workspace-nav` | `tokens.css`、`spectrum.css`、`dark-base.css`、`dark-clean.css` |
+| 侧栏表面与导航状态 | `--workspace-nav` | `tokens.css`、`dark-base.css`、`dark-clean.css` |
 | 内容视口的出血、渐隐和背景 | `--workspace-bleed-block`、`--workspace-bleed-inline`、`--workspace-edge-size`、`--workspace-fade-feather` | `tokens.css` |
 | 内容视口的出血、渐隐和背景 | `--page-background` | `materials.css`、`dark-base.css` |
 | 通用间距、控件、圆角与字号 | `--control-size-compact`、`--control-size-dense`、`--control-size-touch`、`--radius-control`、`--radius-workspace-control`、`--space-1`、`--space-2`、`--space-3`、`--space-4`、`--space-5`、`--space-6`、`--text-body`、`--text-label`、`--breadcrumb-leading` | `tokens.css` |

@@ -1,7 +1,7 @@
 {
   "name": "@marismoon/ui",
   "version": "0.1.0-next.3",
-  "description": "Aries 设计系统：基于 shadcn 的 React 组件、Solar 图标、动效与九套品牌主题令牌（Tailwind CSS v4）。",
+  "description": "Aries 设计系统：基于 shadcn 的 React 组件、Solar 图标、动效与五套品牌主题令牌（Tailwind CSS v4）。",
   "keywords": [
     "react",
     "design-system",

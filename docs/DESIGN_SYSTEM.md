@@ -1,13 +1,12 @@
 # 设计系统
 
-共享主题样式与令牌位于 `packages/ui/src/styles/`，由 `globals.css` 汇总引入（顺序：tailwindcss → tw-animate-css → `shadcn.css`（内置自 shadcn 包，见[第三方许可声明](../THIRD_PARTY_NOTICES.md)）→ `tokens.css` → `spectrum.css` → `materials.css` → `dark-base.css` → `dark-clean.css` → `components/ui/popup.css` → `motion.css` → `soft-edge.css` → `icon-states.css`）。字体（Inter、Noto Sans SC）拆为可选入口 `fonts.css`，不引入时回退到 `system-ui`。应用入口 `apps/demo/src/index.css` 先引入 `globals.css` 与 `fonts.css`，再引入 `@marismoon/shell/styles`，并用 `@source` 扫描应用代码。
+共享主题样式与令牌位于 `packages/ui/src/styles/`，由 `globals.css` 汇总引入（顺序：tailwindcss → tw-animate-css → `shadcn.css`（内置自 shadcn 包，见[第三方许可声明](../THIRD_PARTY_NOTICES.md)）→ `tokens.css` → `materials.css` → `dark-base.css` → `dark-clean.css` → `components/ui/popup.css` → `motion.css` → `soft-edge.css` → `icon-states.css`）。字体（Inter、Noto Sans SC）拆为可选入口 `fonts.css`，不引入时回退到 `system-ui`。应用入口 `apps/demo/src/index.css` 先引入 `globals.css` 与 `fonts.css`，再引入 `@marismoon/shell/styles`，并用 `@source` 扫描应用代码。
 
 | 文件 | 内容 |
 | --- | --- |
-| `tokens.css` | `:root` 基础令牌（亮色）、`.dark` 暗色（含玻璃的填充、描边、模糊参数）、各品牌主题 `[data-palette="…"]` |
-| `spectrum.css` | 默认主题（saas-analytics-spectrum）、图表/强调色谱 `--spectrum-*` 与 `--swatch-*` |
+| `tokens.css` | `:root` 基础令牌（亮色）、`.dark` 暗色（含玻璃的填充、描边、模糊参数）、各品牌主题 `[data-palette="…"]` 与 `--swatch-*`。`:root` / `.dark` 中的颜色是未选主题时的兜底值，运行时总会写入一个品牌主题 |
 | `materials.css` | 玻璃材质：`.surface`、`.surface-inset`、`.frost-divider`、`.hero-surface`、页面环境光 |
-| `dark-base.css` | 暗色共同底座（glass 与 clean 共用）+ glass 的染色令牌（`--card-l` 等）与极光；不含 `aries-light` |
+| `dark-base.css` | 暗色共同底座（glass 与 clean 共用）+ glass 的染色令牌（`--card-l` 等）与极光；选择器用 `:root.dark` 以保持高于主题块的优先级 |
 | `dark-clean.css` | 简洁暗色材质（`.dark[data-dark-style="clean"]`）：关闭模糊、光晕、阴影 |
 | `motion.css` | 缓动/时长令牌、对话框退出、`prefers-reduced-motion`、`.shimmer-text`/`.shimmer-block` |
 | `soft-edge.css` | 滚动容器边缘渐隐（scroll-driven animation，不支持时降级） |
@@ -15,8 +14,8 @@
 
 ## 1. 主题与模式
 
-- **模式**：`next-themes`（`attribute="class"`）切换 `.dark`；`:root` 声明 `color-scheme: light`。
-- **品牌主题**（`<html data-palette="…">`，localStorage 键 `aries-palette`）：以 `lib/storage.ts` 的 `paletteLabels` 为准，默认 `saas-analytics-spectrum`。`aries-light` 为**纯浅色**主题（`color-scheme: light`，暗色块也保持浅色）。暗色模式下品牌轮换跳过它。
+- **模式**：`next-themes`（`attribute="class"`）切换 `.dark`；`:root` 声明 `color-scheme: light`。宿主的 `index.html` 用同步内联脚本在首帧前写入 `.dark`、`data-palette` 与 `data-dark-style`，避免暗色或品牌主题刷新时先闪一下亮色；next-themes 自带的脚本只在服务端渲染时有效，客户端渲染的宿主以 `scriptProps={{ type: "application/json" }}` 让它保持惰性。
+- **品牌主题**（`<html data-palette="…">`，localStorage 键 `aries-palette`）：以 `lib/storage.ts` 的 `paletteLabels` 为准：`telemedicine`（远程医疗蓝，默认）、`mental-health`（静心雾蓝）、`pet-adoption`（暖陶土）、`health-wellness`（清新草绿）、`amber-sand`（琥珀暖沙）。每套都有亮色与暗色。本地存储中的值不在列表内时回落到默认主题。
 - **暗色风格**（`<html data-dark-style="glass|clean">`，键 `aries-dark-style`）：`glass` 毛玻璃（默认）、`clean` 简洁。详见 §2。
 - 切换控件：`BrandPaletteControl`（轮换主题）、`DarkStyleControl`（仅暗色模式显示）、`ThemeSwitcher`（明暗）。
 
@@ -36,7 +35,7 @@
 | 遮罩 | `--overlay`，带色相的近黑 62%；不写 `bg-black/…` |
 | 浏览器自绘部件 | 暗色下 `scrollbar-color` 为白色 24% 的滑块、透明轨道 |
 
-主题块（`tokens.css` / `spectrum.css` 的 `.dark[data-palette="…"]`）**只提供**：主色与前景、强调、`--chart-1…8`、极光 `--environment-*`、hero 令牌；表面、边框、语义色统一由本节定义。
+主题块（`tokens.css` 的 `.dark[data-palette="…"]`）**只提供**：主色与前景、强调、`--chart-1…8`、极光 `--environment-*`、hero 令牌；表面、边框、语义色统一由本节定义。
 
 ### 2.2 glass 材质
 
@@ -69,7 +68,7 @@
 
 ## 3. 令牌
 
-> 令牌以**语义令牌**为主，没有全局 50–950 色阶；`--aries-primary-50…950` 与 `--aries-neutral-50…950` 只存在于 `aries-light` 主题内。业务代码引用语义令牌，不引用色阶。
+> 令牌以**语义令牌**为主，没有全局 50–950 色阶。业务代码引用语义令牌，不引用色阶。
 
 ### 语义色（组件只用这些）
 
@@ -139,7 +138,7 @@
 ## 9. 新增主题的步骤
 
 1. `tokens.css` 增 `[data-palette="x"]:not(.dark)` 与 `.dark[data-palette="x"]` 两块（可复制现有主题再改）。暗色块只写主色与前景、强调、`--chart-1…8`、`--environment-*`、hero 令牌（§2.1）；亮色块覆盖 §3「语义色」「状态色」「图表色」中的全部令牌。
-2. `spectrum.css`（或 `tokens.css`）增 `--swatch-x`；`lib/storage.ts` 的 `paletteLabels` 登记。
+2. `tokens.css` 增 `--swatch-x`；`lib/storage.ts` 的 `paletteLabels` 登记。
 3. `dark-base.css` 增一条 `.dark[data-palette="x"] { --dark-hue: <0–360> }`。
 4. 按 §2.5 核对：主色对卡片 ≥ 4.5:1，图表色 ≥ 3:1。
 5. 在「系统设置 → 组件预览」核对 glass 与 clean 两种暗色，并回归主题相关 e2e（`e2e/theme.spec.ts`）。
