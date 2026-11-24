@@ -13,8 +13,8 @@ import {
   ShellRouterProvider,
   type ShellLinkProps,
   type WorkspaceNavigation,
-} from "@aries/shell"
-import { AppIcon } from "@aries/ui/icons"
+} from "@marismoon/shell"
+import { AppIcon } from "@marismoon/ui/icons"
 
 import { ShellLabelsBridge } from "../lib/i18n/ShellLabelsBridge"
 import { NavHighlightProvider } from "./nav-highlight"

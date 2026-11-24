@@ -1,7 +1,7 @@
 import { defineConfig, globalIgnores } from 'eslint/config'
-import { disableTypeChecked, typeChecked, typescript } from '@aries/config/eslint/base'
-import { accessibility, exampleRules, react, shadcnRules } from '@aries/config/eslint/react'
-import { demoImports, publicImports, shellImports, sourceImports, starterImports, uiImports, uiPrimitiveImports, uiSharedImports, uiSourceImports } from '@aries/config/eslint/boundaries'
+import { disableTypeChecked, typeChecked, typescript } from '@marismoon/config/eslint/base'
+import { accessibility, exampleRules, react, shadcnRules } from '@marismoon/config/eslint/react'
+import { demoImports, publicImports, shellImports, sourceImports, starterImports, uiImports, uiPrimitiveImports, uiSharedImports, uiSourceImports } from '@marismoon/config/eslint/boundaries'
 
 export default defineConfig([
   globalIgnores(['**/dist', '**/coverage', '**/playwright-report', '**/test-results', '**/artifacts']),

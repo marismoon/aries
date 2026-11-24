@@ -1,4 +1,4 @@
-import { SolarCog, SolarHomeSmileAngle } from "@aries/ui/icons"
+import { SolarCog, SolarHomeSmileAngle } from "@marismoon/ui/icons"
 import { HomePage } from "../features/home/HomePage"
 import { SettingsPage } from "../features/settings/SettingsPage"
 

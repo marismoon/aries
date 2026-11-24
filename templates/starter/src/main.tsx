@@ -3,7 +3,10 @@ import { createRoot } from "react-dom/client"
 
 import "./styles/index.css"
 import { App } from "./app/App"
-import { applyStoredDarkStyle, applyStoredPalette } from "@aries/ui/lib/storage"
+import {
+  applyStoredDarkStyle,
+  applyStoredPalette,
+} from "@marismoon/ui/lib/storage"
 import "./lib/i18n"
 
 applyStoredPalette()

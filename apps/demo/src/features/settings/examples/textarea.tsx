@@ -1,6 +1,6 @@
 import { Example, ExampleWrapper } from "./example"
-import { Field, FieldDescription, FieldLabel } from "@aries/ui/ui/field"
-import { Textarea } from "@aries/ui/ui/textarea"
+import { Field, FieldDescription, FieldLabel } from "@marismoon/ui/ui/field"
+import { Textarea } from "@marismoon/ui/ui/textarea"
 
 export default function TextareaExample() {
   return (

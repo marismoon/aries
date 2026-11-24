@@ -1,15 +1,15 @@
 import { useState } from "react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 
-import { AppIcon, SolarX } from "@aries/ui/icons"
-import { Button } from "@aries/ui/ui/button"
+import { AppIcon, SolarX } from "@marismoon/ui/icons"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   Item,
   ItemContent,
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from "@aries/ui/ui/item"
+} from "@marismoon/ui/ui/item"
 import { screenGroups, screens } from "./screens"
 import { ScreenNavContext } from "./ui"
 import "../components-preview.css"

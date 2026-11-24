@@ -1,5 +1,5 @@
 {
-  "extends": "@aries/config/typescript/base.json",
+  "extends": "@marismoon/config/typescript/base.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "lib": ["ES2024"],

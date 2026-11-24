@@ -20,13 +20,21 @@ import {
   SolarRotateCw,
   SolarSparkles,
   SolarX,
-} from "@aries/ui/icons"
-import { dialogEntry } from "@aries/ui/motion/motion-tokens"
-import { Bubble, BubbleContent } from "@aries/ui/ui/bubble"
-import { Button } from "@aries/ui/ui/button"
-import { Message, MessageContent, MessageFooter } from "@aries/ui/ui/message"
-import { Textarea } from "@aries/ui/ui/textarea"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@aries/ui/ui/tooltip"
+} from "@marismoon/ui/icons"
+import { dialogEntry } from "@marismoon/ui/motion/motion-tokens"
+import { Bubble, BubbleContent } from "@marismoon/ui/ui/bubble"
+import { Button } from "@marismoon/ui/ui/button"
+import {
+  Message,
+  MessageContent,
+  MessageFooter,
+} from "@marismoon/ui/ui/message"
+import { Textarea } from "@marismoon/ui/ui/textarea"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@marismoon/ui/ui/tooltip"
 import { CopilotSummary } from "./CopilotSummary"
 import { recommendedQuestions } from "./copilot-demo"
 import { type useCopilot } from "./useCopilot"

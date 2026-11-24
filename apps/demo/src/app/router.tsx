@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next"
 import { createBrowserRouter, Navigate } from "react-router"
 
-import { WorkspacePage } from "@aries/shell"
+import { WorkspacePage } from "@marismoon/shell"
 import { useUiText } from "@/lib/i18n/use-ui-text"
-import { Skeleton } from "@aries/ui/ui/skeleton"
+import { Skeleton } from "@marismoon/ui/ui/skeleton"
 import { DemoShell } from "./shell-adapter"
 import { workspacePages, type WorkspacePageConfig } from "./workspace-pages"
 

@@ -8,8 +8,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@aries/ui/ui/accordion"
-import { Button } from "@aries/ui/ui/button"
+} from "@marismoon/ui/ui/accordion"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   Drawer,
   DrawerClose,
@@ -19,10 +19,10 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@aries/ui/ui/drawer"
-import { Marker, MarkerContent, MarkerIcon } from "@aries/ui/ui/marker"
-import { Spinner } from "@aries/ui/ui/spinner"
-import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
+} from "@marismoon/ui/ui/drawer"
+import { Marker, MarkerContent, MarkerIcon } from "@marismoon/ui/ui/marker"
+import { Spinner } from "@marismoon/ui/ui/spinner"
+import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
 
 export default function MarkerExamples() {
   return (

@@ -1,5 +1,5 @@
 {
-  "extends": "@aries/config/typescript/react.json",
+  "extends": "@marismoon/config/typescript/react.json",
   "compilerOptions": {
     "types": ["vite/client", "node"]
   },

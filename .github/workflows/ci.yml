@@ -38,7 +38,7 @@ jobs:
       - name: Read Playwright version
         id: playwright
         run: |
-          version="$(pnpm --filter @aries/demo exec playwright --version)"
+          version="$(pnpm --filter @marismoon/demo exec playwright --version)"
           printf 'version=%s\n' "${version#Version }" >> "$GITHUB_OUTPUT"
       - name: Cache Playwright browsers
         id: playwright-cache
@@ -48,8 +48,8 @@ jobs:
           key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
       - name: Install Chromium system dependencies
         if: ${{ steps.playwright-cache.outputs.cache-hit == 'true' }}
-        run: pnpm --filter @aries/demo exec playwright install-deps chromium
+        run: pnpm --filter @marismoon/demo exec playwright install-deps chromium
       - name: Install Chromium and system dependencies
         if: ${{ steps.playwright-cache.outputs.cache-hit != 'true' }}
-        run: pnpm --filter @aries/demo exec playwright install --with-deps chromium
+        run: pnpm --filter @marismoon/demo exec playwright install --with-deps chromium
       - run: pnpm test:ui

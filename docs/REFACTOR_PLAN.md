@@ -3,7 +3,7 @@
 > 状态：**阶段一已完成**（步骤 0–9 全部落地，终验于 `fd2ce86`）。本文保留为重构的历史记录与决策依据；后续规则以 `AGENTS.md` 与 `docs/` 现行文档为准，阶段二（发包、export 脚本、changeset）另行规划。
 > 原执行要求：开始前读完 `AGENTS.md`、`CLAUDE.md`、`pnpm-workspace.yaml`、`docs/` 全部文档；与 `AGENTS.md` 冲突时，以其视觉与主题红线为准。
 > 实施差异：CVE 应急的 `overrides` 实测生效位置为根 `pnpm-workspace.yaml` 顶层（见 `docs/VERSIONING.md`），而非下文 §6 所写的 `package.json#pnpm.overrides`。
-> 包 scope 已由 @marismoon 改为 @aries，下文保留原名作为历史记录
+> 包 scope 曾由 @marismoon 改为 @aries；因 npm 上 `@aries` 已被他人持有，阶段二步骤 0 又改回 @marismoon（见 [PHASE2_PLAN.md](PHASE2_PLAN.md)）。下文保留原名作为历史记录
 
 ## 1. 目标
 

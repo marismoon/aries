@@ -17,17 +17,17 @@ import {
   SolarVerifiedCheck,
   SolarBuildings2,
   type AppIconComponent,
-} from "@aries/ui/icons"
-import { Badge } from "@aries/ui/ui/badge"
+} from "@marismoon/ui/icons"
+import { Badge } from "@marismoon/ui/ui/badge"
 import {
   Item,
   ItemContent,
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from "@aries/ui/ui/item"
-import { RadioGroup, RadioGroupItem } from "@aries/ui/ui/radio-group"
-import { Button } from "@aries/ui/ui/button"
+} from "@marismoon/ui/ui/item"
+import { RadioGroup, RadioGroupItem } from "@marismoon/ui/ui/radio-group"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   Account,
   Actions,

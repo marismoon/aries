@@ -1,6 +1,6 @@
 import { Example, ExampleWrapper } from "./example"
-import { Card, CardContent, CardHeader } from "@aries/ui/ui/card"
-import { Skeleton } from "@aries/ui/ui/skeleton"
+import { Card, CardContent, CardHeader } from "@marismoon/ui/ui/card"
+import { Skeleton } from "@marismoon/ui/ui/skeleton"
 
 export default function SkeletonExample() {
   return (

@@ -1,5 +1,5 @@
 import { Example, ExampleWrapper } from "./example"
-import { Field, FieldLabel } from "@aries/ui/ui/field"
+import { Field, FieldLabel } from "@marismoon/ui/ui/field"
 import {
   Pagination,
   PaginationContent,
@@ -8,7 +8,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@aries/ui/ui/pagination"
+} from "@marismoon/ui/ui/pagination"
 import {
   Select,
   SelectContent,
@@ -16,7 +16,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@aries/ui/ui/select"
+} from "@marismoon/ui/ui/select"
 
 export default function PaginationExample() {
   return (

@@ -9,14 +9,14 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@aries/ui/ui/breadcrumb"
-import { Button } from "@aries/ui/ui/button"
+} from "@marismoon/ui/ui/breadcrumb"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@aries/ui/ui/dropdown-menu"
+} from "@marismoon/ui/ui/dropdown-menu"
 
 export default function BreadcrumbExample() {
   return (

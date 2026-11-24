@@ -2,8 +2,8 @@ import * as React from "react"
 import { Image } from "./shims"
 
 import { Example, ExampleWrapper } from "./example"
-import { ScrollArea, ScrollBar } from "@aries/ui/ui/scroll-area"
-import { Separator } from "@aries/ui/ui/separator"
+import { ScrollArea, ScrollBar } from "@marismoon/ui/ui/scroll-area"
+import { Separator } from "@marismoon/ui/ui/separator"
 
 const tags = Array.from({ length: 50 }).map(
   (_, i, a) => `v1.2.0-beta.${a.length - i}`

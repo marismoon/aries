@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react"
-import { cn } from "@aries/ui/lib/utils"
-import { Button } from "@aries/ui/ui/button"
+import { cn } from "@marismoon/ui/lib/utils"
+import { Button } from "@marismoon/ui/ui/button"
 
 export function SidebarNavItem({
   asChild,

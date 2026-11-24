@@ -1,9 +1,9 @@
 import type { CSSProperties, ReactNode } from "react"
 
-import { AppIcon, SolarCheck } from "@aries/ui/icons"
-import { FrostCard } from "@aries/ui/shared/FrostCard"
-import { StatusBadge } from "@aries/ui/shared/StatusBadge"
-import { formatCurrency, formatWan } from "@aries/ui/lib/format"
+import { AppIcon, SolarCheck } from "@marismoon/ui/icons"
+import { FrostCard } from "@marismoon/ui/shared/FrostCard"
+import { StatusBadge } from "@marismoon/ui/shared/StatusBadge"
+import { formatCurrency, formatWan } from "@marismoon/ui/lib/format"
 import {
   collectionChannels,
   collectionStates,

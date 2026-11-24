@@ -6,8 +6,8 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "@aries/ui/ui/field"
-import { RadioGroup, RadioGroupItem } from "@aries/ui/ui/radio-group"
+} from "@marismoon/ui/ui/field"
+import { RadioGroup, RadioGroupItem } from "@marismoon/ui/ui/radio-group"
 
 export default function RadioGroupExample() {
   return (

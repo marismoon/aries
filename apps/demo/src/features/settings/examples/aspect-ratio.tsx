@@ -1,7 +1,7 @@
 import { Image } from "./shims"
 
 import { Example, ExampleWrapper } from "./example"
-import { AspectRatio } from "@aries/ui/ui/aspect-ratio"
+import { AspectRatio } from "@marismoon/ui/ui/aspect-ratio"
 
 export default function AspectRatioExample() {
   return (

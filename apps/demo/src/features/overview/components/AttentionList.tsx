@@ -13,11 +13,11 @@ import {
   SolarShieldAlert,
   SolarSparkles,
   SolarTriangleAlert,
-} from "@aries/ui/icons"
-import { EmptyState } from "@aries/ui/shared/EmptyState"
-import { FrostCard } from "@aries/ui/shared/FrostCard"
-import { StatusBadge } from "@aries/ui/shared/StatusBadge"
-import { Button } from "@aries/ui/ui/button"
+} from "@marismoon/ui/icons"
+import { EmptyState } from "@marismoon/ui/shared/EmptyState"
+import { FrostCard } from "@marismoon/ui/shared/FrostCard"
+import { StatusBadge } from "@marismoon/ui/shared/StatusBadge"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   Dialog,
   DialogClose,
@@ -26,8 +26,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@aries/ui/ui/dialog"
-import { Skeleton } from "@aries/ui/ui/skeleton"
+} from "@marismoon/ui/ui/dialog"
+import { Skeleton } from "@marismoon/ui/ui/skeleton"
 import { dashboardMetrics } from "@/shared/mocks/overview"
 import type { AttentionItem } from "@/shared/types/overview"
 import { useAttentionScroll } from "../hooks/useAttentionScroll"

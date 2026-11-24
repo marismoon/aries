@@ -1,14 +1,17 @@
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@aries/ui/ui/button"
+import { Button } from "@marismoon/ui/ui/button"
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@aries/ui/ui/field"
-import { DatePicker, TimePicker } from "@aries/ui/ui/date-picker"
-import { Input } from "@aries/ui/ui/input"
-import { NativeSelect, NativeSelectOption } from "@aries/ui/ui/native-select"
+} from "@marismoon/ui/ui/field"
+import { DatePicker, TimePicker } from "@marismoon/ui/ui/date-picker"
+import { Input } from "@marismoon/ui/ui/input"
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@marismoon/ui/ui/native-select"
 import {
   Select,
   SelectContent,
@@ -16,7 +19,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@aries/ui/ui/select"
+} from "@marismoon/ui/ui/select"
 
 export default function InputExample() {
   return (

@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next"
 import { createBrowserRouter, Navigate } from "react-router"
-import { WorkspacePage } from "@aries/shell"
+import { WorkspacePage } from "@marismoon/shell"
 
 import { StarterShell } from "./shell-adapter"
 import { workspaceModules } from "./workspace-modules"

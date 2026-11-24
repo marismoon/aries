@@ -1,4 +1,4 @@
-import type { WorkspacePageSlots } from "@aries/shell"
+import type { WorkspacePageSlots } from "@marismoon/shell"
 
 export interface WorkspacePageConfig {
   id: string

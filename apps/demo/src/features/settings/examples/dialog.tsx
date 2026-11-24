@@ -3,8 +3,8 @@
 import * as React from "react"
 
 import { Example, ExampleWrapper } from "./example"
-import { Button } from "@aries/ui/ui/button"
-import { Checkbox } from "@aries/ui/ui/checkbox"
+import { Button } from "@marismoon/ui/ui/button"
+import { Checkbox } from "@marismoon/ui/ui/checkbox"
 import {
   Dialog,
   DialogClose,
@@ -14,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@aries/ui/ui/dialog"
+} from "@marismoon/ui/ui/dialog"
 import {
   Field,
   FieldContent,
@@ -24,16 +24,19 @@ import {
   FieldSeparator,
   FieldSet,
   FieldTitle,
-} from "@aries/ui/ui/field"
-import { Input } from "@aries/ui/ui/input"
+} from "@marismoon/ui/ui/field"
+import { Input } from "@marismoon/ui/ui/input"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@aries/ui/ui/input-group"
-import { Kbd } from "@aries/ui/ui/kbd"
-import { NativeSelect, NativeSelectOption } from "@aries/ui/ui/native-select"
+} from "@marismoon/ui/ui/input-group"
+import { Kbd } from "@marismoon/ui/ui/kbd"
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@marismoon/ui/ui/native-select"
 import {
   Select,
   SelectContent,
@@ -42,12 +45,16 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "@aries/ui/ui/select"
-import { Switch } from "@aries/ui/ui/switch"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@aries/ui/ui/tabs"
-import { Textarea } from "@aries/ui/ui/textarea"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@aries/ui/ui/tooltip"
-import { IconPlaceholder } from "@aries/ui/icons/icon-placeholder"
+} from "@marismoon/ui/ui/select"
+import { Switch } from "@marismoon/ui/ui/switch"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@marismoon/ui/ui/tabs"
+import { Textarea } from "@marismoon/ui/ui/textarea"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@marismoon/ui/ui/tooltip"
+import { IconPlaceholder } from "@marismoon/ui/icons/icon-placeholder"
 
 export default function DialogExample() {
   return (

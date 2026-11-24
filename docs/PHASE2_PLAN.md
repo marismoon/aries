@@ -1,6 +1,6 @@
 # 阶段二方案：发包准备
 
-> 状态：**方案已确认（2026-11-24），尚未执行**。决定见第 11 节。下文包名按当前仓库写作 `@aries/*`，步骤 0 完成后统一为 `@marismoon/*`。本文延续 [REFACTOR_PLAN.md](REFACTOR_PLAN.md) 的执行规则（每步五项全绿再提交、每轮停下汇报）。与 [AGENTS.md](../AGENTS.md) 冲突时，以其视觉与主题红线为准。
+> 状态：**执行中**，轮次一（步骤 0–3）已完成，见第 9 节。决定见第 11 节。工作区包名已统一为 `@marismoon/*`；第 2 节实验记录保留当时的 `@aries/*` 写法。本文延续 [REFACTOR_PLAN.md](REFACTOR_PLAN.md) 的执行规则（每步五项全绿再提交、每轮停下汇报）。与 [AGENTS.md](../AGENTS.md) 冲突时，以其视觉与主题红线为准。
 
 ## 1. 目标与范围
 
@@ -93,7 +93,7 @@
 | 三 | 7 | Changesets 与 Trusted Publishing 发布工作流（先只发 `next`） | `ci: 新增发布工作流` |
 | 四 | 8 | 首次预发布与验收：用户先在 npm 创建组织 `marismoon` 并为两个包配置 Trusted Publishing，确认后再执行 | — |
 
-每一步都在独立分支完成，经 PR 合并；第 8 步前不做任何真实发布。
+每一轮在独立分支完成，轮内每步单独提交，经 PR 合并；第 8 步前不做任何真实发布。
 
 ## 10. 风险
 
@@ -102,7 +102,7 @@
 | 编译后 JS 的类名无法被 Tailwind 扫描，样式丢失 | 步骤 4 先做实验；外部消费者测试做 CSS 集合对比 |
 | 双入口让同仓开发与发布形态分叉 | 外部消费者测试每次 CI 都跑发布形态 |
 | 宿主装出两份 React | React 改为 peer，attw 与消费者测试覆盖 |
-| `marismoon` 在创建组织前被他人注册 | 尽早由用户在 npm 创建组织 `marismoon`；步骤 0 之前确认 |
+| `marismoon` 在创建组织前被他人注册 | 已解决：用户已于 2026-11-24 在 npm 创建组织 `marismoon` |
 | 字体拆分改变 Demo、Starter 的样式入口 | 拆分前后做 CSS 集合与 computed 变量对比，要求零差异 |
 
 ## 11. 已决事项（2026-11-24 由用户确认）
@@ -116,4 +116,4 @@
 | 发布凭证 | npm Trusted Publishing（OIDC）+ provenance | 仓库不存令牌；首发前由用户在 npm 绑定仓库与工作流 |
 | Aceternity 示例 | 保留在 Demo 并隔离 | `check:workspace` 增加检查：发布包与 Starter 不得包含该示例 |
 
-执行前仍需用户完成：在 npm 创建组织 `marismoon`（越早越好，避免被抢注）。
+用户已于 2026-11-24 在 npm 创建组织 `marismoon`。
