@@ -4,6 +4,7 @@ import type { ReactNode } from "react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 import { TooltipProvider } from "@marismoon/ui/ui/tooltip"
 
+import { AppShell, rightPanelKeyShortcuts } from "./components/AppShell"
 import {
   CommandPalette,
   CommandPaletteProvider,
@@ -28,6 +29,7 @@ import {
   type LanguageControlProps,
   type ShellLabels,
 } from "./types/labels"
+import type { WorkspaceNavigation } from "./types/nav"
 
 const labelKeys = [
   "openNavigation",
@@ -265,5 +267,82 @@ describe("CommandPaletteProvider", () => {
 describe("NavPills", () => {
   it("高亮弹簧至少临界阻尼，不回弹（AGENTS §6）", () => {
     expect(dampingRatio(navPillSpring)).toBeGreaterThanOrEqual(1)
+  })
+})
+
+describe("AppShell 右栏快捷键", () => {
+  const navigation: WorkspaceNavigation = {
+    modules: [
+      {
+        id: "bills",
+        label: "账单",
+        icon: null,
+        railPosition: "main",
+        visibleOnMobile: true,
+        items: [{ id: "list", label: "账单列表", path: "/bills" }],
+        commands: { triggerLabel: "搜索", placeholder: "搜索", items: [] },
+      },
+    ],
+    directoryDescription: "目录",
+    createLabel: "新建",
+    unavailableLabel: "暂不可用",
+    brandLabel: "Aries",
+    brandPath: "/",
+    brandMark: null,
+    userLabel: "示例用户",
+    avatarSrc: "",
+    avatarFallback: "A",
+  }
+
+  function renderPanelShell(onOpenChange: (open: boolean) => void) {
+    vi.stubGlobal("matchMedia", () => ({
+      matches: false,
+      addEventListener() {},
+      removeEventListener() {},
+    }))
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        observe() {}
+        disconnect() {}
+      }
+    )
+    return renderShell(
+      <AppShell
+        navigation={navigation}
+        routeModule="bills"
+        rightPanel={(open) => (open ? <aside>助手</aside> : null)}
+        onRightPanelOpenChange={(open) => onOpenChange(open)}
+        renderRightPanelTrigger={({ onToggle, keyShortcuts }) => (
+          <button
+            type="button"
+            aria-keyshortcuts={keyShortcuts}
+            onClick={(event) => onToggle(event.currentTarget)}
+          >
+            助手入口
+          </button>
+        )}
+      >
+        <p>内容</p>
+      </AppShell>
+    )
+  }
+
+  afterEach(() => vi.unstubAllGlobals())
+
+  it("⌘⇧K 以入口按钮为来源打开右栏，并向入口提供 aria-keyshortcuts", () => {
+    const onOpenChange = vi.fn()
+    renderPanelShell(onOpenChange)
+    expect(
+      screen
+        .getByRole("button", { name: "助手入口" })
+        .getAttribute("aria-keyshortcuts")
+    ).toBe(rightPanelKeyShortcuts)
+
+    fireEvent.keyDown(window, { key: "k", metaKey: true, shiftKey: true })
+    expect(onOpenChange).toHaveBeenCalledWith(true)
+
+    fireEvent.keyDown(window, { key: "k", metaKey: true })
+    expect(onOpenChange).toHaveBeenCalledTimes(1)
   })
 })

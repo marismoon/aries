@@ -48,7 +48,10 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 | `headerExtra` | 通过 `HeaderExtraContext` 传至页头操作区，在工作区控制按钮之前渲染。 |
 | `overlays` | 布局网格外，供宿主挂载浮层。 |
 | `rightPanel`、`rightPanelOpen` | 右栏位于网格外。传入节点时按受控开合状态挂载或卸载。传入 `(open) => ReactNode` 时每次都调用，由宿主保留退出动画。 |
-| `renderRightPanelTrigger`、`onRightPanelOpenChange` | 在图标栏渲染入口，接收 `{ open, onToggle }`。入口将触发元素交给 `onToggle`，宿主收到 `(open, launcher)` 后更新状态。 |
+| `renderRightPanelTrigger`、`onRightPanelOpenChange` | 在图标栏渲染入口，接收 `{ open, onToggle, keyShortcuts }`。入口将触发元素交给 `onToggle`，宿主收到 `(open, launcher)` 后更新状态；`keyShortcuts` 用于入口的 `aria-keyshortcuts`。 |
+| `rightPanelShortcut` | 默认 `true`：提供了 `rightPanel` 与 `onRightPanelOpenChange` 时，⌘⇧K / Ctrl+Shift+K（`rightPanelKeyShortcuts`）切换右栏；其他对话框打开时不响应。`launcher` 为当前焦点元素，焦点在页面上时为入口按钮。传 `false` 关闭。 |
+
+`useDocumentTitle(title)` 在浏览器中把 `document.title` 同步为传入的字符串，宿主通常写 `` useDocumentTitle(`${页面标题} · 产品名`) ``。
 
 页面用 `WorkspacePage` 接收页面元信息（`id`、已翻译的 `title`、可选 `description`、`breadcrumbs: readonly Breadcrumb[]`）和 `WorkspacePageSlots`。必填的 `Content` 与可选的 `Subtitle`、`BreadcrumbDetail`、`Summary` 均为组件。
 

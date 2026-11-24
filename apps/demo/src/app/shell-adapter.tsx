@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import {
   Link,
   NavLink,
@@ -14,6 +13,7 @@ import {
   RailTooltip,
   ShellRouterProvider,
   type ShellLinkProps,
+  useDocumentTitle,
 } from "@marismoon/shell"
 import { AppIcon, SolarSparkles } from "@marismoon/ui/icons"
 import { Button } from "@marismoon/ui/ui/button"
@@ -50,42 +50,7 @@ export function DemoShell() {
     close: closeCopilot,
   } = copilot
 
-  useEffect(() => {
-    document.title = `${pageName} · Aries`
-  }, [pageName])
-
-  useEffect(() => {
-    function handleCopilotShortcut(event: KeyboardEvent) {
-      if (
-        event.defaultPrevented ||
-        event.isComposing ||
-        event.repeat ||
-        (!event.metaKey && !event.ctrlKey) ||
-        !event.shiftKey ||
-        event.altKey ||
-        event.key.toLowerCase() !== "k"
-      )
-        return
-
-      if (document.querySelector('[role="dialog"][data-state="open"]')) return
-
-      event.preventDefault()
-      if (copilotOpen) {
-        closeCopilot()
-        return
-      }
-
-      const focused = document.activeElement
-      const origin =
-        focused instanceof HTMLElement && focused !== document.body
-          ? focused
-          : document.querySelector<HTMLElement>('[data-copilot-trigger="rail"]')
-      openCopilotFrom(origin)
-    }
-
-    window.addEventListener("keydown", handleCopilotShortcut)
-    return () => window.removeEventListener("keydown", handleCopilotShortcut)
-  }, [copilotOpen, openCopilotFrom, closeCopilot])
+  useDocumentTitle(`${pageName} · Aries`)
 
   return (
     <ShellRouterProvider
@@ -108,7 +73,7 @@ export function DemoShell() {
             if (open) openCopilotFrom(launcher)
             else closeCopilot()
           }}
-          renderRightPanelTrigger={({ open, onToggle }) => (
+          renderRightPanelTrigger={({ open, onToggle, keyShortcuts }) => (
             <RailTooltip label={tl("AI 助手")}>
               <Button
                 type="button"
@@ -119,7 +84,7 @@ export function DemoShell() {
                 aria-label={tl("Aries 智算助手")}
                 aria-expanded={open}
                 aria-controls={open ? copilot.panelId : undefined}
-                aria-keyshortcuts="Meta+Shift+K Control+Shift+K"
+                aria-keyshortcuts={keyShortcuts}
                 onClick={(event) => onToggle(event.currentTarget)}
               >
                 <AppIcon icon={SolarSparkles} size={22} aria-hidden="true" />

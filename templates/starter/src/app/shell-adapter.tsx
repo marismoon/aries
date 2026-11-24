@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import {
   Link,
@@ -13,6 +12,7 @@ import {
   ShellRouterProvider,
   type ShellLinkProps,
   type WorkspaceNavigation,
+  useDocumentTitle,
 } from "@marismoon/shell"
 import { AppIcon } from "@marismoon/ui/icons"
 
@@ -36,9 +36,7 @@ export function StarterShell() {
     workspaceModules.find(({ id }) => id === routeId) ?? workspaceModules[0]
   const title = t(page.titleKey)
 
-  useEffect(() => {
-    document.title = `${title} · Aries`
-  }, [title])
+  useDocumentTitle(`${title} · Aries`)
 
   const navigation: WorkspaceNavigation = {
     modules: workspaceModules.map(

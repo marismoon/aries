@@ -1,4 +1,9 @@
-export { type AppShellProps, AppShell } from "./components/AppShell"
+export {
+  type AppShellProps,
+  AppShell,
+  rightPanelKeyShortcuts,
+} from "./components/AppShell"
+export { useDocumentTitle } from "./hooks/use-document-title"
 export {
   type CommandItem,
   type ModuleCommands,

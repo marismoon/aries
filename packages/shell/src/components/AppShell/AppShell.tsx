@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react"
+import { useEffect, useEffectEvent, useState, type ReactNode } from "react"
 import { AppIcon, SolarPanelLeftOpen } from "@marismoon/ui/icons"
 import { Button } from "@marismoon/ui/ui/button"
 import {
@@ -58,6 +58,21 @@ function MobileDirectory({
   )
 }
 
+/** Toggles the right panel, mirroring the command palette's ⌘K / Ctrl+K. */
+export const rightPanelKeyShortcuts = "Meta+Shift+K Control+Shift+K"
+
+function isRightPanelShortcut(event: KeyboardEvent) {
+  return (
+    !event.defaultPrevented &&
+    !event.isComposing &&
+    !event.repeat &&
+    (event.metaKey || event.ctrlKey) &&
+    event.shiftKey &&
+    !event.altKey &&
+    event.key.toLowerCase() === "k"
+  )
+}
+
 export interface AppShellProps {
   navigation: WorkspaceNavigation
   routeModule: string
@@ -71,7 +86,12 @@ export interface AppShellProps {
   renderRightPanelTrigger?: (props: {
     open: boolean
     onToggle: (launcher: HTMLElement) => void
+    /** For the trigger's `aria-keyshortcuts`. */
+    keyShortcuts?: string
   }) => ReactNode
+  /** ⌘⇧K / Ctrl+Shift+K toggles the right panel (default true when a panel
+   * and `onRightPanelOpenChange` are supplied). */
+  rightPanelShortcut?: boolean
 }
 
 export function AppShell({
@@ -84,6 +104,7 @@ export function AppShell({
   rightPanelOpen = false,
   onRightPanelOpenChange,
   renderRightPanelTrigger,
+  rightPanelShortcut = true,
 }: AppShellProps) {
   const { activePath, locationKey = activePath } = useShellRouter()
   const labels = useShellLabels()
@@ -111,6 +132,30 @@ export function AppShell({
     setSelection({ locationKey, module })
   }
 
+  const shortcutEnabled =
+    rightPanelShortcut && rightPanel !== undefined && !!onRightPanelOpenChange
+  const onShortcut = useEffectEvent((event: KeyboardEvent) => {
+    if (!isRightPanelShortcut(event)) return
+    // Leave the keys alone while another dialog (e.g. the command palette) is open.
+    if (document.querySelector('[role="dialog"][data-state="open"]')) return
+    const focused = document.activeElement
+    const launcher =
+      focused instanceof HTMLElement && focused !== document.body
+        ? focused
+        : document.querySelector<HTMLElement>(
+            "[data-right-panel-trigger] :is(button, a)"
+          )
+    if (!launcher) return
+    event.preventDefault()
+    onRightPanelOpenChange?.(!rightPanelOpen, launcher)
+  })
+
+  useEffect(() => {
+    if (!shortcutEnabled) return
+    window.addEventListener("keydown", onShortcut)
+    return () => window.removeEventListener("keydown", onShortcut)
+  }, [shortcutEnabled])
+
   return (
     <CommandPaletteProvider commands={activeModule.commands}>
       <div className="app-shell" data-nav-collapsed={!navExpanded}>
@@ -123,11 +168,20 @@ export function AppShell({
           navExpanded={navExpanded}
           onToggleNav={() => setNavExpanded((expanded) => !expanded)}
           onSelectModule={selectModule}
-          rightPanelTrigger={renderRightPanelTrigger?.({
-            open: rightPanelOpen,
-            onToggle: (launcher) =>
-              onRightPanelOpenChange?.(!rightPanelOpen, launcher),
-          })}
+          rightPanelTrigger={
+            renderRightPanelTrigger && (
+              <span className="contents" data-right-panel-trigger="">
+                {renderRightPanelTrigger({
+                  open: rightPanelOpen,
+                  onToggle: (launcher) =>
+                    onRightPanelOpenChange?.(!rightPanelOpen, launcher),
+                  keyShortcuts: shortcutEnabled
+                    ? rightPanelKeyShortcuts
+                    : undefined,
+                })}
+              </span>
+            )
+          }
           mobileDirectory={
             <MobileDirectory
               navigation={navigation}
