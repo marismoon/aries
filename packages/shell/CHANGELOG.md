@@ -1,5 +1,13 @@
 # @marismoon/shell
 
+## 0.1.0-next.1
+
+### Patch Changes
+
+- 首个通过 Release 工作流（npm Trusted Publishing，附带 provenance）发布的版本，包内容与 0.1.0-next.0 相同。
+- Updated dependencies
+  - @marismoon/ui@0.1.0-next.1
+
 ## 0.1.0-next.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@marismoon/shell",
-  "version": "0.1.0-next.0",
+  "version": "0.1.0-next.1",
   "description": "Aries 工作区外壳：三列布局、导航、页头与命令面板，路由与文案由宿主注入。",
   "keywords": [
     "react",
