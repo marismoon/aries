@@ -23,9 +23,13 @@ test("组件预览是两级菜单，每个二级页面展示对应组件", async
   for (const [label, path] of pages) {
     await directory.getByRole("link", { name: label, exact: true }).click()
     await expect(page).toHaveURL(new RegExp(`${path}$`))
+    // The URL changes at once, but the link turns current only after the lazy
+    // preview page has loaded and rendered. These are the heaviest pages in the
+    // demo (the navigation page takes ~0.9s locally); on a cold Vite dev server
+    // in CI, shared by two workers, that can pass the default 5s.
     await expect(
       directory.getByRole("link", { name: label, exact: true })
-    ).toHaveAttribute("aria-current", "page")
+    ).toHaveAttribute("aria-current", "page", { timeout: 20_000 })
     await expect(page.getByRole("main")).toBeVisible()
   }
 })
