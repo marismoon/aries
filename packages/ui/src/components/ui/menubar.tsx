@@ -56,7 +56,7 @@ function MenubarTrigger({
     <MenubarPrimitive.Trigger
       data-slot="menubar-trigger"
       className={cn(
-        "flex h-7 items-center rounded-full px-3 text-xs font-[620] text-muted-foreground outline-hidden select-none hover:bg-(--sidebar-item-hover) hover:text-foreground aria-expanded:bg-(--layout-control) aria-expanded:text-foreground pointer-coarse:h-9",
+        "flex h-7 items-center rounded-full px-3 text-xs font-[620] text-muted-foreground outline-hidden select-none hover:bg-(--sidebar-item-hover) hover:text-foreground aria-expanded:bg-[var(--item-selected,var(--layout-control))] aria-expanded:text-foreground pointer-coarse:h-9",
         className
       )}
       {...props}

@@ -292,7 +292,8 @@
 }
 
 .activity-toolbar [data-slot="tabs-trigger"][aria-selected="true"] {
-  background: var(--layout-control);
+  /* Light: the shared selected fill; dark keeps the control surface. */
+  background: var(--item-selected, var(--layout-control));
   color: var(--foreground);
 }
 

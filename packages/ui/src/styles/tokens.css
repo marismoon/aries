@@ -312,6 +312,14 @@
    (or an unknown) palette is set, and its dark values are the `.dark` base. */
 :root:not(.dark),
 [data-palette="telemedicine"]:not(.dark) {
+  /* Hover and selected fills of pill items that sit on a surface (tabs, menu
+     and navigation triggers, pagination): shares of the primary, about 1.10
+     and 1.20 to 1 against a card. Light only: this block applies to every
+     light palette, and dark leaves both undefined, so each component falls
+     back to the fill named in its own class. */
+  --item-hover: color-mix(in srgb, var(--primary) 9%, transparent);
+  --item-selected: color-mix(in srgb, var(--primary) 15%, transparent);
+  --sidebar-item-hover: var(--item-hover);
   --background: #f4f8ff;
   --foreground: #1e293b;
   --card: rgb(250 252 255 / 68%);
