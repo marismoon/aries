@@ -190,11 +190,11 @@
   --floating-shadow: 0 18px 60px rgb(41 24 74 / 18%);
   --overlay: rgb(28 16 52 / 42%);
 
-  --swatch-telemedicine: #4f8cff;
-  --swatch-mental-health: #7c9eb2;
-  --swatch-pet-adoption: #e07a5f;
-  --swatch-health-wellness: #22c55e;
-  --swatch-amber-sand: #d9901a;
+  --swatch-telemedicine: #306bdb;
+  --swatch-mental-health: #4c7388;
+  --swatch-pet-adoption: #b6543a;
+  --swatch-health-wellness: #008136;
+  --swatch-amber-sand: #966b05;
   --primary: #5b3df5;
   --primary-foreground: #fff;
   --primary-hover: color-mix(
@@ -329,7 +329,7 @@
   --secondary: #dfe7f1;
   --secondary-foreground: #223a59;
   --muted: #e6ecf4;
-  --muted-foreground: #64748b;
+  --muted-foreground: #5a6a81;
   --recess: rgb(240 246 255 / 55%);
   --border: #d9e6fb;
   --border-subtle: rgb(58 85 120 / 14%);
@@ -337,17 +337,17 @@
   --surface-edge: rgb(245 249 255 / 86%);
   --overlay: rgb(17 29 44 / 42%);
 
-  --primary: #4f8cff;
-  --primary-hover: #3d7af0;
+  --primary: #306bdb;
+  --primary-hover: #215bca;
   --accent: color-mix(in srgb, #4f8cff 13%, white);
   --rail-logo-bg: linear-gradient(135deg, #79a8ff, #00c9a7);
   --accent-foreground: #2563d8;
-  --ring: #4f8cff;
-  --chart-1: #4f8cff;
-  --chart-2: #00c9a7;
-  --chart-3: #9cc0ff;
-  --chart-4: #5fe0c8;
-  --chart-5: #d6e4ff;
+  --ring: #306bdb;
+  --chart-1: #3f75dd;
+  --chart-2: #039580;
+  --chart-3: #59459f;
+  --chart-4: #007590;
+  --chart-5: #1d3f60;
   --environment-top: rgb(79 140 255 / 28%);
   --environment-bottom: rgb(0 201 167 / 26%);
   --environment-side: rgb(120 190 255 / 22%);
@@ -359,6 +359,10 @@
   --hero-muted: #3d4f66;
   --hero-bar: linear-gradient(180deg, #79a8ff, #4f8cff);
   --hero-bar-current: #00c9a7;
+
+  /* Status colours keep >=30deg (OKLCH hue) from the brand primary; see DESIGN_SYSTEM §2.5. */
+  --info: #8059bb;
+  --info-bg: #f5f1fe;
 }
 
 .dark[data-palette="telemedicine"] {
@@ -403,7 +407,7 @@
   --secondary: #dfeaf1;
   --secondary-foreground: #224559;
   --muted: #e6eff4;
-  --muted-foreground: #718096;
+  --muted-foreground: #5c6b80;
   --recess: rgb(240 249 255 / 55%);
   --border: #d8e4ec;
   --border-subtle: rgb(58 98 120 / 14%);
@@ -411,20 +415,20 @@
   --surface-edge: rgb(245 251 255 / 86%);
   --overlay: rgb(17 34 44 / 42%);
 
-  --primary: #6a92a8;
-  --primary-hover: #5a8197;
-  --accent: color-mix(in srgb, #6a92a8 13%, white);
-  --rail-logo-bg: linear-gradient(135deg, #a3c0d0, #a8d5ba);
-  --accent-foreground: #3f6a80;
-  --ring: #7c9eb2;
-  --chart-1: #7c9eb2;
-  --chart-2: #a8d5ba;
-  --chart-3: #b8a9c9;
-  --chart-4: #9bbccd;
-  --chart-5: #dce9ef;
+  --primary: #4c7388;
+  --primary-hover: #3e6579;
+  --accent: color-mix(in srgb, #876ca5 13%, white);
+  --rail-logo-bg: linear-gradient(135deg, #a3c0d0, #b8a9c9);
+  --accent-foreground: #715390;
+  --ring: #4c7388;
+  --chart-1: #447c99;
+  --chart-2: #876ca5;
+  --chart-3: #437656;
+  --chart-4: #1e5561;
+  --chart-5: #453a64;
   --environment-top: rgb(124 158 178 / 30%);
   --environment-bottom: rgb(168 213 186 / 34%);
-  --environment-side: rgb(184 169 201 / 22%);
+  --environment-side: rgb(184 169 201 / 30%);
   --environment-base: linear-gradient(37deg, #dfeef6, #f7fbfd 55%, #ecf9f0);
   --hero-start: #daecf6;
   --hero-end: rgb(250 253 255 / 52%);
@@ -432,7 +436,7 @@
   --hero-ink: var(--foreground);
   --hero-muted: #3d5766;
   --hero-bar: linear-gradient(180deg, #a3c0d0, #7c9eb2);
-  --hero-bar-current: #5fa27c;
+  --hero-bar-current: #876ca5;
 }
 
 .dark[data-palette="mental-health"] {
@@ -440,8 +444,8 @@
   --primary: #9fc4d8;
   --primary-foreground: #0f2530;
   --primary-surface: var(--primary);
-  --accent: color-mix(in srgb, var(--primary) 20%, var(--background));
-  --accent-foreground: #cfe6f2;
+  --accent: color-mix(in srgb, var(--accent-source) 20%, var(--background));
+  --accent-foreground: #e4dbf4;
   --ring: #9fc4d8;
   --nav-active-bg: var(--accent);
   --nav-active-fg: var(--accent-foreground);
@@ -452,13 +456,15 @@
   --chart-5: #517588;
   --environment-top: hsl(200 45% 52% / 42%);
   --environment-bottom: hsl(160 35% 45% / 34%);
-  --environment-side: hsl(250 28% 55% / 18%);
+  --environment-side: hsl(265 35% 60% / 30%);
   --hero-start: color-mix(in srgb, var(--primary) 34%, transparent);
   --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
   --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
   --hero-muted: #b6cbd8;
   --hero-bar: linear-gradient(180deg, #8fb6cb, #7c9eb2);
-  --hero-bar-current: #a8d5ba;
+  --hero-bar-current: #b4a5d0;
+
+  --accent-source: #b4a5d0;
 }
 
 [data-palette="pet-adoption"]:not(.dark) {
@@ -477,7 +483,7 @@
   --secondary: #f1e6df;
   --secondary-foreground: #593622;
   --muted: #f4ebe6;
-  --muted-foreground: #6b6e8a;
+  --muted-foreground: #656884;
   --recess: rgb(255 245 240 / 55%);
   --border: #efe4dc;
   --border-subtle: rgb(120 81 58 / 14%);
@@ -485,17 +491,17 @@
   --surface-edge: rgb(255 249 245 / 86%);
   --overlay: rgb(44 27 17 / 42%);
 
-  --primary: #e07a5f;
-  --primary-hover: #cf6a4f;
+  --primary: #b6543a;
+  --primary-hover: #a5452b;
   --accent: color-mix(in srgb, #e07a5f 13%, white);
   --rail-logo-bg: linear-gradient(135deg, #eb9a82, #81b29a);
-  --accent-foreground: #b8512f;
-  --ring: #e07a5f;
-  --chart-1: #e07a5f;
-  --chart-2: #81b29a;
-  --chart-3: #f2cc8f;
-  --chart-4: #d99a7c;
-  --chart-5: #f7ddd2;
+  --accent-foreground: #b34d2b;
+  --ring: #b6543a;
+  --chart-1: #ba5a41;
+  --chart-2: #50886b;
+  --chart-3: #857430;
+  --chart-4: #5a4e72;
+  --chart-5: #215243;
   --environment-top: rgb(224 122 95 / 28%);
   --environment-bottom: rgb(129 178 154 / 30%);
   --environment-side: rgb(244 196 150 / 24%);
@@ -507,6 +513,12 @@
   --hero-muted: #664c3d;
   --hero-bar: linear-gradient(180deg, #eb9a82, #e07a5f);
   --hero-bar-current: #81b29a;
+
+  /* Status colours keep >=30deg (OKLCH hue) from the brand primary; see DESIGN_SYSTEM §2.5. */
+  --danger: #b9416f;
+  --danger-bg: #ffeff3;
+  --warning: #9a6105;
+  --warning-bg: #fef1e3;
 }
 
 .dark[data-palette="pet-adoption"] {
@@ -521,8 +533,8 @@
   --nav-active-fg: var(--accent-foreground);
   --chart-1: #f2a08a;
   --chart-2: #8ccaa9;
-  --chart-3: #b5624b;
-  --chart-4: #f0c078;
+  --chart-3: #ab9bcb;
+  --chart-4: #4e8e80;
   --chart-5: #a75b47;
   --environment-top: hsl(14 65% 50% / 30%);
   --environment-bottom: hsl(32 70% 50% / 24%);
@@ -551,7 +563,7 @@
   --secondary: #dff1e5;
   --secondary-foreground: #225934;
   --muted: #e6f4eb;
-  --muted-foreground: #64748b;
+  --muted-foreground: #5d6d84;
   --recess: rgb(240 255 245 / 55%);
   --border: #d8eadd;
   --border-subtle: rgb(58 120 79 / 14%);
@@ -559,17 +571,17 @@
   --surface-edge: rgb(245 255 248 / 86%);
   --overlay: rgb(17 44 26 / 42%);
 
-  --primary: #16a34a;
-  --primary-hover: #15913f;
+  --primary: #008136;
+  --primary-hover: #00702e;
   --accent: color-mix(in srgb, #16a34a 13%, white);
   --rail-logo-bg: linear-gradient(135deg, #5fdc8c, #87ceeb);
   --accent-foreground: #127a3a;
-  --ring: #22c55e;
-  --chart-1: #22c55e;
-  --chart-2: #87ceeb;
-  --chart-3: #90ee90;
-  --chart-4: #5dade2;
-  --chart-5: #d3f2de;
+  --ring: #008136;
+  --chart-1: #219245;
+  --chart-2: #2e84ab;
+  --chart-3: #4e6103;
+  --chart-4: #4f6097;
+  --chart-5: #5b4c0d;
   --environment-top: rgb(34 197 94 / 26%);
   --environment-bottom: rgb(135 206 235 / 32%);
   --environment-side: rgb(144 238 144 / 24%);
@@ -581,6 +593,10 @@
   --hero-muted: #3d664b;
   --hero-bar: linear-gradient(180deg, #5fdc8c, #22c55e);
   --hero-bar-current: #5dade2;
+
+  /* Status colours keep >=30deg (OKLCH hue) from the brand primary; see DESIGN_SYSTEM §2.5. */
+  --success: #037b79;
+  --success-bg: #defaf9;
 }
 
 .dark[data-palette="health-wellness"] {
@@ -637,7 +653,7 @@
   --secondary: #f1eadf;
   --secondary-foreground: #594322;
   --muted: #f4eee6;
-  --muted-foreground: #8b7c64;
+  --muted-foreground: #786951;
   --recess: rgb(255 250 240 / 55%);
   --border: #fbefd9;
   --border-subtle: rgb(120 95 58 / 14%);
@@ -645,19 +661,19 @@
   --surface-edge: rgb(255 251 245 / 86%);
   --overlay: rgb(44 33 17 / 42%);
 
-  --primary: #ffc84f;
-  --primary-hover: #f0b93d;
-  --accent: color-mix(in srgb, #ffc84f 13%, white);
-  --rail-logo-bg: linear-gradient(135deg, #ffd479, #c9001b);
-  --accent-foreground: #d8a025;
-  --ring: #ffc84f;
-  --chart-1: #ffc84f;
-  --chart-2: #c9001b;
-  --chart-3: #ffde9c;
-  --chart-4: #e05f73;
-  --chart-5: #fff2d6;
-  --environment-top: rgb(255 200 79 / 28%);
-  --environment-bottom: rgb(201 0 27 / 26%);
+  --primary: #966b05;
+  --primary-hover: #845e03;
+  --accent: color-mix(in srgb, #966b05 13%, white);
+  --rail-logo-bg: linear-gradient(135deg, #f0c45a, #20857b);
+  --accent-foreground: #815b04;
+  --ring: #966b05;
+  --chart-1: #ae7c02;
+  --chart-2: #20857b;
+  --chart-3: #3f6337;
+  --chart-4: #756a24;
+  --chart-5: #044b55;
+  --environment-top: rgb(240 190 70 / 28%);
+  --environment-bottom: rgb(32 133 123 / 18%);
   --environment-side: rgb(255 190 120 / 22%);
   --environment-base: linear-gradient(37deg, #f6eddf, #fdfbf7 55%, #f9ecef);
   --hero-start: #f6ebda;
@@ -665,8 +681,14 @@
   --hero-edge: #e3d1b5;
   --hero-ink: var(--foreground);
   --hero-muted: #66553d;
-  --hero-bar: linear-gradient(180deg, #ffd479, #ffc84f);
-  --hero-bar-current: #c9001b;
+  --hero-bar: linear-gradient(180deg, #e0b45c, #ae7c02);
+  --hero-bar-current: #20857b;
+
+  /* Status colours keep >=30deg (OKLCH hue) from the brand primary; see DESIGN_SYSTEM §2.5. */
+  --danger: #b9416f;
+  --danger-bg: #ffeff3;
+  --warning: #ab561d;
+  --warning-bg: #fef0e9;
 }
 
 .dark[data-palette="amber-sand"] {
@@ -680,9 +702,9 @@
   --nav-active-bg: var(--accent);
   --nav-active-fg: var(--accent-foreground);
   --chart-1: #ffd47a;
-  --chart-2: #d92f49;
+  --chart-2: #5cc8b4;
   --chart-3: #c9a14a;
-  --chart-4: #d97c5f;
+  --chart-4: #b9b46a;
   --chart-5: #8c6c2d;
   --environment-top: hsl(40 85% 55% / 44%);
   --environment-bottom: hsl(12 80% 42% / 38%);
@@ -692,24 +714,7 @@
   --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
   --hero-muted: #d8cab6;
   --hero-bar: linear-gradient(180deg, #ffd26b, #ffc84f);
-  --hero-bar-current: #e02f49;
-}
-
-/* Light-mode correction where a plain hue rotation is too light for text on
-   the primary (amber): same ladder, deeper primary. */
-[data-palette="amber-sand"]:not(.dark) {
-  --primary: #b36b00;
-  --primary-hover: #9c5d00;
-  --accent: color-mix(in srgb, #b36b00 13%, white);
-  --accent-foreground: #8a5300;
-  --ring: #b36b00;
-  --chart-1: #d9901a;
-  --chart-2: #d9486a;
-  --hero-bar: linear-gradient(180deg, #f0b44a, #d9901a);
-  --hero-bar-current: #d9486a;
-  --rail-logo-bg: linear-gradient(135deg, #f0b44a, #d9486a);
-  --environment-top: rgb(240 170 40 / 28%);
-  --environment-bottom: rgb(217 72 106 / 22%);
+  --hero-bar-current: #5cc8b4;
 }
 
 .app-shell {

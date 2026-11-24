@@ -37,7 +37,11 @@
   --floating-shadow: 0 0 0 1px var(--border);
 
   /* Accent surfaces stay quiet: the brand colour is for the active state only. */
-  --accent: color-mix(in srgb, var(--primary) 14%, var(--background));
+  --accent: color-mix(
+    in srgb,
+    var(--accent-source, var(--primary)) 14%,
+    var(--background)
+  );
   --hero-start: var(--card);
   --hero-end: var(--card);
   --hero-edge: var(--border);

@@ -368,7 +368,7 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
 })
 
 for (const mode of ["light", "dark"] as const) {
-  test(`${mode} 下所有品牌覆盖表面、控件与图表，业务状态色保持独立`, async ({
+  test(`${mode} 下所有品牌覆盖表面、控件与图表，状态色与品牌色保持色相间隔`, async ({
     page,
   }) => {
     await page.emulateMedia({ colorScheme: mode, reducedMotion: "reduce" })
@@ -397,13 +397,58 @@ for (const mode of ["light", "dark"] as const) {
       "--warning-bg",
       "--danger",
       "--danger-bg",
+      "--info",
+      "--info-bg",
     ]
+    // OKLCH hue of each resolved token (DESIGN_SYSTEM §2.5): the primary keeps
+    // >=30° from danger and warning and >=25° from success and info; chart
+    // series keep >=25° from danger and warning.
+    const readHues = (names: string[]) =>
+      root.evaluate((element, tokens) => {
+        const canvas = document.createElement("canvas")
+        canvas.width = canvas.height = 1
+        const context = canvas.getContext("2d", { willReadFrequently: true })!
+        const probe = document.createElement("span")
+        // Global colour transitions would report the previous token's value.
+        probe.style.transition = "none"
+        element.querySelector("body")?.append(probe)
+        const linear = (v: number) => {
+          v /= 255
+          return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4
+        }
+        const hues = tokens.map((token) => {
+          probe.style.color = `var(${token})`
+          context.clearRect(0, 0, 1, 1)
+          context.fillStyle = getComputedStyle(probe).color
+          context.fillRect(0, 0, 1, 1)
+          const [r, g, b] = Array.from(context.getImageData(0, 0, 1, 1).data)
+            .slice(0, 3)
+            .map(linear) as [number, number, number]
+          const l = Math.cbrt(
+            0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b
+          )
+          const m = Math.cbrt(
+            0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b
+          )
+          const s = Math.cbrt(
+            0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b
+          )
+          const a = 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s
+          const bb = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s
+          return ((Math.atan2(bb, a) * 180) / Math.PI + 360) % 360
+        })
+        probe.remove()
+        return hues
+      }, names)
+    const hueGap = (a: number, b: number) => {
+      const d = Math.abs(a - b) % 360
+      return Math.min(d, 360 - d)
+    }
     const readTokens = (names: string[]) =>
       root.evaluate((element, tokens) => {
         const styles = getComputedStyle(element)
         return tokens.map((token) => styles.getPropertyValue(token).trim())
       }, names)
-    const statusColors = await readTokens(statusTokens)
     const brandStyles: string[][] = []
 
     const cycle = brandCycle
@@ -414,7 +459,42 @@ for (const mode of ["light", "dark"] as const) {
       await expect(root).toHaveClass(new RegExp(`\\b${mode}\\b`))
       await expect(page.getByRole("menu")).toHaveCount(0)
       brandStyles.push(await readTokens(brandTokens))
-      expect(await readTokens(statusTokens)).toEqual(statusColors)
+      expect(
+        await readTokens(statusTokens),
+        `${value} 状态色有定义`
+      ).not.toContain("")
+      const [primary, success, warning, danger, info, ...charts] =
+        (await readHues([
+          "--primary",
+          "--success",
+          "--warning",
+          "--danger",
+          "--info",
+          "--chart-1",
+          "--chart-2",
+          "--chart-3",
+          "--chart-4",
+          "--chart-5",
+        ])) as [number, number, number, number, number, ...number[]]
+      for (const [name, hue, min] of [
+        ["danger", danger, 30],
+        ["warning", warning, 30],
+        ["success", success, 25],
+        ["info", info, 25],
+      ] as const) {
+        expect(
+          hueGap(primary, hue),
+          `${value} 主色与 ${name}`
+        ).toBeGreaterThanOrEqual(min)
+      }
+      for (const [index, hue] of charts.entries()) {
+        for (const alarm of [danger, warning]) {
+          expect(
+            hueGap(hue, alarm),
+            `${value} chart-${index + 1} 与告警色`
+          ).toBeGreaterThanOrEqual(25)
+        }
+      }
     }
 
     for (const [index, token] of brandTokens.entries()) {

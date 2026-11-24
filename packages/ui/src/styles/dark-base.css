@@ -19,7 +19,9 @@
   --dark-hue: 218;
 }
 .dark[data-palette="mental-health"] {
-  --dark-hue: 200;
+  /* Lavender-tinted canvas keeps it apart from telemedicine (218). */
+  --dark-hue: 262;
+  --dark-tint: 9%;
 }
 .dark[data-palette="pet-adoption"] {
   --dark-hue: 20;
@@ -61,7 +63,7 @@
   --border-subtle: rgb(255 255 255 / 10%);
   --border: rgb(255 255 255 / 18%);
   --layout-control-border: rgb(255 255 255 / 22%);
-  --input: rgb(255 255 255 / 32%);
+  --input: rgb(255 255 255 / 34%);
   --surface-edge: rgb(255 255 255 / 15%);
   /* Text-field edge: a real 1px border (see text-field.css), never a shadow ring. */
   --field-edge: var(--input);
@@ -133,4 +135,21 @@
       transparent 75%
     ),
     var(--environment-base);
+}
+
+/* Palette status overrides: where a brand hue sits within 30deg (OKLCH) of a
+   status colour, that palette moves the status colour (DESIGN_SYSTEM §2.5).
+   The -bg tints follow through the color-mix above. */
+:root.dark[data-palette="telemedicine"] {
+  --info: #b093e5;
+}
+:root.dark[data-palette="pet-adoption"] {
+  --danger: #e480a6;
+}
+:root.dark[data-palette="health-wellness"] {
+  --success: #1dbcb5;
+}
+:root.dark[data-palette="amber-sand"] {
+  --danger: #e884aa;
+  --warning: #e28f5e;
 }

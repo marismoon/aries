@@ -27,15 +27,15 @@
 
 | 项 | 规则 |
 | --- | --- |
-| 色相 | 每个主题只声明 `--dark-hue`（0–360 的色相角，不带单位）；染色饱和度统一 `--dark-tint: 6%` |
+| 色相 | 每个主题声明 `--dark-hue`（0–360 的色相角，不带单位）；染色饱和度默认 `--dark-tint: 6%`。静心雾蓝用薰衣草色相 262 与 9%，以便在 clean 下与远程医疗蓝（218）区分 |
 | 表面亮度（HSL L；clean 取用，glass 见 §2.2） | recess 8 < 画布（`--background`）12 < 卡片 15 < 控件 19 < 浮层 23；台阶小，主要靠发丝线分层 |
 | 文字 | 正文 L96、次级 L70（均带主题色相），不使用纯白 |
-| 发丝线（白色 alpha） | `--border-subtle` 10%、`--border` 18%、`--layout-control-border` 22%、`--input` 32%、`--surface-edge` 15% |
-| 语义色 | `--success #6ee7a8`、`--warning #fbd075`、`--danger #ff8fa3`、`--info #8fb8ff`；背景为该色 14% 与透明的混色；全主题固定 |
+| 发丝线（白色 alpha） | `--border-subtle` 10%、`--border` 18%、`--layout-control-border` 22%、`--input` 34%（对画布 ≥ 3:1）、`--surface-edge` 15% |
+| 语义色 | `--success #6ee7a8`、`--warning #fbd075`、`--danger #ff8fa3`、`--info #8fb8ff`；背景为该色 14% 与透明的混色。默认全主题一致；品牌色与某个状态色撞色时，该主题在 `dark-base.css` 末尾用 `:root.dark[data-palette="…"]` 覆盖该状态色（§2.5） |
 | 遮罩 | `--overlay`，带色相的近黑 62%；不写 `bg-black/…` |
 | 浏览器自绘部件 | 暗色下 `scrollbar-color` 为白色 24% 的滑块、透明轨道 |
 
-主题块（`tokens.css` 的 `.dark[data-palette="…"]`）**只提供**：主色与前景、强调、`--chart-1…8`、极光 `--environment-*`、hero 令牌；表面、边框、语义色统一由本节定义。
+主题块（`tokens.css` 的 `.dark[data-palette="…"]`）**只提供**：主色与前景、强调（可用 `--accent-source` 指定强调色的混色来源，默认取主色，glass 与 clean 共用）、`--chart-1…5`、极光 `--environment-*`、hero 令牌；表面、边框、语义色统一由本节定义（状态色的例外见 §2.5）。
 
 ### 2.2 glass 材质
 
@@ -49,15 +49,20 @@
 
 ### 2.4 控件边框
 
-- 暗色下文本控件（`Input`、`Textarea`、`InputGroup`、`NativeSelect`、`Combobox` chips）静止态是**真实 1px 边框**，颜色 `--field-edge`（= `--input`，32%）；聚焦、报错态保持各自的边框处理，不叠加。
+- 暗色下文本控件（`Input`、`Textarea`、`InputGroup`、`NativeSelect`、`Combobox` chips）静止态是**真实 1px 边框**，颜色 `--field-edge`（= `--input`，34%）；聚焦、报错态保持各自的边框处理，不叠加。
 - `--field-shadow` 是外阴影（glass）/ 按钮与开关的发丝线环（clean），**不要**用它给文本控件画边。文本控件读取 `--field-text-shadow`：clean 下为 `none`，glass 下未定义，回退为 `--field-shadow`（外阴影）。
 - 自带边框的组件（AI 助手输入框的流光环）要把 `--field-shadow` 重置为外阴影，避免出现第二条分离的线。
 - 边框叠加检查：任何元素不应同时有 1px `border` 与 1px 内描边（如 `.hero-surface` 在 clean 下 `--hero-outline: none`）。
 
-### 2.5 对比度底线
+### 2.5 对比度与色相底线（亮色与暗色都适用）
 
-- 正文 / 前景对卡片 ≥ 7:1；次级文字对卡片、控件、浮层 ≥ 4.5:1；主色当文字对卡片 ≥ 4.5:1；主色前景对主色 ≥ 4.5:1。
-- 图表系列色对卡片 ≥ 3:1；文本控件边缘对卡片 ≈ 2.8:1 以上；`--border` 对卡片 ≥ 1.5:1。
+本节约束**每套主题的亮色与暗色**（glass、clean）。新增或调整主题后按本节逐项复核，`e2e/theme.spec.ts` 自动校验色相间隔。
+
+- 正文 / 前景对卡片 ≥ 7:1；次级文字（`--muted-foreground`）对卡片、控件、浮层与状态色浅底 ≥ 4.5:1；主色当文字对画布与卡片 ≥ 4.5:1；主色前景对主色 ≥ 4.5:1（亮色主色因此偏深，浅而亮的品牌色只用于图表、极光、Logo 与数据大字）。
+- 强调文字对强调底 ≥ 4.5:1；状态色文字对其浅底 ≥ 4.5:1；聚焦环对画布 ≥ 3:1。
+- 图表系列色 `--chart-1…5` 对卡片 ≥ 3:1，且是一组**分类色**：五个系列之间要能分辨（OKLCH 色差 ΔE ≥ 0.08），靠色相与明度错开，不能只调明度挤在同一档。亮色卡片上满足 3:1 的明度窗口约为 OKLCH L 0.35–0.62。
+- 文本控件边缘对画布 ≥ 3:1；`--border` 对卡片 ≥ 1.5:1。
+- **色相间隔**（OKLCH 色相角）：主色与危险色、警告色 ≥ 30°，与成功色、信息色 ≥ 25°；图表系列与危险色、警告色 ≥ 25°。不满足时**移动状态色而不是品牌色**：亮色在主题块内覆盖 `--danger`/`--warning`/`--success`/`--info` 及对应 `-bg`，暗色在 `dark-base.css` 末尾覆盖（`-bg` 由 color-mix 自动跟随）。现有覆盖：远程医疗蓝的信息色（紫）、暖陶土的危险色（玫瑰红）与警告色（金）、清新草绿的成功色（青）、琥珀暖沙的危险色（玫瑰红）与警告色（橙）。
 - 提高卡片亮度（`--card-l` > 0.27）会让图表色与输入框边缘跌破上述线，调之前先复核。
 - glass 的文字对比度还受背后极光影响，令牌估算之外 **SHOULD** 在浏览器抽样确认。
 
@@ -76,7 +81,7 @@
 
 状态色：`--success` `--warning` `--danger` `--info`，及背景 `--success-bg` `--warning-bg` `--danger-bg` `--info-bg`（暗色下四种语义色全主题固定，由 `dark-base.css` 定义，与品牌无关）。
 
-图表色：`--chart-1` … `--chart-8`（Tailwind 映射 `--color-chart-1…8`）。
+图表色：`--chart-1` … `--chart-5`（Tailwind 映射 `--color-chart-1…5`；`--color-chart-6…8` 的映射保留但各主题未定义，不要使用）。
 
 ### 材质与表面
 
@@ -140,5 +145,5 @@
 1. `tokens.css` 增 `[data-palette="x"]:not(.dark)` 与 `.dark[data-palette="x"]` 两块（可复制现有主题再改）。暗色块只写主色与前景、强调、`--chart-1…8`、`--environment-*`、hero 令牌（§2.1）；亮色块覆盖 §3「语义色」「状态色」「图表色」中的全部令牌。
 2. `tokens.css` 增 `--swatch-x`；`lib/storage.ts` 的 `paletteLabels` 登记。
 3. `dark-base.css` 增一条 `.dark[data-palette="x"] { --dark-hue: <0–360> }`。
-4. 按 §2.5 核对：主色对卡片 ≥ 4.5:1，图表色 ≥ 3:1。
+4. 按 §2.5 核对亮色与暗色：主色、次级文字、强调文字、状态色的对比度，图表分类色的对比度与相互区分，以及主色、图表与状态色的色相间隔；撞色时覆盖状态色。色块 `--swatch-x` 取亮色实际主色。
 5. 在「系统设置 → 组件预览」核对 glass 与 clean 两种暗色，并回归主题相关 e2e（`e2e/theme.spec.ts`）。
