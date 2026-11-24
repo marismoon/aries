@@ -11,13 +11,13 @@ templates/starter ─┘
 
 | 包 | 入口（`exports`） | 内容 |
 | --- | --- | --- |
-| `@marismoon/ui` | `./ui/*` `./shared/*` `./motion/*` `./icons` `./icons/*` `./hooks/*` `./lib/*` `./styles/*`（直接导出源码，无构建步骤） | `src/components/{ui,shared,icons,motion}`、`src/hooks/use-mobile.ts`、`src/lib/{utils,format,storage}.ts`、`src/styles/*.css` |
-| `@marismoon/shell` | `.`、`./styles`（源码） | 三列外壳、页面布局和命令面板，见 [公开 API 与 CSS 变量契约](../packages/shell/README.md) |
+| `@marismoon/ui` | `./ui/*` `./shared/*` `./motion/*` `./icons` `./icons/*` `./hooks/*` `./lib/*` `./styles/*`（同仓指向源码；发布时由 `publishConfig.exports` 换成 `dist`，见 [ADR 0006](decisions/0006-publish-built-packages.md)） | `src/components/{ui,shared,icons,motion}`、`src/hooks/use-mobile.ts`、`src/lib/{utils,format,storage}.ts`、`src/styles/*.css` |
+| `@marismoon/shell` | `.`、`./styles`（同仓为源码，发布为 `dist`） | 三列外壳、页面布局和命令面板，见 [公开 API 与 CSS 变量契约](../packages/shell/README.md) |
 | `@marismoon/config` | `./eslint/*`、`./typescript/*.json` | ESLint 的 base、react、boundaries 和 TypeScript 的 base、react、app 配置 |
 | `@marismoon/demo` | — | `src/{app,features,shared,lib,test}`、`e2e/` |
 | `@marismoon/starter` | — | 首页、设置、独立工程配置和冒烟测试，见[起步指南](STARTER.md) |
 
-两个宿主通过包导出路径引用 UI 和 Shell 的源码，由 Vite 直接编译。`packages/ui` 内部只用相对导入。
+两个同仓宿主通过包导出路径引用 UI 和 Shell 的源码，由 Vite 直接编译；仓库外宿主安装 npm 上的构建产物。`packages/ui` 内部只用相对导入。
 
 ## 2. apps/demo 目录
 
@@ -72,7 +72,7 @@ Demo 的 `@/shared/mocks/mock-service` 导出 `getDemoAttentionItems` 和 `getDe
 
 | 根命令 | 覆盖范围 |
 | --- | --- |
-| `pnpm test` | UI 图标、Demo 的业务和翻译、Starter 的双语资源 |
+| `pnpm test` | UI 图标、Shell 组件与服务端渲染、Demo 的业务和翻译、Starter 的双语资源 |
 | `pnpm test:ui` | Demo 在 4173 运行 `apps/demo/e2e/*.spec.ts` 全集；Starter 在 4174 运行 [smoke.spec.ts](../templates/starter/e2e/smoke.spec.ts) |
 | `pnpm test:consumer` | 打包 ui 与 shell，在仓库外分别以导出的 Starter（Vite）与 Next.js 应用安装并验证；需要联网，见 [consumer-test.mjs](../scripts/consumer-test.mjs) |
 | `pnpm check:workspace` | 校验发布清单外的包、Starter 的工程依赖、全仓共享包导入路径，以及 Aceternity 示例不进入 ui、shell 与 Starter |

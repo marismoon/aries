@@ -94,7 +94,7 @@ pnpm dev
 pnpm dev:starter
 ```
 
-阶段一采用同仓源码消费。`@marismoon/ui` 和 `@marismoon/shell` 尚未发布到 npm。 [版本治理与阶段边界](docs/VERSIONING.md)
+同仓开发直接消费 `@marismoon/ui` 与 `@marismoon/shell` 的源码；两个包也以 `next` 标签发布到 npm，供仓库外项目安装。[版本治理与发布](docs/VERSIONING.md)
 
 ## 项目结构
 
@@ -183,7 +183,7 @@ pnpm test:ui
 
 - [架构](docs/ARCHITECTURE.md) · [技术栈](docs/TECH_STACK.md) · [设计系统](docs/DESIGN_SYSTEM.md)
 - [UI 组件](docs/COMPONENTS.md) · [Shell API 与 CSS 变量](packages/shell/README.md) · [国际化](docs/I18N.md)
-- [从 Starter 创建应用](docs/STARTER.md) · [版本治理与阶段边界](docs/VERSIONING.md) · [架构决策](docs/decisions/)
+- [从 Starter 创建应用](docs/STARTER.md) · [版本治理与发布](docs/VERSIONING.md) · [架构决策](docs/decisions/)
 - [开发契约](AGENTS.md) · [CI 工作流](.github/workflows/ci.yml)
 
 ## 环境变量

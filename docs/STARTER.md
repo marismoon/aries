@@ -25,7 +25,7 @@
 
 1. 在新应用的 `src/features/<name>/` 添加内容组件，沿用首页的 `useTranslation()` 用法。在 `src/lib/i18n/resources.ts` 的 `zh-CN.translation` 和 `en.translation` 同时添加标题与正文。
 2. 在 `src/app/workspace-modules.ts` 登记唯一的 `id` 和 `path`、`titleKey`、`bodyKey`、Solar 图标、`railPosition` 与内容组件 `Content`。路由会渲染共享的 `WorkspacePage`。外壳适配器将同一条记录转换成模块入口、目录链接和搜索结果。按业务需要调整注册表中的图标、顺序及菜单名称。
-3. 更新新应用的 `e2e/smoke.spec.ts`，验证从模块入口选择目录链接后到达正确页面，并验证两种语言。首次测试安装 Chromium，随后运行包内五项。
+3. 更新新应用的 `e2e/smoke.spec.ts`，验证从模块入口选择目录链接后到达正确页面，并验证两种语言。首次测试安装 Chromium，随后在包内运行以下检查。
 
    ```sh
    pnpm --filter @marismoon/my-workspace exec playwright install chromium

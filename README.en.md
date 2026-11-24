@@ -94,7 +94,7 @@ In a second terminal, start Starter from the repository root.
 pnpm dev:starter
 ```
 
-Phase 1 uses package source directly from the workspace. `@marismoon/ui` and `@marismoon/shell` are not yet published to npm. [Versioning and release phases](docs/VERSIONING.md)
+Inside the workspace, apps consume the source of `@marismoon/ui` and `@marismoon/shell` directly; both packages are also published to npm under the `next` tag for projects outside this repository. [Versioning and releases](docs/VERSIONING.md)
 
 ## Project structure
 
@@ -183,7 +183,7 @@ pnpm test:ui
 
 - [Architecture](docs/ARCHITECTURE.md) · [Tech stack](docs/TECH_STACK.md) · [Design system](docs/DESIGN_SYSTEM.md)
 - [UI components](docs/COMPONENTS.md) · [Shell API and CSS variables](packages/shell/README.md) · [Internationalization](docs/I18N.md)
-- [Create an app from Starter](docs/STARTER.md) · [Versioning and release phases](docs/VERSIONING.md) · [Architecture decisions](docs/decisions/)
+- [Create an app from Starter](docs/STARTER.md) · [Versioning and releases](docs/VERSIONING.md) · [Architecture decisions](docs/decisions/)
 - [Development contract](AGENTS.md) · [CI workflow](.github/workflows/ci.yml)
 
 ## Environment variables

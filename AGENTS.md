@@ -43,7 +43,7 @@ Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 U
 | --- | --- |
 | 新业务模块（第一列） | **MUST** 在 `apps/demo/src/app/workspace-modules.ts` 注册导航数据，由 Demo 构造已翻译的导航 Schema 后交给共享 Sidebar 渲染 |
 | 新页面 | **MUST** 在 `apps/demo/src/app/workspace-pages.tsx` 注册 `WorkspacePageConfig`：`id`、`moduleId`、`path`、`titleKey`、`descriptionKey?`、`breadcrumbs`（`readonly { label: string; path?: string }[]`）、`load`（`() => Promise<WorkspacePageSlots>`，懒加载页面槽位）；业务组件放 `apps/demo/src/features/<name>/`，文案键加入 `apps/demo/src/lib/i18n/resources.ts`。要让页面出现在导航里，还需在 `apps/demo/src/app/workspace-modules.ts` 对应模块下增加条目（字段见该文件的 `WorkspaceEntry` 类型） |
-| 新 shadcn 组件 | **SHOULD** 用 `pnpm dlx shadcn@latest add <name>`（先 `shadcn view` 看官方实现）。`apps/demo/components.json` 与 `packages/ui/components.json` 的别名均指向 `@marismoon/ui`（style `radix-rhea`、baseColor `neutral`）；拆包后该 CLI 流程**待验证**，失败时手动写入 `packages/ui/src/components/ui`。**MUST NOT** 对现有项目重新执行 `shadcn init` |
+| 新 shadcn 组件 | **SHOULD** 用 `pnpm dlx shadcn@latest add <name>`（先 `shadcn view` 看官方实现）。`apps/demo/components.json` 与 `packages/ui/components.json` 的别名均指向 `@marismoon/ui`（style `radix-rhea`、baseColor `neutral`）；CLI 无法写入时手动放入 `packages/ui/src/components/ui`，并改为包内相对导入。**MUST NOT** 对现有项目重新执行 `shadcn init` |
 | 新共享组合组件 | **MUST** 放 `packages/ui/src/components/shared`，并同步 [docs/COMPONENTS.md](docs/COMPONENTS.md) |
 | 新图标 | **MUST** 只用 Solar：从 `@marismoon/ui/icons` 引入；缺图标时在 `components/icons/solar` 增文件并在 `index.ts` 导出，新文件首行 **MUST** 保留来源与许可证注释（CC BY 4.0，见 [第三方许可声明](THIRD_PARTY_NOTICES.md)）。变体规则见 §3.1 |
 | 新主题色 | **MUST** 按 [DESIGN_SYSTEM §9](docs/DESIGN_SYSTEM.md) 的步骤：`tokens.css` 增亮、暗两块，`dark-base.css` 增该主题的 `--dark-hue`，`spectrum.css` 或 `tokens.css` 增 `--swatch-*`，`lib/storage.ts` 的 `paletteLabels` 登记 |
@@ -60,7 +60,7 @@ Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 U
 3. **MUST NOT** 新增 `dark:` 变体。深色适配**优先通过令牌**（`.dark` 块）完成；`dark:` 仅允许出现在 `packages/ui/src/components/ui` 的 shadcn 组件内（沿用官方写法）。
 4. **MUST NOT** 修改已确认的亮色（Light）视觉去适配深色；深色问题只改 `.dark` 作用域。暗色共同底座在 `styles/dark-base.css`（glass 与 clean 共用），简洁暗色材质在 `styles/dark-clean.css`（作用域 `.dark[data-dark-style="clean"]`），规则见 [DESIGN_SYSTEM §2](docs/DESIGN_SYSTEM.md)。
    `aries-light` 为纯浅色主题，**MUST NOT** 给它增加深色分支（`tokens.css` 中已有的 `.dark[data-palette="aries-light"]` 块只用于让它在暗色类下保持浅色）。
-5. **MUST** 以「系统设置 → 组件预览」（模板阶段）与 [COMPONENTS.md](docs/COMPONENTS.md) 为组件规范；预览页删除后以 COMPONENTS.md 为准。不写 `size` 的 `Button/Input/SelectTrigger` 即 32px 标准控件；页面级主操作用 `size="default"`（40px），小浮层用 `size="small"`（28px），适用范围见 [COMPONENTS §5](docs/COMPONENTS.md)。字号与控件高度只使用 [DESIGN_SYSTEM §3](docs/DESIGN_SYSTEM.md) 的令牌。
+5. **MUST** 以 [COMPONENTS.md](docs/COMPONENTS.md) 与 Demo 的「系统设置 → 组件预览」为组件规范，二者冲突时以 COMPONENTS.md 为准。不写 `size` 的 `Button/Input/SelectTrigger` 即 32px 标准控件；页面级主操作用 `size="default"`（40px），小浮层用 `size="small"`（28px），适用范围见 [COMPONENTS §5](docs/COMPONENTS.md)。字号与控件高度只使用 [DESIGN_SYSTEM §3](docs/DESIGN_SYSTEM.md) 的令牌。
 6. **MUST** 圆角走令牌：控件 `--radius-workspace-control`，卡片/面板 `--radius-panel`，卡片内分组 `--radius-control`；**MUST NOT** 使用方角。
 7. **MUST** 表单控件统一 `field-surface` 外观，聚焦样式唯一，**MUST NOT** 叠加 outline/ring；规则与暗色边框见 [DESIGN_SYSTEM §2.4、§5](docs/DESIGN_SYSTEM.md)。
 8. **MUST NOT** 页面样式覆盖全局布局与页头规则；页面 CSS 只负责业务区。
@@ -92,7 +92,7 @@ Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 U
 
 ## 6. 动效与无障碍
 
-1. 动效统一使用 `motion`（`LazyMotion` + `domAnimation`，**不使用 layout 动画**）与 `packages/ui/src/styles/motion.css`、`components/motion/motion-tokens.ts` 中的缓动与时长；金额与数字 **MUST NOT** 做滚动/跳动动画，**MUST NOT** 使用弹簧回弹。
+1. 动效统一使用 `motion`（`LazyMotion` + `domAnimation`，**不使用 layout 动画**）与 `packages/ui/src/styles/motion.css`、`components/motion/motion-tokens.ts` 中的缓动与时长；金额与数字 **MUST NOT** 做滚动/跳动动画，**MUST NOT** 使用弹簧回弹：确需弹簧时阻尼比 **MUST** ≥ 1（`damping ≥ 2√stiffness`），手写的弹簧参数集中定义并加单测（参照 `packages/shell/src/components/IconRail/dock-spring.ts`）。
 2. **MUST** 支持 `prefers-reduced-motion: reduce`：新增 CSS 动画/过渡在该媒体查询下时长降到 0.01ms（`motion.css` 有全局兜底，新增动效仍须自检）；JS 动效用 `useReducedMotion`。唯一例外是加载转圈 `animate-spin`：它承载「正在加载」的含义，减少动态效果下保留为 2.4s 慢速旋转。常驻 `will-change` 只能在动画运行时存在。
 3. 触控：`pointer: coarse` 下控件点击目标 **MUST** ≥ 40px（使用 `--control-size-*` 令牌与 `pointer-coarse:` 变体；自定义高度的小控件在 `@media (pointer: coarse)` 里用 `var(--control-size-dense)` 放大，`e2e/touch-targets.spec.ts` 覆盖概览与导航的几处）。
 4. 键盘与语义：交互元素 **MUST** 可键盘操作，图标按钮 **MUST** 有 `aria-label`；`eslint-plugin-jsx-a11y` 已启用。
@@ -108,6 +108,7 @@ PC（1440×900、1920×1080）为视觉基线。断点与验收视口见 [DESIGN
 - `import-x/no-cycle` 为 error。
 - **SHOULD** 先复用 `@marismoon/ui` 现有组件，其次组合，最后才新增。
 - **MUST NOT** 引入与现有栈冲突的库（见 [TECH_STACK](docs/TECH_STACK.md) 的「禁止清单」）。
+- 改动 `packages/ui` 或 `packages/shell` 中会进入发布包的内容时，**MUST** 在同一 PR 附带 changeset（`pnpm changeset`），版本与发布流程见 [VERSIONING](docs/VERSIONING.md)。
 - **MUST NOT** 提交密钥、真实客户/账单数据；环境变量只放 `.env.example` 的占位（`VITE_API_BASE_URL`）。
 
 ## 9. 提交前自检清单
