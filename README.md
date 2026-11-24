@@ -72,11 +72,11 @@ Aries 提供构建工作区应用所需的共享组件和外壳。Demo 使用本
 
 ## 快速开始
 
-需要 Node.js 24、pnpm 12.16.1 和仓库的 GitHub SSH 访问权限。首次运行 UI 测试或生成截图前，请[安装 Playwright Chromium](#playwright-找不到浏览器可执行文件)。
+需要 Node.js 24 和 pnpm 12.16.1。首次运行 UI 测试或生成截图前，请[安装 Playwright Chromium](#playwright-找不到浏览器可执行文件)。
 
 ```sh
 # 克隆仓库并进入项目目录
-git clone git@github.com:marismoon/aries.git
+git clone https://github.com/marismoon/aries.git
 cd aries
 
 # 安装工作区依赖

@@ -72,11 +72,11 @@ Aries provides the shared components and application shell for building workspac
 
 ## Quick start
 
-Use Node.js 24, pnpm 12.16.1, and SSH access to the GitHub repository. [Install Playwright Chromium](#playwright-reports-that-the-browser-executable-does-not-exist) before running UI tests or generating screenshots for the first time.
+Use Node.js 24 and pnpm 12.16.1. [Install Playwright Chromium](#playwright-reports-that-the-browser-executable-does-not-exist) before running UI tests or generating screenshots for the first time.
 
 ```sh
 # Clone the repository and enter it
-git clone git@github.com:marismoon/aries.git
+git clone https://github.com/marismoon/aries.git
 cd aries
 
 # Install workspace dependencies
