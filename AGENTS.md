@@ -62,7 +62,7 @@ Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 U
 3. **MUST NOT** 新增 `dark:` 变体。深色适配**优先通过令牌**（`.dark` 块）完成；`dark:` 仅允许出现在 `packages/ui/src/components/ui` 的 shadcn 组件内（沿用官方写法）。
 4. **MUST NOT** 修改已确认的亮色（Light）视觉去适配深色；深色问题只改 `.dark` 作用域。暗色共同底座在 `styles/dark-base.css`（glass 与 clean 共用），简洁暗色材质在 `styles/dark-clean.css`（作用域 `.dark[data-dark-style="clean"]`），规则见 [DESIGN_SYSTEM §2](docs/DESIGN_SYSTEM.md)。
 5. **MUST** 以 [COMPONENTS.md](docs/COMPONENTS.md) 与 Demo 的「系统设置 → 组件预览」为组件规范，二者冲突时以 COMPONENTS.md 为准。不写 `size` 的 `Button/Input/SelectTrigger` 即 32px 标准控件；页面级主操作用 `size="default"`（40px），小浮层用 `size="small"`（28px），适用范围见 [COMPONENTS §5](docs/COMPONENTS.md)。字号与控件高度只使用 [DESIGN_SYSTEM §3](docs/DESIGN_SYSTEM.md) 的令牌。
-6. **MUST** 圆角走令牌：控件 `--radius-workspace-control`，卡片/面板 `--radius-panel`，卡片内分组 `--radius-control`；**MUST NOT** 使用方角。
+6. **MUST** 圆角走令牌：单行控件（按钮、输入框、选择框）为全圆胶囊，多行控件 `--radius-workspace-control`，卡片/面板 `--radius-panel`，卡片内分组 `--radius-control`（规则见 [DESIGN_SYSTEM §5](docs/DESIGN_SYSTEM.md)）；**MUST NOT** 使用方角。
 7. **MUST** 表单控件统一 `field-surface` 外观，聚焦样式唯一，**MUST NOT** 叠加 outline/ring；规则与暗色边框见 [DESIGN_SYSTEM §2.4、§5](docs/DESIGN_SYSTEM.md)。
 8. **MUST NOT** 页面样式覆盖全局布局与页头规则；页面 CSS 只负责业务区。
 9. 带阴影的元素位于 `overflow` 非 visible 的容器内时，**MUST** 预留不小于阴影外延的出血（padding 加等量负 margin）。
@@ -70,11 +70,12 @@ Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 U
 
 ### 3.1 图标变体
 
-1. 默认 **Linear**（`*-linear.tsx`）；选中或悬停时切换为同名 **Bold**（`*-bold.tsx`）。**MUST NOT** 使用 Linear 与 Bold 之外的变体（Broken、Line Duotone 等）；确需引入 Line Duotone 时先取得设计确认。
+1. 默认 **Linear**（`*-linear.tsx`）；选中、悬停或按下时切换为同名 **Bold**（`*-bold.tsx`）。**MUST NOT** 使用 Linear 与 Bold 之外的变体（Broken、Line Duotone 等）；确需引入 Line Duotone 时先取得设计确认。
 2. 所有图标 **MUST** 是 `24×24` 网格、颜色只来自 `currentColor`；Linear 与 Bold 同网格，切换不得改变尺寸或布局。
-3. 有选中态的控件内图标写 `<AppIcon icon={…} stateful />`：同时渲染 Linear 与 Bold，由 `styles/icon-states.css` 按 `:hover`（仅非禁用、`hover: hover`）、`aria-current`、`aria-selected="true"`、`aria-pressed="true"`、`data-state=active|on|open` 切换。**MUST NOT** 用 JS 状态手动换图标；有 `aria-label` 的图标不参与切换。
+3. 有选中态或按下反馈的控件内图标写 `<AppIcon icon={…} stateful />`：同时渲染 Linear 与 Bold，由 `styles/icon-states.css` 按 `:hover`（仅非禁用、`hover: hover`）、`:active`（仅非禁用，覆盖触屏点按与键盘触发）、`aria-current`、`aria-selected="true"`、`aria-pressed="true"`、`data-state=active|on|open` 切换。**MUST NOT** 用 JS 状态手动换图标；有 `aria-label` 的图标不参与切换。
 4. 新增 Bold 时 **MUST** 同时补同名 Linear，并在 `components/icons/icon-variants.ts` 登记。只给会进入选中/悬停态的图标补 Bold（现有配对见 [COMPONENTS §3](docs/COMPONENTS.md)），**MUST NOT** 给纯展示图标批量补齐。
 5. `icons.test.ts` 校验：仅 Linear/Bold、Bold 有 Linear 底图并登记、`viewBox` 与尺寸、无字面颜色。
+6. 关闭、移除、清除类按钮 **MUST** 用 `@marismoon/ui/ui/close-button`：图标按钮写 `<CloseButton aria-label=… />`，其他宿主（如 `InputGroupButton`、原生 `button`）加 `closeButtonClass` 并渲染 `<CloseIcon />`。外观唯一：16px 圆圈叉、静止与悬停都不带底色，悬停或按下时由次要色 Linear 变为正文色 Bold。**MUST NOT** 手写关闭 SVG 或另配悬停底色。
 
 ## 4. 布局、滚动与卡片契约
 
@@ -109,7 +110,7 @@ PC（1440×900、1920×1080）为视觉基线。断点与验收视口见 [DESIGN
 - `import-x/no-cycle` 为 error。
 - **SHOULD** 先复用 `@marismoon/ui` 现有组件，其次组合，最后才新增。
 - **MUST NOT** 引入与现有栈冲突的库（见 [TECH_STACK](docs/TECH_STACK.md) 的「禁止清单」）。
-- 改动 `packages/ui` 或 `packages/shell` 中会进入发布包的内容时，**MUST** 在同一 PR 附带 changeset（`pnpm changeset`），版本与发布流程见 [VERSIONING](docs/VERSIONING.md)。
+- 改动会进入 `@marismoon/ui`、`@marismoon/shell` 或 `@marismoon/create-aries` 的发布包时，**MUST** 在同一 PR 附带 changeset（`pnpm changeset`），版本与发布流程见 [VERSIONING](docs/VERSIONING.md)。
 - **MUST NOT** 提交密钥、真实客户/账单数据；环境变量只放 `.env.example` 的占位（`VITE_API_BASE_URL`）。
 
 ## 9. 提交前自检清单

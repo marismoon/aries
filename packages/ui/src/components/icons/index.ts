@@ -19,7 +19,10 @@ export {
   CheckCircleLinearIcon as SolarCircleCheck,
 } from "./solar/check-circle-linear"
 export { ClockCircleLinearIcon as SolarClock3 } from "./solar/clock-circle-linear"
-export { CloseCircleLinearIcon as SolarX } from "./solar/close-circle-linear"
+export {
+  CloseCircleLinearIcon as SolarClose,
+  CloseCircleLinearIcon as SolarX,
+} from "./solar/close-circle-linear"
 export { CloudLinearIcon as SolarCloud } from "./solar/cloud-linear"
 export { CopyLinearIcon as SolarCopy } from "./solar/copy-linear"
 export { DangerTriangleLinearIcon as SolarTriangleAlert } from "./solar/danger-triangle-linear"
@@ -90,6 +93,7 @@ export { MagnifierZoomOutLinearIcon as SolarMagnifierZoomOut } from "./solar/mag
 export { MicrophoneLinearIcon as SolarMicrophone } from "./solar/microphone-linear"
 export { PenLinearIcon as SolarPen } from "./solar/pen-linear"
 export { PieChart2LinearIcon as SolarPieChart2 } from "./solar/pie-chart-2-linear"
+export { Plain3LinearIcon as SolarPlain3 } from "./solar/plain-3-linear"
 export { PresentationGraphLinearIcon as SolarPresentationGraph } from "./solar/presentation-graph-linear"
 export { PulseLinearIcon as SolarPulse } from "./solar/pulse-linear"
 export { QuestionCircleLinearIcon as SolarQuestionCircle } from "./solar/question-circle-linear"
@@ -117,4 +121,4 @@ export { VolumeCrossLinearIcon as SolarVolumeCross } from "./solar/volume-cross-
 export { WalletLinearIcon as SolarWallet } from "./solar/wallet-linear"
 export { Widget4LinearIcon as SolarWidget4 } from "./solar/widget-4-linear"
 export { WindowFrameLinearIcon as SolarWindowFrame } from "./solar/window-frame-linear"
-export { CloseLinearIcon as SolarClose } from "./solar/close-linear"
+export { CloseLinearIcon as SolarCloseLine } from "./solar/close-linear"

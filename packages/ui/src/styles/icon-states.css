@@ -1,6 +1,7 @@
-/* Icon states: Linear by default, the same icon in Bold on hover or when the
-   control is selected. <AppIcon stateful> renders both on one 24x24 grid;
-   only the visible one changes, so nothing shifts. No wrapper element is added. */
+/* Icon states: Linear by default, the same icon in Bold on hover, while the
+   control is pressed, or when it is selected. <AppIcon stateful> renders both
+   on one 24x24 grid; only the visible one changes, so nothing shifts. No
+   wrapper element is added. */
 svg[data-icon-variant="bold"] {
   display: none;
 }
@@ -25,6 +26,23 @@ svg[data-icon-variant="bold"] {
     [data-state="on"],
     [data-state="open"]
   )
+  svg[data-icon-variant="bold"] {
+  display: block;
+}
+
+/* Pressed: a tap or a keyboard activation never hovers, so it switches here. */
+:is(a, button, [role="tab"], [role="menuitem"]):not(
+    :disabled,
+    [aria-disabled="true"]
+  ):active
+  svg[data-icon-variant="linear"] {
+  display: none;
+}
+
+:is(a, button, [role="tab"], [role="menuitem"]):not(
+    :disabled,
+    [aria-disabled="true"]
+  ):active
   svg[data-icon-variant="bold"] {
   display: block;
 }

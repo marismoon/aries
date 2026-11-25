@@ -176,10 +176,11 @@ for (const [width, height] of [
     await expect(drawer).toBeInViewport({ ratio: 0.99 })
     await inside('[data-slot="drawer-content"]')
     // Header and footer stay reachable while the body scrolls on its own.
-    await expect(
-      drawer.getByRole("button", { name: "关闭账单详情" })
-    ).toBeInViewport()
+    await expect(drawer.getByRole("heading").first()).toBeInViewport()
     await expect(drawer.getByRole("button", { name: "编辑" })).toBeInViewport()
+    await expect(
+      drawer.getByRole("button", { name: "关闭", exact: true })
+    ).toBeInViewport()
     await page.keyboard.press("Escape")
     await expect(drawer).toHaveCount(0)
 

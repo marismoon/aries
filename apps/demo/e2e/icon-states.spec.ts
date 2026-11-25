@@ -49,3 +49,58 @@ test("第二列：当前页面图标为 Bold，未开放入口悬停不切换", 
   const current = directory.getByRole("link", { name: "运营总览", exact: true })
   expect(await visible(current)).toEqual(["bold"])
 })
+
+test("AI 助手发送按钮：默认 Linear，悬停与按下为 Bold，禁用时不切换", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto("/overview")
+  await page.locator('[data-copilot-trigger="rail"]').click()
+  const panel = page.getByRole("complementary", { name: "AI 助手" })
+  const send = panel.getByRole("button", { name: "发送问题" })
+
+  await expect(send).toBeDisabled()
+  await send.hover({ force: true })
+  expect(await visible(send)).toEqual(["linear"])
+
+  await page.mouse.move(700, 450)
+  await panel.getByRole("textbox", { name: "向智算助手提问" }).fill("本月费用")
+  await expect(send).toBeEnabled()
+  expect(await visible(send)).toEqual(["linear"])
+
+  await send.hover()
+  expect(await visible(send)).toEqual(["bold"])
+
+  // Pressed without hover: what a tap or a keyboard activation looks like.
+  await page.mouse.move(700, 450)
+  expect(await visible(send)).toEqual(["linear"])
+  await send.focus()
+  await page.keyboard.down("Space")
+  expect(await visible(send)).toEqual(["bold"])
+  await page.keyboard.up("Space")
+})
+
+test("关闭按钮：静止为次要色 Linear，悬停为正文色 Bold，始终不带底色", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto("/overview")
+  await page.locator('[data-copilot-trigger="rail"]').click()
+  const panel = page.getByRole("complementary", { name: "AI 助手" })
+  const close = panel.getByRole("button", { name: "关闭智算助手" })
+  const look = () =>
+    close.evaluate((element) => {
+      const { color, backgroundColor } = getComputedStyle(element)
+      return { color, backgroundColor }
+    })
+
+  await page.mouse.move(700, 450)
+  expect(await visible(close)).toEqual(["linear"])
+  const idle = await look()
+  expect(idle.backgroundColor).toBe("rgba(0, 0, 0, 0)")
+
+  await close.hover()
+  expect(await visible(close)).toEqual(["bold"])
+  await expect.poll(async () => (await look()).color).not.toBe(idle.color)
+  expect((await look()).backgroundColor).toBe("rgba(0, 0, 0, 0)")
+})

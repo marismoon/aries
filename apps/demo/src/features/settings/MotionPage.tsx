@@ -40,6 +40,18 @@ import {
   StatusPulseDemo,
   VanishInputDemo,
 } from "./interaction-demos"
+import {
+  CommandFilterDemo,
+  CopyButtonDemo,
+  OverlayFamilyDemo,
+  ProgressDemo,
+  SavedStateDemo,
+  SkeletonDemo,
+  SvgChartEntranceDemo,
+  TabGlideDemo,
+  ThemeRevealDemo,
+  TodoListDemo,
+} from "./aries-motion-demos"
 import { Demo, spring, useReplay } from "./motion-shared"
 import {
   BorderBeamDemo,
@@ -346,6 +358,10 @@ const sections = {
       <StaggerDemo key="stagger" />,
       <CollapseDemo key="collapse" />,
       <ToggleDemo key="toggle" />,
+      <CopyButtonDemo key="copy" />,
+      <TodoListDemo key="todo" />,
+      <SkeletonDemo key="skeleton" />,
+      <ProgressDemo key="progress" />,
     ],
   },
   text: {
@@ -392,6 +408,7 @@ const sections = {
       <RowReorderDemo key="rows" />,
       <StatusPulseDemo key="pulse" />,
       <VanishInputDemo key="vanish" />,
+      <CommandFilterDemo key="command" />,
     ],
   },
   charts: {
@@ -403,6 +420,7 @@ const sections = {
       <PieDemo key="pie" />,
       <RadarDemo key="radar" />,
       <RingDemo key="ring" />,
+      <SvgChartEntranceDemo key="svg-entrance" />,
     ],
   },
   transitions: {
@@ -410,6 +428,10 @@ const sections = {
       <TabsDemo key="tabs" />,
       <SlideDemo key="slide" />,
       <EasingDemo key="easing" />,
+      <ThemeRevealDemo key="theme" />,
+      <OverlayFamilyDemo key="overlays" />,
+      <TabGlideDemo key="tab-glide" />,
+      <SavedStateDemo key="saved" />,
     ],
   },
 } as const

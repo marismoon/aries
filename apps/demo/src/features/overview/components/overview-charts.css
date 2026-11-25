@@ -130,3 +130,16 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Hover: the mark under the pointer stays, its siblings step back. Opacity
+   only, so nothing moves while a value is being read. */
+.chart-plot [data-chart-mark] {
+  transition: opacity var(--duration-feedback) var(--ease-feedback);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .chart-plot svg:has([data-chart-mark]:hover)
+    [data-chart-mark]:not(:hover) {
+    opacity: 0.35;
+  }
+}

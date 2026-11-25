@@ -215,7 +215,6 @@ export const uiEnFeatures: Record<string, string> = {
   "{{id}} · 仅演示，不写入数据": "{{id}} · demo only, nothing is saved",
   "{{vendor}} · {{period}} · 结算币种 {{currency}}":
     "{{vendor}} · {{period}} · settlement currency {{currency}}",
-  关闭账单详情: "Close bill details",
   账单内容: "Bill content",
   账号名称: "Account name",
   采集通道: "Channel",

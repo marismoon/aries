@@ -77,3 +77,106 @@ test("数据展示页包含表格模版与图表", async ({ page }) => {
     page.getByRole("heading", { name: "Chart", level: 2 })
   ).toBeVisible()
 })
+
+test("日历的选中底是比格子小一圈的正圆，相邻两天不相接", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.emulateMedia({ reducedMotion: "reduce" })
+  await page.goto("/settings/components/form")
+
+  // April 2026 in the Spanish example: the 4th is a Saturday and the 5th a
+  // Sunday, the last column, where the end of a range used to lose its
+  // right-hand rounding.
+  const month = page.getByRole("grid", { name: "abril 2026" })
+  const day = (label: string) =>
+    month
+      .locator("tbody td:not([data-outside]) button")
+      .filter({ hasText: new RegExp(`^${label}$`) })
+  await day("4").scrollIntoViewIfNeeded()
+  await day("4").click()
+  await day("5").click()
+
+  const shape = (label: string) =>
+    day(label).evaluate((button) => {
+      const box = button.getBoundingClientRect()
+      const cell = button.closest("td")!.getBoundingClientRect()
+      const style = getComputedStyle(button)
+      return {
+        left: box.left,
+        right: box.right,
+        width: box.width,
+        height: box.height,
+        cell: cell.width,
+        round: [
+          style.borderTopLeftRadius,
+          style.borderTopRightRadius,
+          style.borderBottomRightRadius,
+          style.borderBottomLeftRadius,
+        ].every((radius) => parseFloat(radius) >= box.height / 2),
+      }
+    })
+  const start = await shape("4")
+  const end = await shape("5")
+  for (const circle of [start, end]) {
+    expect(circle.round).toBe(true)
+    expect(circle.width).toBe(circle.height)
+    expect(circle.cell - circle.width).toBe(4)
+  }
+  expect(end.left - start.right).toBe(4)
+})
+
+test("输入组里的多行文本框聚焦时只有外层一条渐变边", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.emulateMedia({ reducedMotion: "reduce" })
+  await page.goto("/settings/components/form")
+
+  const group = page
+    .locator("[data-slot=input-group]")
+    .filter({ hasText: "0/500 characters" })
+  const textarea = group.locator("textarea")
+  await textarea.scrollIntoViewIfNeeded()
+  await textarea.focus()
+
+  // The group is the field surface and carries the focus edge...
+  expect(
+    await group.evaluate((element) => getComputedStyle(element).backgroundImage)
+  ).toContain("gradient")
+  // ...and the textarea inside it draws nothing of its own.
+  await expect(textarea).not.toHaveClass(/field-surface/)
+  await expect(textarea).toHaveCSS("background-image", "none")
+  await expect(textarea).toHaveCSS("background-color", "rgba(0, 0, 0, 0)")
+  await expect(textarea).toHaveCSS("border-top-left-radius", "0px")
+  expect(
+    await textarea.evaluate((element) =>
+      getComputedStyle(element)
+        .boxShadow.split(/,(?![^(]*\))/)
+        .every((layer) => / 0px 0px 0px 0px$/.test(layer.trim()))
+    )
+  ).toBe(true)
+})
+
+test("输入框聚焦边的渐变首尾同色，左右两条边和四角颜色一致", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.emulateMedia({ reducedMotion: "reduce" })
+  await page.goto("/settings/components/form")
+
+  for (const selector of [
+    "input[data-slot=input]:not([data-embedded])",
+    "textarea:not([data-embedded])",
+  ]) {
+    const field = page.locator(selector).first()
+    await field.scrollIntoViewIfNeeded()
+    await field.focus()
+    // The edge is the second background layer; a horizontal gradient paints
+    // the left border with its last stop and the right border with its first.
+    const stops = await field.evaluate((element) => {
+      const edge = getComputedStyle(element).backgroundImage.split(
+        "linear-gradient(270deg"
+      )[1]
+      return edge?.match(/rgba?\([^)]+\)|color\([^)]+\)/g) ?? []
+    })
+    expect(stops.length).toBeGreaterThan(2)
+    expect(stops.at(-1)).toBe(stops[0])
+  }
+})

@@ -9,6 +9,10 @@ const brandCycle = [
   "pet-adoption",
   "health-wellness",
   "amber-sand",
+  "mono",
+  "nature",
+  "northern-lights",
+  "darkmatter",
   "telemedicine",
 ] as const
 
@@ -435,12 +439,15 @@ for (const mode of ["light", "dark"] as const) {
           )
           const a = 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s
           const bb = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s
+          // A grey has no hue: report none, and the gap checks skip it.
+          if (Math.hypot(a, bb) < 0.02) return null
           return ((Math.atan2(bb, a) * 180) / Math.PI + 360) % 360
         })
         probe.remove()
         return hues
       }, names)
-    const hueGap = (a: number, b: number) => {
+    const hueGap = (a: number | null, b: number | null) => {
+      if (a === null || b === null) return 180
       const d = Math.abs(a - b) % 360
       return Math.min(d, 360 - d)
     }
@@ -475,7 +482,14 @@ for (const mode of ["light", "dark"] as const) {
           "--chart-3",
           "--chart-4",
           "--chart-5",
-        ])) as [number, number, number, number, number, ...number[]]
+        ])) as [
+          number | null,
+          number | null,
+          number | null,
+          number | null,
+          number | null,
+          ...(number | null)[],
+        ]
       for (const [name, hue, min] of [
         ["danger", danger, 30],
         ["warning", warning, 30],
@@ -579,11 +593,15 @@ for (const [width, height] of [
           ".page-header-title-row .page-header-actions"
         )
         const buttons = actions.getByRole("button")
-        // Language, brand and theme; dark mode also carries the dark-style switch (first).
-        await expect(buttons).toHaveCount(colorScheme === "dark" ? 4 : 3)
+        // Language, brand and theme; dark glass also carries the Demo's glass
+        // backdrop switch (header extra, first) and the dark-style switch.
+        await expect(buttons).toHaveCount(colorScheme === "dark" ? 5 : 3)
         await expect(actions.getByRole("link")).toHaveCount(0)
+        if (colorScheme === "dark") {
+          await expect(buttons.first()).toHaveAccessibleName("玻璃背景")
+        }
         await expect(
-          buttons.nth(colorScheme === "dark" ? 2 : 1)
+          buttons.nth(colorScheme === "dark" ? 3 : 1)
         ).toHaveAccessibleName("品牌配色")
         await expect(buttons.last()).toHaveAccessibleName(themeLabel)
         await expect(

@@ -7,6 +7,10 @@ export const paletteLabels = {
   "pet-adoption": "暖陶土",
   "health-wellness": "清新草绿",
   "amber-sand": "琥珀暖沙",
+  mono: "极简灰",
+  nature: "自然森绿",
+  "northern-lights": "北极光",
+  darkmatter: "暗物质",
 } as const
 
 type Palette = keyof typeof paletteLabels

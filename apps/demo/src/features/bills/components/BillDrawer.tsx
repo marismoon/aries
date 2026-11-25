@@ -1,7 +1,6 @@
 import { useRef, useState, useSyncExternalStore } from "react"
 
-import { AppIcon, SolarCheckmark, SolarCopy } from "@marismoon/ui/icons"
-
+import { CopyButton } from "@marismoon/ui/shared/CopyButton"
 import { StatusBadge } from "@marismoon/ui/shared/StatusBadge"
 import { Button } from "@marismoon/ui/ui/button"
 import { Field, FieldLabel } from "@marismoon/ui/ui/field"
@@ -175,7 +174,6 @@ export function BillDrawer({
 
   const mobile = useSyncExternalStore(subscribeToViewport, isMobileViewport)
   const closeButton = useRef<HTMLButtonElement>(null)
-  const [copied, setCopied] = useState(false)
   const [editing, setEditing] = useState(false)
   const [saved, setSaved] = useState<Record<string, BillEdits>>({})
   const [draft, setDraft] = useState<BillEdits | null>(null)
@@ -211,7 +209,6 @@ export function BillDrawer({
       open={open}
       onOpenChange={(next) => {
         if (!next) {
-          setCopied(false)
           setEditing(false)
           setDraft(null)
         }
@@ -226,7 +223,7 @@ export function BillDrawer({
             closeButton.current?.focus({ preventScroll: true })
           }}
         >
-          <DrawerHeader className="relative pr-12">
+          <DrawerHeader>
             <DrawerTitle>
               {editing ? tl("编辑账单") : tl.parts(shown.accountName)}
             </DrawerTitle>
@@ -239,29 +236,6 @@ export function BillDrawer({
                     currency: shown.currency,
                   })}
             </DrawerDescription>
-            <DrawerClose asChild>
-              <Button
-                ref={closeButton}
-                aria-label={tl("关闭账单详情")}
-                className="absolute top-3 right-3"
-                size="icon-sm"
-                type="button"
-                variant="ghost"
-              >
-                <svg
-                  aria-hidden="true"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                >
-                  <path d="M6 6l12 12M18 6L6 18" />
-                </svg>
-              </Button>
-            </DrawerClose>
           </DrawerHeader>
 
           <div
@@ -370,23 +344,13 @@ export function BillDrawer({
                       translate="no"
                     >
                       {shown.id}
-                      <Button
-                        type="button"
+                      <CopyButton
+                        key={shown.id}
+                        value={shown.id}
                         variant="ghost"
                         size="icon-xs"
                         aria-label={tl("复制账单编号")}
-                        onClick={() => {
-                          void navigator.clipboard
-                            ?.writeText(shown.id)
-                            .then(() => setCopied(true))
-                            .catch(() => undefined)
-                        }}
-                      >
-                        <AppIcon
-                          icon={copied ? SolarCheckmark : SolarCopy}
-                          size={14}
-                        />
-                      </Button>
+                      />
                     </span>
                   </div>
                   <dl className="bill-drawer-amounts financial-number">
@@ -500,7 +464,7 @@ export function BillDrawer({
                   {tl("编辑")}
                 </Button>
                 <DrawerClose asChild>
-                  <Button type="button" variant="outline">
+                  <Button ref={closeButton} type="button" variant="outline">
                     {tl("关闭")}
                   </Button>
                 </DrawerClose>

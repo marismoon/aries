@@ -37,7 +37,7 @@
 
 Aries 提供构建工作区应用所需的共享组件和外壳。Demo 使用本地模拟数据展示概览、账单和组件，Starter 则提供接好外壳的首页与设置页。
 
-- **品牌主题**。内置五套品牌主题（远程医疗蓝、静心雾蓝、暖陶土、清新草绿、琥珀暖沙），默认远程医疗蓝，可从页头轮换，明暗模式均可用。
+- **品牌主题**。内置九套品牌主题（远程医疗蓝、静心雾蓝、暖陶土、清新草绿、琥珀暖沙，以及改编自 tweakcn 的极简灰、自然森绿、北极光、暗物质），默认远程医疗蓝，可从页头轮换，明暗模式均可用。
 - **明暗与材质**。支持亮色与暗色，暗色提供 glass 和 clean 两种材质。
 - **组件与图标**。使用基于 shadcn 的组件与 Solar 图标，Demo 提供组件预览。
 - **表格与图表**。使用 TanStack Table 展示账单数据，使用 Recharts 展示指标趋势。
@@ -160,8 +160,11 @@ pnpm build
 pnpm test
 pnpm test:ui
 pnpm check:workspace
+pnpm check:package
 pnpm run audit
 ```
+
+可发布包的改动还需要 changeset。版本 PR、npm 发布和验证步骤见 [版本治理](docs/VERSIONING.md)。
 
 ## 故障排查
 

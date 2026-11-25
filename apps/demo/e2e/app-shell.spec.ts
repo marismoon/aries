@@ -450,14 +450,14 @@ test("浏览器前进、后退和刷新会恢复真实路由所属的导航状�
   await expect(suppliers).toHaveCSS("height", "32px")
   await expect(suppliers).toHaveCSS("font-size", "13.5px")
   await expect(supplier).toBeDisabled()
-  await expect(bills).toHaveCSS("border-radius", "18px")
+  await expect(bills).toHaveCSS("border-radius", "9999px")
   await expect(bills).toHaveCSS("height", "28px")
   // The selected fill is the shared sliding pill behind the item.
   await expect(directory.locator(".nav-pill--active")).not.toHaveCSS(
     "box-shadow",
     "none"
   )
-  await expect(supplier).toHaveCSS("border-radius", "18px")
+  await expect(supplier).toHaveCSS("border-radius", "9999px")
   await expect(supplier).toHaveCSS("height", "28px")
   const hoverPill = directory.locator(".nav-pill--hover")
   await page.mouse.move(0, 0)

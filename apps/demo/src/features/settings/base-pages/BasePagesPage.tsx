@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 
-import { AppIcon, SolarX } from "@marismoon/ui/icons"
-import { Button } from "@marismoon/ui/ui/button"
+import { AppIcon } from "@marismoon/ui/icons"
+import { CloseButton } from "@marismoon/ui/ui/close-button"
 import {
   Item,
   ItemContent,
@@ -75,15 +75,11 @@ export function BasePagesPage({ slug }: { slug: string }) {
               {screen ? tl(screen.title) : tl("页面预览")}
             </DialogPrimitive.Title>
             <DialogPrimitive.Close asChild>
-              <Button
-                type="button"
-                variant="outline"
+              <CloseButton
                 size="icon"
                 className="base-preview-close"
                 aria-label={tl("关闭预览")}
-              >
-                <AppIcon icon={SolarX} size={18} aria-hidden="true" />
-              </Button>
+              />
             </DialogPrimitive.Close>
             <ScreenNavContext.Provider
               value={{

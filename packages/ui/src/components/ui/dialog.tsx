@@ -6,9 +6,9 @@ import { useReducedMotion } from "motion/react"
 import { div as MotionDiv } from "motion/react-m"
 import { Dialog as DialogPrimitive } from "radix-ui"
 
-import { AppIcon, SolarX } from "../icons"
 import { dialogEntry, overlayEntry } from "../motion/motion-tokens"
 import { Button } from "./button"
+import { CloseButton } from "./close-button"
 import { useUiLabels } from "../../lib/ui-labels"
 
 function Dialog({
@@ -99,14 +99,9 @@ function DialogContent({
           {children}
           {showCloseButton && (
             <DialogPrimitive.Close data-slot="dialog-close" asChild>
-              <Button
-                variant="ghost"
-                className="absolute top-4 right-4 size-11 bg-secondary sm:size-9"
-                size="icon-sm"
-              >
-                <AppIcon icon={SolarX} size={16} aria-hidden="true" />
+              <CloseButton className="absolute top-4 right-4 size-11 sm:size-9">
                 <span className="sr-only">{labels.close}</span>
-              </Button>
+              </CloseButton>
             </DialogPrimitive.Close>
           )}
         </MotionDiv>

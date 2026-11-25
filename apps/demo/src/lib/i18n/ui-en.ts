@@ -128,6 +128,7 @@ export const uiEn: Record<string, string> = {
   暗色风格: "Dark style",
   毛玻璃暗色: "Glass dark",
   简洁暗色: "Clean dark",
+  已复制: "Copied",
   "当前为{{current}}，点击切换为{{next}}":
     "Currently {{current}}; click to switch to {{next}}",
   远程医疗蓝: "Telemedicine blue",
@@ -135,6 +136,11 @@ export const uiEn: Record<string, string> = {
   暖陶土: "Warm terracotta",
   清新草绿: "Fresh grass green",
   琥珀暖沙: "Amber sand",
+  极简灰: "Mono",
+  自然森绿: "Nature",
+  北极光: "Northern lights",
+  暗物质: "Darkmatter",
+  玻璃背景: "Glass backdrop",
   // Shell
   "Demo 暂未开放": "Not available in this demo",
   "新建采集计划，Demo 暂未开放":

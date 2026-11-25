@@ -24,7 +24,8 @@
         root.style.colorScheme = dark ? "dark" : "light"
         // Keep in sync with paletteLabels in @marismoon/ui/lib/storage.
         var palettes = ["telemedicine", "mental-health", "pet-adoption",
-          "health-wellness", "amber-sand"]
+          "health-wellness", "amber-sand", "mono", "nature",
+          "northern-lights", "darkmatter"]
         var palette = localStorage.getItem("aries-palette")
         root.dataset.palette =
           palettes.indexOf(palette) >= 0 ? palette : palettes[0]

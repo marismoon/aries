@@ -81,7 +81,7 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 | 侧栏表面与导航状态 | `--nav-tree-line` | `materials.css` |
 | 侧栏表面与导航状态 | `--scope-selected`、`--sidebar-item-height`、`--sidebar-item-hover`、`--sidebar-item-radius`、`--sidebar-leaf-height` | `tokens.css` |
 | 侧栏表面与导航状态 | `--workspace-nav` | `tokens.css`、`dark-base.css`、`dark-clean.css` |
-| 内容视口的出血、渐隐和背景 | `--workspace-bleed-block`、`--workspace-bleed-inline`、`--workspace-edge-size`、`--workspace-fade-feather` | `tokens.css` |
+| 内容视口的出血、渐隐和背景 | `--workspace-bleed-block`、`--workspace-bleed-block-start`、`--workspace-bleed-inline`、`--workspace-edge-size`、`--workspace-scroll-edge` | `tokens.css` |
 | 内容视口的出血、渐隐和背景 | `--page-background` | `materials.css`、`dark-base.css` |
 | 通用间距、控件、圆角与字号 | `--control-size-compact`、`--control-size-dense`、`--control-size-touch`、`--radius-control`、`--radius-workspace-control`、`--space-1`、`--space-2`、`--space-3`、`--space-4`、`--space-5`、`--space-6`、`--text-body`、`--text-label`、`--breadcrumb-leading` | `tokens.css` |
 | 交互时长与缓动 | `--duration-feedback`、`--ease-feedback` | `motion.css` |
@@ -91,7 +91,7 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 
 | 目标文件 | 原先定义在 `layout.css` 的变量 |
 |---|---|
-| `tokens.css` | `--rail-start-inset`、`--rail-block-start`、`--rail-block-end`、`--rail-item-gap`、`--rail-logo-gap`、`--rail-logo-center`、`--icon-rail-width`、`--workspace-nav-width`、`--workspace-column-gap`、`--column-height`、`--workspace-inset-start`、`--workspace-inset-end`、`--workspace-edge-size`、`--workspace-fade-feather`、`--workspace-bleed-inline`、`--workspace-bleed-block`、`--breadcrumb-leading`、`--sidebar-leaf-height`（移动目录覆盖） |
+| `tokens.css` | `--rail-start-inset`、`--rail-block-start`、`--rail-block-end`、`--rail-item-gap`、`--rail-logo-gap`、`--rail-logo-center`、`--icon-rail-width`、`--workspace-nav-width`、`--workspace-column-gap`、`--column-height`、`--workspace-inset-start`、`--workspace-inset-end`、`--workspace-edge-size`、`--workspace-bleed-inline`、`--workspace-bleed-block`、`--breadcrumb-leading`、`--sidebar-leaf-height`（移动目录覆盖） |
 | `materials.css` | `--rail-fill`、`--nav-tree-line`、`--ai-blue`、`--ai-violet`、`--ai-pink`、`--ai-cyan` |
 | `motion.css` | `--ai-angle` 的注册和 `rail-ai-flow` 关键帧 |
 

@@ -30,7 +30,7 @@ apps/demo/src
 │   ├── App.tsx         AppProviders + RouterProvider
 │   ├── providers.tsx   QueryClient、next-themes、LazyMotion/MotionConfig（`reducedMotion="user"`）、TooltipProvider、演示状态；命令面板由 `AppShell` 内的 `CommandPaletteProvider` 提供
 │   ├── router.tsx      按 workspacePages 生成懒加载路由，/ 重定向到 /overview
-│   ├── shell-adapter.tsx  DemoShell 将路由、导航 Schema 与 AI 助手传给 AppShell（文档标题、右栏快捷键与导航高亮由外壳提供）
+│   ├── shell-adapter.tsx  DemoShell 将路由、导航 Schema 与 AI 助手传给 AppShell（文档标题、右栏快捷键与导航高亮由外壳提供）；页头的「玻璃背景」按钮可在共享 UI 的三款 Aries 背景之间切换。`features/glass-backdrop/` 管理选择偏好
 │   ├── command-items.ts   生成各模块已翻译的搜索条目和提示
 │   ├── workspace-modules.ts  业务菜单注册与导航计数
 │   ├── use-workspace-navigation.tsx  构造已翻译的导航 Schema

@@ -37,9 +37,10 @@ function SelectValue({
 }
 
 const triggerSizes = {
-  default: "h-(--control-size) rounded-lg",
-  dense: "h-(--control-size-dense) rounded-(--radius-workspace-control)",
-  sm: "h-(--control-size-compact) rounded-(--radius-workspace-control)",
+  // A pill at every height, like Button and Input.
+  default: "h-(--control-size) rounded-full",
+  dense: "h-(--control-size-dense) rounded-full",
+  sm: "h-(--control-size-compact) rounded-full",
 } as const
 
 function SelectTrigger({
@@ -288,7 +289,7 @@ function SelectItem({
         <span
           id={countId}
           data-slot="select-item-count"
-          className="col-start-2 row-start-1 me-2 text-right text-xs text-muted-foreground tabular-nums"
+          className="col-start-2 row-start-1 text-right text-xs text-muted-foreground tabular-nums"
         >
           {count}
         </span>

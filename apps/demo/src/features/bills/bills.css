@@ -85,3 +85,23 @@
     --register-inset: var(--space-3);
   }
 }
+
+/* Loaded content takes over from the skeleton with a short fade, so the swap
+   reads as one surface settling rather than a jump. The rows then fade in on
+   their own (DataTable motion template). */
+@media (prefers-reduced-motion: no-preference) {
+  .bills-register > :not(.bills-loading, h2) {
+    animation: bills-content-in 220ms var(--ease-feedback) backwards;
+  }
+
+  /* Starts when loading ends: the rule only matches once aria-busy flips. */
+  .bills-totals[aria-busy="false"] dl > dd:first-of-type {
+    animation: bills-content-in 220ms var(--ease-feedback) backwards;
+  }
+}
+
+@keyframes bills-content-in {
+  from {
+    opacity: 0;
+  }
+}

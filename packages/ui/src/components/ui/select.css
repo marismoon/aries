@@ -9,13 +9,8 @@
   box-shadow: var(--field-shadow);
 }
 
-[data-slot="select-item"][data-popper] {
-  /* A slim highlight with a 2px gap, so adjacent states never touch. */
-  margin-block: 1px;
-  border-radius: calc(var(--radius-control) - var(--space-1) - 2px);
-}
-
-/* Hover comes from the shared row rule in popup.css (--option-hover). */
+/* Row height, pill radius, the 2px gap between rows and the hover fill all
+   come from the shared row rules in popup.css (--option-hover). */
 [data-slot="select-item"][data-popper][data-state="checked"] {
   background-color: var(--option-selected);
   color: var(--option-foreground);
@@ -29,10 +24,17 @@
 [data-slot="select-item-text"] {
   grid-area: 1 / 1;
   min-inline-size: 0;
-  margin-inline-end: var(--space-2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* The gap only separates the label from a count beside it. Without a count it
+   would just take 8px from the label, which is what cut "20" and "50" to an
+   ellipsis in a narrow page-size list (the list stays as wide as its
+   trigger). */
+[data-slot="select-item-text"]:has(+ [data-slot="select-item-count"]) {
+  margin-inline-end: var(--space-2);
 }
 
 /* Hovering an overflowing option slides its text left to reveal the tail. */

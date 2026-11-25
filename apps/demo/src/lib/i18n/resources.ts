@@ -46,7 +46,7 @@ export const resources = {
       motion: {
         components: "组件动效",
         componentsDescription:
-          "悬浮上浮、流光边框、聚光、磁吸、交错、展开收起与状态反馈。",
+          "悬浮上浮、流光边框、聚光、磁吸、交错、展开收起、状态反馈、复制确认、待办增删、骨架屏与进度加载。",
         text: "文字动效",
         textDescription: "打字机、扫光、跑马灯与数字滚动。",
         scroll: "滚动动效",
@@ -56,11 +56,13 @@ export const resources = {
           "参考 Aceternity UI：悬浮边框、卡片高亮、3D、文字生成、时间线等 SaaS 常用效果。",
         interaction: "业务交互动效",
         interactionDescription:
-          "边缘微光、状态按钮、多步骤加载、上传、快捷栏、侧栏、侧滑面板与状态脉冲。",
+          "边缘微光、状态按钮、多步骤加载、上传、快捷栏、侧栏、侧滑面板、状态脉冲与命令面板结果。",
         charts: "图表动效",
-        chartsDescription: "折线、面积、柱状、堆叠、饼图、雷达与环形进度。",
+        chartsDescription:
+          "折线、面积、柱状、堆叠、饼图、雷达、环形进度与纯 SVG 图表入场。",
         transitions: "切换动效",
-        transitionsDescription: "分段指示器、方向感知的页面切换与缓动对比。",
+        transitionsDescription:
+          "分段指示器、方向感知的页面切换、缓动对比、亮暗揭示、弹窗族、Tab 滑块与状态确认。",
       },
     },
   },
@@ -121,23 +123,23 @@ export const resources = {
       motion: {
         components: "Component motion",
         componentsDescription:
-          "Hover lift, glowing borders, spotlight, magnet, stagger, expand and state feedback.",
+          "Hover lift, glowing borders, spotlight, magnet, stagger, expand, state feedback, copy confirmation, to-do add and remove, skeletons and progress.",
         aceternity: "Scenario motion",
         aceternityDescription:
           "Aceternity-style SaaS effects: hover borders, card highlights, 3D, text generation and timelines.",
         interaction: "Interaction motion",
         interactionDescription:
-          "Edge glow, status buttons, multi-step loading, upload, dock, sidebar, slide-over and status pulse.",
+          "Edge glow, status buttons, multi-step loading, upload, dock, sidebar, slide-over, status pulse and command palette results.",
         text: "Text motion",
         textDescription: "Typewriter, shimmer, marquee and number roll.",
         scroll: "Scroll motion",
         scrollDescription: "Scroll reveal, scroll narrative and parallax.",
         charts: "Chart motion",
         chartsDescription:
-          "Line, area, bar, stacked, pie, radar and ring progress.",
+          "Line, area, bar, stacked, pie, radar, ring progress and plain SVG chart entrance.",
         transitions: "Transition motion",
         transitionsDescription:
-          "Segment indicator, direction-aware page transitions and easing comparison.",
+          "Segment indicator, direction-aware page transitions, easing comparison, theme reveal, overlays, tab glide and status confirmation.",
       },
     },
   },

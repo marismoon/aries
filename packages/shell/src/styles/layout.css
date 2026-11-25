@@ -188,6 +188,24 @@
   backdrop-filter: var(--nav-filter);
 }
 
+/* A divider in place of the right border (clean dark): it stops where the
+   rounded corners of the glass card begin, so switching styles keeps the
+   same straight run of edge instead of a rule from top to bottom. */
+.workspace-nav--desktop > .workspace-nav::after {
+  display: var(--nav-divider-display, none);
+  position: absolute;
+  inset-block: var(--nav-divider-inset, 0);
+  right: 0;
+  width: 1px;
+  background: var(--sidebar-edge);
+  pointer-events: none;
+  content: "";
+}
+
+.workspace-nav--desktop > .workspace-nav {
+  position: relative;
+}
+
 @media (prefers-reduced-transparency: reduce) {
   .workspace-nav--desktop > .workspace-nav {
     background-image: none;
@@ -521,7 +539,7 @@
   flex: none;
   margin-inline-start: auto;
   padding: 1px 4px;
-  border-radius: 8px;
+  border-radius: 9999px;
   background: color-mix(in srgb, white 70%, transparent);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, white 80%, transparent);
   color: var(--muted-foreground);
@@ -582,7 +600,8 @@
       -1 * (var(--workspace-inset-start) + var(--workspace-bleed-inline))
     )
     calc(-1 * var(--workspace-inset-end));
-  margin-block-end: calc(-1 * var(--workspace-bleed-block));
+  margin-block: calc(-1 * var(--workspace-bleed-block-start))
+    calc(-1 * var(--workspace-bleed-block));
 }
 
 .page-content-viewport {
@@ -596,6 +615,7 @@
       var(--workspace-inset-start) + var(--workspace-bleed-inline)
     )
     var(--workspace-inset-end);
+  padding-block-start: var(--workspace-bleed-block-start);
   /* The last card ends on the same line as the nav card and the rail. */
   padding-block-end: var(--workspace-bleed-block);
   overflow-x: hidden;
@@ -607,52 +627,39 @@
   scroll-padding-block-end: var(--workspace-edge-size);
 }
 
+/* Scroll edges: the content itself fades out over --workspace-scroll-edge at
+   the top once scrolled and at the bottom while more is below. Nothing is
+   laid over it, so there is no line where the content is clipped and every
+   mode (light, clean dark, glass with its moving light) reads the same. The
+   mask makes the viewport a backdrop root: glass cards inside it no longer
+   blur what is behind the page, which dark-base.css allows for in their
+   opacity. Always on, so the cards do not change when scrolling starts. */
 @supports (mask-image: linear-gradient(black, transparent)) {
-  .page-content-frame:has(> [data-has-more-below="true"])::before,
-  .page-content-frame:has(> [data-scrolled="true"])::after {
-    position: absolute;
-    z-index: 1;
-    inset-inline-start: calc(
-      var(--workspace-inset-start) + var(--workspace-bleed-inline) -
-        var(--workspace-fade-feather)
+  .page-content-viewport {
+    --scroll-edge-start: 0px;
+    --scroll-edge-end: 0px;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      black var(--scroll-edge-start),
+      black calc(100% - var(--scroll-edge-end)),
+      transparent
     );
-    inset-inline-end: max(
-      0px,
-      calc(var(--workspace-inset-end) - var(--workspace-fade-feather))
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      black var(--scroll-edge-start),
+      black calc(100% - var(--scroll-edge-end)),
+      transparent
     );
-    block-size: var(--workspace-edge-size);
-    mask-composite: intersect;
-    /* Mask only this edge so the content keeps its existing backdrop root. */
-    background: var(--page-background);
-    background-attachment: fixed;
-    pointer-events: none;
-    content: "";
   }
 
-  .page-content-frame:has(> [data-scrolled="true"])::after {
-    inset-block-start: 0;
-    mask-image:
-      linear-gradient(
-        to right,
-        transparent,
-        black var(--workspace-fade-feather),
-        black calc(100% - var(--workspace-fade-feather)),
-        transparent
-      ),
-      linear-gradient(black, transparent);
+  .page-content-viewport[data-scrolled="true"] {
+    --scroll-edge-start: var(--workspace-scroll-edge);
   }
 
-  .page-content-frame:has(> [data-has-more-below="true"])::before {
-    inset-block-end: 0;
-    mask-image:
-      linear-gradient(
-        to right,
-        transparent,
-        black var(--workspace-fade-feather),
-        black calc(100% - var(--workspace-fade-feather)),
-        transparent
-      ),
-      linear-gradient(transparent, black);
+  .page-content-viewport[data-has-more-below="true"] {
+    --scroll-edge-end: var(--workspace-scroll-edge);
   }
 }
 
@@ -904,7 +911,7 @@
   min-width: 0;
   align-items: center;
   gap: 10px;
-  border-radius: calc(var(--radius-control) - 4px);
+  border-radius: 9999px;
   padding: 6px 8px;
   transition: background-color var(--duration-feedback) var(--ease-feedback);
 }
@@ -1161,6 +1168,7 @@
 /* Dock scaling (IconRail sets --dock on the controls near the pointer). The
    glyph and its backplate grow together and drift slightly outward. */
 .rail-control > svg,
+.rail-control > .rail-toggle-icon,
 .rail-control::before {
   scale: var(--dock, 1);
   translate: calc((var(--dock, 1) - 1) * 10px) var(--dock-dy, 0px);
@@ -1231,5 +1239,46 @@
 @media (pointer: coarse) {
   .workspace-nav-footer button {
     min-height: var(--control-size-dense);
+  }
+}
+
+/* Command palette motion: rows arrive with a short stagger when the palette
+   opens and when a query brings new matches (rows keep their key, so rows
+   that stay do not replay), and the empty message fades in. Skipped when the
+   palette opens instantly. */
+@media (prefers-reduced-motion: no-preference) {
+  .command-panel:not([data-motion="instant"]) .command-results > li {
+    animation: command-row-in 180ms var(--ease-feedback) backwards;
+  }
+
+  .command-panel:not([data-motion="instant"]) .command-results > li:nth-child(2) {
+    animation-delay: 20ms;
+  }
+
+  .command-panel:not([data-motion="instant"]) .command-results > li:nth-child(3) {
+    animation-delay: 40ms;
+  }
+
+  .command-panel:not([data-motion="instant"]) .command-results > li:nth-child(4) {
+    animation-delay: 60ms;
+  }
+
+  .command-panel:not([data-motion="instant"]) .command-results > li:nth-child(5) {
+    animation-delay: 80ms;
+  }
+
+  .command-panel:not([data-motion="instant"]) .command-results > li:nth-child(n + 6) {
+    animation-delay: 100ms;
+  }
+
+  .command-panel:not([data-motion="instant"]) .command-empty {
+    animation: command-row-in 200ms var(--ease-feedback) backwards;
+  }
+}
+
+@keyframes command-row-in {
+  from {
+    opacity: 0;
+    translate: 0 4px;
   }
 }

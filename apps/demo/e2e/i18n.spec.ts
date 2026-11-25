@@ -142,7 +142,7 @@ test("英文下概览的标签、徽标与操作按钮不重叠、不超出容�
   }
 })
 
-test("暗色下切换暗色风格后，滚动边缘的渐隐与页面背景一致", async ({ page }) => {
+test("暗色下切换暗色风格后，滚动边缘仍由内容自身淡出", async ({ page }) => {
   await page.setViewportSize({ width: 1650, height: 1060 })
   await page.emulateMedia({ colorScheme: "dark" })
   await page.addInitScript(() =>
@@ -157,10 +157,16 @@ test("暗色下切换暗色风格后，滚动边缘的渐隐与页面背景一�
     "data-scrolled",
     "true"
   )
-  const same = await page.evaluate(() => {
-    const frame = document.querySelector(".page-content-frame")!
-    const fade = getComputedStyle(frame, "::after").backgroundImage
-    return fade === getComputedStyle(document.body).backgroundImage
+  // No strip is painted over the edge, so nothing has to match the page
+  // background (which dark glass leaves transparent for its light).
+  const edge = await page.evaluate(() => {
+    const viewport = document.querySelector(".page-content-viewport")!
+    const style = getComputedStyle(viewport)
+    return {
+      start: style.getPropertyValue("--scroll-edge-start").trim(),
+      mask: style.maskImage.includes("linear-gradient"),
+      overlay: getComputedStyle(viewport.parentElement!, "::after").content,
+    }
   })
-  expect(same).toBe(true)
+  expect(edge).toEqual({ start: "28px", mask: true, overlay: "none" })
 })

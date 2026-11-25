@@ -193,3 +193,29 @@
     flex-wrap: wrap;
   }
 }
+
+/* Cards settle in one after another on arrival, 40ms apart. */
+@media (prefers-reduced-motion: no-preference) {
+  .basic-flow > .basic-card {
+    animation: basic-card-in 260ms var(--ease-feedback) backwards;
+  }
+
+  .basic-flow > .basic-card:nth-child(3) {
+    animation-delay: 40ms;
+  }
+
+  .basic-flow > .basic-card:nth-child(4) {
+    animation-delay: 80ms;
+  }
+
+  .basic-flow > .basic-card:nth-child(n + 5) {
+    animation-delay: 120ms;
+  }
+}
+
+@keyframes basic-card-in {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}

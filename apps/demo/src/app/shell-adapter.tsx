@@ -18,6 +18,11 @@ import {
 import { AppIcon, SolarSparkles } from "@marismoon/ui/icons"
 import { Button } from "@marismoon/ui/ui/button"
 import { CopilotPanel } from "@/features/copilot/CopilotPanel"
+import {
+  GlassBackdropControl,
+  GlassBackdropLayer,
+  useGlassBackdrop,
+} from "@/features/glass-backdrop/glass-backdrop"
 import { useCopilot } from "@/features/copilot/useCopilot"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import { ShellLabelsBridge } from "@/lib/i18n/ShellLabelsBridge"
@@ -44,6 +49,7 @@ export function DemoShell() {
     workspacePages.overview
   const pageName = t(page.titleKey)
   const copilot = useCopilot()
+  const glassBackdrop = useGlassBackdrop()
   const {
     open: copilotOpen,
     openFrom: openCopilotFrom,
@@ -65,6 +71,10 @@ export function DemoShell() {
         <AppShell
           navigation={navigation}
           routeModule={page.moduleId}
+          headerExtra={<GlassBackdropControl />}
+          {...(glassBackdrop !== "magic-rings" && {
+            glassBackdrop: <GlassBackdropLayer kind={glassBackdrop} />,
+          })}
           rightPanel={(open) => (
             <CopilotPanel open={open} copilot={copilot} pageName={pageName} />
           )}

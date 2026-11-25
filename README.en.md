@@ -160,8 +160,11 @@ pnpm build
 pnpm test
 pnpm test:ui
 pnpm check:workspace
+pnpm check:package
 pnpm run audit
 ```
+
+Changes to published packages require a changeset. See [Versioning and releases](docs/VERSIONING.md) for the version PR, npm release, and verification steps.
 
 ## Troubleshooting
 

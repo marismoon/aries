@@ -1,5 +1,6 @@
 import { useEffect, useEffectEvent, useState, type ReactNode } from "react"
 import { AppIcon, SolarPanelLeftOpen } from "@marismoon/ui/icons"
+import { AriesMagicRings } from "@marismoon/ui/shared/AriesMagicRings"
 import { Button } from "@marismoon/ui/ui/button"
 import {
   Dialog,
@@ -92,6 +93,10 @@ export interface AppShellProps {
   /** ⌘⇧K / Ctrl+Shift+K toggles the right panel (default true when a panel
    * and `onRightPanelOpenChange` are supplied). */
   rightPanelShortcut?: boolean
+  /** What sits behind the dark glass (dark mode, glass material only).
+   * Defaults to `<AriesMagicRings />`; pass your own fixed, `aria-hidden` layer to
+   * replace it, or `null` for the plain dark ground. */
+  glassBackdrop?: ReactNode
 }
 
 export function AppShell({
@@ -105,6 +110,7 @@ export function AppShell({
   onRightPanelOpenChange,
   renderRightPanelTrigger,
   rightPanelShortcut = true,
+  glassBackdrop = <AriesMagicRings />,
 }: AppShellProps) {
   const { activePath, locationKey = activePath } = useShellRouter()
   const labels = useShellLabels()
@@ -158,6 +164,7 @@ export function AppShell({
 
   return (
     <CommandPaletteProvider commands={activeModule.commands}>
+      {glassBackdrop}
       <div className="app-shell" data-nav-collapsed={!navExpanded}>
         <a className="skip-link" href="#main-content">
           {labels.skipToContent}

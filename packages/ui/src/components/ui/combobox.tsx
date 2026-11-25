@@ -9,7 +9,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "./input-group"
-import { AppIcon, SolarClose } from "../icons"
+import { CloseIcon, closeButtonClass } from "./close-button"
 import { IconPlaceholder } from "../icons/icon-placeholder"
 
 const Combobox = ComboboxPrimitive.Root
@@ -47,17 +47,10 @@ function ComboboxClear({ className, ...props }: ComboboxPrimitive.Clear.Props) {
     <ComboboxPrimitive.Clear
       data-slot="combobox-clear"
       render={<InputGroupButton variant="ghost" size="icon-xs" />}
-      className={cn(className)}
+      className={cn(closeButtonClass, className)}
       {...props}
     >
-      <IconPlaceholder
-        lucide="XIcon"
-        tabler="IconX"
-        hugeicons="Cancel01Icon"
-        phosphor="XIcon"
-        remixicon="RiCloseLine"
-        className="pointer-events-none"
-      />
+      <CloseIcon className="pointer-events-none" />
     </ComboboxPrimitive.Clear>
   )
 }
@@ -275,14 +268,13 @@ function ComboboxChip({
       {showRemove && (
         <ComboboxPrimitive.ChipRemove
           render={<Button variant="ghost" size="icon-xs" />}
-          className="-mr-0.5 size-4 rounded-full p-0 opacity-60 shadow-none hover:bg-accent hover:opacity-100 aria-disabled:pointer-events-none"
+          className={cn(
+            closeButtonClass,
+            "-mr-0.5 size-4 rounded-full p-0 aria-disabled:pointer-events-none"
+          )}
           data-slot="combobox-chip-remove"
         >
-          <AppIcon
-            icon={SolarClose}
-            size={12}
-            className="pointer-events-none"
-          />
+          <CloseIcon className="pointer-events-none" />
         </ComboboxPrimitive.ChipRemove>
       )}
     </ComboboxPrimitive.Chip>
