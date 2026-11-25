@@ -135,8 +135,8 @@ function InputGroupTextarea({
 }: React.ComponentProps<"textarea">) {
   return (
     // Embedded, like InputGroupInput: the group is the field surface. Without
-    // it the textarea drew its own fill, shadow and focus edge inside the
-    // group's, so a focused group showed two borders.
+    // it the textarea drew its own surface inside the group's, so a focused
+    // group showed two borders.
     <Textarea
       embedded
       data-slot="input-group-control"

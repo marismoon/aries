@@ -103,8 +103,8 @@ function Calendar({
           defaultClassNames.week_number
         ),
         // Every fill is a circle 4px smaller than its cell (the 2px inset), so
-        // two selected neighbours, or a focus ring and its neighbour, never
-        // touch. The day button is that circle in every column.
+        // adjacent selections and focus outlines stay separate. The day
+        // button is that circle in every column.
         day: cn(
           "group/day relative aspect-square h-full w-full p-0.5 text-center select-none",
           defaultClassNames.day
