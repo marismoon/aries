@@ -293,7 +293,8 @@ async function recordIconSwitch(
 }
 
 test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => {
-  await page.emulateMedia({ colorScheme: "dark" })
+  // Exercise preference persistence without rendering the transition frames.
+  await page.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" })
   await page.goto("/")
   await expect(page).toHaveURL(/\/overview$/)
   const root = page.locator("html")
@@ -337,7 +338,7 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
   await expect(chromeColor).toHaveAttribute("content", petLight)
   expect(petLight).not.toBe("#f4f8ff")
 
-  await page.reload()
+  await page.reload({ waitUntil: "domcontentloaded" })
   await expect(root).toHaveClass(/\blight\b/)
   await expect(root).toHaveAttribute("data-palette", "pet-adoption")
   await switchToDark.click()
@@ -362,10 +363,11 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
   await expect.poll(storedTheme).toBe("system")
   await expect(page.getByRole("menu")).toHaveCount(0)
   await expect(root).toHaveClass(/\bdark\b/)
-  await page.emulateMedia({ colorScheme: "light" })
+  await page.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" })
   await expect(root).toHaveClass(/\blight\b/)
-  await page.reload()
-  await page.emulateMedia({ colorScheme: "dark" })
+  await page.reload({ waitUntil: "domcontentloaded" })
+  await expect(switchToDark).toBeVisible()
+  await page.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" })
   await expect(root).toHaveClass(/\bdark\b/)
   await expect(root).toHaveAttribute("data-palette", "pet-adoption")
   await expect(switchToLight).toBeVisible()
