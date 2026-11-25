@@ -4,7 +4,7 @@
 
 | 文件 | 内容 |
 | --- | --- |
-| `tokens.css` | `:root` 基础令牌（亮色）、`.dark` 暗色（含玻璃的填充、描边、模糊参数）、各品牌主题 `[data-palette="…"]` 与 `--swatch-*`。默认主题远程医疗蓝同时是兜底：它的亮色块选择器含 `:root:not(.dark)`，暗色值写在 `.dark`，所以未设置或设置了未知 `data-palette` 时渲染为远程医疗蓝；其他主题在其后覆盖 |
+| `tokens.css` | `:root` 基础令牌（亮色）、`.dark` 暗色（含玻璃的填充、描边、模糊参数）、各品牌主题 `[data-palette="…"]` 与 `--swatch-*`。默认主题 Aries Analytics（`ariesanalytics`）同时是兜底：它的亮色块选择器含 `:root:not(.dark)`，暗色值写在 `.dark`，所以未设置或设置了未知 `data-palette` 时渲染为 Aries Analytics；其他主题在其后覆盖 |
 | `materials.css` | 玻璃材质：`.surface`、`.surface-inset`、`.frost-divider`、`.hero-surface`、页面环境光 |
 | `dark-base.css` | 暗色共同底座（glass 与 clean 共用）+ glass 材质令牌（`--glass-*`，见 §2.2）；选择器用 `:root.dark` 以保持高于主题块的优先级 |
 | `dark-clean.css` | 简洁暗色材质（`.dark[data-dark-style="clean"]`）：关闭模糊、光晕、阴影 |
@@ -16,7 +16,7 @@
 ## 1. 主题与模式
 
 - **模式**：`next-themes`（`attribute="class"`）切换 `.dark`；`:root` 声明 `color-scheme: light`。宿主的 `index.html` 用同步内联脚本在首帧前写入 `.dark`、`data-palette` 与 `data-dark-style`，避免暗色或品牌主题刷新时先闪一下亮色；next-themes 自带的脚本只在服务端渲染时有效，客户端渲染的宿主以 `scriptProps={{ type: "application/json" }}` 让它保持惰性。
-- **品牌主题**（`<html data-palette="…">`，localStorage 键 `aries-palette`）：以 `lib/storage.ts` 的 `paletteLabels` 为准：`telemedicine`（远程医疗蓝，默认）、`mental-health`（静心雾蓝）、`pet-adoption`（暖陶土）、`health-wellness`（清新草绿）、`amber-sand`（琥珀暖沙），以及改编自 [tweakcn](https://tweakcn.com) 的四套：`mono`（极简灰）、`nature`（自然森绿）、`northern-lights`（北极光）、`darkmatter`（暗物质）。改编的四套取原主题的色相，表面沿用本系统的亮度阶梯，主色、图表与状态色按 §2.5 调整过（例如亮色主色加深到 4.5:1），所以不与 tweakcn 上的数值逐一相同。每套都有亮色与暗色。本地存储中的值不在列表内时回落到默认主题。
+- **品牌主题**（`<html data-palette="…">`，localStorage 键 `aries-palette`）：以 `lib/storage.ts` 的 `paletteLabels` 为准，共五套：`ariesanalytics`（Aries Analytics，默认）、`mental-health`（静心雾蓝）、`northern-lights`（北极光）、`pet-adoption`（暖陶土）、`mono`（极简灰）。每套都有亮色与暗色；其中非默认四套的高亮模式采用增白清亮阶梯与明快图表色。本地存储中的值不在列表内时回落到默认主题。
 - **暗色风格**（`<html data-dark-style="glass|clean">`，键 `aries-dark-style`）：`glass` 毛玻璃（默认）、`clean` 简洁。详见 §2。
 - 切换控件：`BrandPaletteControl`（轮换主题）、`DarkStyleControl`（仅暗色模式显示）、`ThemeSwitcher`（明暗）。
 
@@ -75,7 +75,7 @@
 - 强调文字对强调底 ≥ 4.5:1；状态色文字对其浅底 ≥ 4.5:1；聚焦环对画布 ≥ 3:1。
 - 图表系列色 `--chart-1…5` 对卡片 ≥ 3:1，且是一组**分类色**：五个系列之间要能分辨（OKLCH 色差 ΔE ≥ 0.08），靠色相与明度错开，不能只调明度挤在同一档。亮色卡片上满足 3:1 的明度窗口约为 OKLCH L 0.35–0.62。
 - 文本控件边缘对画布 ≥ 3:1；`--border` 对卡片 ≥ 1.5:1。
-- **色相间隔**（OKLCH 色相角）：主色与危险色、警告色 ≥ 30°，与成功色、信息色 ≥ 25°；图表系列与危险色、警告色 ≥ 25°。不满足时**移动状态色而不是品牌色**：亮色在主题块内覆盖 `--danger`/`--warning`/`--success`/`--info` 及对应 `-bg`，暗色在 `dark-base.css` 末尾覆盖（`-bg` 由 color-mix 自动跟随）。现有覆盖：远程医疗蓝的信息色（紫）、暖陶土的危险色（玫瑰红）与警告色（金）、清新草绿的成功色（青）、琥珀暖沙的危险色（玫瑰红）与警告色（橙）、自然森绿与北极光的成功色（青）、暗物质的亮色警告色（黄绿金）。没有色相的颜色（极简灰的主色与图表灰阶）不参与色相间隔检查；极简灰的暗色 glass 把 `--tone-k` 设为 0，光晕与表面都是中性灰。
+- **色相间隔**（OKLCH 色相角）：主色与危险色、警告色 ≥ 30°，与成功色、信息色 ≥ 25°；图表系列与危险色、警告色 ≥ 25°。不满足时**移动状态色而不是品牌色**：亮色在主题块内覆盖 `--danger`/`--warning`/`--success`/`--info` 及对应 `-bg`，暗色在 `dark-base.css` 末尾覆盖（`-bg` 由 color-mix 自动跟随）。现有覆盖：Aries Analytics 的信息色（紫）、静心雾蓝的亮色信息色（天蓝）、北极光的成功色（青）、暖陶土的危险色（玫红）与警告色（暖金）。没有色相的颜色（极简灰的主色与图表灰阶）不参与色相间隔检查；极简灰的暗色 glass 把 `--tone-k` 设为 0，光晕与表面都是中性灰。
 - glass 卡片的不透明度（`--glass-fill-top/bottom`）低于 74%、次级文字低于 80%，或调亮背后的光时，光经过卡片背后会让次级文字跌破 4.5:1，调之前先复核。
 - glass 的文字对比度还受背后的光影响，光会移动，令牌估算之外 **SHOULD** 在浏览器里把动画冻结在一整圈的多个位置抽样确认。
 
@@ -172,7 +172,7 @@ shadcn `Sidebar` 组件的 `--sidebar*` 颜色令牌是语义令牌的别名（`
 
 ## 7. 图表规则
 
-- 使用 `components/ui/chart.tsx`（`ChartContainer` + `ChartConfig`）封装 recharts 3.8.0；系列色只引用 `--chart-1…8`，不写死色值。
+- 使用 `components/ui/chart.tsx`（`ChartContainer` + `ChartConfig`）封装 recharts 3.8.0；系列色只引用 `--chart-1…5`，不写死色值。
 - 图表卡片的外部尺寸固定，图例/Tab 切换不改变卡片高度；坐标轴刻度使用 `financial-number`；每个图表提供文字替代（`figcaption`/`aria-label`）。
 - 纯 SVG 图表的入场用 §6 的 `.chart-in-*` 工具类；悬停时其余系列降到 0.35 透明度（只变透明度，不移动），见 `overview-charts.css` 的 `data-chart-mark`。
 - 参考实现：`apps/demo/src/features/overview/components/OverviewCharts.tsx` 与 `features/settings/chart-demos.tsx`、`ChartShowcase.tsx`。
@@ -183,7 +183,7 @@ shadcn `Sidebar` 组件的 `--sidebar*` 颜色令牌是语义令牌的别名（`
 
 ## 9. 新增主题的步骤
 
-1. `tokens.css` 增 `[data-palette="x"]:not(.dark)` 与 `.dark[data-palette="x"]` 两块（可复制现有主题再改）。暗色块只写主色与前景、强调、`--chart-1…8`、`--environment-*`、hero 令牌（§2.1）；亮色块覆盖 §3「语义色」「状态色」「图表色」中的全部令牌。
+1. `tokens.css` 增 `[data-palette="x"]:not(.dark)` 与 `.dark[data-palette="x"]` 两块（可复制现有主题再改）。暗色块只写主色与前景、强调、`--chart-1…5`、`--environment-*`、hero 令牌（§2.1）；亮色块覆盖 §3「语义色」「状态色」「图表色」中的全部令牌。
 2. `tokens.css` 增 `--swatch-x`；`lib/storage.ts` 的 `paletteLabels` 登记。
 3. `dark-base.css` 增一条 `.dark[data-palette="x"] { --dark-hue: <0–360> }`。
 4. 按 §2.5 核对亮色与暗色：主色、次级文字、强调文字、状态色的对比度，图表分类色的对比度与相互区分，以及主色、图表与状态色的色相间隔；撞色时覆盖状态色。色块 `--swatch-x` 取亮色实际主色。

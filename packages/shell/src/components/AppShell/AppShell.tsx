@@ -1,4 +1,5 @@
 import { useEffect, useEffectEvent, useState, type ReactNode } from "react"
+import { useDarkGlass } from "@marismoon/ui/hooks/use-backdrop-canvas"
 import { AppIcon, SolarPanelLeftOpen } from "@marismoon/ui/icons"
 import { AriesMagicRings } from "@marismoon/ui/shared/AriesMagicRings"
 import { Button } from "@marismoon/ui/ui/button"
@@ -114,6 +115,7 @@ export function AppShell({
 }: AppShellProps) {
   const { activePath, locationKey = activePath } = useShellRouter()
   const labels = useShellLabels()
+  const darkGlass = useDarkGlass()
   // iPad portrait (701-899px) keeps the compact icon rail and lets the second
   // column be opened on demand; wider screens start expanded.
   // Server rendering has no viewport and starts expanded.
@@ -122,14 +124,14 @@ export function AppShell({
       typeof window === "undefined" ||
       !window.matchMedia("(min-width: 701px) and (max-width: 899px)").matches
   )
-  const [selection, setSelection] = useState({
-    locationKey,
-    module: routeModule,
-  })
+  const [selection, setSelection] = useState<{
+    locationKey: string
+    module: string
+  } | null>(null)
   const activeId =
-    selection.locationKey === locationKey ? selection.module : routeModule
-  if (selection.locationKey !== locationKey) {
-    setSelection({ locationKey, module: routeModule })
+    selection?.locationKey === locationKey ? selection.module : routeModule
+  if (selection && selection.locationKey !== locationKey) {
+    setSelection(null)
   }
   const activeModule = navigation.modules.find(({ id }) => id === activeId)
   if (!activeModule) throw new Error(`Unknown navigation module: ${activeId}`)
@@ -164,7 +166,7 @@ export function AppShell({
 
   return (
     <CommandPaletteProvider commands={activeModule.commands}>
-      {glassBackdrop}
+      {darkGlass && glassBackdrop}
       <div className="app-shell" data-nav-collapsed={!navExpanded}>
         <a className="skip-link" href="#main-content">
           {labels.skipToContent}

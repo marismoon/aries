@@ -1,5 +1,6 @@
 import {
   useBackdropCanvas,
+  useDarkGlass,
   type BackdropShader,
 } from "../../hooks/use-backdrop-canvas"
 
@@ -177,11 +178,15 @@ void main() {
 `,
 }
 
-export function AriesAntigravity() {
+function AntigravityCanvas() {
   const canvas = useBackdropCanvas(scene)
   return (
     <div className="glass-backdrop aries-antigravity" aria-hidden="true">
       <canvas ref={canvas} />
     </div>
   )
+}
+
+export function AriesAntigravity() {
+  return useDarkGlass() ? <AntigravityCanvas /> : null
 }

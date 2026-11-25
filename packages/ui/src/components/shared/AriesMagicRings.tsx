@@ -1,5 +1,6 @@
 import {
   useBackdropCanvas,
+  useDarkGlass,
   type BackdropShader,
 } from "../../hooks/use-backdrop-canvas"
 
@@ -57,11 +58,15 @@ void main() {
 `,
 }
 
-export function AriesMagicRings() {
+function MagicRingsCanvas() {
   const canvas = useBackdropCanvas(scene)
   return (
     <div className="glass-backdrop aries-magic-rings" aria-hidden="true">
       <canvas ref={canvas} />
     </div>
   )
+}
+
+export function AriesMagicRings() {
+  return useDarkGlass() ? <MagicRingsCanvas /> : null
 }

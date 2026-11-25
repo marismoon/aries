@@ -1,5 +1,23 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useSyncExternalStore } from "react"
 import { readBackdropPalette } from "../lib/backdrop-palette"
+
+function isDarkGlass() {
+  const root = document.documentElement
+  return root.classList.contains("dark") && root.dataset.darkStyle !== "clean"
+}
+
+function subscribeDarkGlass(onChange: () => void) {
+  const observer = new MutationObserver(onChange)
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class", "data-dark-style"],
+  })
+  return () => observer.disconnect()
+}
+
+export function useDarkGlass() {
+  return useSyncExternalStore(subscribeDarkGlass, isDarkGlass, () => false)
+}
 
 export interface BackdropShader {
   fragment: string

@@ -37,14 +37,11 @@
 
 Aries 提供构建工作区应用所需的共享组件和外壳。Demo 使用本地模拟数据展示概览、账单和组件，Starter 则提供接好外壳的首页与设置页。
 
-- **品牌主题**。内置九套品牌主题（远程医疗蓝、静心雾蓝、暖陶土、清新草绿、琥珀暖沙，以及改编自 tweakcn 的极简灰、自然森绿、北极光、暗物质），默认远程医疗蓝，可从页头轮换，明暗模式均可用。
-- **明暗与材质**。支持亮色与暗色，暗色提供 glass 和 clean 两种材质。
-- **组件与图标**。使用基于 shadcn 的组件与 Solar 图标，Demo 提供组件预览。
-- **表格与图表**。使用 TanStack Table 展示账单数据，使用 Recharts 展示指标趋势。
-- **工作区外壳**。三列布局包含模块入口、工作区导航和业务内容，命令面板可查找当前模块的页面，并打开可用条目。
-- **中英双语**。工作区外壳和主要 Demo 页面支持简体中文与英文。
-- **Copilot 示例**。右栏助手基于本地模拟数据回答示例问题。
-- **Starter**。带首页和设置页的模板，用 `pnpm create:app` 或 `npm create @marismoon/aries` 创建新应用，布局受契约保护。
+- **主题与材质**：内置五套品牌主题（Aries Analytics、静心雾蓝、北极光、暖陶土、极简灰），默认 Aries Analytics，可从页头直接轮换。支持亮色与暗色模式，暗色提供 glass 和 clean 两种材质，其中 glass 模式内置三款可切换的 WebGL 2 动态背景。
+- **组件、表格与图表**：基于 shadcn 组件与 Solar 图标构建，搭配 TanStack Table 账单表、Recharts 趋势图与完整的组件预览页。
+- **工作区外壳**：固定三列布局（模块入口、工作区导航、业务内容区），内置命令面板检索当前模块页面，外壳与主要 Demo 页面均支持简体中文与英文。
+- **Copilot 右栏示例**：提供可展开的右侧助手面板，基于本地模拟数据回答示例问题。
+- **Starter 与布局契约**：包含首页与设置页的起步模板，通过 `pnpm create:app` 或 `npm create @marismoon/aries` 创建新应用；布局由 `pnpm lint` 与 `pnpm test:ui` 自动校验。
 
 ## 预览
 
@@ -62,8 +59,8 @@ Aries 提供构建工作区应用所需的共享组件和外壳。Demo 使用本
     <td><img src="docs/assets/screenshots/copilot.zh-CN.jpg" width="480" alt="右栏 Copilot 中显示的建议问题"><br>Copilot 右栏与示例问题。</td>
   </tr>
   <tr>
-    <td><img src="docs/assets/screenshots/palette-telemedicine.zh-CN.jpg" width="320" alt="使用远程医疗蓝品牌主题的总览"><br>远程医疗蓝下的总览。</td>
-    <td><img src="docs/assets/screenshots/palette-health-wellness.zh-CN.jpg" width="320" alt="使用清新草绿品牌主题的总览"><br>清新草绿下的总览。</td>
+    <td><img src="docs/assets/screenshots/palette-mental-health.zh-CN.jpg" width="320" alt="使用静心雾蓝品牌主题的总览"><br>静心雾蓝下的总览。</td>
+    <td><img src="docs/assets/screenshots/palette-northern-lights.zh-CN.jpg" width="320" alt="使用北极光品牌主题的总览"><br>北极光下的总览。</td>
   </tr>
   <tr>
     <td colspan="2" align="center"><img src="docs/assets/screenshots/mobile.zh-CN.jpg" width="139" alt="导航抽屉收起时的手机总览"><br>390 px 视口的总览，导航抽屉收起。</td>
@@ -110,7 +107,7 @@ aries/
     └── starter/       起步模板
 ```
 
-Demo 与 Starter 使用 Shell 和 UI 的公开入口，Shell 依赖 UI。 [架构](docs/ARCHITECTURE.md)
+Demo 与 Starter 使用 Shell 和 UI 的公开入口，Shell 依赖 UI。[架构](docs/ARCHITECTURE.md)
 
 ## 基于 Starter 创建应用
 
@@ -137,7 +134,7 @@ npm create @marismoon/aries@next my-app
 | `pnpm test` | 运行 Vitest 单测 |
 | `pnpm test:coverage` | 运行 Demo 的覆盖率任务 |
 | `pnpm test:ui` | 运行 Demo 的 UI 测试和 Starter 的冒烟与布局契约测试 |
-| `pnpm test:consumer` | 在仓库外验证打包后的 ui 与 shell：用 create-aries 创建 Vite 项目并跑全部检查，再构建 Next.js 宿主（需要联网） |
+| `pnpm test:consumer` | 在仓库外验证打包产物（create-aries Vite 项目与 Next.js 宿主，需联网） |
 | `pnpm check:workspace` | 检查工作区包边界，并运行各应用的布局守卫 |
 | `pnpm check:package` | 打包 ui、shell 与 create-aries，检查内容与元数据，并运行 publint 与 attw |
 | `pnpm run audit` | 审计依赖，高危及以上问题使检查失败 |
@@ -148,9 +145,9 @@ npm create @marismoon/aries@next my-app
 
 ## 开发与贡献
 
-贡献者与 AI 助手从同一份开发契约开始。 [开发契约](AGENTS.md)
+贡献者与 AI 助手遵循同一份[开发契约](AGENTS.md)。
 
-Husky 和 lint-staged 对暂存的 TS、TSX 运行 Prettier 和 ESLint。提交 PR 前从仓库根目录运行以下检查。 [CI 工作流](.github/workflows/ci.yml)
+Husky 和 lint-staged 对暂存的 TS、TSX 运行 Prettier 和 ESLint。提交 PR 前从仓库根目录运行以下检查，见 [CI 工作流](.github/workflows/ci.yml)：
 
 ```sh
 # 检查当前改动
@@ -195,7 +192,7 @@ pnpm test:ui
 
 ## 环境变量
 
-`VITE_API_BASE_URL` 是将 Demo 模拟服务接入真实后端时使用的占位变量。运行当前 Demo 无需填写。 [环境变量示例](.env.example)
+`VITE_API_BASE_URL` 是将 Demo 模拟服务接入真实后端时使用的占位变量，运行当前 Demo 无需填写。[环境变量示例](.env.example)
 
 ## 许可证
 

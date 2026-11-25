@@ -37,14 +37,11 @@ The Demo overview in the default brand palette, shown in light mode and dark gla
 
 Aries provides the shared components and application shell for building workspaces. Demo uses local mock data to show the overview, billing, and component screens. Starter supplies a home page and a settings page wired into the same shell.
 
-- **Brand palettes.** Five built-in palettes (Telemedicine blue, Calm mist blue, Warm terracotta, Fresh grass green, Amber sand), Telemedicine blue by default. Switch them from the page header in light or dark mode.
-- **Modes and surfaces.** Use light or dark mode, with glass and clean options for dark mode.
-- **Components and icons.** Build with shadcn-based components and Solar icons. Demo includes a component showcase.
-- **Tables and charts.** Review billing records in a TanStack Table and explore metric trends in Recharts.
-- **Workspace shell.** The three-column layout contains module shortcuts, workspace navigation, and page content. The command palette finds pages in the current module and opens available entries.
-- **Two languages.** The workspace shell and primary Demo pages support Simplified Chinese and English.
-- **Copilot demo.** The assistant panel answers sample questions using local mock data.
-- **Starter.** A template with a home page and a settings page. Create apps from it with `pnpm create:app` or `npm create @marismoon/aries`; a layout contract protects the shell.
+- **Themes and surfaces:** Five built-in palettes (Aries Analytics, Calm mist blue, Northern Lights, Warm terracotta, Mono), with Aries Analytics as the default. Switch between light mode and dark mode (glass or clean surfaces); dark glass includes three switchable WebGL 2 backdrops.
+- **Components, tables, and charts:** Built on shadcn-based components and Solar icons, paired with TanStack Table billing views, Recharts trend charts, and a component showcase.
+- **Workspace shell:** A fixed three-column layout (module rail, workspace navigation, and page content) with a command palette for the active module and Simplified Chinese / English support across the shell and main Demo pages.
+- **Copilot panel:** An expandable right-hand assistant panel that answers sample questions using local mock data.
+- **Starter and layout contract:** A ready-to-use home and settings template scaffolded via `pnpm create:app` or `npm create @marismoon/aries`, with `pnpm lint` and `pnpm test:ui` enforcing the shell layout.
 
 ## Previews
 
@@ -62,8 +59,8 @@ Aries provides the shared components and application shell for building workspac
     <td><img src="docs/assets/screenshots/copilot.en.jpg" width="480" alt="Suggested questions in the Copilot side panel"><br>Copilot panel with suggested questions.</td>
   </tr>
   <tr>
-    <td><img src="docs/assets/screenshots/palette-telemedicine.en.jpg" width="320" alt="Overview with the Telemedicine blue brand palette"><br>Overview in Telemedicine blue.</td>
-    <td><img src="docs/assets/screenshots/palette-health-wellness.en.jpg" width="320" alt="Overview with the Fresh grass green brand palette"><br>Overview in Fresh grass green.</td>
+    <td><img src="docs/assets/screenshots/palette-mental-health.en.jpg" width="320" alt="Overview with the Calm mist blue brand palette"><br>Overview in Calm mist blue.</td>
+    <td><img src="docs/assets/screenshots/palette-northern-lights.en.jpg" width="320" alt="Overview with the Northern Lights brand palette"><br>Overview in Northern Lights.</td>
   </tr>
   <tr>
     <td colspan="2" align="center"><img src="docs/assets/screenshots/mobile.en.jpg" width="139" alt="Mobile overview with the navigation drawer closed"><br>Overview at 390 px with the navigation drawer closed.</td>
@@ -137,7 +134,7 @@ The generated project uses the same three-column shell as Demo. Write pages in `
 | `pnpm test` | Run Vitest unit tests |
 | `pnpm test:coverage` | Run the Demo coverage task |
 | `pnpm test:ui` | Run Demo UI tests and the Starter smoke and layout-contract tests |
-| `pnpm test:consumer` | Verify the packed ui and shell outside the workspace: scaffold a Vite project with create-aries and run all its checks, then build a Next.js host (needs network) |
+| `pnpm test:consumer` | Verify packed packages outside the workspace (create-aries Vite app and a Next.js host; requires network) |
 | `pnpm check:workspace` | Check workspace package boundaries and run each app's layout guard |
 | `pnpm check:package` | Pack ui, shell and create-aries, check contents and metadata, and run publint and attw |
 | `pnpm run audit` | Audit dependencies and fail on high or critical findings |

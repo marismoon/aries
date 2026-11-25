@@ -131,15 +131,11 @@ export const uiEn: Record<string, string> = {
   已复制: "Copied",
   "当前为{{current}}，点击切换为{{next}}":
     "Currently {{current}}; click to switch to {{next}}",
-  远程医疗蓝: "Telemedicine blue",
+  "Aries Analytics": "Aries Analytics",
   静心雾蓝: "Calm mist blue",
-  暖陶土: "Warm terracotta",
-  清新草绿: "Fresh grass green",
-  琥珀暖沙: "Amber sand",
-  极简灰: "Mono",
-  自然森绿: "Nature",
   北极光: "Northern lights",
-  暗物质: "Darkmatter",
+  暖陶土: "Warm terracotta",
+  极简灰: "Mono",
   玻璃背景: "Glass backdrop",
   // Shell
   "Demo 暂未开放": "Not available in this demo",
