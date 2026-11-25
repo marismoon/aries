@@ -174,11 +174,11 @@ export function CommandPaletteProvider({
   }, [open])
 
   async function selectPage(path: string) {
-    selectedRoute.current =
-      path !== activePath || Boolean(onLaunchNavigate.current)
+    const moved = path !== activePath || Boolean(onLaunchNavigate.current)
     try {
       if (onNavigate) await onNavigate(path)
       else window.location.assign(path)
+      selectedRoute.current = moved
       onLaunchNavigate.current?.()
     } finally {
       setOpen(false)
@@ -239,53 +239,59 @@ export function CommandPaletteProvider({
 
           {matches.length ? (
             <ul className="command-results" aria-label={labels.commandResults}>
-              {matches.map(({ title, description, path, icon: Icon }) => {
-                const content = (
-                  <>
-                    <span className="command-result-icon">
-                      <AppIcon icon={Icon} size={16} aria-hidden="true" />
-                    </span>
-                    <span className="command-result-text">
-                      <strong>{title}</strong>
-                      <small>{description}</small>
-                    </span>
-                    <AppIcon
-                      icon={SolarArrowUpRight}
-                      size={16}
-                      className="command-result-arrow"
-                      aria-hidden="true"
-                    />
-                  </>
-                )
-                return (
-                  <li key={path ?? title}>
-                    {path ? (
-                      <ShellLink
-                        to={path}
-                        className="command-result"
-                        onClick={(event) => {
-                          if (
-                            !onNavigate ||
-                            event.metaKey ||
-                            event.ctrlKey ||
-                            event.shiftKey ||
-                            event.altKey
-                          )
-                            return
-                          event.preventDefault()
-                          void selectPage(path)
-                        }}
-                      >
-                        {content}
-                      </ShellLink>
-                    ) : (
-                      <button type="button" className="command-result" disabled>
-                        {content}
-                      </button>
-                    )}
-                  </li>
-                )
-              })}
+              {matches.map(
+                ({ title, description, path, icon: Icon }, index) => {
+                  const content = (
+                    <>
+                      <span className="command-result-icon">
+                        <AppIcon icon={Icon} size={16} aria-hidden="true" />
+                      </span>
+                      <span className="command-result-text">
+                        <strong>{title}</strong>
+                        <small>{description}</small>
+                      </span>
+                      <AppIcon
+                        icon={SolarArrowUpRight}
+                        size={16}
+                        className="command-result-arrow"
+                        aria-hidden="true"
+                      />
+                    </>
+                  )
+                  return (
+                    <li key={path ?? `${title}-${index}`}>
+                      {path ? (
+                        <ShellLink
+                          to={path}
+                          className="command-result"
+                          onClick={(event) => {
+                            if (
+                              !onNavigate ||
+                              event.metaKey ||
+                              event.ctrlKey ||
+                              event.shiftKey ||
+                              event.altKey
+                            )
+                              return
+                            event.preventDefault()
+                            void selectPage(path)
+                          }}
+                        >
+                          {content}
+                        </ShellLink>
+                      ) : (
+                        <button
+                          type="button"
+                          className="command-result"
+                          disabled
+                        >
+                          {content}
+                        </button>
+                      )}
+                    </li>
+                  )
+                }
+              )}
             </ul>
           ) : (
             <p className="command-empty" role="status">

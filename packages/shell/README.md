@@ -50,6 +50,7 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 | `rightPanel`、`rightPanelOpen` | 右栏位于网格外。传入节点时按受控开合状态挂载或卸载。传入 `(open) => ReactNode` 时每次都调用，由宿主保留退出动画。 |
 | `renderRightPanelTrigger`、`onRightPanelOpenChange` | 在图标栏渲染入口，接收 `{ open, onToggle, keyShortcuts }`。入口将触发元素交给 `onToggle`，宿主收到 `(open, launcher)` 后更新状态；`keyShortcuts` 用于入口的 `aria-keyshortcuts`。 |
 | `rightPanelShortcut` | 默认 `true`：提供了 `rightPanel` 与 `onRightPanelOpenChange` 时，⌘⇧K / Ctrl+Shift+K（`rightPanelKeyShortcuts`）切换右栏；其他对话框打开时不响应。`launcher` 为当前焦点元素，焦点在页面上时为入口按钮。传 `false` 关闭。 |
+| `glassBackdrop` | 仅在暗色玻璃模式下挂载的固定背景层，默认 `<AriesMagicRings />`；可替换为其他共享背景或自定义 `aria-hidden` 图层，传 `null` 则仅显示纯暗色底。 |
 
 `useDocumentTitle(title)` 在浏览器中把 `document.title` 同步为传入的字符串，宿主通常写 `` useDocumentTitle(`${页面标题} · 产品名`) ``。
 
@@ -63,7 +64,7 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 
 ## CSS 变量契约
 
-轮次三起点的 `layout.css` 包含 255 次 `var()` 引用，涉及 91 个变量。下表包含移入 UI 的派生变量所依赖的令牌。样式文件均位于 `packages/ui/src/styles/`，宿主通过 `@marismoon/ui/styles/globals.css` 引入。已有主题层叠顺序为 `tokens.css` → `materials.css` → `dark-base.css` → `dark-clean.css`，动效令牌位于其后的 `motion.css`。
+`layout.css` 所依赖的设计令牌与主题变量由 `@marismoon/ui` 提供，下表列出外壳样式及其派生变量使用的全部令牌。样式文件均位于 `packages/ui/src/styles/`，宿主通过 `@marismoon/ui/styles/globals.css` 引入。已有主题层叠顺序为 `tokens.css` → `materials.css` → `dark-base.css` → `dark-clean.css`，动效令牌位于其后的 `motion.css`。
 
 | 用途 | 变量 | 定义或主题覆盖文件 |
 |---|---|---|
@@ -87,18 +88,9 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 | 交互时长与缓动 | `--duration-feedback`、`--ease-feedback` | `motion.css` |
 | 指针跟踪的逐帧输入 | `--dock`、`--dock-dy`、`--dock-t` | `IconRail.tsx` |
 
-### 从外壳样式归入 UI 的声明
-
-| 目标文件 | 原先定义在 `layout.css` 的变量 |
-|---|---|
-| `tokens.css` | `--rail-start-inset`、`--rail-block-start`、`--rail-block-end`、`--rail-item-gap`、`--rail-logo-gap`、`--rail-logo-center`、`--icon-rail-width`、`--workspace-nav-width`、`--workspace-column-gap`、`--column-height`、`--workspace-inset-start`、`--workspace-inset-end`、`--workspace-edge-size`、`--workspace-bleed-inline`、`--workspace-bleed-block`、`--breadcrumb-leading`、`--sidebar-leaf-height`（移动目录覆盖） |
-| `materials.css` | `--rail-fill`、`--nav-tree-line`、`--ai-blue`、`--ai-violet`、`--ai-pink`、`--ai-cyan` |
-| `motion.css` | `--ai-angle` 的注册和 `rail-ai-flow` 关键帧 |
-
 ### 作用域与回退
 
 - `.app-shell` 建立轨道宽度、列距和整列高度。`.workspace-main` 建立内容区起止边距，起始边距在视口宽度达到 701px 时切换。`.page-content-frame` 提供出血与渐隐距离，`.page-header` 提供面包屑行高。各变量继承原有元素上的值。
 - `--rail-fill` 按品牌入口、常规、悬停和选中四种选择器赋值。`--nav-tree-line` 在目录子树上赋值，悬停或选中的分支仅在其 `li::after` 上加深。`--sidebar-leaf-height` 在移动目录内使用紧凑控件高度。
-- `--ai-*` 色值、`--ai-angle` 与 `rail-ai-flow` 仍由 `@marismoon/ui` 提供，外壳的右栏入口已不再使用。
 - `--nav-active-*`、`--nav-hover-*`、`--nav-border-width` 等按主题提供，未声明时沿用消费处的 `var()` 回退。`--field-shadow` 另有 `.copilot-composer` 私有覆盖，作用于输入框自身。
 - `IconRail.tsx` 通过控件的内联样式逐帧写入 `--dock`（缩放）、`--dock-t`（悬停强度）和 `--dock-dy`（纵向位移）。指针离开后移除，CSS 回退依次为 1、0 和 0px。

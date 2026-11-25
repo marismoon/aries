@@ -11,32 +11,14 @@
    Steps are small by design; hairlines carry the separation, not lightness.
    `:root.dark` keeps these rules above the palette blocks in tokens.css. */
 :root.dark {
-  /* Telemedicine, the default palette. */
-  --dark-hue: 218;
+  /* Aries Analytics, the default palette. */
+  --dark-hue: 220;
   --dark-tint: 6%;
 }
 
 .dark[data-palette="mental-health"] {
-  /* Lavender-tinted canvas keeps it apart from telemedicine (218). */
+  /* Lavender-tinted canvas keeps it apart from Aries Analytics (220). */
   --dark-hue: 262;
-  --dark-tint: 9%;
-}
-.dark[data-palette="pet-adoption"] {
-  --dark-hue: 20;
-}
-.dark[data-palette="health-wellness"] {
-  --dark-hue: 142;
-}
-.dark[data-palette="amber-sand"] {
-  --dark-hue: 40;
-}
-.dark[data-palette="mono"] {
-  /* No hue at all: neutral greys. */
-  --dark-hue: 0;
-  --dark-tint: 0%;
-}
-.dark[data-palette="nature"] {
-  --dark-hue: 140;
   --dark-tint: 9%;
 }
 .dark[data-palette="northern-lights"] {
@@ -44,10 +26,13 @@
   --dark-hue: 232;
   --dark-tint: 9%;
 }
-.dark[data-palette="darkmatter"] {
-  /* Near-neutral: the orange primary carries the colour. */
-  --dark-hue: 264;
-  --dark-tint: 3%;
+.dark[data-palette="pet-adoption"] {
+  --dark-hue: 20;
+}
+.dark[data-palette="mono"] {
+  /* No hue at all: neutral greys. */
+  --dark-hue: 0;
+  --dark-tint: 0%;
 }
 
 :root.dark {
@@ -222,20 +207,12 @@
    status colour, that palette moves the status colour (DESIGN_SYSTEM §2.5).
    The -bg tints follow through the color-mix above. */
 :root.dark:not([data-palette]),
-:root.dark[data-palette="telemedicine"] {
+:root.dark[data-palette="ariesanalytics"] {
   --info: #b093e5;
 }
-:root.dark[data-palette="pet-adoption"] {
-  --danger: #e480a6;
-}
-:root.dark[data-palette="health-wellness"] {
-  --success: #46d5cd;
-}
-:root.dark[data-palette="nature"],
 :root.dark[data-palette="northern-lights"] {
   --success: #46d5cd;
 }
-:root.dark[data-palette="amber-sand"] {
-  --danger: #e884aa;
-  --warning: #ffc29f;
+:root.dark[data-palette="pet-adoption"] {
+  --danger: #e480a6;
 }

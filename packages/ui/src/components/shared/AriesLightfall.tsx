@@ -1,5 +1,6 @@
 import {
   useBackdropCanvas,
+  useDarkGlass,
   type BackdropShader,
 } from "../../hooks/use-backdrop-canvas"
 
@@ -76,11 +77,15 @@ void main() {
 `,
 }
 
-export function AriesLightfall() {
+function LightfallCanvas() {
   const canvas = useBackdropCanvas(scene)
   return (
     <div className="glass-backdrop aries-lightfall" aria-hidden="true">
       <canvas ref={canvas} />
     </div>
   )
+}
+
+export function AriesLightfall() {
+  return useDarkGlass() ? <LightfallCanvas /> : null
 }

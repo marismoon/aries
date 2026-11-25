@@ -2,18 +2,14 @@ import type { Locator } from "@playwright/test"
 
 import { expect, test } from "./fixtures"
 
-// Cycle order starting from the default palette (telemedicine).
-const defaultPalette = "telemedicine"
+// Cycle order starting from the default palette (ariesanalytics).
+const defaultPalette = "ariesanalytics"
 const brandCycle = [
   "mental-health",
-  "pet-adoption",
-  "health-wellness",
-  "amber-sand",
-  "mono",
-  "nature",
   "northern-lights",
-  "darkmatter",
-  "telemedicine",
+  "pet-adoption",
+  "mono",
+  "ariesanalytics",
 ] as const
 
 const sunIcon = 'svg:has(circle[cx="12"][cy="12"][r="6"])'
@@ -300,8 +296,8 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
   const root = page.locator("html")
   const chromeColor = page.locator('meta[name="theme-color"]')
   await expect(root).toHaveClass(/\bdark\b/)
-  // Default palette (telemedicine) dark canvas: --dark-hue 218.
-  await expect(chromeColor).toHaveAttribute("content", "hsl(218 6% 12%)")
+  // Default palette (ariesanalytics) dark canvas: --dark-hue 220.
+  await expect(chromeColor).toHaveAttribute("content", "hsl(220 6% 12%)")
 
   const switchToLight = page.getByRole("button", { name: "切换到浅色模式" })
   const switchToDark = page.getByRole("button", { name: "切换到深色模式" })
@@ -310,8 +306,8 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
   await expect(page.getByRole("menu")).toHaveCount(0)
   await expect(switchToDark).toHaveAttribute("title", /切换到深色模式.*Shift/)
   await expect(root).toHaveClass(/\blight\b/)
-  // Default palette (telemedicine) light canvas.
-  await expect(chromeColor).toHaveAttribute("content", "#f4f8ff")
+  // Default palette (ariesanalytics) light canvas.
+  await expect(chromeColor).toHaveAttribute("content", "#f2f6fc")
   await page
     .getByRole("navigation", { name: "工作区目录" })
     .getByRole("link", { name: "月账单", exact: true })
@@ -326,7 +322,7 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
   await palette.press("Enter")
   await expect(root).toHaveAttribute("data-palette", "mental-health")
   await expect(palette).toBeFocused()
-  for (const brand of ["pet-adoption"]) {
+  for (const brand of ["northern-lights", "pet-adoption"]) {
     await palette.click()
     await expect(root).toHaveAttribute("data-palette", brand)
   }
@@ -336,7 +332,7 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
     getComputedStyle(element).getPropertyValue("--background").trim()
   )
   await expect(chromeColor).toHaveAttribute("content", petLight)
-  expect(petLight).not.toBe("#f4f8ff")
+  expect(petLight).not.toBe("#f2f6fc")
 
   await page.reload({ waitUntil: "domcontentloaded" })
   await expect(root).toHaveClass(/\blight\b/)
@@ -559,14 +555,14 @@ for (const [width, height] of [
         expect(Math.abs(selected[axis] - original[axis])).toBeLessThanOrEqual(1)
       }
 
-      if (id === "health-wellness") {
+      if (id === "northern-lights") {
         await page.reload()
         await expect(root).toHaveAttribute("data-palette", id)
         await page.mouse.move(0, 0)
         await palette.hover()
         await expect(
           page.locator('[data-slot="tooltip-content"]')
-        ).toContainText("当前配色为清新草绿，下一个配色为琥珀暖沙")
+        ).toContainText("当前配色为北极光，下一个配色为暖陶土")
       }
     }
   })

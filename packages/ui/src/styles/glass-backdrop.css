@@ -1,5 +1,5 @@
-/* The layer behind the dark glass (AriesMagicRings, AriesAntigravity, or an
-   app's own backdrop passed to AppShell's `glassBackdrop`).
+/* The layer behind the dark glass (AriesMagicRings, AriesAntigravity,
+   AriesLightfall, or an app's own backdrop passed to AppShell's `glassBackdrop`).
 
    Dark glass only: light mode and the clean dark style never show it. The page
    itself is the dark ground, so the layer can sit behind everything. */

@@ -57,7 +57,7 @@ Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 U
 - 颜色字面量沿用 [boundaries.js 中列出的七个 CSS 文件](packages/config/eslint/boundaries.js)，其中外壳样式为 `packages/shell/src/styles/layout.css`，按 §9 人工核对。
 - `dark:` 变体：`apps/demo/src/features/settings/examples/*`（官方示例写法）与 `apps/demo/src/lib/highlighter.tsx`（shiki 双主题）。
 
-1. **MUST** 颜色只使用主题变量（`--primary`、`--accent`、`--muted`、`--destructive`、`--success`、`--warning`、`--danger`、`--info`、`--chart-1..8` 等，完整列表见 [DESIGN_SYSTEM §3](docs/DESIGN_SYSTEM.md)）。
+1. **MUST** 颜色只使用主题变量（`--primary`、`--accent`、`--muted`、`--destructive`、`--success`、`--warning`、`--danger`、`--info`、`--chart-1..5` 等，完整列表见 [DESIGN_SYSTEM §3](docs/DESIGN_SYSTEM.md)）。
 2. **MUST NOT** 在 `apps/demo/src/features` 与 `packages/shell/src` 的新代码中写十六进制、`rgb()`、`hsl()`、`oklch()` 颜色；**MUST NOT** 用 `style={{ color/background… }}` 写死颜色（动态值只能引用 `var(--token)`，如 `StatusBadge`）。颜色字面量只允许出现在 `packages/ui/src/styles/*.css` 的令牌定义中。
 3. **MUST NOT** 新增 `dark:` 变体。深色适配**优先通过令牌**（`.dark` 块）完成；`dark:` 仅允许出现在 `packages/ui/src/components/ui` 的 shadcn 组件内（沿用官方写法）。
 4. **MUST NOT** 修改已确认的亮色（Light）视觉去适配深色；深色问题只改 `.dark` 作用域。暗色共同底座在 `styles/dark-base.css`（glass 与 clean 共用），简洁暗色材质在 `styles/dark-clean.css`（作用域 `.dark[data-dark-style="clean"]`），规则见 [DESIGN_SYSTEM §2](docs/DESIGN_SYSTEM.md)。

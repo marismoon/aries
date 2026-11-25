@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react"
 
+import { useDarkGlass } from "@marismoon/ui/hooks/use-backdrop-canvas"
 import { AppIcon, SolarStar } from "@marismoon/ui/icons"
 import { Button } from "@marismoon/ui/ui/button"
 import {
@@ -58,32 +59,11 @@ function setGlassBackdrop(value: GlassBackdrop) {
   window.dispatchEvent(new Event(changeEvent))
 }
 
-/** Theme, dark material and palette, read from the root element. */
-function readAppearance() {
-  const root = document.documentElement
-  return root.classList.contains("dark") && root.dataset.darkStyle !== "clean"
-}
-
-function subscribeAppearance(onChange: () => void) {
-  const observer = new MutationObserver(onChange)
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["class", "data-dark-style", "data-palette"],
-  })
-  return () => observer.disconnect()
-}
-
 export function GlassBackdropLayer({
   kind,
 }: {
   kind: Exclude<GlassBackdrop, "magic-rings">
 }) {
-  const darkGlass = useSyncExternalStore(
-    subscribeAppearance,
-    readAppearance,
-    () => false
-  )
-  if (!darkGlass) return null
   return kind === "antigravity" ? <AriesAntigravity /> : <AriesLightfall />
 }
 
@@ -91,11 +71,7 @@ export function GlassBackdropLayer({
 export function GlassBackdropControl() {
   const tl = useUiText()
   const backdrop = useGlassBackdrop()
-  const darkGlass = useSyncExternalStore(
-    subscribeAppearance,
-    readAppearance,
-    () => false
-  )
+  const darkGlass = useDarkGlass()
   if (!darkGlass) return null
 
   const labels: Record<GlassBackdrop, string> = {
