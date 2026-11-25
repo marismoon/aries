@@ -1,5 +1,9 @@
 # @marismoon/create-aries
 
+## 0.1.0-next.4
+
+- 更新内置 Starter 模板，加入四套品牌配色与刷新时的主题恢复。生成的项目依赖同版本的 `@marismoon/ui` 与 `@marismoon/shell`。
+
 ## 0.1.0-next.3
 
 ### Patch Changes
