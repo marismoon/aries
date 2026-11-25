@@ -14,7 +14,7 @@ const port = 4175
 const baseURL = `http://127.0.0.1:${port}`
 const desktop = { width: 1440, height: 900 }
 const mobileViewport = { width: 390, height: 844 }
-const defaultPalette = "saas-analytics-spectrum"
+const defaultPalette = "telemedicine"
 
 const scenes = [
   { name: "hero-light" },
@@ -25,7 +25,7 @@ const scenes = [
   { name: "components", path: "/settings/components/basic" },
   { name: "command-palette", shortcut: "Control+k", panel: ".command-panel" },
   { name: "copilot", shortcut: "Control+Shift+k", panel: ".copilot-panel" },
-  ...["telemedicine", "health-wellness", "rose-quartz"].map((palette) => ({
+  ...["telemedicine", "health-wellness"].map((palette) => ({
     name: `palette-${palette}`,
     palette,
     deviceScaleFactor: 0.6,

@@ -61,6 +61,10 @@ export function AppProviders({ children }: { children: ReactNode }) {
         defaultTheme="system"
         enableSystem
         disableTransitionOnChange
+        // index.html applies the theme before the first paint. next-themes'
+        // own inline script only runs in server-rendered HTML; as a data
+        // block it stays inert here and React does not warn about it.
+        scriptProps={{ type: "application/json" }}
       >
         <ThemeColor />
         <LazyMotion features={domAnimation}>

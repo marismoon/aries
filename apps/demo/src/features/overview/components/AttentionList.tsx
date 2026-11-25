@@ -1,4 +1,6 @@
 import { useRef, useState, type CSSProperties } from "react"
+import { AnimatePresence } from "motion/react"
+import { li as MotionLi } from "motion/react-m"
 import { Link } from "react-router"
 
 import {
@@ -45,6 +47,18 @@ const attentionIcons = {
   chart: SolarChartSquare,
 }
 
+/** A resolved item fades and closes its row; the rows below move up with it
+ * (height, not a layout animation, AGENTS.md §6). */
+const rowExit = {
+  opacity: 0,
+  height: 0,
+  minHeight: 0,
+  paddingTop: 0,
+  paddingBottom: 0,
+  overflow: "hidden",
+  transition: { duration: 0.22, ease: [0.23, 1, 0.32, 1] },
+} as const
+
 export function AttentionList({
   items,
   onResolve,
@@ -69,49 +83,52 @@ export function AttentionList({
         aria-hidden={copy || undefined}
         ref={copy ? undefined : listRef}
       >
-        {orderedItems?.map((item) => {
-          const Icon = attentionIcons[item.icon]
-          return (
-            <li
-              className="attention-row"
-              key={item.id}
-              data-attention-id={copy ? undefined : item.id}
-            >
-              <div className="attention-item">
-                <span
-                  aria-hidden="true"
-                  className="workflow-icon"
-                  data-tone={item.tone}
-                >
-                  <AppIcon icon={Icon} size={20} />
-                </span>
-                <div className="attention-copy">
-                  <h3>{tl.parts(item.title)}</h3>
-                  <p>{tl.parts(item.description)}</p>
-                </div>
-              </div>
-              <StatusBadge className="attention-badge" tone={item.tone}>
-                {tl(item.label)}
-              </StatusBadge>
-              <Button
-                aria-haspopup="dialog"
-                className="attention-action"
-                tabIndex={copy ? -1 : undefined}
-                onClick={(event) => {
-                  triggerRef.current = event.currentTarget
-                  setSelected(item)
-                  setOpen(true)
-                }}
-                size="dense"
-                shape="workspace"
-                type="button"
-                variant="outline"
+        <AnimatePresence initial={false}>
+          {orderedItems?.map((item) => {
+            const Icon = attentionIcons[item.icon]
+            return (
+              <MotionLi
+                className="attention-row"
+                key={item.id}
+                data-attention-id={copy ? undefined : item.id}
+                exit={rowExit}
               >
-                {tl(item.action)}
-              </Button>
-            </li>
-          )
-        })}
+                <div className="attention-item">
+                  <span
+                    aria-hidden="true"
+                    className="workflow-icon"
+                    data-tone={item.tone}
+                  >
+                    <AppIcon icon={Icon} size={20} />
+                  </span>
+                  <div className="attention-copy">
+                    <h3>{tl.parts(item.title)}</h3>
+                    <p>{tl.parts(item.description)}</p>
+                  </div>
+                </div>
+                <StatusBadge className="attention-badge" tone={item.tone}>
+                  {tl(item.label)}
+                </StatusBadge>
+                <Button
+                  aria-haspopup="dialog"
+                  className="attention-action"
+                  tabIndex={copy ? -1 : undefined}
+                  onClick={(event) => {
+                    triggerRef.current = event.currentTarget
+                    setSelected(item)
+                    setOpen(true)
+                  }}
+                  size="dense"
+                  shape="workspace"
+                  type="button"
+                  variant="outline"
+                >
+                  {tl(item.action)}
+                </Button>
+              </MotionLi>
+            )
+          })}
+        </AnimatePresence>
       </ul>
     )
   }

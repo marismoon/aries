@@ -52,9 +52,9 @@ function PaginationLink({
   const classes = cn(
     // The current page uses the same raised capsule as the page-size select.
     isActive
-      ? "bg-(--field-surface) shadow-(--field-shadow) hover:bg-(--field-surface-hover)"
+      ? "bg-[var(--item-selected,var(--field-surface))] shadow-(--field-shadow) hover:bg-[var(--item-selected,var(--field-surface-hover))]"
       : // Page numbers, previous and next share one hover: the same raised capsule.
-        "hover:bg-(--field-surface) hover:text-foreground hover:shadow-(--field-shadow)",
+        "hover:bg-[var(--item-hover,var(--field-surface))] hover:text-foreground hover:shadow-(--field-shadow)",
     className
   )
   const common = {

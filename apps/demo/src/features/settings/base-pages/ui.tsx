@@ -3,11 +3,11 @@ import { createContext, useContext, type ReactNode } from "react"
 import {
   AppIcon,
   SolarCheck,
-  SolarCopy,
   SolarHomeSmileAngle,
   SolarCircleAlert,
   type AppIconComponent,
 } from "@marismoon/ui/icons"
+import { CopyButton } from "@marismoon/ui/shared/CopyButton"
 import { Alert, AlertDescription } from "@marismoon/ui/ui/alert"
 import { Avatar, AvatarFallback } from "@marismoon/ui/ui/avatar"
 import { Button } from "@marismoon/ui/ui/button"
@@ -267,15 +267,11 @@ export function QrBlock() {
       <div className="base-qr-key">
         <span>{tl("无法扫码？手动输入密钥")}</span>
         <code>JBSW Y3DP EHPK 3PXP</code>
-        <Button type="button" variant="outline" size="sm">
-          <AppIcon
-            icon={SolarCopy}
-            data-icon="inline-start"
-            aria-hidden="true"
-          />
-
-          {tl("复制密钥")}
-        </Button>
+        <CopyButton
+          value={"JBSWY3DPEHPK3PXP"}
+          label={tl("复制密钥")}
+          size="sm"
+        />
       </div>
     </div>
   )
@@ -360,15 +356,7 @@ export function ErrorId({ id }: { id: string }) {
         </ItemTitle>
       </ItemContent>
       <ItemActions>
-        <Button type="button" variant="outline" size="sm">
-          <AppIcon
-            icon={SolarCopy}
-            data-icon="inline-start"
-            aria-hidden="true"
-          />
-
-          {tl("复制")}
-        </Button>
+        <CopyButton value={id} label={tl("复制")} size="sm" />
       </ItemActions>
     </Item>
   )

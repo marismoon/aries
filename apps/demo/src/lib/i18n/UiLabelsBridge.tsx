@@ -9,6 +9,8 @@ export function UiLabelsBridge({ children }: { children: ReactNode }) {
   // Rebuilt on every render of the bridge, which follows the language.
   const labels: UiLabels = {
     close: tl("关闭"),
+    copy: tl("复制"),
+    copied: tl("已复制"),
     loading: tl("正在加载"),
     pageSize: tl("每页条数"),
     previousPage: tl("上一页"),

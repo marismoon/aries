@@ -7,6 +7,8 @@ import { createContext, useContext } from "react"
  */
 export interface UiLabels {
   close: string
+  copy: string
+  copied: string
   loading: string
   pageSize: string
   previousPage: string
@@ -37,6 +39,8 @@ export interface UiLabels {
 
 export const defaultUiLabels: UiLabels = {
   close: "关闭",
+  copy: "复制",
+  copied: "已复制",
   loading: "正在加载",
   pageSize: "每页条数",
   previousPage: "上一页",

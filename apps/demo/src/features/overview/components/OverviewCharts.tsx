@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 
 import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 import {
@@ -21,6 +21,9 @@ import { useUiText } from "@/lib/i18n/use-ui-text"
 const W = 320
 const H = 168
 const seriesColor = (index: number) => `var(--chart-${(index % 4) + 1})`
+/** Stagger slot for the `chart-in-*` entrance utilities (motion.css). */
+const at = (index: number, extra?: Record<string, string>) =>
+  ({ "--chart-index": index, ...extra }) as CSSProperties
 
 const linear =
   (d0: number, d1: number, r0: number, r1: number) => (value: number) =>
@@ -206,11 +209,24 @@ function LineChart() {
           <g
             key={series.id}
             className="chart-series"
+            data-chart-mark=""
             style={{ color: seriesColor(index) }}
           >
-            <polyline points={points.join(" ")} />
+            <polyline
+              className="chart-in-draw"
+              pathLength={1}
+              points={points.join(" ")}
+              style={at(index)}
+            />
             {series.values.map((value, i) => (
-              <circle key={i} cx={x(i)} cy={y(value)} r={i === 5 ? 3 : 1.8} />
+              <circle
+                key={i}
+                className="chart-in-pop"
+                cx={x(i)}
+                cy={y(value)}
+                r={i === 5 ? 3 : 1.8}
+                style={at(i + index)}
+              />
             ))}
           </g>
         )
@@ -253,19 +269,31 @@ function AreaChart() {
       </defs>
       <YGrid top={t} bottom={b} left={l} right={r} max={max} />
       <path
+        className="chart-in-fade"
         d={`M${x(0)},${b} L${line} L${x(9)},${b}Z`}
         fill="url(#area-fill)"
+        style={at(4)}
       />
       <path
+        className="chart-in-draw"
+        pathLength={1}
         d={`M${line}`}
         fill="none"
         stroke="var(--chart-1)"
         strokeWidth="2"
         strokeLinejoin="round"
       />
-      <circle cx={x(9)} cy={y(cumulative[9]!)} r="3.2" fill="var(--chart-1)" />
+      <circle
+        className="chart-in-pop"
+        cx={x(9)}
+        cy={y(cumulative[9]!)}
+        r="3.2"
+        fill="var(--chart-1)"
+        style={at(10)}
+      />
       <text
-        className="chart-value"
+        className="chart-value chart-in-fade"
+        style={at(12)}
         x={x(9)}
         y={y(cumulative[9]!) - 7}
         textAnchor="end"
@@ -313,7 +341,12 @@ function StackedChart() {
         let base = 0
         const cx = l + slot * i + slot / 2
         return (
-          <g key={month}>
+          <g
+            key={month}
+            className="chart-in-grow-y"
+            data-chart-mark=""
+            style={at(i)}
+          >
             {billingTypeSeries.map((series, index) => {
               const value = series.values[i]!
               const top = y(base + value)
@@ -381,6 +414,9 @@ function DonutChart() {
           return (
             <circle
               key={i}
+              className="chart-in-sweep"
+              data-chart-mark=""
+              style={at(i * 3, { "--chart-dash-from": `0 ${circumference}` })}
               r={radius}
               fill="none"
               stroke={seriesColor(i)}
@@ -391,7 +427,13 @@ function DonutChart() {
           )
         })}
       </g>
-      <text className="chart-total" x="92" y="86" textAnchor="middle">
+      <text
+        className="chart-total chart-in-fade"
+        x="92"
+        y="86"
+        textAnchor="middle"
+        style={at(6)}
+      >
         {total.toFixed(1)}
       </text>
       <text className="chart-axis-label" x="92" y="100" textAnchor="middle">
@@ -437,7 +479,11 @@ function BarChart() {
       {topAccounts.map((account, i) => {
         const y = 12 + i * 30
         return (
-          <g key={tl(account.label)} transform={`translate(0 ${y})`}>
+          <g
+            key={tl(account.label)}
+            data-chart-mark=""
+            transform={`translate(0 ${y})`}
+          >
             <text className="chart-axis-label" x="0" y="13">
               {tl(account.label)}
             </text>
@@ -450,6 +496,8 @@ function BarChart() {
               fill="var(--muted)"
             />
             <rect
+              className="chart-in-grow-x"
+              style={at(i)}
               x="104"
               y="3"
               width={Math.max(x(account.amount) + 6, 8)}
@@ -457,7 +505,12 @@ function BarChart() {
               rx="7"
               fill={i === 0 ? "var(--chart-1)" : "var(--chart-2)"}
             />
-            <text className="chart-value" x="272" y="13">
+            <text
+              className="chart-value chart-in-fade"
+              style={at(i + 6)}
+              x="272"
+              y="13"
+            >
               {account.amount}
             </text>
           </g>
@@ -530,6 +583,9 @@ function RadarChart() {
         return (
           <polygon
             key={series.id}
+            className="chart-in-pop"
+            data-chart-mark=""
+            style={at(index === 0 ? 2 : 0)}
             points={series.values.map((v, i) => point(i, v)).join(" ")}
             fill={seriesColor(index)}
             fillOpacity={index === 0 ? 0.24 : 0.1}
@@ -602,6 +658,9 @@ function HeatmapChart() {
         week.map((count, col) => (
           <rect
             key={`${row}-${col}`}
+            className="chart-in-fade"
+            data-chart-mark=""
+            style={at(row + col)}
             x={48 + col * 34}
             y={20 + row * 27}
             width="28"
@@ -671,6 +730,9 @@ function ScatterChart() {
       {parseScatter.map((point, i) => (
         <circle
           key={i}
+          className="chart-in-pop"
+          data-chart-mark=""
+          style={at(i)}
           cx={x(point.amount)}
           cy={y(point.seconds)}
           r="5"
@@ -729,6 +791,8 @@ function GaugeChart() {
         strokeLinecap="round"
       />
       <path
+        className="chart-in-sweep"
+        style={at(0, { "--chart-dash-from": "0 100" })}
         d={arc}
         pathLength="100"
         fill="none"
@@ -737,7 +801,13 @@ function GaugeChart() {
         strokeLinecap="round"
         strokeDasharray={`${ratio * 100} 100`}
       />
-      <text className="chart-total" x="160" y="112" textAnchor="middle">
+      <text
+        className="chart-total chart-in-fade"
+        x="160"
+        y="112"
+        textAnchor="middle"
+        style={at(6)}
+      >
         {(ratio * 100).toFixed(1)}%
       </text>
       <text className="chart-axis-label" x="160" y="150" textAnchor="middle">

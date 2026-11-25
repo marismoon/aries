@@ -1,6 +1,6 @@
 # 版本治理
 
-同仓应用在 pnpm workspace 内通过 `workspace:*` 消费源码。可发布清单为 `@marismoon/ui`、`@marismoon/shell` 和 `@marismoon/create-aries`。前两者以构建产物发布到 npm（取舍见 [ADR 0006](decisions/0006-publish-built-packages.md)）。其他工作区包必须保留 `private: true`。发包须确认 [LICENSE](../LICENSE) 与 [第三方许可声明](../THIRD_PARTY_NOTICES.md) 随包分发，`@marismoon/ui` 须携带 Solar 图标的 CC BY 4.0 署名。起步流程见 [STARTER.md](STARTER.md)。
+同仓应用在 pnpm workspace 内通过 `workspace:*` 消费源码。可发布清单为 `@marismoon/ui`、`@marismoon/shell` 和 `@marismoon/create-aries`。前两者以构建产物发布到 npm（取舍见 [ADR 0006](decisions/0006-publish-built-packages.md)）。其他工作区包必须保留 `private: true`。三个包均携带 [LICENSE](../LICENSE)，`@marismoon/ui` 还随包分发含 Solar 图标 CC BY 4.0 署名的[第三方许可声明](../THIRD_PARTY_NOTICES.md)。起步流程见 [STARTER.md](STARTER.md)。
 
 `@marismoon/ui` 与 `@marismoon/shell` 的 `pnpm build` 产出 `dist`（ESM JavaScript、类型声明与样式），只用于发布：Vite 按模块输出并保留 `"use client"`，`tsc` 生成声明，[finalize-package.mjs](../scripts/finalize-package.mjs) 复制样式、把 `@source` 指向编译后的 `.js`，并移除声明文件中的 CSS 导入。同仓开发继续通过 `exports` 直接消费源码；打包时 `publishConfig.exports` 替换为 `dist` 路径，`files` 限定只发布 `dist`、README 与许可证文件。
 
@@ -14,12 +14,12 @@
 
 `@marismoon/ui`、`@marismoon/shell` 与 `@marismoon/create-aries` 由 [Changesets](../.changeset/README.md) 管理版本，三者同版本发布（`fixed` 组），当前处于 `next` 预发布模式。create-aries 打包时由 `templates/starter` 生成模板，依赖写为同一次发布的 ui 与 shell 版本，所以三者须在同一次 Release 中发布。
 
-1. 改动影响发布包时，在 PR 中附带 changeset（`pnpm changeset`）。
-2. 发版时运行 `pnpm changeset version`，更新版本号与 `CHANGELOG.md`，单独提 PR 合并到 `main`。
-3. 发布前在本地跑[开发契约 §9](../AGENTS.md) 的提交前自检（含 `pnpm check:package`：打包内容、publint、attw）与 `pnpm test:consumer`（仓库外的 Vite 与 Next.js 宿主）。
-4. ui 与 shell 的首次发布与 Trusted Publisher 配置已于 2026-11-24（`0.1.0-next.0`）由维护者手动完成。**`@marismoon/create-aries` 尚未首发**：在 Release 工作流能发布它之前，维护者须先按下述步骤手动首发一次（在此之前 Release 会在发布该包时失败）。新增可发布包时同样如此：维护者以开启 2FA、有 `marismoon` 组织发布权限的账号 `npm login`，运行 `pnpm --filter <包名> publish --access public --tag next`，再在 npmjs.com 该包的设置中添加 Trusted Publisher（GitHub Actions、组织 `marismoon`、仓库 `aries`、工作流 `release.yml`），并在 2 天内完成首次可信发布，否则配置过期。注意：新包首次发布后注册表会保留一个公开的占位版本 `0.0.0-stage`。
-5. 此后在 GitHub Actions 中手动运行 **Release** 工作流（[release.yml](../.github/workflows/release.yml)，`dist-tag` 默认 `next`）。它用 OIDC 发布，不需要令牌，自动附带 provenance，只发布注册表上还没有的版本。
-6. 发首个正式版前运行 `pnpm changeset pre exit`，再 `pnpm changeset version`，以 `latest` 发布。
+1. 改动影响发布包时，用 `pnpm changeset` 记录包、版本级别和改动说明。按[开发契约 §9](../AGENTS.md) 自检，运行 `pnpm run audit`，推送功能分支并用 `gh pr create --base main` 提交 PR。完成审阅并确认 [CI](../.github/workflows/ci.yml) 的 `verify` 和 `consumer` 均通过后，用 `gh pr merge <PR 编号> --merge` 合并。
+2. 功能 PR 合并后，从最新的 `main` 创建独立版本分支。发首个正式版时先运行 `pnpm changeset pre exit`，后续发布选用 `latest`。运行 `pnpm changeset version`，核对三个包的版本号、`CHANGELOG.md` 与 `.changeset/` 的变更。运行提交前自检和 `pnpm test:consumer`，推送版本分支，用 `gh pr create --base main` 提交版本 PR。确认 CI 通过后合并。
+3. 在版本 PR 合并后确认 `main` 的对应提交和 CI 结果，再运行 `gh workflow run release.yml --ref main -f dist-tag=next`。[Release 工作流](../.github/workflows/release.yml)通过 OIDC 发布 npm，自动附带 provenance，只发布注册表上还没有的版本。
+4. 确认对应的 Release 运行成功。用 `pnpm view <包名> dist-tags --json` 查询三个包，核对本次发布所选的 `next` 或 `latest` 均指向同一版本。
+
+三个现有包均已完成首发和可信发布。新增可发布包时，维护者先用启用 2FA 且拥有 `marismoon` 发布权限的账号完成首发，然后在 npm 包设置中添加 Trusted Publisher，选择 GitHub Actions、组织 `marismoon`、仓库 `aries`、工作流 `release.yml`，允许直接发布，并在 2 天内完成首次可信发布。若使用 npm 暂存发布创建新包，注册表会出现公开的占位版本 `0.0.0-stage`。[npm 可信发布](https://docs.npmjs.com/trusted-publishers/) · [npm 暂存发布](https://docs.npmjs.com/staged-publishing/)
 
 ## 安全公告与临时覆盖
 

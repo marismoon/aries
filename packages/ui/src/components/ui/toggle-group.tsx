@@ -77,7 +77,7 @@ function ToggleGroupItem({
           variant: context.variant || variant,
           size: context.size || size,
         }),
-        "h-7 min-w-7 shrink-0 rounded-full bg-transparent px-3 text-xs font-[620] text-muted-foreground shadow-none hover:bg-transparent hover:text-foreground focus-visible:z-10 aria-pressed:bg-(--layout-control) aria-pressed:text-foreground data-[state=on]:bg-(--layout-control) data-[state=on]:text-foreground pointer-coarse:h-10 pointer-coarse:min-w-10",
+        "h-7 min-w-7 shrink-0 rounded-full bg-transparent px-3 text-xs font-[620] text-muted-foreground shadow-none hover:bg-[var(--item-hover,transparent)] hover:text-foreground focus-visible:z-10 aria-pressed:bg-[var(--item-selected,var(--layout-control))] aria-pressed:text-foreground aria-pressed:hover:bg-[var(--item-selected,var(--layout-control))] data-[state=on]:bg-[var(--item-selected,var(--layout-control))] data-[state=on]:text-foreground data-[state=on]:hover:bg-[var(--item-selected,var(--layout-control))] pointer-coarse:h-10 pointer-coarse:min-w-10",
         className
       )}
       {...props}

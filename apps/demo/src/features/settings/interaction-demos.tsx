@@ -14,9 +14,9 @@ import {
   SolarEye,
   SolarPlus,
   SolarSparkles,
-  SolarX,
 } from "@marismoon/ui/icons"
 import { Button } from "@marismoon/ui/ui/button"
+import { CloseIcon, closeButtonClass } from "@marismoon/ui/ui/close-button"
 import { Input } from "@marismoon/ui/ui/input"
 import { Demo, spring, useReplay } from "./motion-shared"
 import "./interaction-demos.css"
@@ -161,6 +161,7 @@ export function FileUploadDemo() {
                   {name}
                   <button
                     type="button"
+                    className={closeButtonClass}
                     aria-label={`移除 ${name}`}
                     onClick={() =>
                       setFiles((current) =>
@@ -168,7 +169,7 @@ export function FileUploadDemo() {
                       )
                     }
                   >
-                    <AppIcon icon={SolarX} size={12} />
+                    <CloseIcon />
                   </button>
                 </span>
               </m.li>
@@ -323,12 +324,13 @@ export function RowReorderDemo() {
                   BL-2610-{String(id).padStart(2, "0")}
                   <button
                     type="button"
+                    className={closeButtonClass}
                     aria-label={`删除 ${id}`}
                     onClick={() =>
                       setRows((current) => current.filter((r) => r !== id))
                     }
                   >
-                    <AppIcon icon={SolarX} size={12} />
+                    <CloseIcon />
                   </button>
                 </div>
               </m.li>

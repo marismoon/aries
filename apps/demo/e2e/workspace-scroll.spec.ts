@@ -23,11 +23,17 @@ for (const [width, height] of [
         )
         const main = page.getByRole("main")
         const viewport = main.locator(".page-content-viewport")
+        // Scroll edges fade the content itself (a mask on the viewport); no
+        // strip is laid over it.
         const edgeStyle = () =>
           viewport.evaluate((element) => {
-            const { content, height, maskImage, pointerEvents } =
-              getComputedStyle(element.parentElement!, "::after")
-            return { content, height, maskImage, pointerEvents }
+            const style = getComputedStyle(element)
+            return {
+              start: style.getPropertyValue("--scroll-edge-start").trim(),
+              maskImage: style.maskImage,
+              overlay: getComputedStyle(element.parentElement!, "::after")
+                .content,
+            }
           })
         const header = main.locator(".page-header")
         const heading = header.getByRole("heading", { level: 1, name: title })
@@ -55,7 +61,11 @@ for (const [width, height] of [
         expect(before.every(Boolean)).toBe(true)
         await expect(viewport).toHaveCSS("overflow-y", "auto")
         await expect(viewport).toHaveAttribute("data-scrolled", "false")
-        expect((await edgeStyle()).content).toBe("none")
+        expect(await edgeStyle()).toMatchObject({
+          start: "0px",
+          maskImage: expect.stringContaining("linear-gradient"),
+          overlay: "none",
+        })
 
         if (height === 1080 && path === "/bills") {
           expect(
@@ -79,9 +89,9 @@ for (const [width, height] of [
         await page.mouse.wheel(0, 160)
         await expect(viewport).toHaveAttribute("data-scrolled", "true")
         expect(await edgeStyle()).toMatchObject({
-          height: "16px",
+          start: "28px",
           maskImage: expect.stringContaining("linear-gradient"),
-          pointerEvents: "none",
+          overlay: "none",
         })
         const scrollTop = await viewport.evaluate(
           (element) => element.scrollTop
@@ -111,7 +121,7 @@ for (const [width, height] of [
           element.scrollTop = 0
         })
         await expect(viewport).toHaveAttribute("data-scrolled", "false")
-        expect((await edgeStyle()).content).toBe("none")
+        expect((await edgeStyle()).start).toBe("0px")
         expect(await headerBounds()).toEqual(before)
       }
     })

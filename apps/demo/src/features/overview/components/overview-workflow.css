@@ -292,7 +292,8 @@
 }
 
 .activity-toolbar [data-slot="tabs-trigger"][aria-selected="true"] {
-  background: var(--layout-control);
+  /* Light: the shared selected fill; dark keeps the control surface. */
+  background: var(--item-selected, var(--layout-control));
   color: var(--foreground);
 }
 
@@ -581,5 +582,24 @@
 
   .activity-toolbar [data-slot="tabs-trigger"] {
     height: calc(var(--control-size-dense) - 6px);
+  }
+}
+
+/* A just-resolved item lands at the top of the timeline. Only new entries
+   animate; the rest of the list keeps still. */
+@media (prefers-reduced-motion: no-preference) {
+  .activity-list li[data-new] {
+    animation: activity-entry 260ms var(--ease-feedback) backwards;
+  }
+
+  .activity-list li[data-new] .activity-dot {
+    animation: chart-pop 360ms 120ms var(--ease-feedback) backwards;
+  }
+}
+
+@keyframes activity-entry {
+  from {
+    opacity: 0;
+    translate: 0 -6px;
   }
 }

@@ -22,6 +22,7 @@ export function ActivityTimeline({
   const tl = useUiText()
 
   const events = [...addedActivities, ...defaultActivity]
+  const added = new Set(addedActivities.map(({ id }) => id))
   const [view, setView] = useState("timeline")
 
   return (
@@ -53,7 +54,7 @@ export function ActivityTimeline({
             style={{ "--activity-count": events.length } as CSSProperties}
           >
             {events.map((event) => (
-              <li key={event.id}>
+              <li key={event.id} data-new={added.has(event.id) || undefined}>
                 <time
                   className="activity-time financial-number"
                   dateTime={event.time}

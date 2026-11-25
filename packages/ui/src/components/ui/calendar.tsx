@@ -102,30 +102,39 @@ function Calendar({
           "text-[0.8rem] text-muted-foreground select-none",
           defaultClassNames.week_number
         ),
+        // Every fill is a circle 4px smaller than its cell (the 2px inset), so
+        // adjacent selections and focus outlines stay separate. The day
+        // button is that circle in every column.
         day: cn(
-          "group/day relative aspect-square h-full w-full rounded-(--cell-radius) p-0 text-center select-none [&:last-child[data-selected=true]_button]:rounded-r-(--cell-radius)",
-          props.showWeekNumber
-            ? "[&:nth-child(2)[data-selected=true]_button]:rounded-l-(--cell-radius)"
-            : "[&:first-child[data-selected=true]_button]:rounded-l-(--cell-radius)",
+          "group/day relative aspect-square h-full w-full p-0.5 text-center select-none",
           defaultClassNames.day
         ),
-        // The range is one continuous accent band behind circular ends: each end
-        // cell paints only its inner half, so no square corner shows around the
-        // round buttons.
+        // The range is one continuous accent band behind the circular ends,
+        // drawn by ::before at the height of the circles: an end cell paints
+        // only its inner half, and the band closes into a half circle where a
+        // week row starts or ends.
         range_start: cn(
-          "bg-[linear-gradient(to_right,transparent_50%,var(--accent)_50%)] last:bg-none [&.rdp-range_end]:bg-none",
+          "before:absolute before:inset-y-0.5 before:right-0 before:left-1/2 before:bg-accent last:before:hidden [&.rdp-range_end]:before:hidden",
           defaultClassNames.range_start
         ),
         range_middle: cn(
-          "rounded-none bg-accent first:rounded-l-(--cell-radius) last:rounded-r-(--cell-radius)",
+          "before:absolute before:inset-x-0 before:inset-y-0.5 before:bg-accent last:before:rounded-r-full",
+          props.showWeekNumber
+            ? "[&:nth-child(2)]:before:rounded-l-full"
+            : "first:before:rounded-l-full",
           defaultClassNames.range_middle
         ),
         range_end: cn(
-          "bg-[linear-gradient(to_left,transparent_50%,var(--accent)_50%)] first:bg-none [&.rdp-range_start]:bg-none",
+          "before:absolute before:inset-y-0.5 before:right-1/2 before:left-0 before:bg-accent [&.rdp-range_start]:before:hidden",
+          props.showWeekNumber
+            ? "[&:nth-child(2)]:before:hidden"
+            : "first:before:hidden",
           defaultClassNames.range_end
         ),
+        // Today's marker is the same inset circle (::after, so it never fights
+        // the range band for ::before).
         today: cn(
-          "rounded-full bg-accent text-accent-foreground data-[selected=true]:bg-transparent",
+          "text-accent-foreground after:absolute after:inset-0.5 after:rounded-full after:bg-accent data-[selected=true]:after:hidden",
           defaultClassNames.today
         ),
         outside: cn(
@@ -240,7 +249,7 @@ function CalendarDayButton({
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        "relative isolate z-10 flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 rounded-full border-0 text-[0.8125rem] leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-[3px] group-data-[focused=true]/day:ring-ring/50 data-[range-end=true]:rounded-full data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground data-[range-end=true]:shadow-(--field-shadow) data-[range-middle=true]:rounded-full data-[range-middle=true]:bg-transparent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:rounded-full data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-start=true]:shadow-(--field-shadow) data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[selected-single=true]:shadow-(--field-shadow) dark:hover:text-foreground [&>span]:text-xs [&>span]:opacity-70",
+        "relative isolate z-10 flex aspect-square size-auto w-full min-w-[calc(var(--cell-size)-(--spacing(1)))] flex-col gap-1 rounded-full border-0 text-[0.8125rem] leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-[3px] group-data-[focused=true]/day:ring-ring/50 data-[range-end=true]:rounded-full data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground data-[range-end=true]:shadow-(--field-shadow) data-[range-middle=true]:rounded-full data-[range-middle=true]:bg-transparent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:rounded-full data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-start=true]:shadow-(--field-shadow) data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[selected-single=true]:shadow-(--field-shadow) dark:hover:text-foreground [&>span]:text-xs [&>span]:opacity-70",
         defaultClassNames.day,
         className
       )}

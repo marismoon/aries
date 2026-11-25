@@ -2,27 +2,24 @@
 
    One tonal skeleton for every palette: a lightness ladder tinted with the
    palette hue at one saturation, white-alpha hairlines, one set of semantic
-   colours. A palette block in tokens.css / spectrum.css only supplies its
+   colours. A palette block in tokens.css only supplies its
    primary, accent, charts, aurora and hero tokens. The two dark styles differ
    only in material: glass adds blur, aurora and a specular rim (tokens.css,
    materials.css); clean turns all of it off (dark-clean.css).
 
    Ladder (HSL lightness): recess 8 < canvas 12 < card 15 < control 19 < popover 23.
    Steps are small by design; hairlines carry the separation, not lightness.
-   Excluded: the light-only aries-light palette. */
-.dark:not([data-palette="aries-light"]) {
-  --dark-hue: 255;
+   `:root.dark` keeps these rules above the palette blocks in tokens.css. */
+:root.dark {
+  /* Telemedicine, the default palette. */
+  --dark-hue: 218;
   --dark-tint: 6%;
 }
 
-.dark[data-palette="saas-analytics-spectrum"] {
-  --dark-hue: 220;
-}
-.dark[data-palette="telemedicine"] {
-  --dark-hue: 218;
-}
 .dark[data-palette="mental-health"] {
-  --dark-hue: 200;
+  /* Lavender-tinted canvas keeps it apart from telemedicine (218). */
+  --dark-hue: 262;
+  --dark-tint: 9%;
 }
 .dark[data-palette="pet-adoption"] {
   --dark-hue: 20;
@@ -30,17 +27,30 @@
 .dark[data-palette="health-wellness"] {
   --dark-hue: 142;
 }
-.dark[data-palette="violet-aurora"] {
-  --dark-hue: 262;
-}
 .dark[data-palette="amber-sand"] {
   --dark-hue: 40;
 }
-.dark[data-palette="rose-quartz"] {
-  --dark-hue: 342;
+.dark[data-palette="mono"] {
+  /* No hue at all: neutral greys. */
+  --dark-hue: 0;
+  --dark-tint: 0%;
+}
+.dark[data-palette="nature"] {
+  --dark-hue: 140;
+  --dark-tint: 9%;
+}
+.dark[data-palette="northern-lights"] {
+  /* Night-sky blue under a green primary. */
+  --dark-hue: 232;
+  --dark-tint: 9%;
+}
+.dark[data-palette="darkmatter"] {
+  /* Near-neutral: the orange primary carries the colour. */
+  --dark-hue: 264;
+  --dark-tint: 3%;
 }
 
-.dark:not([data-palette="aries-light"]) {
+:root.dark {
   /* Browser-drawn parts follow the palette too. */
   scrollbar-color: rgb(255 255 255 / 24%) transparent;
 
@@ -70,7 +80,7 @@
   --border-subtle: rgb(255 255 255 / 10%);
   --border: rgb(255 255 255 / 18%);
   --layout-control-border: rgb(255 255 255 / 22%);
-  --input: rgb(255 255 255 / 32%);
+  --input: rgb(255 255 255 / 34%);
   --surface-edge: rgb(255 255 255 / 15%);
   /* Text-field edge: a real 1px border (see text-field.css), never a shadow ring. */
   --field-edge: var(--input);
@@ -87,59 +97,145 @@
   --info-bg: color-mix(in srgb, var(--info) 14%, transparent);
 }
 
-/* Glass material: the card takes the hue of the palette's primary at a fixed
-   OKLCH lightness and chroma, so every palette gets the same tonal depth and
-   the card reads as tinted glass over the aurora instead of a neutral dark
-   hole. Clean keeps neutral cards (it has no aurora). Set --card-c to 0 for a
-   neutral card; raise --card-l and the chart / input-edge contrast checks
-   start to fail (see the dark contrast check, run locally). */
-.dark:not([data-dark-style="clean"]):not([data-palette="aries-light"]) {
-  --card-l: 0.26;
-  --card-c: 0.032;
-  --card: oklch(from var(--primary) var(--card-l) var(--card-c) h);
-  --card-bottom: oklch(
-    from var(--primary) calc(var(--card-l) - 0.015) var(--card-c) h
-  );
+/* Glass material, after Raycast's theme recipe (github.com/raycast/ray-so):
+   every neutral is the text colour at an alpha, every surface is the window
+   material (grey 20% under a tint, a strong blur, one 1px edge), selection is
+   the brand colour at 10%, tags are a colour over 15% of itself. The light
+   behind the glass is its own layer (glass-backdrop.css).
 
-  /* The rest of the surface ladder is tinted the same way, so buttons, fields,
-     the active nav item, count chips and segmented tracks sit in the page's
-     colour instead of reading as neutral black cut-outs. */
-  --control-l: 0.3;
-  --popover-l: 0.33;
-  --recess-l: 0.2;
-  --control: oklch(from var(--primary) var(--control-l) var(--card-c) h);
+   The window material is two layers in Raycast (grey 20%, then a tint); here
+   they are folded into one colour and one alpha so .surface keeps its single
+   gradient: cards 74% at 86% tint / 14% grey. The navigation uses a thinner
+   fill and a smaller blur so the backdrop remains visible. Secondary text keeps
+   >= 4.5:1 wherever the moving light passes behind a card: cards are thicker
+   (74% against Raycast's 52%) and secondary text is 80% of the text colour
+   (Raycast: 60%). Cards in the content area do not blur the light: the
+   shell masks that area at its scroll edges, which makes it a backdrop root,
+   so the light shows through them unblurred and the 74% is what holds the
+   contrast (66% was enough while they blurred it). */
+:root.dark:not([data-dark-style="clean"]) {
+  /* Scales every chroma taken from the palette; mono sets it to 0. */
+  --tone-k: 1;
+  --glass-source: var(--surface-source, var(--primary));
+  --glass-text: oklch(
+    from var(--glass-source) 0.96 calc(0.006 * var(--tone-k)) h
+  );
+  --glass-tint: oklch(
+    from var(--glass-source) 0.19 calc(0.01 * var(--tone-k)) h
+  );
+  --glass-tint-2: oklch(
+    from var(--glass-source) 0.25 calc(0.05 * var(--tone-k)) h
+  );
+  --glass-base: oklch(
+    from var(--glass-source) 0.15 calc(0.006 * var(--tone-k)) h
+  );
+  --glass-grey: rgb(128 128 128);
+
+  /* Neutrals: the text colour at an alpha. */
+  --foreground: var(--glass-text);
+  --card-foreground: var(--glass-text);
+  --secondary-foreground: color-mix(
+    in srgb,
+    var(--glass-text) 80%,
+    transparent
+  );
+  --muted-foreground: color-mix(in srgb, var(--glass-text) 80%, transparent);
+  --border: color-mix(in srgb, var(--glass-text) 20%, transparent);
+  --border-subtle: color-mix(in srgb, var(--glass-text) 10%, transparent);
+  --glass-edge: color-mix(in srgb, var(--glass-text) 20%, transparent);
+  --surface-edge: var(--glass-edge);
+  --layout-control-border: var(--glass-edge);
+  --input: color-mix(in srgb, var(--glass-text) 40%, transparent);
+  --field-edge: var(--input);
+  --control: color-mix(in srgb, var(--glass-text) 10%, transparent);
   --secondary: var(--control);
   --muted: var(--control);
-  --popover: oklch(from var(--primary) var(--popover-l) var(--card-c) h);
-  --recess: oklch(from var(--primary) var(--recess-l) var(--card-c) h);
+  --recess: color-mix(in srgb, var(--glass-text) 5%, transparent);
+  --surface-inset: var(--recess);
+  --surface-inset-shadow: none;
+  --card-c: 0.012;
+  --popover-l: 0.265;
+  --popover: oklch(
+    from var(--glass-source) var(--popover-l)
+      calc(var(--card-c) * var(--tone-k)) h
+  );
 
-  /* The page itself takes the palette hue too (the canvas under the aurora),
-     so the whole screen is one colour family rather than black plus glow.
-     --background stays neutral: it feeds the theme-color meta tag. */
-  --base-l: 0.2;
-  --base-c: 0.04;
-  --environment-base: oklch(from var(--primary) var(--base-l) var(--base-c) h);
+  /* Window material: cards. */
+  --card: color-mix(in srgb, var(--glass-tint) 86%, var(--glass-grey));
+  --card-bottom: color-mix(in srgb, var(--glass-tint-2) 86%, var(--glass-grey));
+  --glass-fill-top: 74%;
+  --glass-fill-bottom: 74%;
+  --surface-filter: blur(72px);
+  --surface-shadow: 0 1px 3px rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
+  --hero-decor: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--card) var(--glass-fill-top), transparent),
+    color-mix(in srgb, var(--card-bottom) var(--glass-fill-bottom), transparent)
+  );
+  --hero-fill: transparent;
+  --hero-outline: var(--surface-shadow);
 
-  /* Aurora: two blooms (top right, bottom left) instead of six, each a single
-     soft ellipse. Dark glass only; light mode keeps its own. */
-  --page-background:
-    radial-gradient(
-      ellipse 52% 58% at 104% -6%,
-      color-mix(
-        in srgb,
-        var(--environment-top) var(--environment-strength),
-        transparent
-      ),
-      transparent 76%
-    ),
-    radial-gradient(
-      ellipse 58% 64% at -6% 104%,
-      color-mix(
-        in srgb,
-        var(--environment-bottom) var(--environment-strength),
-        transparent
-      ),
-      transparent 75%
-    ),
-    var(--environment-base);
+  /* Keep fine rings and particles visible through the navigation panel. */
+  --workspace-nav: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--card) 46%, transparent),
+    color-mix(in srgb, var(--card-bottom) 38%, transparent) 70%
+  );
+  --nav-filter: blur(1.5px) brightness(0.5);
+  --sidebar-edge: var(--glass-edge);
+  --sidebar-shadow: var(--surface-shadow);
+
+  /* One edge, no sheen, no stacked shadows. */
+  --card-shadow: none;
+  --glass-specular: none;
+  --control-sheen: none;
+  --control-rim: 0 0 0 0 transparent;
+  --control-shadow: none;
+  --primary-shadow: none;
+  --field-shadow: none;
+
+  /* Selection: the brand colour at 10%, flat. */
+  --nav-active-fill: color-mix(in srgb, var(--primary) 10%, transparent);
+  --nav-active-shadow: none;
+  --nav-hover-fill: color-mix(in srgb, var(--glass-text) 5%, transparent);
+  --nav-hover-shadow: none;
+  --item-hover: color-mix(in srgb, var(--glass-text) 5%, transparent);
+  --item-selected: color-mix(in srgb, var(--primary) 10%, transparent);
+
+  /* Tags: a colour over 15% of itself. */
+  --success-bg: color-mix(in srgb, var(--success) 15%, transparent);
+  --warning-bg: color-mix(in srgb, var(--warning) 15%, transparent);
+  --danger-bg: color-mix(in srgb, var(--danger) 15%, transparent);
+  --info-bg: color-mix(in srgb, var(--info) 15%, transparent);
+
+  /* The page is the dark ground (glass-backdrop.css); the backdrop is its own
+     layer. */
+  --page-background: transparent;
+}
+
+/* Mono has no hue: neutral greys and a white light. */
+:root.dark[data-palette="mono"]:not([data-dark-style="clean"]) {
+  --tone-k: 0;
+}
+
+/* Palette status overrides: where a brand hue sits within 30deg (OKLCH) of a
+   status colour, that palette moves the status colour (DESIGN_SYSTEM §2.5).
+   The -bg tints follow through the color-mix above. */
+:root.dark:not([data-palette]),
+:root.dark[data-palette="telemedicine"] {
+  --info: #b093e5;
+}
+:root.dark[data-palette="pet-adoption"] {
+  --danger: #e480a6;
+}
+:root.dark[data-palette="health-wellness"] {
+  --success: #46d5cd;
+}
+:root.dark[data-palette="nature"],
+:root.dark[data-palette="northern-lights"] {
+  --success: #46d5cd;
+}
+:root.dark[data-palette="amber-sand"] {
+  --danger: #e884aa;
+  --warning: #ffc29f;
 }

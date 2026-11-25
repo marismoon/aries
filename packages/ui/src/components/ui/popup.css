@@ -52,10 +52,64 @@
   [data-slot="command-item"]
 ) {
   min-height: 1.625rem;
-  margin-block: 1px;
-  border-radius: calc(var(--radius-control) - 4px);
+  margin-block: 0;
+  /* A pill at every row height (the 12px it used to be only closed a 24px
+     row), so the highlight matches the pill controls that open the list. */
+  border-radius: 9999px;
   font-size: 0.8125rem;
   transition: background-color var(--duration-feedback) var(--ease-feedback);
+}
+
+/* A 2px gap between stacked rows, so a hovered row never touches the selected
+   one next to it. The gap sits on the row that follows another row: a 1px
+   margin on both sides collapses to 1px between block-level rows. */
+:is(
+  [data-slot="select-item"],
+  [data-slot="dropdown-menu-item"],
+  [data-slot="dropdown-menu-checkbox-item"],
+  [data-slot="dropdown-menu-radio-item"],
+  [data-slot="dropdown-menu-sub-trigger"],
+  [data-slot="context-menu-item"],
+  [data-slot="context-menu-checkbox-item"],
+  [data-slot="context-menu-radio-item"],
+  [data-slot="context-menu-sub-trigger"],
+  [data-slot="menubar-item"],
+  [data-slot="menubar-checkbox-item"],
+  [data-slot="menubar-radio-item"],
+  [data-slot="menubar-sub-trigger"],
+  [data-slot="combobox-item"],
+  [data-slot="command-item"]
+)
+  + :is(
+    [data-slot="select-item"],
+    [data-slot="dropdown-menu-item"],
+    [data-slot="dropdown-menu-checkbox-item"],
+    [data-slot="dropdown-menu-radio-item"],
+    [data-slot="dropdown-menu-sub-trigger"],
+    [data-slot="context-menu-item"],
+    [data-slot="context-menu-checkbox-item"],
+    [data-slot="context-menu-radio-item"],
+    [data-slot="context-menu-sub-trigger"],
+    [data-slot="menubar-item"],
+    [data-slot="menubar-checkbox-item"],
+    [data-slot="menubar-radio-item"],
+    [data-slot="menubar-sub-trigger"],
+    [data-slot="combobox-item"],
+    [data-slot="command-item"]
+  ) {
+  margin-block-start: 2px;
+}
+
+/* Navigation menu links are list rows too: the same 13px text, row padding and
+   2px gap. Their lists are built from <li> wrappers and grids as often as from
+   siblings, so the gap is a transparent 1px edge that the highlight is clipped
+   to, not a margin. They also come as two- and three-line cards, so they keep
+   their rounded corners; a single line still closes into a pill. */
+[data-slot="navigation-menu-content"] [data-slot="navigation-menu-link"] {
+  border-block: 1px solid transparent;
+  background-clip: padding-box;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.8125rem;
 }
 
 :is(
@@ -75,8 +129,8 @@
   [data-slot="combobox-item"],
   [data-slot="command-item"]
 ):is([data-highlighted], [data-selected="true"], [data-state="open"]) {
-  background-color: color-mix(in srgb, var(--accent) 45%, var(--popover));
-  color: var(--accent-foreground);
+  background-color: var(--option-hover);
+  color: var(--option-foreground);
 }
 
 :is(

@@ -11,11 +11,14 @@ import {
   SolarArchive,
   SolarBuildings2,
   SolarCog,
-  SolarClose,
   SolarGlobal,
   SolarWallet,
   type AppIconComponent,
 } from "@marismoon/ui/icons"
+import { AnimatePresence } from "motion/react"
+import { span as MotionSpan } from "motion/react-m"
+
+import { contentEntry } from "@marismoon/ui/motion/motion-tokens"
 import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 import { StatusBadge } from "@marismoon/ui/shared/StatusBadge"
 import { Button } from "@marismoon/ui/ui/button"
@@ -96,9 +99,13 @@ function SettingCard({
               <p>{description}</p>
             </div>
             <div className="basic-card-actions" role="status">
-              {saved && !dirty && (
-                <StatusBadge tone="success">{tl("已保存")}</StatusBadge>
-              )}
+              <AnimatePresence initial={false}>
+                {saved && !dirty && (
+                  <MotionSpan key="saved" className="flex" {...contentEntry}>
+                    <StatusBadge tone="success">{tl("已保存")}</StatusBadge>
+                  </MotionSpan>
+                )}
+              </AnimatePresence>
               <Button
                 type="reset"
                 variant="ghost"
@@ -217,22 +224,11 @@ function InfoDrawer() {
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <DrawerHeader className="relative pr-12">
+        <DrawerHeader>
           <DrawerTitle>{tl("系统信息")}</DrawerTitle>
           <DrawerDescription>
             {tl("系统信息、许可配额与最近修改")}
           </DrawerDescription>
-          <DrawerClose asChild>
-            <Button
-              aria-label={tl("关闭")}
-              className="absolute top-3 right-3"
-              size="icon-sm"
-              type="button"
-              variant="ghost"
-            >
-              <AppIcon icon={SolarClose} size={18} aria-hidden="true" />
-            </Button>
-          </DrawerClose>
         </DrawerHeader>
         <div
           className="bill-drawer-body min-h-0 flex-1 overflow-y-auto px-4"

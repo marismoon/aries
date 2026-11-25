@@ -35,13 +35,18 @@ import { RefreshBoldIcon } from "./solar/refresh-bold"
 import { RefreshLinearIcon } from "./solar/refresh-linear"
 import { ShieldWarningBoldIcon } from "./solar/shield-warning-bold"
 import { ShieldWarningLinearIcon } from "./solar/shield-warning-linear"
+import { Plain3BoldIcon } from "./solar/plain-3-bold"
+import { Plain3LinearIcon } from "./solar/plain-3-linear"
+import { CloseCircleBoldIcon } from "./solar/close-circle-bold"
+import { CloseCircleLinearIcon } from "./solar/close-circle-linear"
 
 /**
  * Bold counterparts of the Solar Linear icons that appear in controls with a
- * selected state (module rail, sidebar). Linear is the default; Bold shows on
- * hover or when the control is selected. Both are drawn on the same 24x24 grid,
- * so swapping never shifts the layout. Add a pair here together with its
- * `solar/<name>-bold.tsx` file.
+ * selected or pressed state (module rail, sidebar, send and close buttons).
+ * Linear is the default; Bold shows on hover, while pressed, or when the
+ * control is selected. Both are drawn on the same 24x24 grid, so swapping never
+ * shifts the layout. Add a pair here together with its `solar/<name>-bold.tsx`
+ * file.
  */
 const bold = new Map<AppIconComponent, AppIconComponent>([
   [BellLinearIcon, BellBoldIcon],
@@ -62,6 +67,8 @@ const bold = new Map<AppIconComponent, AppIconComponent>([
   [BillListLinearIcon, BillListBoldIcon],
   [RefreshLinearIcon, RefreshBoldIcon],
   [ShieldWarningLinearIcon, ShieldWarningBoldIcon],
+  [Plain3LinearIcon, Plain3BoldIcon],
+  [CloseCircleLinearIcon, CloseCircleBoldIcon],
 ])
 
 export function boldIconOf(icon: AppIconComponent) {

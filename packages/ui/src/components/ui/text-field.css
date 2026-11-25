@@ -1,10 +1,26 @@
 .field-surface {
   --field-focus-color: var(--ring);
-  border-radius: var(--radius-workspace-control);
   background: var(--field-surface);
   background-clip: padding-box;
   box-shadow: var(--field-shadow);
   transition: background-color var(--duration-feedback) var(--ease-feedback);
+}
+
+/* Single-line fields are pills at every height: an input, a select trigger, or
+   a wrapper around an embedded input. The 18px control radius only closes up
+   to 36px, which left 40px fields (and every field on a coarse pointer) with
+   flat sides. A textarea, or a wrapper holding one, keeps the control radius.
+   The shape sits in the components layer, below utilities, so a container can
+   still square a side: ButtonGroup straightens the edges where an input meets
+   its neighbour (unlayered, these rules used to win and leave a rounded seam). */
+@layer components {
+  .field-surface {
+    border-radius: var(--radius-workspace-control);
+  }
+
+  .field-surface:is(input, button, :has(> input)) {
+    border-radius: 9999px;
+  }
 }
 
 /* Wrapper surfaces (a div or form around an embedded input) need the same 1px edge as a
@@ -68,7 +84,7 @@
   border-color: transparent;
   background-color: transparent;
   background-image:
-    linear-gradient(var(--popover), var(--popover)), var(--glow-line);
+    linear-gradient(var(--popover), var(--popover)), var(--field-glow-line);
   background-origin: border-box;
   background-clip: padding-box, border-box;
   box-shadow: var(--field-text-shadow, var(--field-shadow));

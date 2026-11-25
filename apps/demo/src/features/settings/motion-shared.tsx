@@ -23,7 +23,7 @@ export function Demo({
       <div className="flex items-center justify-between gap-2">
         <CardTitle className="text-sm">{title}</CardTitle>
         {onReplay && (
-          <Button variant="outline" size="sm" onClick={onReplay}>
+          <Button variant="outline" onClick={onReplay}>
             <SolarRefreshCcw data-icon="inline-start" />
             重播
           </Button>

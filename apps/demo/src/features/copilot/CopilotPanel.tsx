@@ -9,21 +9,21 @@ import {
 
 import {
   AppIcon,
-  SolarArrowUp,
   SolarArrowUpRight,
-  SolarCopy,
   SolarEllipsis,
   SolarEye,
   SolarMaximize2,
   SolarMinimize2,
+  SolarPlain3,
   SolarPlus,
   SolarRotateCw,
   SolarSparkles,
-  SolarX,
 } from "@marismoon/ui/icons"
 import { dialogEntry } from "@marismoon/ui/motion/motion-tokens"
+import { CopyButton } from "@marismoon/ui/shared/CopyButton"
 import { Bubble, BubbleContent } from "@marismoon/ui/ui/bubble"
 import { Button } from "@marismoon/ui/ui/button"
+import { CloseButton } from "@marismoon/ui/ui/close-button"
 import {
   Message,
   MessageContent,
@@ -182,15 +182,6 @@ function OpenCopilotPanel({ copilot, pageName }: CopilotPanelProps) {
     composer.current?.focus({ preventScroll: true })
   }
 
-  async function copyReply(text: string) {
-    try {
-      await navigator.clipboard.writeText(text)
-      setCopyNotice(tl("已复制回复"))
-    } catch {
-      setCopyNotice(tl("复制失败，请选中文本后手动复制。"))
-    }
-  }
-
   return (
     <MotionAside
       ref={panel}
@@ -273,17 +264,12 @@ function OpenCopilotPanel({ copilot, pageName }: CopilotPanelProps) {
               aria-hidden="true"
             />
           </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-sm"
+          <CloseButton
             className="copilot-icon-button"
             aria-label={tl("关闭智算助手")}
             title={tl("关闭智算助手")}
             onClick={copilot.close}
-          >
-            <AppIcon icon={SolarX} size={16} aria-hidden="true" />
-          </Button>
+          />
         </div>
       </header>
 
@@ -332,20 +318,20 @@ function OpenCopilotPanel({ copilot, pageName }: CopilotPanelProps) {
                             </BubbleContent>
                           </Bubble>
                           <MessageFooter className="px-0">
-                            <Button
-                              type="button"
+                            <CopyButton
+                              value={text}
+                              label={tl("复制回复")}
                               variant="ghost"
                               size="xs"
                               className="copilot-copy"
-                              onClick={() => void copyReply(text)}
-                            >
-                              <AppIcon
-                                icon={SolarCopy}
-                                size={16}
-                                aria-hidden="true"
-                              />{" "}
-                              {tl("复制回复")}
-                            </Button>
+                              announce={false}
+                              onCopied={() => setCopyNotice(tl("已复制回复"))}
+                              onError={() =>
+                                setCopyNotice(
+                                  tl("复制失败，请选中文本后手动复制。")
+                                )
+                              }
+                            />
                           </MessageFooter>
                         </>
                       )}
@@ -464,8 +450,9 @@ function OpenCopilotPanel({ copilot, pageName }: CopilotPanelProps) {
                   transition={dialogEntry.transition}
                 >
                   <AppIcon
-                    icon={copilot.pending ? SolarEllipsis : SolarArrowUp}
+                    icon={copilot.pending ? SolarEllipsis : SolarPlain3}
                     size={16}
+                    stateful
                     aria-hidden="true"
                   />
                 </MotionSpan>

@@ -92,6 +92,10 @@
   color: var(--muted-foreground);
 }
 
+.copilot-icon-button[data-slot="close-button"]:is(:hover, :active) {
+  color: var(--foreground);
+}
+
 .copilot-transparency-button {
   flex-shrink: 1;
   min-width: var(--space-6);

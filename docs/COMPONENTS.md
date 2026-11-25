@@ -16,6 +16,9 @@
 
 ## 1. 共享组合组件（`@marismoon/ui/shared/*`）
 
+暗色玻璃背景组件 `AriesMagicRings`、`AriesAntigravity` 和 `AriesLightfall` 分别从同名 shared 路径导入，作为 `AppShell.glassBackdrop` 渲染。三款均使用原生 WebGL 2，品牌切换时更新着色器配色。组件填满视口，减少动态效果时显示静态帧。三款背景按自身时间轴播放，鼠标移动、点击或按住均不会改变动效。
+
+
 ### FrostCard
 
 玻璃材质卡片，基于 `ui/card` 的 `Card`。Props：`ComponentProps<"div">`。内置类 `surface gap-0 overflow-visible bg-transparent p-0 shadow-none ring-0`。
@@ -52,6 +55,19 @@ import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 ### EmptyState
 
 `title: string`、`description?: string`、`icon?: AppIconComponent`（默认 `SolarInbox`）、`action?: ReactNode`、`className?`。
+
+### CopyButton
+
+复制到剪贴板并就地确认：复制图标交叉淡入为对勾（`--success`），文字由原文案变为「已复制」，约 1.8s 后复原；两种状态叠放在同一格内，按钮宽度不变，只动 opacity、scale、blur。
+
+| Prop | 类型 | 说明 |
+| --- | --- | --- |
+| `value` | `string` | 写入剪贴板的文本 |
+| `label?` | `string` | 可见文案；省略时为纯图标按钮，`aria-label` 取 `UiLabels.copy` / `copied`（可用 `aria-label` 覆盖） |
+| `onCopied?` / `onError?` | `() => void` | 复制成功 / 失败回调 |
+| `announce?` | `boolean` | 默认 `true`，在 polite live region 播报「已复制」；宿主自己播报时设为 `false` |
+
+其余 Prop 透传给 `Button`（默认 `variant="outline"`）。新的复制操作 **SHOULD** 用它，不再手写剪贴板与图标切换。
 
 ### DataTable + useDataTable
 
@@ -95,22 +111,25 @@ const table = useDataTable({
 | 组件 | 说明 |
 | --- | --- |
 | `ThemeSwitcher({ className? })` | 明/暗切换（next-themes），带图标旋转缩放；遵守减少动态效果 |
-| `BrandPaletteControl()` | 轮换 `paletteLabels` 中的品牌主题并写入 localStorage；暗色模式下跳过纯浅色主题 `aries-light` |
+| `BrandPaletteControl()` | 按 `paletteLabels` 的顺序轮换品牌主题并写入 localStorage |
 | `DarkStyleControl()` | 仅暗色模式显示，切换 `glass` / `clean` |
 
 ## 2. 动效（`@marismoon/ui/motion/*`）
 
 - `MotionSurface({ children })`：路由进入过渡（`data-motion-surface="route"`，`useReducedMotion` 时无初始态）。
 - `NavPills({ active, hover })`：第二列导航的选中与悬停底板，`@marismoon/shell` 默认渲染，宿主一般无需直接使用。弹簧 `navPillSpring` 为临界阻尼，`useReducedMotion` 时瞬时移动。
-- `motion-tokens`：`routeEntry`、`dialogEntry`、`overlayEntry`（缓动 `[0.23, 1, 0.32, 1]`）。
+- `motion-tokens`：`routeEntry`、`dialogEntry`、`overlayEntry`、`contentEntry`（缓动 `[0.23, 1, 0.32, 1]`）。
+- `Tabs`（默认变体）：切换时一枚复制当前选中样式的浮层从旧 Tab 滑到新 Tab（220ms），静止时不增加任何元素，页面或外壳自定义的选中样式保持原样；`useReducedMotion` 时直接切换。Tab 面板进入时淡入上移 4px。
 
 ## 3. 图标（`@marismoon/ui/icons`）
 
 只用 Solar。`AppIcon({ icon, size = 20, stateful?, … })` 渲染图标（有 `aria-label` 时 `role="img"`，否则 `aria-hidden`）；`AppIconComponent` 为图标类型。`Solar*` 命名导出来自 `components/icons/solar/*`（如 `SolarCog`、`SolarBell`、`SolarSearch`、`SolarMoon`、`SolarSun`、`SolarInbox`）。`IconPlaceholder`（`icon-placeholder.tsx`）把 shadcn CLI 生成的占位映射到 Solar。新增：加文件到 `solar/` 并在 `index.ts` 导出。
 
-变体规则（Linear / Bold、`stateful`、24×24 网格）见 [AGENTS.md §3.1](../AGENTS.md)。`stateful` 同时渲染 Linear 与 Bold，由 `styles/icon-states.css` 按状态显示其一，不增加 DOM 包裹层。配对表在 `icon-variants.ts`（`boldIconOf`），目前覆盖一级模块与第二列导航的 18 个图标：`bell`、`chart-2`、`chart-square`、`clock-circle`、`cloud`、`settings`、`card`、`eye`、`document-text`、`folder`、`home-smile-angle`、`widget-2`、`letter`、`notebook`、`pallete-2`、`bill-list`、`refresh`、`shield-warning`。
+变体规则（Linear / Bold、`stateful`、24×24 网格）见 [AGENTS.md §3.1](../AGENTS.md)。`stateful` 同时渲染 Linear 与 Bold，由 `styles/icon-states.css` 按状态显示其一，不增加 DOM 包裹层。配对表在 `icon-variants.ts`（`boldIconOf`），目前覆盖 20 个图标，其中一级模块与第二列导航 18 个：`bell`、`chart-2`、`chart-square`、`clock-circle`、`cloud`、`settings`、`card`、`eye`、`document-text`、`folder`、`home-smile-angle`、`widget-2`、`letter`、`notebook`、`pallete-2`、`bill-list`、`refresh`、`shield-warning`；另有发送按钮的纸飞机 `plain-3`（`SolarPlain3`，悬停或按下时为 Bold）和关闭按钮的 `close-circle`。
 
-**别名对照**（命名与实际图形不一致，引用前先看这里）：`SolarCheck` 与 `SolarCircleCheck` 同为 `check-circle-linear`；`SolarFileSearch` = `document-text`；`SolarSquareMenu` = `file-text`；`SolarChartNoAxesColumnIncreasing` = `chart-2`；`SolarReceiptText` = `bill-list`；`SolarCog` = `settings`；`SolarClock3` = `clock-circle`。
+**关闭图标**：关闭、移除、清除类按钮统一用 `@marismoon/ui/ui/close-button`。`CloseButton` 是图标按钮（`ghost`、默认 `size=\"icon-sm\"`，需传 `aria-label` 或 `sr-only` 子节点）；`CloseIcon` 是 16px、`stateful` 的 `SolarClose`（`close-circle-linear`，悬停或按下切 `close-circle-bold`）；`closeButtonClass` 给其他宿主按钮用。外观唯一：静止与悬停都不带底色，颜色由 `--muted-foreground` 变为 `--foreground`。`Dialog`、`Sheet` 的关闭按钮，`Combobox` 的清除与标签移除按钮都已使用；`IconPlaceholder` 的 `XIcon` 也映射到圆圈叉。无外圈的叉 `close-linear` 仍以 `SolarCloseLine` 导出，但不用于关闭按钮。
+
+**别名对照**（命名与实际图形不一致，引用前先看这里）：`SolarCheck` 与 `SolarCircleCheck` 同为 `check-circle-linear`；`SolarX` 与 `SolarClose` 同为 `close-circle-linear`；`SolarFileSearch` = `document-text`；`SolarSquareMenu` = `file-text`；`SolarChartNoAxesColumnIncreasing` = `chart-2`；`SolarReceiptText` = `bill-list`；`SolarCog` = `settings`；`SolarClock3` = `clock-circle`。
 
 ## 4. 工具与 Hook
 
@@ -128,7 +147,7 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 
 ### 默认值（规范）
 
-- `Button`：`variant` 默认 `default`，可选 `outline | secondary | ghost | destructive | link`；`shape` 默认 `workspace`（`--radius-workspace-control`）。`size` 默认 **`dense`（32px，不写 `size` 即此值）**，`default` 反而是 40px：
+- `Button`：`variant` 默认 `default`，可选 `outline | secondary | ghost | destructive | link`；`shape` 默认 `workspace`（全圆胶囊，任何高度两端都是半圆；图标按钮为正圆）。`size` 默认 **`dense`（32px，不写 `size` 即此值）**，`default` 反而是 40px：
 
   | `size` | 高度 | 用途 |
   | --- | --- | --- |
@@ -138,9 +157,9 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
   | `sm` / `lg` / `xs` | 36 / 44 / 24px | 其余场景 |
   | `icon` / `icon-xs` / `icon-sm` / `icon-lg` | 32 / 24 / 28 / 40px | 图标按钮 |
 
-  `pointer: coarse` 下 `small`、`icon-xs`、`icon-sm` 放大到 40px，`xs` 放大到 36px。普通 AlertDialog 页脚为 32px，`size="sm"` 的页脚为 28px（由 `popup.css` 自动处理）。各 variant 的底色只来自令牌，暗色没有单独写法：`default` 用 `--primary` / `--primary-foreground`（悬停 `--primary-hover`），`outline` 用 `--field-surface` 加 `--field-shadow`，`secondary` 用 `--secondary`，`ghost` 悬停用 `--muted`，`destructive` 为 `--destructive` 的 10% 底色。
+  `pointer: coarse` 下 `small`、`icon-xs`、`icon-sm` 放大到 40px，`xs` 放大到 36px。普通 AlertDialog 页脚为 32px，`size="sm"` 的页脚为 28px（由 `popup.css` 自动处理）。各 variant 的底色只来自令牌，暗色没有单独写法：`default` 用 `--primary` / `--primary-foreground`（悬停 `--primary-hover`），`outline` 用 `--field-surface` 加 `--field-shadow`，`secondary` 用 `--secondary`，`ghost` 悬停用 `--muted`，`destructive` 为 `--destructive` 的 10% 底色。有底色的 `default`、`secondary`、`destructive` 再叠一层很轻的受光渐变 `--control-sheen`；内描边与主色投影（`--primary-shadow`）只给 `default`，`secondary` 沿用 `--field-shadow`，`destructive` 不加投影，规则见 [DESIGN_SYSTEM §5](DESIGN_SYSTEM.md)；`outline`、`ghost`、`link` 不叠。
 - `Badge`：`variant` 含 `default secondary destructive outline ghost link`，以及 Ant Design 预设色 `red volcano orange gold yellow lime green cyan blue geekblue purple magenta gray`（加 `solid` 为实心）。
-- `Input`、`SelectTrigger`、`InputGroup`、`NativeSelect`、`Combobox`、`InputOTP`：统一 `field-surface`，不写 `size` 即 32px。
+- `Input`、`SelectTrigger`、`InputGroup`、`NativeSelect`、`Combobox`、`InputOTP`：统一 `field-surface`，不写 `size` 即 32px。`Input` 与 `SelectTrigger` 在任何高度都是全圆胶囊；`Textarea` 保持 `--radius-workspace-control`。
 - `SelectContent` 使用 `position="popper"`。
 - `Tabs` / `ToggleGroup` / `Menubar`：`--recess` 分段胶囊，选项 28px。
 

@@ -4,8 +4,10 @@
    dark-base.css and is shared with glass. This file only switches the material
    off: no backdrop blur, no glow or aurora, no stacked shadows; separation is
    the 1px hairlines. Scoped to .dark[data-dark-style="clean"] so glass and
-   light mode are untouched; the light-only aries-light palette is excluded. */
-.dark[data-dark-style="clean"]:not([data-palette="aries-light"]) {
+   light mode are untouched. */
+:root.dark[data-dark-style="clean"] {
+  /* Enough tint for a palette to register on the flat surfaces. */
+  --dark-tint: 10%;
   --workspace-nav: transparent;
   --card-bottom: var(--card);
 
@@ -23,11 +25,18 @@
   --surface-filter: none;
   --nav-filter: none;
   --surface-shadow: none;
-  --surface-inset-shadow: none;
+  --card-shadow: 0 0 0 0 transparent;
+  /* Inset panels (Alert) keep one hairline in place of their lift. */
+  --surface-inset-shadow: 0 0 0 1px var(--glass-edge);
   /* Buttons, toggles and pills take their edge from this ring; text fields use
      their own border (--field-edge), so they drop the ring. */
   --field-shadow: inset 0 0 0 1px var(--border);
   --field-text-shadow: none;
+  /* Control material off: flat fills, and filled buttons keep the same
+     hairline ring as every other button. */
+  --control-sheen: none;
+  --control-rim: inset 0 0 0 0 transparent;
+  --primary-shadow: var(--field-shadow);
   --sidebar-edge: var(--border);
   --sidebar-radius: 0;
   --sidebar-shadow: none;
@@ -37,8 +46,13 @@
   --floating-shadow: 0 0 0 1px var(--border);
 
   /* Accent surfaces stay quiet: the brand colour is for the active state only. */
-  --accent: color-mix(in srgb, var(--primary) 14%, var(--background));
-  --hero-start: var(--card);
+  --accent: color-mix(
+    in srgb,
+    var(--accent-source, var(--primary)) 14%,
+    var(--background)
+  );
+  /* A quiet brand share keeps the hero apart from an ordinary card. */
+  --hero-start: color-mix(in srgb, var(--primary) 9%, var(--card));
   --hero-end: var(--card);
   --hero-edge: var(--border);
 
@@ -49,7 +63,11 @@
   --hero-fill: var(--card);
   /* .surface already draws the 1px edge; a second inset ring would read 2px. */
   --hero-outline: none;
-  --nav-border-width: 0 1px 0 0;
+  /* The right edge is a divider inset by the glass card's corner radius
+     (drawn by the shell), not a full-height border. */
+  --nav-border-width: 0;
+  --nav-divider-display: block;
+  --nav-divider-inset: var(--radius-panel);
   --nav-active-fill: color-mix(in srgb, var(--primary) 16%, transparent);
   --nav-active-shadow: none;
   --nav-hover-fill: rgb(255 255 255 / 5%);

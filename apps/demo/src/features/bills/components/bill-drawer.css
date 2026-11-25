@@ -47,7 +47,7 @@
 }
 
 .bill-drawer-amounts dt {
-  color: var(--muted-foreground);
+  color: var(--label-foreground);
   font-size: 0.75rem;
 }
 
@@ -94,7 +94,7 @@
 }
 
 .bill-drawer-rows dt {
-  color: var(--muted-foreground);
+  color: var(--label-foreground);
 }
 
 .bill-drawer-rows dd {
@@ -165,4 +165,37 @@
 .bill-drawer-form {
   display: grid;
   gap: var(--space-4);
+}
+
+/* Drawer content follows the panel in: blocks rise 4px and fade with a short
+   stagger once the slide is mostly done. Switching between view and edit
+   remounts the blocks, so the swap gets the same entrance. */
+@media (prefers-reduced-motion: no-preference) {
+  .bill-drawer-body > *,
+  .bill-drawer-form > * {
+    animation: bill-drawer-block-in 240ms var(--ease-feedback) backwards;
+    animation-delay: 90ms;
+  }
+
+  .bill-drawer-body > :nth-child(2),
+  .bill-drawer-form > :nth-child(2) {
+    animation-delay: 130ms;
+  }
+
+  .bill-drawer-body > :nth-child(3),
+  .bill-drawer-form > :nth-child(3) {
+    animation-delay: 170ms;
+  }
+
+  .bill-drawer-body > :nth-child(n + 4),
+  .bill-drawer-form > :nth-child(n + 4) {
+    animation-delay: 210ms;
+  }
+}
+
+@keyframes bill-drawer-block-in {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
 }

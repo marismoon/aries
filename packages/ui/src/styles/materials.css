@@ -86,6 +86,24 @@ body {
   backdrop-filter: var(--surface-filter);
 }
 
+/* A surface is a stacking context (backdrop-filter), so a layer that opens in
+   place inside it is painted under every surface that follows, whatever its
+   own z-index. NavigationMenu is the one popup that is not portaled (Radix
+   renders its viewport and content inline), so its host surface is lifted
+   while the menu is mounted, exit animation included. Base layer and zero
+   specificity: a surface that sets its own position or z-index keeps them. */
+@layer base {
+  :where(
+    .surface:has(
+        [data-slot="navigation-menu-viewport"],
+        [data-slot="navigation-menu-content"]
+      )
+  ) {
+    position: relative;
+    z-index: 1;
+  }
+}
+
 .surface-inset {
   border-radius: calc(var(--radius-panel) - 6px);
   background: var(--surface-inset);

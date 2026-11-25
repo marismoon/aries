@@ -20,6 +20,47 @@
   }
 }
 
+/* The content panel settles back the way it came in (dialogEntry: y 8→0,
+   scale 0.98→1). `scale` is an independent property, so it composes with the
+   centring `translate` and motion's inline transform. */
+[data-slot="dialog-content"][data-state="closed"]:not([data-motion="instant"]) {
+  animation-name: aries-dialog-content-exit;
+}
+
+@keyframes aries-dialog-content-exit {
+  to {
+    opacity: 0;
+    scale: 0.98;
+  }
+}
+
+/* Theme switch (ThemeSwitcher → theme-transition.ts): the new theme is
+   revealed by a circle growing from the switch, over the old snapshot that
+   stays put. Scoped to the attribute so other view transitions keep the
+   browser defaults. The script sets the --theme-reveal-* properties. */
+:root[data-theme-transition]::view-transition-old(root) {
+  animation: none;
+}
+
+:root[data-theme-transition]::view-transition-new(root) {
+  mix-blend-mode: normal;
+  animation: theme-reveal 460ms var(--ease-feedback);
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(
+      0px at var(--theme-reveal-x, 50%) var(--theme-reveal-y, 0px)
+    );
+  }
+  to {
+    clip-path: circle(
+      var(--theme-reveal-r, 150vmax) at var(--theme-reveal-x, 50%)
+        var(--theme-reveal-y, 0px)
+    );
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -119,6 +160,89 @@
   }
 }
 
+@keyframes chart-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+@keyframes chart-pop {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+}
+
+/* Utilities for charts drawn as plain SVG. Each mark plays once on mount;
+   `--chart-index` staggers siblings by 50ms (capped at 10).
+   - .chart-in-draw: lines; the element needs pathLength="1".
+   - .chart-in-grow-y / -x: bars from their baseline (bottom / left).
+   - .chart-in-pop: dots and small marks.
+   - .chart-in-fade: areas, polygons, labels.
+   - .chart-in-sweep: arcs (donut, gauge) grow along their stroke from an
+     empty dash; set --chart-dash-from to the zero-length dasharray, e.g.
+     "0 100" for pathLength="100". */
+@media (prefers-reduced-motion: no-preference) {
+  :is(
+    .chart-in-draw,
+    .chart-in-grow-y,
+    .chart-in-grow-x,
+    .chart-in-pop,
+    .chart-in-fade,
+    .chart-in-sweep
+  ) {
+    animation-duration: 640ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-fill-mode: backwards;
+    animation-delay: calc(min(var(--chart-index, 0), 10) * 50ms);
+  }
+
+  .chart-in-draw {
+    stroke-dasharray: 1;
+    animation-name: chart-draw;
+    animation-duration: 900ms;
+  }
+
+  .chart-in-grow-y,
+  .chart-in-grow-x,
+  .chart-in-pop {
+    transform-box: fill-box;
+  }
+
+  .chart-in-grow-y {
+    transform-origin: bottom;
+    animation-name: chart-grow-y;
+  }
+
+  .chart-in-grow-x {
+    transform-origin: left;
+    animation-name: chart-grow-x;
+  }
+
+  .chart-in-pop {
+    transform-origin: center;
+    animation-name: chart-pop;
+    animation-duration: 360ms;
+    animation-delay: calc(300ms + min(var(--chart-index, 0), 10) * 40ms);
+  }
+
+  .chart-in-fade {
+    animation-name: chart-fade-in;
+    animation-duration: 480ms;
+  }
+
+  .chart-in-sweep {
+    animation-name: chart-sweep;
+    animation-duration: 900ms;
+  }
+}
+
+@keyframes chart-sweep {
+  from {
+    stroke-dasharray: var(--chart-dash-from, 0 100);
+  }
+}
+
 @property --ai-angle {
   syntax: "<angle>";
   inherits: false;
@@ -129,4 +253,94 @@
   to {
     --ai-angle: 360deg;
   }
+}
+
+/* Skeleton: a soft highlight travels across every placeholder, so a loading
+   list reads as working, not frozen. The sweep is a transformed pseudo-element
+   (compositor-only); the block keeps its own `bg-muted`. */
+[data-slot="skeleton"] {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-slot="skeleton"]::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      transparent 20%,
+      color-mix(in srgb, var(--background) 55%, transparent) 50%,
+      transparent 80%
+    );
+    content: "";
+    transform: translateX(-100%);
+    animation: skeleton-sweep 1.6s var(--ease-feedback) infinite;
+  }
+}
+
+@keyframes skeleton-sweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Progress: value changes glide; no value (indeterminate) runs a travelling
+   segment. Animations outrank the indicator's inline transform. */
+[data-slot="progress-indicator"] {
+  transition: transform 480ms var(--ease-feedback);
+}
+
+[data-slot="progress"][data-state="indeterminate"]
+  [data-slot="progress-indicator"] {
+  width: 40%;
+  flex: none;
+  border-radius: inherit;
+  animation: progress-indeterminate 1.4s cubic-bezier(0.65, 0, 0.35, 1)
+    infinite;
+}
+
+@keyframes progress-indeterminate {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="progress"][data-state="indeterminate"]
+    [data-slot="progress-indicator"] {
+    width: 100%;
+    opacity: 0.45;
+    transform: none;
+    animation: none !important;
+  }
+}
+
+/* Tab panels: the incoming panel fades up 4px (Radix mounts only the active
+   panel, so this plays on every switch). */
+@media (prefers-reduced-motion: no-preference) {
+  [data-slot="tabs-content"][data-state="active"] {
+    animation: tabs-content-in 200ms var(--ease-feedback);
+  }
+}
+
+@keyframes tabs-content-in {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+}
+
+/* Tab switch (TabsList → useTabGlide): while the ghost pill slides, the
+   triggers give up their own fill and sit above it, then take it back the
+   moment it lands. */
+[data-slot="tabs-list"][data-gliding] > [data-slot="tabs-trigger"] {
+  z-index: 1;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition-property: color !important;
 }

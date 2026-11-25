@@ -2,16 +2,18 @@ import type { Locator } from "@playwright/test"
 
 import { expect, test } from "./fixtures"
 
+// Cycle order starting from the default palette (telemedicine).
+const defaultPalette = "telemedicine"
 const brandCycle = [
-  "telemedicine",
   "mental-health",
   "pet-adoption",
   "health-wellness",
-  "violet-aurora",
   "amber-sand",
-  "rose-quartz",
-  "aries-light",
-  "saas-analytics-spectrum",
+  "mono",
+  "nature",
+  "northern-lights",
+  "darkmatter",
+  "telemedicine",
 ] as const
 
 const sunIcon = 'svg:has(circle[cx="12"][cy="12"][r="6"])'
@@ -297,7 +299,8 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
   const root = page.locator("html")
   const chromeColor = page.locator('meta[name="theme-color"]')
   await expect(root).toHaveClass(/\bdark\b/)
-  await expect(chromeColor).toHaveAttribute("content", "hsl(220 6% 12%)")
+  // Default palette (telemedicine) dark canvas: --dark-hue 218.
+  await expect(chromeColor).toHaveAttribute("content", "hsl(218 6% 12%)")
 
   const switchToLight = page.getByRole("button", { name: "切换到浅色模式" })
   const switchToDark = page.getByRole("button", { name: "切换到深色模式" })
@@ -306,7 +309,8 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
   await expect(page.getByRole("menu")).toHaveCount(0)
   await expect(switchToDark).toHaveAttribute("title", /切换到深色模式.*Shift/)
   await expect(root).toHaveClass(/\blight\b/)
-  await expect(chromeColor).toHaveAttribute("content", "#f2f6fc")
+  // Default palette (telemedicine) light canvas.
+  await expect(chromeColor).toHaveAttribute("content", "#f4f8ff")
   await page
     .getByRole("navigation", { name: "工作区目录" })
     .getByRole("link", { name: "月账单", exact: true })
@@ -319,9 +323,9 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
   await palette.focus()
   await expect(palette).toHaveCSS("outline-style", "solid")
   await palette.press("Enter")
-  await expect(root).toHaveAttribute("data-palette", "telemedicine")
+  await expect(root).toHaveAttribute("data-palette", "mental-health")
   await expect(palette).toBeFocused()
-  for (const brand of ["mental-health", "pet-adoption"]) {
+  for (const brand of ["pet-adoption"]) {
     await palette.click()
     await expect(root).toHaveAttribute("data-palette", brand)
   }
@@ -331,7 +335,7 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
     getComputedStyle(element).getPropertyValue("--background").trim()
   )
   await expect(chromeColor).toHaveAttribute("content", petLight)
-  expect(petLight).not.toBe("#f2f6fc")
+  expect(petLight).not.toBe("#f4f8ff")
 
   await page.reload()
   await expect(root).toHaveClass(/\blight\b/)
@@ -368,7 +372,7 @@ test("主题跟随系统，并保留明暗和配色偏好", async ({ page }) => 
 })
 
 for (const mode of ["light", "dark"] as const) {
-  test(`${mode} 下所有品牌覆盖表面、控件与图表，业务状态色保持独立`, async ({
+  test(`${mode} 下所有品牌覆盖表面、控件与图表，状态色与品牌色保持色相间隔`, async ({
     page,
   }) => {
     await page.emulateMedia({ colorScheme: mode, reducedMotion: "reduce" })
@@ -397,20 +401,64 @@ for (const mode of ["light", "dark"] as const) {
       "--warning-bg",
       "--danger",
       "--danger-bg",
+      "--info",
+      "--info-bg",
     ]
+    // OKLCH hue of each resolved token (DESIGN_SYSTEM §2.5): the primary keeps
+    // >=30° from danger and warning and >=25° from success and info; chart
+    // series keep >=25° from danger and warning.
+    const readHues = (names: string[]) =>
+      root.evaluate((element, tokens) => {
+        const canvas = document.createElement("canvas")
+        canvas.width = canvas.height = 1
+        const context = canvas.getContext("2d", { willReadFrequently: true })!
+        const probe = document.createElement("span")
+        // Global colour transitions would report the previous token's value.
+        probe.style.transition = "none"
+        element.querySelector("body")?.append(probe)
+        const linear = (v: number) => {
+          v /= 255
+          return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4
+        }
+        const hues = tokens.map((token) => {
+          probe.style.color = `var(${token})`
+          context.clearRect(0, 0, 1, 1)
+          context.fillStyle = getComputedStyle(probe).color
+          context.fillRect(0, 0, 1, 1)
+          const [r, g, b] = Array.from(context.getImageData(0, 0, 1, 1).data)
+            .slice(0, 3)
+            .map(linear) as [number, number, number]
+          const l = Math.cbrt(
+            0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b
+          )
+          const m = Math.cbrt(
+            0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b
+          )
+          const s = Math.cbrt(
+            0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b
+          )
+          const a = 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s
+          const bb = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s
+          // A grey has no hue: report none, and the gap checks skip it.
+          if (Math.hypot(a, bb) < 0.02) return null
+          return ((Math.atan2(bb, a) * 180) / Math.PI + 360) % 360
+        })
+        probe.remove()
+        return hues
+      }, names)
+    const hueGap = (a: number | null, b: number | null) => {
+      if (a === null || b === null) return 180
+      const d = Math.abs(a - b) % 360
+      return Math.min(d, 360 - d)
+    }
     const readTokens = (names: string[]) =>
       root.evaluate((element, tokens) => {
         const styles = getComputedStyle(element)
         return tokens.map((token) => styles.getPropertyValue(token).trim())
       }, names)
-    const statusColors = await readTokens(statusTokens)
     const brandStyles: string[][] = []
 
-    // Dark mode skips the light-only palette when cycling.
-    const cycle =
-      mode === "dark"
-        ? brandCycle.filter((value) => value !== "aries-light")
-        : brandCycle
+    const cycle = brandCycle
 
     for (const value of cycle) {
       await palette.click()
@@ -418,7 +466,49 @@ for (const mode of ["light", "dark"] as const) {
       await expect(root).toHaveClass(new RegExp(`\\b${mode}\\b`))
       await expect(page.getByRole("menu")).toHaveCount(0)
       brandStyles.push(await readTokens(brandTokens))
-      expect(await readTokens(statusTokens)).toEqual(statusColors)
+      expect(
+        await readTokens(statusTokens),
+        `${value} 状态色有定义`
+      ).not.toContain("")
+      const [primary, success, warning, danger, info, ...charts] =
+        (await readHues([
+          "--primary",
+          "--success",
+          "--warning",
+          "--danger",
+          "--info",
+          "--chart-1",
+          "--chart-2",
+          "--chart-3",
+          "--chart-4",
+          "--chart-5",
+        ])) as [
+          number | null,
+          number | null,
+          number | null,
+          number | null,
+          number | null,
+          ...(number | null)[],
+        ]
+      for (const [name, hue, min] of [
+        ["danger", danger, 30],
+        ["warning", warning, 30],
+        ["success", success, 25],
+        ["info", info, 25],
+      ] as const) {
+        expect(
+          hueGap(primary, hue),
+          `${value} 主色与 ${name}`
+        ).toBeGreaterThanOrEqual(min)
+      }
+      for (const [index, hue] of charts.entries()) {
+        for (const alarm of [danger, warning]) {
+          expect(
+            hueGap(hue, alarm),
+            `${value} chart-${index + 1} 与告警色`
+          ).toBeGreaterThanOrEqual(25)
+        }
+      }
     }
 
     for (const [index, token] of brandTokens.entries()) {
@@ -444,10 +534,7 @@ for (const [width, height] of [
     const root = page.locator("html")
     await page.evaluate(() => document.fonts.ready)
     const palette = page.getByRole("button", { name: "品牌配色", exact: true })
-    await expect(root).toHaveAttribute(
-      "data-palette",
-      "saas-analytics-spectrum"
-    )
+    await expect(root).toHaveAttribute("data-palette", defaultPalette)
     const original = await palette.boundingBox()
     if (!original) throw new Error("Palette switcher unavailable")
     expect(original.width).toEqual(original.height)
@@ -456,7 +543,7 @@ for (const [width, height] of [
     await palette.focus()
     await expect(palette).toHaveCSS("outline-style", "solid")
     await palette.press("Enter")
-    await expect(root).toHaveAttribute("data-palette", "telemedicine")
+    await expect(root).toHaveAttribute("data-palette", brandCycle[0])
     await expect(page.getByRole("menu")).toHaveCount(0)
     await expect(palette).toBeFocused()
 
@@ -477,7 +564,7 @@ for (const [width, height] of [
         await palette.hover()
         await expect(
           page.locator('[data-slot="tooltip-content"]')
-        ).toContainText("当前配色为清新草绿，下一个配色为紫罗兰极光")
+        ).toContainText("当前配色为清新草绿，下一个配色为琥珀暖沙")
       }
     }
   })
@@ -506,11 +593,15 @@ for (const [width, height] of [
           ".page-header-title-row .page-header-actions"
         )
         const buttons = actions.getByRole("button")
-        // Language, brand and theme; dark mode also carries the dark-style switch (first).
-        await expect(buttons).toHaveCount(colorScheme === "dark" ? 4 : 3)
+        // Language, brand and theme; dark glass also carries the Demo's glass
+        // backdrop switch (header extra, first) and the dark-style switch.
+        await expect(buttons).toHaveCount(colorScheme === "dark" ? 5 : 3)
         await expect(actions.getByRole("link")).toHaveCount(0)
+        if (colorScheme === "dark") {
+          await expect(buttons.first()).toHaveAccessibleName("玻璃背景")
+        }
         await expect(
-          buttons.nth(colorScheme === "dark" ? 2 : 1)
+          buttons.nth(colorScheme === "dark" ? 3 : 1)
         ).toHaveAccessibleName("品牌配色")
         await expect(buttons.last()).toHaveAccessibleName(themeLabel)
         await expect(

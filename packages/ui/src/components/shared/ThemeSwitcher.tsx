@@ -4,6 +4,7 @@ import { useTheme } from "next-themes"
 import { useState, useSyncExternalStore } from "react"
 
 import { AppIcon, SolarMoon, SolarSun } from "../icons"
+import { revealThemeChange } from "../motion/theme-transition"
 import { Button } from "../ui/button"
 import { cn } from "../../lib/utils"
 import { useUiLabels } from "../../lib/ui-labels"
@@ -19,6 +20,28 @@ function subscribeToMotionPreference(onChange: () => void) {
 
 function prefersReducedMotion() {
   return window.matchMedia(reducedMotionQuery).matches
+}
+
+function resolvesDark(theme: string) {
+  return theme === "system"
+    ? window.matchMedia("(prefers-color-scheme: dark)").matches
+    : theme === "dark"
+}
+
+/** Reveals the new theme from the button's centre when the page actually
+ * changes colour; a no-op switch (e.g. to "system" that resolves to the
+ * current theme) just applies. */
+function changeTheme(button: HTMLElement, next: string, apply: () => void) {
+  const isDark = document.documentElement.classList.contains("dark")
+  if (resolvesDark(next) === isDark) {
+    apply()
+    return
+  }
+  const rect = button.getBoundingClientRect()
+  revealThemeChange(
+    { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 },
+    apply
+  )
 }
 
 export function ThemeSwitcher({ className }: { className?: string }) {
@@ -57,16 +80,20 @@ export function ThemeSwitcher({ className }: { className?: string }) {
       title={ready ? labels.themeTitle(label) : label}
       disabled={!ready}
       onClick={(event) => {
-        if (event.detail === 0 || event.shiftKey) {
-          setIconReset((current) => current + 1)
-        }
-        setTheme(event.shiftKey ? "system" : target)
+        const resetIcon = event.detail === 0 || event.shiftKey
+        const next = event.shiftKey ? "system" : target
+        changeTheme(event.currentTarget, next, () => {
+          if (resetIcon) setIconReset((current) => current + 1)
+          setTheme(next)
+        })
       }}
       onKeyDown={(event) => {
         if (event.shiftKey && (event.key === "Enter" || event.key === " ")) {
           event.preventDefault()
-          setIconReset((current) => current + 1)
-          setTheme("system")
+          changeTheme(event.currentTarget, "system", () => {
+            setIconReset((current) => current + 1)
+            setTheme("system")
+          })
         }
       }}
     >
