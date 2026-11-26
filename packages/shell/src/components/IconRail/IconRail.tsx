@@ -83,6 +83,7 @@ export function IconRail({
   navigation,
   navExpanded,
   rightPanelTrigger,
+  renderUserMenu,
   onToggleNav,
   onSelectModule,
   mobileDirectory,
@@ -91,6 +92,10 @@ export function IconRail({
   navigation: WorkspaceNavigation
   navExpanded: boolean
   rightPanelTrigger: ReactNode
+  renderUserMenu?: (
+    avatar: ReactNode,
+    state: { navExpanded: boolean }
+  ) => ReactNode
   onToggleNav: () => void
   onSelectModule: (id: string) => void
   mobileDirectory: ReactNode
@@ -253,23 +258,30 @@ export function IconRail({
             .filter((module) => module.railPosition === "footer")
             .map(renderModule)}
           <span className="grid size-(--rail-control-size) shrink-0 place-items-center">
-            <Avatar
-              role="img"
-              aria-label={navigation.userLabel}
-              title={navigation.userLabel}
-            >
-              <AvatarImage src={navigation.avatarSrc} alt="" />
-              <AvatarFallback>{navigation.avatarFallback}</AvatarFallback>
-              <AvatarBadge aria-hidden="true">
-                <IconPlaceholder
-                  lucide="PlusIcon"
-                  tabler="IconPlus"
-                  hugeicons="PlusSignIcon"
-                  phosphor="PlusIcon"
-                  remixicon="RiAddLine"
-                />
-              </AvatarBadge>
-            </Avatar>
+            {(() => {
+              const avatar = (
+                <Avatar
+                  role="img"
+                  aria-label={navigation.userLabel}
+                  title={navigation.userLabel}
+                >
+                  <AvatarImage src={navigation.avatarSrc} alt="" />
+                  <AvatarFallback>{navigation.avatarFallback}</AvatarFallback>
+                  <AvatarBadge aria-hidden="true">
+                    <IconPlaceholder
+                      lucide="PlusIcon"
+                      tabler="IconPlus"
+                      hugeicons="PlusSignIcon"
+                      phosphor="PlusIcon"
+                      remixicon="RiAddLine"
+                    />
+                  </AvatarBadge>
+                </Avatar>
+              )
+              return renderUserMenu
+                ? renderUserMenu(avatar, { navExpanded })
+                : avatar
+            })()}
           </span>
           <RailTooltip label={navLabel}>
             <Button

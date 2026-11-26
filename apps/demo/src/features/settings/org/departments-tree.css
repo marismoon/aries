@@ -1,0 +1,308 @@
+/* Departments File Tree + Table split layout (bottom aligned with sidebar,
+   no outer vertical overflow). */
+
+.dept-split {
+  display: grid;
+  grid-template-columns: 276px minmax(0, 1fr);
+  align-items: stretch;
+  gap: var(--space-3);
+  min-width: 0;
+  min-height: 0;
+}
+
+.dept-tree-card > :is(.workspace-nav-list, .workspace-directory) {
+  flex: 1 1 0;
+  min-block-size: 0;
+}
+
+.dept-tree-card > .workspace-nav-list {
+  grid-auto-rows: minmax(0, 1fr);
+}
+
+.dept-tree-card :is(.workspace-nav-list, .nav-tree-children) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@container workspace (max-width: 52rem) {
+  .dept-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dept-tree-card > :is(.workspace-nav-list, .workspace-directory) {
+    flex-basis: auto;
+    max-block-size: 50svh;
+  }
+}
+
+.dept-tree-root {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 0;
+}
+
+.dept-tree-root > .dept-tree-row {
+  flex: none;
+}
+
+.dept-tree-root > .nav-tree-panel {
+  min-block-size: 0;
+  margin-inline: calc(-1 * var(--space-2));
+}
+
+/* Keep room for the navigation pills while the child panel can collapse to zero. */
+.dept-tree-descendants {
+  overflow: auto;
+  margin: 0;
+  padding: 0 var(--space-2);
+}
+
+.dept-tree-descendants > .nav-tree-children {
+  margin-block-start: 6px;
+  padding-block-end: 6px;
+}
+
+/* Keep directory labels aligned while sizing child rows like navigation leaves. */
+.dept-tree-row > .nav-tree-item.nav-tree-leaf {
+  min-height: 0;
+}
+
+.nav-tree-children > li:has(> .dept-tree-row > .nav-tree-leaf) {
+  --nav-tree-row-center: calc(var(--sidebar-leaf-height) / 2);
+}
+
+@media (max-width: 700px), (pointer: coarse) {
+  .dept-tree-card {
+    --sidebar-leaf-height: var(--control-size-compact);
+  }
+}
+
+/* Dedicated column-safe search box (does not inherit flex-basis: 280px height). */
+.dept-tree-search {
+  position: relative;
+  flex: none;
+  width: 100%;
+  min-width: 0;
+}
+
+.dept-tree-search > svg {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 11px;
+  transform: translateY(-50%);
+  color: var(--muted-foreground);
+  pointer-events: none;
+}
+
+.dept-tree-quick-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  margin-block-start: -5px;
+  padding-inline: 2px;
+}
+
+.dept-tree-quick-btn {
+  display: inline-grid;
+  width: var(--control-size-small);
+  height: var(--control-size-small);
+  place-items: center;
+  border-radius: var(--sidebar-item-radius);
+  background: transparent;
+  color: var(--muted-foreground);
+  transition: color var(--duration-feedback) var(--ease-feedback);
+}
+
+.dept-tree-quick-btn:hover,
+.dept-tree-quick-btn:focus-visible,
+.dept-tree-quick-btn:active {
+  background: transparent;
+  color: var(--foreground);
+}
+
+.dept-tree-quick-btn[aria-pressed="true"] {
+  color: var(--primary);
+}
+
+.dept-tree-row {
+  --dept-tree-action-size: var(--control-size-small);
+  --dept-tree-more-space: 0px;
+  position: relative;
+  border-radius: var(--sidebar-item-radius);
+}
+
+.dept-tree-row:has(> .dept-tree-more) {
+  --dept-tree-more-space: var(--dept-tree-action-size);
+}
+
+.dept-tree-row:has(> .dept-tree-toggle) > .workspace-nav-item {
+  padding-inline-end: calc(
+    var(--space-2) + var(--dept-tree-action-size) + var(--dept-tree-more-space)
+  );
+}
+
+.dept-tree-row:has(> .dept-tree-more):not(:has(> .dept-tree-toggle))
+  > .workspace-nav-item {
+  padding-inline-end: calc(var(--space-2) + var(--dept-tree-more-space));
+}
+
+.dept-tree-row[data-dragging="true"] {
+  opacity: 0.48;
+}
+
+.dept-tree-row[data-drop-target="true"] {
+  outline: 1px solid var(--primary);
+  outline-offset: -1px;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.dept-tree-more,
+.dept-tree-toggle {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 50%;
+  inset-inline-end: 0;
+  display: grid;
+  width: var(--dept-tree-action-size);
+  height: var(--dept-tree-action-size);
+  place-items: center;
+  border-radius: var(--sidebar-item-radius);
+  color: var(--muted-foreground);
+  translate: 0 -50%;
+}
+
+.dept-tree-more {
+  opacity: 0;
+  transition:
+    opacity var(--duration-feedback) var(--ease-feedback),
+    background-color var(--duration-feedback) var(--ease-feedback),
+    color var(--duration-feedback) var(--ease-feedback);
+}
+
+.dept-tree-row:is(:hover, :focus-within, :has([aria-current="true"]))
+  .dept-tree-more,
+.dept-tree-more[aria-expanded="true"] {
+  opacity: 1;
+}
+
+.dept-tree-more:hover {
+  background: var(--option-hover);
+  color: var(--foreground);
+}
+
+.dept-tree-toggle {
+  inset-inline-end: var(--dept-tree-more-space);
+}
+
+.dept-tree-toggle:hover {
+  color: var(--foreground);
+}
+
+.dept-tree-toggle > svg {
+  transition: transform var(--duration-feedback) var(--ease-feedback);
+}
+
+.dept-tree-toggle[aria-expanded="false"] > svg {
+  transform: rotate(-90deg);
+}
+
+.dept-tree-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (pointer: coarse) {
+  .dept-tree-row {
+    --dept-tree-action-size: var(--control-size-dense);
+  }
+
+  .dept-tree-more {
+    opacity: 1;
+  }
+}
+
+/* Department meta chips inside right table toolbar */
+.dept-meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.dept-meta-bar strong {
+  color: var(--foreground);
+  font-weight: 620;
+}
+
+/* Department members table column widths */
+.settings-dept-members-table .data-table [data-column="name"] {
+  --column-fraction: 0.28;
+}
+
+.settings-dept-members-table .data-table [data-column="departmentId"] {
+  --column-fraction: 0.18;
+}
+
+.settings-dept-members-table .data-table [data-column="roleId"] {
+  --column-fraction: 0.16;
+}
+
+.settings-dept-members-table .data-table [data-column="twoFactorEnabled"] {
+  --column-fraction: 0.13;
+}
+
+.settings-dept-members-table .data-table [data-column="status"] {
+  --column-fraction: 0.11;
+}
+
+.settings-dept-members-table .data-table [data-column="lastLoginAt"] {
+  --column-fraction: 0.14;
+}
+
+/* Sub-departments table column widths */
+.settings-subdepts-table .data-table [data-column="name"] {
+  --column-fraction: 0.25;
+}
+
+.settings-subdepts-table .data-table [data-column="costCenter"] {
+  --column-fraction: 0.14;
+}
+
+.settings-subdepts-table .data-table [data-column="leader"] {
+  --column-fraction: 0.17;
+}
+
+.settings-subdepts-table .data-table [data-column="memberCount"] {
+  --column-fraction: 0.12;
+}
+
+.settings-subdepts-table .data-table [data-column="monthlyBudgetWan"] {
+  --column-fraction: 0.18;
+}
+
+.settings-subdepts-table .data-table [data-column="actions"] {
+  --column-fraction: 0.14;
+}
+
+.dept-leader-tag {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: 6px;
+  border-radius: 9999px;
+  padding: 1px 7px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dept-tree-toggle > svg {
+    transition: none;
+  }
+}

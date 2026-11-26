@@ -43,7 +43,9 @@ import {
 import { useIsMobile } from "@marismoon/ui/hooks/use-mobile"
 import { Switch } from "@marismoon/ui/ui/switch"
 import { Textarea } from "@marismoon/ui/ui/textarea"
+import { toast } from "sonner"
 import { useUiText } from "@/lib/i18n/use-ui-text"
+import { workspaceActions } from "@/shared/mocks/workspace-store"
 
 import "../../bills/components/bill-drawer.css"
 import "./basic-info.css"
@@ -62,7 +64,7 @@ function SettingCard({
 }: {
   icon: AppIconComponent
   title: string
-  description: string
+  description?: string
   children: ReactNode
 }) {
   const tl = useUiText()
@@ -84,6 +86,8 @@ function SettingCard({
             event.preventDefault()
             setDirty(false)
             setSaved(true)
+            workspaceActions.recordBasicInfoSave(title)
+            toast.success(tl("已保存「{{title}}」配置", { title }))
           }}
           onReset={() => {
             setDirty(false)
@@ -96,7 +100,7 @@ function SettingCard({
             </span>
             <div className="min-w-0 flex-1">
               <h2>{title}</h2>
-              <p>{description}</p>
+              {description && <p>{description}</p>}
             </div>
             <div className="basic-card-actions" role="status">
               <AnimatePresence initial={false}>
@@ -398,11 +402,7 @@ export function BasicInfoPage() {
         </SettingRow>
       </SettingCard>
 
-      <SettingCard
-        icon={SolarWallet}
-        title={tl("账期与币种")}
-        description={tl("决定账单归属月份、折算与锁定规则")}
-      >
+      <SettingCard icon={SolarWallet} title={tl("账期与币种")}>
         <SettingRow
           id="basic-currency"
           label={tl("默认币种")}
@@ -516,11 +516,7 @@ export function BasicInfoPage() {
         </SettingRow>
       </SettingCard>
 
-      <SettingCard
-        icon={SolarArchive}
-        title={tl("数据保留与提醒")}
-        description={tl("控制历史数据保存时长与预警阈值")}
-      >
+      <SettingCard icon={SolarArchive} title={tl("数据保留与提醒")}>
         <SettingRow
           id="basic-bill-retention"
           label={tl("账单保留年限")}

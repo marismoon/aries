@@ -37,13 +37,19 @@ test("搜索页面浮层：输入框聚焦时显示渐变流光边框，且不�
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto("/overview")
   await page.getByRole("button", { name: "导航搜索" }).click()
-  const search = page.locator(".command-search")
+  const dialog = page.getByRole("dialog", { name: "搜索页面" })
+  const input = dialog.getByRole("combobox", { name: "输入页面名称" })
+  const search = dialog.locator(
+    '[data-slot="command-input-wrapper"] [data-slot="input-group"]'
+  )
   // Layout height (computed style), not the painted box: the dialog scales in
   // from 0.98, which would shrink getBoundingClientRect() mid-entrance.
   const idle = await search.evaluate((el) =>
     parseFloat(getComputedStyle(el).height)
   )
-  await page.locator(".command-search input").focus()
+  await input.press("Tab")
+  await input.press("Shift+Tab")
+  await expect(input).toBeFocused()
   const focused = await search.evaluate((el) => {
     const style = getComputedStyle(el)
     return {

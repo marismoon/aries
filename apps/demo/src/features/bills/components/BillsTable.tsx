@@ -175,7 +175,6 @@ export function BillsTable({
           <EmptyState
             icon={SolarFileSearch}
             title={tl("没有匹配的账单")}
-            description={tl("尝试更改搜索词或清除筛选条件。")}
             action={
               <Button variant="outline" onClick={onReset}>
                 {tl("清除全部筛选")}

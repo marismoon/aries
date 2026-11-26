@@ -48,11 +48,11 @@
 
   所有彩度都乘以 `--tone-k`，极简灰把它设为 0，整套变成中性灰。
 - 中性色：正文 `--glass-text`；次级文字 80%（Raycast 是 60%，提高是为了光经过时仍达标）、`--secondary-foreground` 80%；`--border` 与 `--glass-edge` 20%；`--border-subtle` 10%；`--input` 40%；`--control`（及 `--secondary`、`--muted`）10%；`--recess` 5%。
-- 窗口材质：Raycast 是两层，先铺 20% 的灰，再叠一层主题色渐变，加 72px 模糊，只有一圈 1px 边。这里把两层合成一个颜色、一个不透明度，所以 `.surface` 仍是单层渐变：
-  - **卡片**：合成后 74% 不透明，`--card`/`--card-bottom` 为 86% 色调 + 14% 灰，`--glass-fill-top/bottom` 74%，`--surface-filter: blur(72px)`。内容区在滚动边缘有遮罩（§4），这让它成为背景模糊的边界，所以内容区里的卡片不会模糊背后的光，只是半透明地透出它；光本身都是柔和渐变，观感差别很小，但亮处更集中，所以卡片比 Raycast 的约 52% 厚。加上次级文字 80%，光经过卡片背后时次级文字仍 ≥ 4.5:1。侧栏不在内容区里，仍然模糊背后的光。
+- 窗口材质：沿用 86% 主题色调 + 14% 中性灰的单层玻璃渐变，配合 1px 顶部微光棱线（`--glass-specular`）：
+  - **卡片**：74% 不透明，`--surface-filter: blur(72px)`。内容视口始终开启滚动边缘遮罩，卡片半透明透出背后的 WebGL 光环（不被 72px 模糊糊黑），配合 80% 次级文字保证光经过卡片背后时对比度仍 ≥ 4.5:1。
   - **桌面第二列**：使用卡片的主题色渐变，顶部填充不透明度 46%，下部 38%，背景模糊 1.5px、亮度 50%，让光环、粒子和光迹的轮廓透过面板。开启减少透明度时使用不透明的 `--popover` 底色，并关闭背景模糊。
-  - **投影与光泽**：只保留一层很淡的投影；高光、光泽、控件描边、主按钮投影一律关闭。
-- 数据大字卡与普通卡片同一材质：`--hero-decor` 是同一条渐变，不再读取主题块的 `--hero-start/--hero-end`（clean 仍读取）。
+  - **主推卡与选中态**：`.hero-surface` 叠加 10% 顶部主色径向微光拉开焦点层级；导航与分段选中态采用 M3 色调胶囊（主色 16% 填充 + 22% 内描边）。
+  - **浮层、模态与内嵌卡片**：下拉菜单/Popover/Select 在暗色玻璃下为 82% 磨砂（`--popover-fill` / `--popover-filter`），搜索弹框（Dialog）/AlertDialog/Drawer/Sheet 为 84% 高厚磨砂（`--modal-fill` / `--modal-filter`），`Alert` 与非 `.surface` 基础 `Card` 为 78% `--card` 透明玻璃；开启减少透明度时统一回退为不透明 `--popover`。
 - 暗色玻璃背景固定在页面后方。背景随品牌读取 `--primary`、`--chart-2` 和 `--chart-3`。默认背景是 `AriesMagicRings`，宿主可通过 `AppShell` 的 `glassBackdrop` 替换背景，传入 `null` 时只显示底色。
 - glass 下唯一保持中性的表面令牌是 `--background`：它供 `<meta name="theme-color">` 使用，不要改成 `oklch(from …)`。
 

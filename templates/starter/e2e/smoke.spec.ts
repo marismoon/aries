@@ -68,3 +68,25 @@ test("首页与设置共用外壳，导航和语言切换在刷新后仍可用",
   await expect(heading).toHaveText("首页")
   await expect(html).toHaveAttribute("lang", "zh-CN")
 })
+
+test("Starter 桌面和手机目录只显示可用入口", async ({ page }) => {
+  await page.goto("/home")
+  const desktop = page.locator(".workspace-nav--desktop")
+  await expect(desktop.getByRole("link", { name: "首页" })).toBeVisible()
+  await expect(desktop.getByRole("button", { name: "新建" })).toHaveCount(0)
+  await expect(desktop.getByRole("tab", { name: "我的待办" })).toHaveCount(0)
+  await expect(desktop.getByRole("button", { name: "配置手册" })).toHaveCount(0)
+  await expect(desktop.getByRole("button", { name: "技术支持" })).toHaveCount(0)
+  await desktop.getByRole("button", { name: "导航搜索" }).click()
+  await expect(
+    page.getByRole("dialog", { name: "搜索页面" }).getByRole("option")
+  ).toHaveText(["首页"])
+  await page.keyboard.press("Escape")
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.getByRole("button", { name: "打开工作区导航" }).click()
+  const mobile = page.getByRole("dialog", { name: "工作区导航" })
+  await expect(mobile.getByRole("link", { name: "首页" })).toBeVisible()
+  await expect(mobile.getByRole("tab")).toHaveCount(0)
+  await expect(mobile.getByRole("button", { name: "技术支持" })).toHaveCount(0)
+})

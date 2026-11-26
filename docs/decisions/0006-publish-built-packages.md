@@ -6,4 +6,4 @@
 
 **理由**　同仓开发仍直接消费源码，保留即时编译体验；仓库外宿主拿到的是无需额外配置的产物。peer 依赖避免宿主装出两份 React。
 
-**后果**　发布形态与同仓形态并存，由 `pnpm check:package`（tarball、publint、attw）与 `pnpm test:consumer`（仓库外 Vite 与 Next.js 宿主）守住一致性；`pnpm check:workspace` 阻止 Aceternity 示例进入发布包与 Starter。操作步骤见[版本治理](../VERSIONING.md)。实施过程记录在提交历史中（原 `docs/PHASE2_PLAN.md`、`docs/REFACTOR_PLAN.md`，删除于本 ADR 所在提交）。
+**后果**　发布形态与同仓形态并存，由 `pnpm check:package`（tarball、publint、attw）与 `pnpm test:consumer`（仓库外 Vite 与 Next.js 宿主）守住一致性；`pnpm check:workspace` 阻止 Aceternity 示例进入发布包与 Starter。操作步骤见[版本治理](../VERSIONING.md)。

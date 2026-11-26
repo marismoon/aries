@@ -274,19 +274,7 @@
 .copilot-composer-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-}
-
-.copilot-context {
-  display: inline-flex;
-  min-height: 24px;
-  align-items: center;
-  border-radius: 999px;
-  padding-inline: 9px;
-  background: var(--accent);
-  color: var(--accent-foreground);
-  font-size: 0.71875rem;
+  justify-content: flex-end;
 }
 
 .copilot-send {

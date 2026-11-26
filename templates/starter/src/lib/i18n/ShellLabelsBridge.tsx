@@ -37,7 +37,7 @@ export function ShellLabelsBridge({ children }: { children: ReactNode }) {
     language: tl("语言"),
     commandSearch: tl("导航搜索"),
     commandTitle: tl("搜索页面"),
-    commandDescription: tl("输入页面名称，或按 Tab 浏览结果。"),
+    commandDescription: tl("输入页面名称，或用方向键浏览结果。"),
     commandInput: tl("输入页面名称"),
     commandResults: tl("搜索结果"),
     commandEmpty: tl("未找到匹配的页面。"),

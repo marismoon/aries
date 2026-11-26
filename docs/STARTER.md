@@ -38,8 +38,10 @@ pnpm dev
 
 每个模块对应一个页面。`src/app/workspace-modules.ts` 同时供路由和导航读取。默认模块 `home` 位于第一列主体，`settings` 位于底部，访问根路径进入注册表第一项。
 
-1. 在 `src/features/<name>/` 添加内容组件，沿用首页的 `useTranslation()` 用法。在 `src/lib/i18n/resources.ts` 的 `zh-CN.translation` 和 `en.translation` 同时添加标题与正文。
-2. 在 `src/app/workspace-modules.ts` 登记唯一的 `id` 和 `path`、`titleKey`、`bodyKey`、Solar 图标、`railPosition` 与内容组件 `Content`。路由渲染共享的 `WorkspacePage`，外壳适配器把同一条记录转换成模块入口、目录链接和搜索结果。
+Starter 将 `navigation.showPlaceholders` 设为 `false`。目录与搜索仅展示有目标页面的条目，帮助入口由宿主提供回调后显示。
+
+1. 在 `src/features/<name>/` 添加内容组件。在 `src/lib/i18n/resources.ts` 的 `zh-CN.translation` 和 `en.translation` 同时添加标题和页面所需文案。
+2. 在 `src/app/workspace-modules.ts` 登记唯一的 `id` 和 `path`、`titleKey`、Solar 图标、`railPosition` 与内容组件 `Content`。路由渲染共享的 `WorkspacePage`，外壳适配器把同一条记录转换成模块入口、目录链接和搜索结果。
 3. 在应用目录运行自检：`pnpm typecheck`、`pnpm lint`、`pnpm build`、`pnpm test`、`pnpm test:ui`。
 
 ## 布局契约

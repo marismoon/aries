@@ -1,0 +1,301 @@
+/* Shared summary strip, mini charts, table wrapper, and column fractions
+   for System Settings DataTables. */
+
+.settings-summary-grid {
+  display: grid;
+  align-items: stretch;
+  min-width: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+@container workspace (max-width: 48rem) {
+  .settings-summary-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.settings-summary-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  padding: var(--card-inset);
+}
+
+.settings-summary-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.settings-summary-meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.settings-summary-label {
+  color: var(--muted-foreground);
+  font-size: var(--metric-label-size);
+  font-weight: var(--metric-label-weight);
+  line-height: var(--metric-label-leading);
+}
+
+.hero-surface .settings-summary-label {
+  color: var(--hero-muted);
+}
+
+.settings-summary-value {
+  margin-top: 4px;
+  color: var(--foreground);
+  font-size: var(--metric-value-size);
+  font-weight: var(--metric-value-weight);
+  line-height: var(--metric-value-leading);
+  letter-spacing: var(--metric-value-tracking);
+}
+
+.settings-summary-note {
+  margin-top: 4px;
+  color: var(--muted-foreground);
+  font-size: var(--metric-note-size);
+  line-height: var(--metric-note-leading);
+}
+
+.hero-surface .settings-summary-note {
+  color: var(--hero-muted);
+}
+
+/* Segmented stacked bar */
+.settings-seg-wrap {
+  display: grid;
+  gap: 8px;
+}
+
+.settings-seg-track {
+  display: flex;
+  height: 7px;
+  gap: 2px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: var(--recess);
+}
+
+.settings-seg-piece {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 260ms var(--ease-feedback);
+}
+
+.settings-seg-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: 0.71875rem;
+  color: var(--muted-foreground);
+}
+
+.hero-surface .settings-seg-legend {
+  color: var(--hero-muted);
+}
+
+.settings-seg-legend > li {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.settings-seg-legend strong {
+  color: var(--foreground);
+  font-weight: 640;
+}
+
+.settings-seg-dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 9999px;
+}
+
+/* Compact SVG ring gauge */
+.settings-ring {
+  width: 54px;
+  height: 54px;
+  flex: none;
+}
+
+.settings-ring-track {
+  fill: none;
+  stroke: var(--recess);
+  stroke-width: 5;
+}
+
+.settings-ring-fill {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dashoffset 320ms var(--ease-feedback);
+}
+
+.settings-ring-text {
+  fill: var(--foreground);
+  font-size: 0.6875rem;
+  font-weight: 680;
+}
+
+/* Mini horizontal distribution bars */
+.settings-mini-bars {
+  display: grid;
+  gap: 6px;
+}
+
+.settings-mini-bars > li {
+  display: grid;
+  grid-template-columns: minmax(0, 5.5rem) minmax(0, 1fr) 1.5rem;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.71875rem;
+}
+
+.settings-mini-bar-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted-foreground);
+}
+
+.settings-mini-bar-track {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: var(--recess);
+}
+
+.settings-mini-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 260ms var(--ease-feedback);
+}
+
+.settings-mini-bar-value {
+  text-align: end;
+  color: var(--foreground);
+  font-weight: 620;
+}
+
+.settings-register {
+  display: flex;
+  flex-direction: column;
+  overflow: clip;
+  container-type: inline-size;
+  --register-inset: var(--space-4);
+  --data-table-min-height: 0px;
+}
+
+@media (max-width: 700px) {
+  .settings-register {
+    --register-inset: var(--space-3);
+  }
+}
+
+.settings-toolbar-action {
+  margin-inline-start: auto;
+}
+
+/* Members table column widths */
+.settings-members-table .data-table [data-column="name"] {
+  --column-fraction: 0.24;
+}
+
+.settings-members-table .data-table [data-column="departmentId"] {
+  --column-fraction: 0.14;
+}
+
+.settings-members-table .data-table [data-column="roleId"] {
+  --column-fraction: 0.14;
+}
+
+.settings-members-table .data-table [data-column="twoFactorEnabled"] {
+  --column-fraction: 0.12;
+}
+
+.settings-members-table .data-table [data-column="status"] {
+  --column-fraction: 0.11;
+}
+
+.settings-members-table .data-table [data-column="lastLoginAt"] {
+  --column-fraction: 0.16;
+}
+
+.settings-members-table .data-table [data-column="actions"] {
+  --column-fraction: 0.09;
+}
+
+/* Message rules table column widths */
+.settings-rules-table .data-table [data-column="name"] {
+  --column-fraction: 0.34;
+}
+
+.settings-rules-table .data-table [data-column="severity"] {
+  --column-fraction: 0.12;
+}
+
+.settings-rules-table .data-table [data-column="inApp"],
+.settings-rules-table .data-table [data-column="email"],
+.settings-rules-table .data-table [data-column="bot"] {
+  --column-fraction: 0.1;
+}
+
+.settings-rules-table .data-table [data-column="quietHours"] {
+  --column-fraction: 0.14;
+}
+
+.settings-rules-table .data-table [data-column="actions"] {
+  --column-fraction: 0.1;
+}
+
+/* Audit log table column widths */
+.settings-audit-table .data-table [data-column="timestamp"] {
+  --column-fraction: 0.17;
+}
+
+.settings-audit-table .data-table [data-column="actor"] {
+  --column-fraction: 0.19;
+}
+
+.settings-audit-table .data-table [data-column="module"] {
+  --column-fraction: 0.12;
+}
+
+.settings-audit-table .data-table [data-column="action"] {
+  --column-fraction: 0.22;
+}
+
+.settings-audit-table .data-table [data-column="ip"] {
+  --column-fraction: 0.12;
+}
+
+.settings-audit-table .data-table [data-column="status"] {
+  --column-fraction: 0.09;
+}
+
+.settings-audit-table .data-table [data-column="actions"] {
+  --column-fraction: 0.09;
+}
+
+@container workspace (max-width: 48rem) {
+  .settings-audit-table {
+    /* Use the shared table height when the summary cards stack. */
+    --data-table-min-height: initial;
+  }
+}
+
+@container (max-width: 32rem) {
+  .settings-audit-table .bills-selects {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

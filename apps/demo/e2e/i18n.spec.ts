@@ -59,6 +59,36 @@ test("语言控件切换中英文，刷新后保留，并同步 html lang", asyn
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("运营总览")
 })
 
+test("英文消息规则仅在表格横向溢出时显示渠道和静默时段提示", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.addInitScript(() => localStorage.setItem("aries-language", "en"))
+  await page.goto("/settings/integrations/rules")
+
+  const table = page.getByRole("region", { name: "Message rules", exact: true })
+  const hint = page.getByText("Scroll sideways for channels and quiet hours", {
+    exact: true,
+  })
+  await expect(table).toBeVisible()
+  await expect(hint).toHaveCount(0)
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  await expect(hint).toBeVisible()
+  await expect(table).toHaveAccessibleDescription(
+    "Scroll sideways for channels and quiet hours"
+  )
+  await table.focus()
+  await page.keyboard.press("ArrowRight")
+  await expect
+    .poll(() => table.evaluate((el) => el.scrollLeft))
+    .toBeGreaterThan(0)
+
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await expect(hint).toHaveCount(0)
+  await expect(table).not.toHaveAttribute("aria-describedby")
+})
+
 for (const path of [
   "/overview",
   "/bills",

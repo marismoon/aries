@@ -1,5 +1,11 @@
 import { useUiLabels } from "../../lib/ui-labels"
-import type { CSSProperties, ReactNode } from "react"
+import {
+  useEffect,
+  useId,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react"
 import type { RowData } from "@tanstack/react-table"
 
 import { AppIcon, SolarChevronsLeftRight } from "../icons"
@@ -51,6 +57,7 @@ export interface DataTableProps<TData extends RowData> {
   pageSizes?: readonly number[]
   /** Shown instead of the rows when nothing matches. */
   empty: ReactNode
+  /** Shown when the rendered table overflows its scroll region horizontally. */
   scrollHint?: string
   /** Shows shimmering skeleton rows (same row height) instead of the data. */
   loading?: boolean
@@ -82,11 +89,29 @@ export function DataTable<TData extends RowData>({
   const first = pageIndex * pageSize + 1
   const last = first + visibleRows.length - 1
   const pageItems = getPaginationRange(pageIndex + 1, table.getPageCount())
+  const hintId = useId()
+  const [scrollRegion, setScrollRegion] = useState<HTMLDivElement | null>(null)
+  const [hasHorizontalOverflow, setHasHorizontalOverflow] = useState(false)
+
+  useEffect(() => {
+    if (!scrollRegion) return
+    const observer = new ResizeObserver(() =>
+      setHasHorizontalOverflow(
+        scrollRegion.scrollWidth > scrollRegion.clientWidth
+      )
+    )
+    observer.observe(scrollRegion)
+    const tableElement = scrollRegion.querySelector("table")
+    if (tableElement) observer.observe(tableElement)
+    return () => observer.disconnect()
+  }, [scrollRegion])
+
+  const showHint = scrollHint && !loading && count > 0 && hasHorizontalOverflow
 
   return (
     <>
-      {scrollHint && (
-        <p className="data-table-hint" data-empty={!count || undefined}>
+      {showHint && (
+        <p id={hintId} className="data-table-hint">
           <AppIcon icon={SolarChevronsLeftRight} size={15} />
           {scrollHint}
         </p>
@@ -111,9 +136,11 @@ export function DataTable<TData extends RowData>({
         <Table
           className="data-table"
           containerProps={{
+            ref: scrollHint ? setScrollRegion : undefined,
             className: "data-table-scroll",
             role: "region",
             "aria-label": caption,
+            "aria-describedby": showHint ? hintId : undefined,
             tabIndex: 0,
           }}
         >

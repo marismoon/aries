@@ -20,13 +20,20 @@ const moduleMenus = [
   ],
   [
     "告警通知",
-    ["告警中心", "待处理告警", "告警规则", "通知记录"],
+    [],
+    ["告警监控", ["告警中心", "待处理告警"]],
     ["告警级别", ["严重告警", "一般告警"]],
+    ["规则与值守", ["告警规则", "静默与值守"]],
+    ["通知管理", ["通知记录", "通知偏好"]],
   ],
   [
-    "成本分析",
-    ["成本总览", "成本趋势", "预算管理", "成本分摊"],
-    ["分析维度", ["按供应商", "按项目"]],
+    "数据分析",
+    [],
+    ["平台数据", ["平台总览", "租户与用户分析"]],
+    ["后台数据", ["API 与任务监控", "数据库与存储"]],
+    ["系统数据", ["资源与节点性能", "稳定性与 SLA"]],
+    ["成本数据", ["成本总览与趋势", "预算与成本分摊"]],
+    ["洞察报告", ["智能数据洞察", "自定义报表"]],
   ],
   [
     "系统设置",
@@ -65,7 +72,7 @@ const moduleMenus = [
 
 async function expectLeafSpacing(tree: Locator) {
   const rows = await tree
-    .locator(":scope > li > .nav-tree-leaf")
+    .locator(".nav-tree-children > li > .nav-tree-leaf")
     .evaluateAll((leaves) =>
       leaves.map((leaf) => {
         const { top, bottom, height } = leaf.getBoundingClientRect()
@@ -249,8 +256,10 @@ test("桌面导航默认展开，只有手动切换能改变状态", async ({ pa
   await expect(page.locator('[data-slot="tooltip-content"]')).toHaveCount(0)
   await page.keyboard.press("Control+k")
   const command = page.getByRole("dialog", { name: "搜索页面" })
-  await expect(command.getByRole("searchbox")).toBeFocused()
-  await command.getByRole("searchbox").press("Escape")
+  await expect(
+    command.getByRole("combobox", { name: "输入页面名称" })
+  ).toBeFocused()
+  await command.getByRole("combobox", { name: "输入页面名称" }).press("Escape")
   await expect(command).toBeHidden()
   await expect(expand).toBeFocused()
   await rail.getByRole("link", { name: "Aries 工作台" }).click()
@@ -264,10 +273,9 @@ test("桌面导航默认展开，只有手动切换能改变状态", async ({ pa
   await mountedTracks.dispose()
 })
 
-test("七个业务模块共用目录结构、显示预定菜单并保留真实路由", async ({
-  page,
-}) => {
+test("业务模块共用目录结构、显示预定菜单并保留真实路由", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
+  await page.emulateMedia({ reducedMotion: "reduce" })
   await page.goto("/bills")
 
   const rail = page.getByRole("navigation", { name: "主模块" })
@@ -330,59 +338,34 @@ test("七个业务模块共用目录结构、显示预定菜单并保留真实�
       const treeId = await folder.getAttribute("aria-controls")
       expect(treeId).toBeTruthy()
       const tree = directory.locator(`[id=${JSON.stringify(treeId)}]`)
-      if (
-        folderLabel === "组件预览" ||
-        folderLabel === "基础页面" ||
-        folderLabel === "动态效果"
-      ) {
-        // The component preview folder holds real routes (links), one per page.
-        await expect(tree.getByRole("link")).toHaveText([...children])
-        await expectLeafSpacing(tree)
-        await folder.press("Enter")
-        await expect(folder).toHaveAttribute("aria-expanded", "false")
-        await folder.click()
-        await expect(folder).toHaveAttribute("aria-expanded", "true")
-        continue
-      }
-      if (folderLabel === "系统配置") {
-        // 基础信息 is a real route; 全局参数 is still a Demo placeholder.
-        await expect(tree.getByRole("link")).toHaveText(["基础信息"])
-        await expect(tree.getByRole("button")).toHaveText(["全局参数"])
-        await expectLeafSpacing(tree)
-        await folder.press("Enter")
-        await expect(folder).toHaveAttribute("aria-expanded", "false")
-        await folder.click()
-        await expect(folder).toHaveAttribute("aria-expanded", "true")
-        continue
-      }
-      await expect(tree.getByRole("button")).toHaveText([...children])
+      const hasRoutes = items.length === 0
+      const leaves = tree.getByRole(hasRoutes ? "link" : "button")
+      await expect(leaves).toHaveText([...children])
       await expectLeafSpacing(tree)
-      for (const label of children) {
-        await expect(
-          tree.getByRole("button", { name: label, exact: true })
-        ).toBeDisabled()
+      if (!hasRoutes) {
+        for (const label of children) {
+          await expect(leaves.filter({ hasText: label })).toBeDisabled()
+        }
       }
 
       await folder.press("Enter")
       await expect(folder).toHaveAttribute("aria-expanded", "false")
-      await expect(tree).toBeHidden()
+      await expect(leaves).toHaveCount(0)
       await expect(folder).toBeFocused()
       await folder.click()
       await expect(folder).toHaveAttribute("aria-expanded", "true")
-      await expect(tree).toBeVisible()
-      await tree.getByRole("button", { name: children[0], exact: true }).click({
-        force: true,
-      })
+      await expect(leaves).toHaveText([...children])
     }
 
-    // Only 系统设置 carries real routes (组件预览、基础页面、动态效果 and 基础信息).
-    await expect(directory.getByRole("link")).toHaveCount(
-      name === "系统设置" ? 18 : 0
-    )
+    const linkCount =
+      items.length === 0
+        ? folders.reduce((count, [, children]) => count + children.length, 0)
+        : 0
+    await expect(directory.getByRole("link")).toHaveCount(linkCount)
     await expect(page).toHaveURL(/\/bills$/)
   }
 
-  await rail.getByRole("img", { name: "演示用户 · 管理员" }).click()
+  await rail.getByRole("button", { name: "当前账号菜单" }).click()
   await expect(page).toHaveURL(/\/bills$/)
   await expect(
     rail.getByRole("button", { name: "系统设置", exact: true })
@@ -392,6 +375,7 @@ test("七个业务模块共用目录结构、显示预定菜单并保留真实�
 
 test("浏览器前进、后退和刷新会恢复真实路由所属的导航状态", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
+  await page.emulateMedia({ reducedMotion: "reduce" })
   await page.goto("/bills")
 
   const rail = page.getByRole("navigation", { name: "主模块" })
@@ -540,7 +524,7 @@ test("总览和月账单的叶子行间距一致，悬停不影响相邻选中�
   }
 })
 
-test("目录搜索只显示当前模块的菜单，演示结果不能跳转", async ({ page }) => {
+test("目录搜索优先显示当前模块，演示结果不能跳转", async ({ page }) => {
   await page.goto("/bills")
   const module = page
     .getByRole("navigation", { name: "主模块" })
@@ -550,17 +534,29 @@ test("目录搜索只显示当前模块的菜单，演示结果不能跳转", as
   const launcher = page.getByRole("button", { name: "导航搜索", exact: true })
   await launcher.press("Enter")
   const dialog = page.getByRole("dialog", { name: "搜索页面" })
-  const search = dialog.getByRole("searchbox")
-  const results = dialog.getByRole("list", { name: "搜索结果" })
+  const search = dialog.getByRole("combobox", { name: "输入页面名称" })
+  const results = dialog.getByRole("listbox", { name: "搜索结果" })
+  const options = results.getByRole("option")
   await expect(search).toBeFocused()
   const [, items, [, children]] = moduleMenus[0]
-  await expect(results.locator("li strong")).toHaveText([...items, ...children])
+  const moduleOptions = ["接入与采集", "采集监控"].map((name) =>
+    results.getByRole("group", { name, exact: true }).getByRole("option")
+  )
+  await expect(moduleOptions[0]!.locator("span.truncate")).toHaveText([
+    ...items,
+  ])
+  await expect(moduleOptions[1]!.locator("span.truncate")).toHaveText([
+    ...children,
+  ])
+  await expect(options.first()).toHaveText(/采集任务/)
+  await expect(
+    results.getByRole("option", { name: "运营总览", exact: true })
+  ).toBeEnabled()
 
   for (const query of ["采集规则", "失败任务"]) {
     await search.fill(query)
-    await expect(results.getByRole("listitem")).toHaveCount(1)
-    await expect(results.getByRole("button", { name: query })).toBeDisabled()
-    await expect(results.getByRole("link")).toHaveCount(0)
+    await expect(options.getByText(query, { exact: true })).toBeVisible()
+    await expect(options.filter({ hasText: query })).toBeDisabled()
     await search.press("Enter")
     await expect(dialog).toBeVisible()
     await expect(page).toHaveURL(/\/bills$/)
@@ -608,8 +604,8 @@ test("移动目录可以切换模块，保留总览下的真实导航", async ({
   await modules.click()
   await page.getByRole("option", { name: "系统设置", exact: true }).click()
   await expect(
-    directory.getByRole("button", { name: "群机器人", exact: true })
-  ).toBeDisabled()
+    directory.getByRole("link", { name: "群机器人", exact: true })
+  ).toBeVisible()
   await modules.click()
   await page.getByRole("option", { name: "总览", exact: true }).click()
   await directory.getByRole("link", { name: "月账单", exact: true }).click()

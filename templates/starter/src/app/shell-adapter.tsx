@@ -39,8 +39,9 @@ export function StarterShell() {
   useDocumentTitle(`${title} · Aries`)
 
   const navigation: WorkspaceNavigation = {
+    showPlaceholders: false,
     modules: workspaceModules.map(
-      ({ id, path, titleKey, bodyKey, icon, railPosition }) => {
+      ({ id, path, titleKey, icon, railPosition }) => {
         const label = t(titleKey)
         return {
           id,
@@ -61,7 +62,7 @@ export function StarterShell() {
           commands: {
             triggerLabel: t("nav.search"),
             placeholder: t("nav.placeholder"),
-            items: [{ title: label, description: t(bodyKey), path, icon }],
+            items: [{ title: label, description: "", path, icon }],
           },
         }
       }

@@ -22,6 +22,8 @@ export interface NavModule {
 
 export interface WorkspaceNavigation {
   modules: readonly NavModule[]
+  /** Keep unavailable navigation examples visible by default. */
+  showPlaceholders?: boolean
   directoryDescription: string
   createLabel: string
   unavailableLabel: string

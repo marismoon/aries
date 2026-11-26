@@ -8,7 +8,10 @@ const variants = readFileSync(
   join(import.meta.dirname, "icon-variants.ts"),
   "utf8"
 )
-const bold = files.filter((name) => name.endsWith("-bold.tsx"))
+const solidMenuDots = "menu-dots-bold.tsx"
+const pairedBold = files.filter(
+  (name) => name.endsWith("-bold.tsx") && name !== solidMenuDots
+)
 
 describe("Solar 图标规范", () => {
   it("只使用 Linear 与 Bold 两种变体", () => {
@@ -18,9 +21,9 @@ describe("Solar 图标规范", () => {
     expect(others).toEqual([])
   })
 
-  it("每个 Bold 都有同名 Linear 底图，并登记在 icon-variants.ts", () => {
-    expect(bold.length).toBeGreaterThan(0)
-    for (const name of bold) {
+  it("有状态切换的 Bold 都有同名 Linear 底图并登记", () => {
+    expect(pairedBold.length).toBeGreaterThan(0)
+    for (const name of pairedBold) {
       const base = name.replace(/-bold\.tsx$/, "")
       expect(files, `${name} 缺少 ${base}-linear.tsx`).toContain(
         `${base}-linear.tsx`
@@ -30,6 +33,16 @@ describe("Solar 图标规范", () => {
         `./solar/${base}-linear`
       )
     }
+  })
+
+  it("省略号和更多操作只使用 Solar 的三个实心点", () => {
+    expect(files.filter((name) => name.startsWith("menu-dots"))).toEqual([
+      solidMenuDots,
+    ])
+    const exports = readFileSync(join(import.meta.dirname, "index.ts"), "utf8")
+    expect(exports).toContain(
+      'MenuDotsBoldIcon as SolarEllipsis } from "./solar/menu-dots-bold"'
+    )
   })
 
   it("所有图标使用 24×24 网格，颜色只来自 currentColor", () => {

@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes"
 
 import { UiLabelsBridge } from "@/lib/i18n/UiLabelsBridge"
 import { createQueryClient } from "@/lib/query-client"
+import { Toaster } from "@marismoon/ui/ui/sonner"
 import { TooltipProvider } from "@marismoon/ui/ui/tooltip"
 import {
   BillsDemoContext,
@@ -72,6 +73,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
             <TooltipProvider delayDuration={450}>
               <UiLabelsBridge>
                 <DemoProviders>{children}</DemoProviders>
+                <Toaster position="top-center" />
               </UiLabelsBridge>
             </TooltipProvider>
           </MotionConfig>

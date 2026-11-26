@@ -179,7 +179,7 @@ function LineChart() {
   return (
     <ChartCard
       title={tl("供应商出账趋势")}
-      description={tl("折线图 · 近 6 月，万元")}
+      description={tl("近 6 月，万元")}
       legend={providerSeries.map((s, i) => ({
         label: tl(s.label),
         color: seriesColor(i),
@@ -251,7 +251,7 @@ function AreaChart() {
   return (
     <ChartCard
       title={tl("年累计出账")}
-      description={tl("面积图 · 1–10 月累计，万元")}
+      description={tl("1–10 月累计，万元")}
       legend={[{ label: tl("累计已出账"), color: "var(--chart-1)" }]}
       label={tl("1 至 10 月累计出账 {{value}} 万", {
         value: formatWan(sum(yearMonthly.map((m) => m.amount)) * 10000),
@@ -320,7 +320,7 @@ function StackedChart() {
   return (
     <ChartCard
       title={tl("账单类型构成")}
-      description={tl("堆叠柱图 · 近 6 月，万元")}
+      description={tl("近 6 月，万元")}
       legend={billingTypeSeries.map((s, i) => ({
         label: tl(s.label),
         color: seriesColor(i),
@@ -390,7 +390,7 @@ function DonutChart() {
   return (
     <ChartCard
       title={tl("供应商费用占比")}
-      description={tl("环形图 · 10 月，占比")}
+      description={tl("10 月，占比")}
       legend={providerSeries.map((s, i) => ({
         label: tl(s.label),
         color: seriesColor(i),
@@ -465,7 +465,7 @@ function BarChart() {
   return (
     <ChartCard
       title={tl("Top 5 云账号")}
-      description={tl("横向条形图 · 10 月出账，万元")}
+      description={tl("10 月出账，万元")}
       legend={[{ label: tl("10 月出账"), color: "var(--chart-1)" }]}
       label={tl("10 月出账最高的云账号为{{label}}，{{amount}} 万", {
         label: tl(topAccounts[0].label),
@@ -537,7 +537,7 @@ function RadarChart() {
   return (
     <ChartCard
       title={tl("采集质量")}
-      description={tl("雷达图 · 本月 vs 上月，刻度 70–100")}
+      description={tl("本月 vs 上月，刻度 70–100")}
       legend={qualitySeries.map((s, i) => ({
         label: tl(s.label),
         color: seriesColor(i),
@@ -616,7 +616,7 @@ function HeatmapChart() {
   return (
     <ChartCard
       title={tl("采集任务热力")}
-      description={tl("热力图 · 近 5 周每日任务数")}
+      description={tl("近 5 周每日任务数")}
       legend={[
         {
           label: tl("少"),
@@ -693,7 +693,7 @@ function ScatterChart() {
   return (
     <ChartCard
       title={tl("金额与解析耗时")}
-      description={tl("散点图 · 单张账单，万元 / 秒")}
+      description={tl("单张账单，万元 / 秒")}
       legend={providerSeries.map((s, i) => ({
         label: tl(s.label),
         color: seriesColor(i),
@@ -764,7 +764,7 @@ function GaugeChart() {
   return (
     <ChartCard
       title={tl("年度预算使用率")}
-      description={tl("仪表盘 · 1–10 月累计 / 年度预算")}
+      description={tl("1–10 月累计 / 年度预算")}
       legend={[
         { label: tl("已使用"), color: tone },
         { label: tl("剩余预算"), color: "var(--muted)" },

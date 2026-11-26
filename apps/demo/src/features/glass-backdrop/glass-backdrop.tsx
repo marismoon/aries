@@ -1,4 +1,6 @@
 import { useSyncExternalStore } from "react"
+import { useReducedMotion } from "motion/react"
+import { span as MotionSpan } from "motion/react-m"
 
 import { useDarkGlass } from "@marismoon/ui/hooks/use-backdrop-canvas"
 import { AppIcon, SolarStar } from "@marismoon/ui/icons"
@@ -70,6 +72,7 @@ export function GlassBackdropLayer({
 /** Header button cycling the glass backdrop. Dark glass only. */
 export function GlassBackdropControl() {
   const tl = useUiText()
+  const reducedMotion = Boolean(useReducedMotion())
   const backdrop = useGlassBackdrop()
   const darkGlass = useDarkGlass()
   if (!darkGlass) return null
@@ -94,7 +97,19 @@ export function GlassBackdropControl() {
           aria-label={tl("玻璃背景")}
           onClick={() => setGlassBackdrop(next)}
         >
-          <AppIcon icon={SolarStar} size={20} aria-hidden="true" />
+          <MotionSpan
+            key={backdrop}
+            className="inline-grid place-items-center"
+            initial={reducedMotion ? false : { rotate: -30, scale: 0.86 }}
+            animate={{ rotate: 0, scale: 1 }}
+            transition={
+              reducedMotion
+                ? { duration: 0 }
+                : { duration: 0.24, ease: [0.23, 1, 0.32, 1] }
+            }
+          >
+            <AppIcon icon={SolarStar} size={20} aria-hidden="true" />
+          </MotionSpan>
         </Button>
       </TooltipTrigger>
       <TooltipContent side="bottom" sideOffset={8}>
