@@ -1,5 +1,23 @@
 # @marismoon/ui
 
+## 0.1.0-next.5
+
+### Minor Changes
+
+- 96e1067: 品牌主题精简为 Aries Analytics、静心雾蓝、北极光、暖陶土和极简灰，Aries Analytics 为默认。原配色键失效时回退到新默认主题。Starter 同步首帧主题恢复和配色轮换。
+
+  三个 WebGL 背景与 Shell 的自定义背景仅在暗色玻璃模式挂载。改进外壳导航选中态与命令面板的路由焦点恢复。
+
+- a845298: SelectContent 支持通过 alignItemWithTrigger 控制已选项或弹层边缘与触发器的对齐，兼容已有 position 用法。
+
+### Patch Changes
+
+- a845298: 共享 `SolarEllipsis` 改用 Solar Menu Dots Bold，更多操作与省略号统一显示三个实心点。
+- a845298: DataTable 仅在表格实际横向溢出时显示滚动提示，并将提示关联到可聚焦的表格区域。
+- a845298: Shell 支持宿主接入头像菜单、目录内浮层和帮助入口。命令面板支持分组及快捷键提示，Starter 默认收起演示占位。
+
+  更新暗色玻璃的卡片、选中态和浮层材质，并为主题与语言切换控件补充遵循减少动态效果偏好的动效。
+
 ## 0.1.0-next.4
 
 ### Minor Changes

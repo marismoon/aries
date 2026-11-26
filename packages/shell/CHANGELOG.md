@@ -1,5 +1,29 @@
 # @marismoon/shell
 
+## 0.1.0-next.5
+
+### Minor Changes
+
+- a845298: 宿主可以通过 `WorkspaceNavigation.showPlaceholders` 收起不可用控件、空分组和无目标路径的搜索结果。Starter 默认只展示可用导航，Demo 继续展示示例占位。
+- a845298: Shell 支持宿主接入头像菜单、目录内浮层和帮助入口。命令面板支持分组及快捷键提示，Starter 默认收起演示占位。
+
+  更新暗色玻璃的卡片、选中态和浮层材质，并为主题与语言切换控件补充遵循减少动态效果偏好的动效。
+
+### Patch Changes
+
+- 96e1067: 品牌主题精简为 Aries Analytics、静心雾蓝、北极光、暖陶土和极简灰，Aries Analytics 为默认。原配色键失效时回退到新默认主题。Starter 同步首帧主题恢复和配色轮换。
+
+  三个 WebGL 背景与 Shell 的自定义背景仅在暗色玻璃模式挂载。改进外壳导航选中态与命令面板的路由焦点恢复。
+
+- a845298: 目录树支持通过 `.nav-tree-item` 统一分支和叶节点的字号、字重与左对齐。
+- a845298: 目录树可复用第二列导航的面板材质和间距。NavHighlight 支持筛选型目录的 `aria-current="true"`，多级目录的连线按当前节点行居中。
+- Updated dependencies [96e1067]
+- Updated dependencies [a845298]
+- Updated dependencies [a845298]
+- Updated dependencies [a845298]
+- Updated dependencies [a845298]
+  - @marismoon/ui@0.1.0-next.5
+
 ## 0.1.0-next.4
 
 ### Minor Changes
