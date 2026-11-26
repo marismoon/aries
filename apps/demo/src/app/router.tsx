@@ -22,6 +22,16 @@ function LoadingWorkspace() {
 
 export const router = createBrowserRouter([
   {
+    id: "login",
+    path: "/login",
+    lazy: {
+      Component: async () => {
+        const { LoginPage } = await import("@/features/auth/LoginPage")
+        return LoginPage
+      },
+    },
+  },
+  {
     element: <DemoShell />,
     HydrateFallback: LoadingWorkspace,
     children: [

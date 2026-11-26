@@ -166,6 +166,11 @@
   padding-block: var(--space-4) var(--workspace-safe-block-end);
 }
 
+.workspace-nav--desktop:has(> :nth-child(2)) {
+  grid-template-rows: minmax(0, 1fr) auto;
+  row-gap: 0;
+}
+
 .workspace-nav {
   display: flex;
   flex-direction: column;
@@ -174,7 +179,8 @@
   padding: var(--space-4);
 }
 
-.workspace-nav--desktop > .workspace-nav {
+.workspace-nav-surface {
+  position: relative;
   min-height: 0;
   gap: 13px;
   padding: 18px var(--space-4);
@@ -191,7 +197,7 @@
 /* A divider in place of the right border (clean dark): it stops where the
    rounded corners of the glass card begin, so switching styles keeps the
    same straight run of edge instead of a rule from top to bottom. */
-.workspace-nav--desktop > .workspace-nav::after {
+.workspace-nav-surface::after {
   display: var(--nav-divider-display, none);
   position: absolute;
   inset-block: var(--nav-divider-inset, 0);
@@ -202,12 +208,8 @@
   content: "";
 }
 
-.workspace-nav--desktop > .workspace-nav {
-  position: relative;
-}
-
 @media (prefers-reduced-transparency: reduce) {
-  .workspace-nav--desktop > .workspace-nav {
+  .workspace-nav-surface {
     background-image: none;
     background-color: var(--popover);
     backdrop-filter: none;
@@ -361,7 +363,7 @@
   z-index: 1;
 }
 
-.workspace-nav-item:not([aria-current="page"]):is(
+.workspace-nav-item:not([aria-current="page"], [aria-current="true"]):is(
     :not(:disabled),
     .nav-tree-leaf
   ):hover {
@@ -369,7 +371,7 @@
   color: var(--foreground);
 }
 
-.workspace-nav-item:not([aria-current="page"]):is(
+.workspace-nav-item:not([aria-current="page"], [aria-current="true"], .nav-tree-item):is(
     :not(:disabled),
     .nav-tree-leaf
   ):hover
@@ -385,8 +387,7 @@
   transform: scale(0.98);
 }
 
-.workspace-nav-item[aria-current="page"],
-.workspace-nav-item[aria-current="page"]:hover {
+.workspace-nav-item:is([aria-current="page"], [aria-current="true"]) {
   background: transparent;
   color: var(--accent-foreground);
   font-weight: 650;
@@ -426,7 +427,10 @@
   transition: scale 150ms var(--ease-feedback);
 }
 
-.workspace-directory:has([aria-current="page"]:active) .nav-pill--active {
+.workspace-directory:has(
+    :is([aria-current="page"], [aria-current="true"]):active
+  )
+  .nav-pill--active {
   scale: 0.98;
 }
 
@@ -463,6 +467,61 @@
   transform: rotate(-90deg);
 }
 
+.nav-tree-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    grid-template-rows 180ms cubic-bezier(0.4, 0, 1, 1),
+    opacity 140ms cubic-bezier(0.4, 0, 1, 1),
+    visibility 180ms step-end;
+}
+
+.nav-tree-panel[data-expanded="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-tree-panel-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .workspace-nav-list[data-animate="true"] > li {
+    animation: workspace-nav-item-in 280ms cubic-bezier(0.22, 1, 0.36, 1)
+      backwards;
+    animation-delay: calc(var(--nav-item-index, 0) * 40ms);
+  }
+
+  .workspace-nav-list[data-animate="true"] > li .nav-tree-children > li {
+    animation: workspace-nav-item-in 280ms cubic-bezier(0.22, 1, 0.36, 1)
+      backwards;
+    animation-delay: calc(
+      var(--nav-item-index, 0) * 40ms + 24ms + var(--nav-child-index, 0) * 18ms
+    );
+  }
+}
+
+@keyframes workspace-nav-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-tree-panel,
+  .nav-tree-panel[data-expanded="true"] {
+    transition: none;
+  }
+}
+
 .nav-tree-children {
   display: grid;
   row-gap: var(--space-1);
@@ -472,8 +531,13 @@
 }
 
 .nav-tree-children > li {
+  --nav-tree-row-center: 50%;
   position: relative;
   padding-inline-start: 20px;
+}
+
+.nav-tree-children > li:has(> .nav-tree-panel) {
+  --nav-tree-row-center: calc(var(--control-size-dense) / 2);
 }
 
 .nav-tree-children > li::before {
@@ -489,7 +553,7 @@
 .nav-tree-children > li::after {
   position: absolute;
   inset-inline-start: 0;
-  top: calc(50% - 10px);
+  top: calc(var(--nav-tree-row-center) - 10px);
   width: 14px;
   height: 10px;
   border-inline-start: 1.5px solid var(--nav-tree-line);
@@ -502,9 +566,13 @@
 /* A node dot at the end of the branch arc, drawn on the row itself so the
    arc's own box does not clip it. */
 .nav-tree-children
-  > li:has(.workspace-nav-item:hover:not(:disabled), [aria-current="page"]) {
+  > li:has(
+    .workspace-nav-item:hover:not(:disabled),
+    [aria-current="page"],
+    [aria-current="true"]
+  ) {
   background: radial-gradient(
-    circle 3px at 14px 50%,
+    circle 3px at 14px var(--nav-tree-row-center),
     var(--primary) 96%,
     transparent
   );
@@ -516,7 +584,7 @@
 }
 
 .nav-tree-children > li:last-child::before {
-  bottom: calc(50% + 9px);
+  bottom: calc(100% - var(--nav-tree-row-center) + 9px);
 }
 
 .nav-tree-leaf {
@@ -532,6 +600,14 @@
 .nav-tree-leaf:disabled {
   pointer-events: auto;
   opacity: 1;
+}
+
+.workspace-nav-item.nav-tree-item {
+  min-height: var(--control-size-dense);
+  gap: var(--space-2);
+  padding-inline: var(--space-2);
+  font-size: var(--text-label);
+  font-weight: 550;
 }
 
 .workspace-nav-count {
@@ -553,7 +629,7 @@
 }
 
 /* On the selected (already white) pill the count stays a quiet recess. */
-[aria-current="page"] > .workspace-nav-count {
+:is([aria-current="page"], [aria-current="true"]) > .workspace-nav-count {
   background: var(--recess);
   box-shadow: none;
 }
@@ -828,12 +904,60 @@
   color: var(--foreground);
 }
 
+.workspace-language-icon {
+  transition: rotate var(--duration-feedback) var(--ease-feedback);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-language-icon {
+    transition: none;
+    rotate: none !important;
+  }
+}
+
+.workspace-mode-control:not([data-palette-display="name"]) {
+  background: transparent;
+  transition:
+    color var(--duration-feedback) var(--ease-feedback),
+    transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
 .workspace-mode-control:not([data-palette-display="name"]):not(:disabled):is(
     :hover,
-    [aria-expanded="true"]
+    :active,
+    :focus-visible,
+    [aria-expanded="true"],
+    [data-state="open"]
   ) {
-  background: var(--icon-control-hover-bg);
+  background: transparent !important;
   color: var(--foreground);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .workspace-mode-control:not([data-palette-display="name"]):not(
+      :disabled
+    ):hover {
+    transform: translateY(-1px) scale(1.06);
+  }
+}
+
+.workspace-mode-control:not([data-palette-display="name"]):not(
+    :disabled
+  ):active {
+  transform: scale(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-mode-control:not([data-palette-display="name"]) {
+    transition: none;
+  }
+
+  .workspace-mode-control:not([data-palette-display="name"]):not(:disabled):is(
+      :hover,
+      :active
+    ) {
+    transform: none;
+  }
 }
 
 .command-trigger-shortcut {

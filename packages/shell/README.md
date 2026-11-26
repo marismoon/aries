@@ -32,12 +32,13 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 | --- | --- |
 | `ShellRouterAdapter` | `activePath` 是当前路径。`locationKey?` 区分同一路径的不同历史条目，用于恢复滚动与选中态。`onNavigate?(path)` 可返回 Promise。`renderLink?(props)` 自定义链接，接收 `ShellLinkProps`（`to`、`end?` 与原生锚点属性）。默认 `ShellLink` 渲染锚点，`end` 控制精确或分段前缀匹配。 |
 | `WorkspaceNavigation` | 提供 `modules`、品牌标识与链接、用户头像、移动目录说明和不可用操作的文案。每个 `NavModule` 包含稳定的 `id`、已翻译的 `label`、`ReactNode` 图标、`railPosition`、`visibleOnMobile`、`items` 和 `commands`。 |
+| `WorkspaceNavigation.showPlaceholders` | 默认显示演示占位。设为 `false` 时隐藏不可用的「新建」「我的待办」、没有回调的帮助入口，以及没有目标路径的目录项和搜索结果。空目录分组也会收起。 |
 | `NavNode` | 以 `id`、`label` 定义条目，可带图标、`count`、链接 `path` 或分组 `children`。 |
-| `ModuleCommands` | 当前模块的 `triggerLabel`、`placeholder` 和 `items`。`CommandItem` 提供已翻译的标题、说明、图标，可附搜索关键词和目标路径。 |
+| `ModuleCommands` | 当前模块的 `triggerLabel`、`placeholder` 和 `items`。命令面板基于 `@marismoon/ui/ui/command` 渲染，按 `CommandItem.group` 分组并以分隔线隔开；`CommandItem` 提供已翻译的标题、说明、图标，可附分组 `group?`、快捷键提示 `shortcut?`、搜索关键词 `keywords?` 和目标路径 `path?`。 |
 | `ShellLabels` | 外壳固定文案均为宿主已翻译的字符串。提供导航、范围与帮助文案，页面内容区、面包屑和语言控件的无障碍名称，以及搜索面板的标题、说明、输入框、结果列表与空态文案。完整字段见 [labels.ts](src/types/labels.ts)。 |
 | `LanguageControlProps` | 传入当前语言 `value`、有序的 `options: { value, label }[]` 与 `onChange(value)`。宿主处理语言切换和持久化。 |
 
-`useShellRouter()`、`useShellLabels()` 和 `useShellLanguageControl()` 读取对应 Provider 的值。第二列导航的选中与悬停高亮默认由 `@marismoon/ui/motion/NavPills` 绘制：两块底板以临界阻尼弹簧（`navPillSpring`）滑动，遵循减少动效偏好。它和页面过渡一样使用 `motion` 的 `m.*` 组件，宿主须在 `LazyMotion` 内渲染外壳。需要换成其他样式时，通过 `NavHighlightContext` 提供渲染函数；它接收 `NavHighlightRects`，其中 `active` 与 `hover` 分别为选中项、悬停项的 `HighlightRect` 或 `null`。
+`useShellRouter()`、`useShellLabels()` 和 `useShellLanguageControl()` 读取对应 Provider 的值。第二列导航的选中与悬停高亮默认由 `@marismoon/ui/motion/NavPills` 绘制：两块底板以临界阻尼弹簧（`navPillSpring`）滑动，遵循减少动效偏好，并沿 `offsetParent` 读取布局坐标以避免受瞬时 CSS `transform` 偏移影响。它和页面过渡一样使用 `motion` 的 `m.*` 组件，宿主须在 `LazyMotion` 内渲染外壳。需要换成其他样式时，通过 `NavHighlightContext` 提供渲染函数；它接收 `NavHighlightRects`，其中 `active` 与 `hover` 分别为选中项、悬停项的 `HighlightRect` 或 `null`。
 
 ## 外壳与页面
 
@@ -51,6 +52,8 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 | `renderRightPanelTrigger`、`onRightPanelOpenChange` | 在图标栏渲染入口，接收 `{ open, onToggle, keyShortcuts }`。入口将触发元素交给 `onToggle`，宿主收到 `(open, launcher)` 后更新状态；`keyShortcuts` 用于入口的 `aria-keyshortcuts`。 |
 | `rightPanelShortcut` | 默认 `true`：提供了 `rightPanel` 与 `onRightPanelOpenChange` 时，⌘⇧K / Ctrl+Shift+K（`rightPanelKeyShortcuts`）切换右栏；其他对话框打开时不响应。`launcher` 为当前焦点元素，焦点在页面上时为入口按钮。传 `false` 关闭。 |
 | `glassBackdrop` | 仅在暗色玻璃模式下挂载的固定背景层，默认 `<AriesMagicRings />`；可替换为其他共享背景或自定义 `aria-hidden` 图层，传 `null` 则仅显示纯暗色底。 |
+| `renderUserMenu` | 可选，接收默认渲染的头像节点，供宿主用 `Popover` 或菜单包裹第一列底部的用户头像。 |
+| `onSetupGuideClick`、`onSupportClick` | 可选，第二列底部「配置手册」与「技术支持」按钮的点击回调。未提供回调时由 `navigation.showPlaceholders` 决定入口是否显示。 |
 
 `useDocumentTitle(title)` 在浏览器中把 `document.title` 同步为传入的字符串，宿主通常写 `` useDocumentTitle(`${页面标题} · 产品名`) ``。
 
@@ -90,6 +93,8 @@ import { AppShell, ShellLabelsProvider, ShellRouterProvider } from "@marismoon/s
 
 ### 作用域与回退
 
+- 内容区的目录树可组合 `.workspace-nav`、`.workspace-nav-surface` 和 `.workspace-directory` 复用第二列的面板材质、内边距与滚动留白。目录项使用 `SidebarNavItem`，筛选型目录在当前项设置 `aria-current="true"`，由 `NavHighlight` 绘制选中与悬停底板。
+- 目录树的分支和叶节点可统一给 `SidebarNavItem` 添加 `.nav-tree-item`，让字号、字重和左内边距一致。层级由 `.nav-tree-children` 的缩进和连线表达。
 - `.app-shell` 建立轨道宽度、列距和整列高度。`.workspace-main` 建立内容区起止边距，起始边距在视口宽度达到 701px 时切换。`.page-content-frame` 提供出血与渐隐距离，`.page-header` 提供面包屑行高。各变量继承原有元素上的值。
 - `--rail-fill` 按品牌入口、常规、悬停和选中四种选择器赋值。`--nav-tree-line` 在目录子树上赋值，悬停或选中的分支仅在其 `li::after` 上加深。`--sidebar-leaf-height` 在移动目录内使用紧凑控件高度。
 - `--nav-active-*`、`--nav-hover-*`、`--nav-border-width` 等按主题提供，未声明时沿用消费处的 `var()` 回退。`--field-shadow` 另有 `.copilot-composer` 私有覆盖，作用于输入框自身。

@@ -6,6 +6,7 @@ import {
 import { NavPills } from "@marismoon/ui/motion/NavPills"
 
 const ITEM = ".workspace-nav-item"
+const CURRENT = ':is([aria-current="page"], [aria-current="true"])'
 
 /** Two shared pills behind the directory items: one glides to the selected
  * route, one follows the pointer over the other items. Items keep their own
@@ -26,12 +27,40 @@ export function NavHighlight({
     let hovered: Element | null = null
 
     const measure = (item: Element | null): HighlightRect | null => {
-      if (!(item instanceof HTMLElement) || item.offsetParent === null)
+      if (
+        !(item instanceof HTMLElement) ||
+        item.offsetParent === null ||
+        item.closest("[inert]")
+      )
         return null
-      const box = item.getBoundingClientRect()
-      const host = container.getBoundingClientRect()
+      // Walk layout offsets to `container` so transient CSS transforms (such as
+      // subtree roll-in `translateY` or `:active` scale) never leave the pill
+      // misaligned after the transform settles.
+      let x = 0
+      let y = 0
+      let node: HTMLElement | null = item
+      while (node && node !== container) {
+        x += node.offsetLeft
+        y += node.offsetTop
+        const parent = node.offsetParent as HTMLElement | null
+        if (parent && parent !== container) {
+          x += parent.clientLeft
+          y += parent.clientTop
+        }
+        node = parent
+      }
       // One pixel of air above and below, so pills of adjacent rows (a folder
       // and its first child) never touch.
+      if (node === container) {
+        return {
+          x,
+          y: y + 1,
+          width: item.offsetWidth,
+          height: item.offsetHeight - 2,
+        }
+      }
+      const box = item.getBoundingClientRect()
+      const host = container.getBoundingClientRect()
       return {
         x: box.left - host.left,
         y: box.top - host.top + container.scrollTop + 1,
@@ -41,9 +70,7 @@ export function NavHighlight({
     }
 
     const sync = () => {
-      const next = measure(
-        container.querySelector(`${ITEM}[aria-current="page"]`)
-      )
+      const next = measure(container.querySelector(`${ITEM}${CURRENT}`))
       setActive((current) =>
         current &&
         next &&
@@ -62,7 +89,7 @@ export function NavHighlight({
       const item = (event.target as Element).closest(ITEM)
       hovered =
         item &&
-        item.getAttribute("aria-current") !== "page" &&
+        !item.matches(CURRENT) &&
         (item.classList.contains("nav-tree-leaf") ||
           !(item as HTMLButtonElement).disabled)
           ? item
@@ -84,7 +111,7 @@ export function NavHighlight({
       subtree: true,
       childList: true,
       attributes: true,
-      attributeFilter: ["aria-current", "hidden", "aria-expanded"],
+      attributeFilter: ["aria-current", "hidden", "inert", "aria-expanded"],
     })
     container.addEventListener("pointerover", over)
     container.addEventListener("pointerleave", leave)

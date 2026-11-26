@@ -591,15 +591,18 @@ for (const [width, height] of [
           ".page-header-title-row .page-header-actions"
         )
         const buttons = actions.getByRole("button")
-        // Language, brand and theme; dark glass also carries the Demo's glass
-        // backdrop switch (header extra, first) and the dark-style switch.
-        await expect(buttons).toHaveCount(colorScheme === "dark" ? 5 : 3)
+        // Notifications precede the shared controls and follow the backdrop
+        // switch when the dark glass material is active.
+        await expect(buttons).toHaveCount(colorScheme === "dark" ? 6 : 4)
+        await expect(
+          buttons.nth(colorScheme === "dark" ? 1 : 0)
+        ).toHaveAccessibleName(/^我的通知/)
         await expect(actions.getByRole("link")).toHaveCount(0)
         if (colorScheme === "dark") {
           await expect(buttons.first()).toHaveAccessibleName("玻璃背景")
         }
         await expect(
-          buttons.nth(colorScheme === "dark" ? 3 : 1)
+          buttons.nth(colorScheme === "dark" ? 4 : 2)
         ).toHaveAccessibleName("品牌配色")
         await expect(buttons.last()).toHaveAccessibleName(themeLabel)
         await expect(

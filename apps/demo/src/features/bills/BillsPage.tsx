@@ -59,8 +59,8 @@ export function BillsTotals() {
         }
         description={
           bills.loading || bills.error
-            ? tl("全部演示样例")
-            : tl("全部 {{count}} 条演示样例", { count: bills.count })
+            ? undefined
+            : tl("全部 {{count}} 条账单", { count: bills.count })
         }
       />
       <MetricCard

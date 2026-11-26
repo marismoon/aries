@@ -104,4 +104,37 @@ describe("服务端渲染", () => {
     expect(html).toContain("页面内容")
     expect(html).toContain("账单列表")
   })
+
+  it("隐藏无路径的导航和无回调的帮助入口", () => {
+    const [activeModule] = navigation.modules
+    if (!activeModule) throw new Error("Missing test module")
+    const html = renderOnServer(
+      <AppShell
+        navigation={{
+          ...navigation,
+          showPlaceholders: false,
+          modules: [
+            {
+              ...activeModule,
+              items: [
+                ...activeModule.items,
+                { id: "example", label: "占位条目" },
+                { id: "empty", label: "空分组", children: [] },
+              ],
+            },
+          ],
+        }}
+        routeModule="bills"
+        onSupportClick={() => {}}
+      >
+        <p>页面内容</p>
+      </AppShell>
+    )
+    expect(html).toContain("账单列表")
+    expect(html).not.toContain("占位条目")
+    expect(html).not.toContain("空分组")
+    expect(html).not.toContain("label:setupGuide")
+    expect(html).toContain("label:support")
+    expect(html).not.toContain("label:myTasks")
+  })
 })

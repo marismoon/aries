@@ -43,7 +43,6 @@ import { useUiText } from "@/lib/i18n/use-ui-text"
 
 interface CopilotPanelProps {
   copilot: ReturnType<typeof useCopilot>
-  pageName: string
 }
 
 const panelTransition = {
@@ -142,7 +141,7 @@ function CopilotPrompts({
   )
 }
 
-function OpenCopilotPanel({ copilot, pageName }: CopilotPanelProps) {
+function OpenCopilotPanel({ copilot }: CopilotPanelProps) {
   const tl = useUiText()
 
   const reduceMotion = useReducedMotion()
@@ -347,11 +346,7 @@ function OpenCopilotPanel({ copilot, pageName }: CopilotPanelProps) {
               <AppIcon icon={SolarSparkles} aria-hidden="true" />
             </span>
             <h3>{tl("想核对哪项云成本？")}</h3>
-            <p>
-              {tl(
-                "可使用演示数据查看账单异常、采集进度、本月费用和待处理事项。"
-              )}
-            </p>
+            <p>{tl("使用演示数据")}</p>
             {copilot.compact || (
               <CopilotPrompts pending={copilot.pending} onSelect={send} />
             )}
@@ -432,9 +427,6 @@ function OpenCopilotPanel({ copilot, pageName }: CopilotPanelProps) {
               }}
             />
             <div className="copilot-composer-actions">
-              <span className="copilot-context">
-                {tl("当前页面：{{pageName}}", { pageName })}
-              </span>
               <Button
                 type="submit"
                 size="icon-sm"
@@ -471,13 +463,10 @@ function OpenCopilotPanel({ copilot, pageName }: CopilotPanelProps) {
 export function CopilotPanel({
   open,
   copilot,
-  pageName,
 }: CopilotPanelProps & { open: boolean }) {
   return (
     <AnimatePresence>
-      {open && (
-        <OpenCopilotPanel key="copilot" copilot={copilot} pageName={pageName} />
-      )}
+      {open && <OpenCopilotPanel key="copilot" copilot={copilot} />}
     </AnimatePresence>
   )
 }

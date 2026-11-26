@@ -245,6 +245,7 @@
   --rail-control-size: 44px;
   --rail-backplate-size: 38px;
   --rail-icon-size: 22px;
+  --workspace-nav-width: 256px;
   --icon-control-hover-bg: color-mix(in srgb, var(--primary) 12%, transparent);
   --rail-active-bg: var(--primary);
   --rail-active-fg: #fff;
@@ -327,13 +328,18 @@
 
   --primary: #7ab4ff;
   --primary-foreground: #0f2038;
+  --primary-hover: color-mix(
+    in oklch,
+    var(--primary),
+    var(--primary-foreground) 12%
+  );
   --primary-surface: var(--primary);
   --accent: color-mix(in srgb, var(--primary) 20%, var(--background));
   --accent-foreground: #9ee7ee;
   --ring: #60d5df;
   --nav-active-fg: var(--accent-foreground);
   --scope-selected: var(--accent);
-  --rail-logo-bg: #222630;
+  --rail-logo-bg: hsl(var(--dark-hue) 17% 16%);
 
   --chart-1: #7ab4ff;
   --chart-2: #6fb3f2;
@@ -360,6 +366,7 @@
 :root.dark:not([data-palette]),
 .dark[data-palette="ariesanalytics"] {
   --primary-hover: #94c3ff;
+  --rail-logo-bg: #222630;
 }
 
 /* Aries Analytics is the default palette: its light block also applies when no
@@ -490,31 +497,31 @@
 }
 
 .dark[data-palette="mental-health"] {
-  --primary: #9fc4d8;
-  --primary-foreground: #0f2530;
+  --primary: #b69eff;
+  --primary-foreground: #1b103a;
   --primary-surface: var(--primary);
   --accent: color-mix(in srgb, var(--accent-source) 20%, var(--background));
-  --accent-foreground: #e4dbf4;
-  --ring: #9fc4d8;
+  --accent-foreground: #e8ddff;
+  --ring: #b69eff;
   --nav-active-bg: var(--accent);
   --nav-active-fg: var(--accent-foreground);
-  --chart-1: #9fc4d8;
-  --chart-2: #8fd0a8;
-  --chart-3: #5c8bb3;
-  --chart-4: #b4a5d0;
-  --chart-5: #b57da8;
-  --environment-top: hsl(262 42% 58% / 42%);
-  --environment-bottom: hsl(205 40% 48% / 34%);
-  --environment-side: hsl(265 35% 60% / 30%);
+  --chart-1: #b69eff;
+  --chart-2: #7dd3fc;
+  --chart-3: #5eead4;
+  --chart-4: #d8b4fe;
+  --chart-5: #93c5fd;
+  --environment-top: hsl(262 65% 62% / 42%);
+  --environment-bottom: hsl(200 70% 54% / 34%);
+  --environment-side: hsl(275 60% 64% / 30%);
   --hero-start: color-mix(in srgb, var(--primary) 26%, transparent);
   --hero-end: color-mix(in srgb, var(--primary) 10%, transparent);
   --hero-edge: color-mix(in srgb, var(--primary) 38%, transparent);
-  --hero-muted: #b6cbd8;
-  --hero-bar: linear-gradient(180deg, #8fb6cb, #7c9eb2);
-  --hero-bar-current: #b4a5d0;
+  --hero-muted: #c8c2e2;
+  --hero-bar: linear-gradient(180deg, #c4b5fd, #a78bfa);
+  --hero-bar-current: #7dd3fc;
 
-  --accent-source: #b4a5d0;
-  /* Lavender is the second brand colour: glass surfaces take its hue, as the
+  --accent-source: #b69eff;
+  /* Lavender is the brand colour: glass surfaces take its hue, as the
      clean canvas does (--dark-hue 262). */
   --surface-source: var(--accent-source);
 }
@@ -663,7 +670,7 @@
   --chart-2: #8ccaa9;
   --chart-3: #ab9bcb;
   --chart-4: #4e8e80;
-  --chart-5: #b3624c;
+  --chart-5: #7dd3fc;
   --environment-top: hsl(14 65% 50% / 30%);
   --environment-bottom: hsl(32 70% 50% / 24%);
   --environment-side: hsl(350 50% 55% / 14%);

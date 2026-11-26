@@ -1,0 +1,487 @@
+/* Align custom roots with the protected root without shifting its children. */
+.roles-directory-roots > li > .dept-tree-row > .nav-tree-item {
+  gap: 10px;
+  padding-inline-start: var(--space-3);
+}
+
+/* Right detail card: single FrostCard, zero nested cards, no horizontal overflow */
+.roles-detail-card,
+.roles-matrix-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.roles-detail-card > .basic-card-header,
+.roles-matrix-card > .basic-card-header {
+  flex: none;
+  flex-wrap: wrap;
+  min-width: 0;
+  padding: var(--card-inset) var(--card-inset) 12px;
+}
+
+.roles-detail-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.roles-detail-tabs {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  gap: 0;
+}
+
+.roles-tabs-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  flex: none;
+  min-width: 0;
+  padding: 10px var(--card-inset);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.roles-tab-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.roles-tab-panel[hidden] {
+  display: none;
+}
+
+/* Permissions summary bar inside tab */
+.roles-perm-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  flex: none;
+  min-width: 0;
+  padding: 12px var(--card-inset);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.roles-inherit-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 0.78125rem;
+  color: var(--muted-foreground);
+}
+
+.roles-inherit-meta strong {
+  color: var(--foreground);
+  font-weight: 620;
+}
+
+.roles-detail-scroll {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0 var(--card-inset) var(--card-inset);
+}
+
+/* Flat protected admin notice (no boxed card) */
+.roles-protected-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding-block: 10px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.78125rem;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+.roles-protected-note > svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--info);
+}
+
+/* Flat granted-permission sections (BasicInfo style, zero nested boxes) */
+.roles-section {
+  min-width: 0;
+  padding-block-start: 14px;
+}
+
+.roles-section:first-child {
+  padding-block-start: 10px;
+}
+
+.roles-section + .roles-section {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.roles-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding-block-end: 6px;
+}
+
+.roles-section-title {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.roles-section-title h3 {
+  font-size: 0.8125rem;
+  font-weight: 660;
+  color: var(--foreground);
+}
+
+.roles-section-title p {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.roles-section-count {
+  flex: none;
+  font-size: 0.71875rem;
+  color: var(--muted-foreground);
+}
+
+.roles-perm-label-row {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.roles-perm-tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 1px 7px;
+  background: var(--recess);
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  font-weight: 560;
+}
+
+/* Assigned members tab: full-bleed .settings-register matching MembersPage */
+.roles-members-table-wrap {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+@container workspace (max-width: 52rem) {
+  .roles-detail-tabs:has(
+    .roles-tab-panel[data-state="active"] .roles-members-table-wrap
+  ),
+  .roles-tab-panel:has(.roles-members-table-wrap),
+  .roles-members-table-wrap,
+  .roles-members-table-wrap > :is(.data-table-scroll, .data-table-empty) {
+    flex-basis: auto;
+  }
+}
+
+.roles-members-table-wrap .data-table [data-column="name"] {
+  --column-fraction: 0.29;
+}
+
+.roles-members-table-wrap .data-table [data-column="departmentId"] {
+  --column-fraction: 0.18;
+}
+
+.roles-members-table-wrap .data-table [data-column="twoFactorEnabled"] {
+  --column-fraction: 0.14;
+}
+
+.roles-members-table-wrap .data-table [data-column="status"] {
+  --column-fraction: 0.12;
+}
+
+.roles-members-table-wrap .data-table [data-column="lastLoginAt"] {
+  --column-fraction: 0.18;
+}
+
+.roles-members-table-wrap .data-table [data-column="actions"] {
+  --column-fraction: 0.09;
+}
+
+/* Permission File Tree Dialog (Modal Card) */
+.roles-perm-dialog {
+  display: flex;
+  flex-direction: column;
+  max-height: min(82svh, 680px);
+  overflow: hidden;
+}
+
+.roles-perm-dialog-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+.roles-perm-dialog-search {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.roles-perm-tree-scroll {
+  flex: 1 1 0;
+  min-height: 220px;
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 6px 4px;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.roles-perm-tree {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roles-perm-tree-folder {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 4px 8px;
+  border-radius: var(--sidebar-item-radius);
+  transition: background-color var(--duration-feedback) var(--ease-feedback);
+}
+
+.roles-perm-tree-folder:hover {
+  background: var(--sidebar-item-hover);
+}
+
+.roles-perm-tree-toggle {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  place-items: center;
+  border-radius: var(--sidebar-item-radius);
+  color: var(--muted-foreground);
+}
+
+.roles-perm-tree-toggle > svg {
+  transition: transform var(--duration-feedback) var(--ease-feedback);
+}
+
+.roles-perm-tree-toggle[aria-expanded="false"] > svg {
+  transform: rotate(-90deg);
+}
+
+.roles-perm-tree-folder-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.8125rem;
+  font-weight: 630;
+  color: var(--foreground);
+  cursor: pointer;
+}
+
+.roles-perm-tree-leaf {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: var(--sidebar-item-radius);
+  transition: background-color var(--duration-feedback) var(--ease-feedback);
+}
+
+.roles-perm-tree-leaf:hover {
+  background: var(--sidebar-item-hover);
+}
+
+.roles-perm-tree-leaf > [data-slot="checkbox"] {
+  margin-top: 2px;
+}
+
+.roles-perm-tree-leaf-text {
+  display: grid;
+  gap: 2px;
+  flex: 1 1 auto;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.roles-perm-tree-leaf-text b {
+  font-size: 0.8125rem;
+  font-weight: 560;
+  color: var(--foreground);
+}
+
+.roles-perm-tree-leaf-text small {
+  font-size: 0.725rem;
+  line-height: 1.4;
+  color: var(--muted-foreground);
+}
+
+.roles-perm-dialog-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex: none;
+}
+
+.roles-perm-dialog-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.roles-perm-dialog-summary strong {
+  color: var(--foreground);
+  font-weight: 640;
+}
+
+.roles-delta-add {
+  color: var(--success);
+  font-weight: 640;
+}
+
+.roles-delta-remove {
+  color: var(--warning);
+  font-weight: 640;
+}
+
+/* Matrix cells use the same shared DataTable chrome as monthly bills. */
+.roles-matrix-register {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.roles-matrix-register .data-table {
+  --data-table-selection-width: 0px;
+  --data-table-data-width: max(
+    860px,
+    calc(100cqw - var(--data-table-selection-width)),
+    var(--matrix-min-width)
+  );
+  min-width: calc(
+    max(860px, var(--matrix-min-width)) + var(--data-table-selection-width)
+  );
+}
+
+.roles-matrix-register
+  .data-table
+  [data-column]:not([data-column="selection"]) {
+  --column-fraction: var(--matrix-role-fraction);
+}
+
+.roles-matrix-register .data-table [data-column="label"] {
+  --column-fraction: var(--matrix-label-fraction);
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 2;
+}
+
+.roles-matrix-register .data-table thead [data-column="label"] {
+  z-index: 3;
+}
+
+.roles-matrix-register .data-table [data-column]:not([data-column="label"]) {
+  clip-path: inset(
+    0 0 0
+      clamp(
+        0px,
+        calc(var(--matrix-scroll-left, 0px) - var(--matrix-column-start, 0px)),
+        100%
+      )
+  );
+}
+
+.roles-matrix-register .data-table [data-column="sensitive"] {
+  --column-fraction: var(--matrix-sensitive-fraction);
+}
+
+.roles-matrix-register .roles-matrix-permission-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.roles-matrix-role-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  max-width: 100%;
+  padding-inline: var(--space-2);
+  border-radius: var(--sidebar-item-radius);
+  transition: background-color var(--duration-feedback) var(--ease-feedback);
+}
+
+.roles-matrix-role-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.roles-matrix-role-btn:hover {
+  background: var(--sidebar-item-hover);
+}
+
+.roles-matrix-role-sub {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+.roles-matrix-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--success);
+}
+
+.roles-matrix-none {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: color-mix(in srgb, var(--muted-foreground) 45%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roles-perm-tree-toggle > svg {
+    transition: none;
+  }
+}

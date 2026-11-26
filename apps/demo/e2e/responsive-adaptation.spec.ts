@@ -135,6 +135,30 @@ test("账单表格在 iPad 和手机上局部横向滚动，页面不动", async
   }
 })
 
+test("手机窄屏的操作日志可选择记录并横向查看详情列", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.emulateMedia({ reducedMotion: "reduce" })
+  await page.addInitScript(() => localStorage.setItem("aries-language", "en"))
+  await page.goto("/settings/security/audit-log")
+
+  const table = page.getByRole("region", { name: "Audit log table" })
+  const row = table.getByRole("checkbox", { name: "Select log log-106" })
+  await row.click()
+  await expect(row).toBeChecked()
+  await expect(
+    table.getByRole("checkbox", { name: "Select all logs on this page" })
+  ).toHaveAttribute("aria-checked", "mixed")
+  await expect(table).toHaveAccessibleDescription(
+    "Scroll horizontally for source IP and status"
+  )
+  await table.evaluate((element) => {
+    element.scrollLeft = element.scrollWidth
+  })
+  await expect(
+    table.getByRole("columnheader", { name: "Details" })
+  ).toBeInViewport()
+})
+
 for (const [width, height] of [
   [1024, 768],
   [820, 1180],

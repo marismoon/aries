@@ -16,9 +16,13 @@
   [data-slot="navigation-menu-viewport"]
 ) {
   border-radius: var(--radius-control);
-  background: color-mix(in srgb, var(--popover) 97%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--popover) var(--popover-fill, 97%),
+    transparent
+  );
   box-shadow: var(--floating-shadow);
-  backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: var(--popover-filter, blur(24px) saturate(160%));
 }
 
 :is(
@@ -159,5 +163,87 @@
     [data-slot="alert-dialog-footer"]
     button {
     height: 2.5rem;
+  }
+}
+
+/* Dark glass: apply layered frosted glass to menus, modals, drawers, alerts
+   and plain cards without affecting light mode or clean dark mode. */
+:root.dark:not([data-dark-style="clean"])
+  :is(
+    [data-slot="select-content"],
+    [data-slot="dropdown-menu-content"],
+    [data-slot="dropdown-menu-sub-content"],
+    [data-slot="context-menu-content"],
+    [data-slot="context-menu-sub-content"],
+    [data-slot="menubar-content"],
+    [data-slot="menubar-sub-content"],
+    [data-slot="combobox-content"],
+    [data-slot="popover-content"],
+    [data-slot="hover-card-content"],
+    [data-slot="navigation-menu-content"],
+    [data-slot="navigation-menu-viewport"]
+  ) {
+  border-color: var(--glass-edge);
+}
+
+:root.dark:not([data-dark-style="clean"])
+  :is(
+    [data-slot="dialog-content"],
+    [data-slot="alert-dialog-content"],
+    [data-slot="sheet-content"]
+  ) {
+  border-color: var(--glass-edge);
+  background: color-mix(
+    in srgb,
+    var(--popover) var(--modal-fill, 84%),
+    transparent
+  );
+  box-shadow: var(--floating-shadow);
+  backdrop-filter: var(--modal-filter, blur(32px) saturate(150%));
+}
+
+:root.dark:not([data-dark-style="clean"]) [data-slot="drawer-content"]::before {
+  border-color: var(--glass-edge);
+  background: color-mix(
+    in srgb,
+    var(--popover) var(--modal-fill, 84%),
+    transparent
+  );
+  box-shadow: var(--floating-shadow);
+  backdrop-filter: var(--modal-filter, blur(32px) saturate(150%));
+}
+
+:root.dark:not([data-dark-style="clean"])
+  :is([data-slot="alert"], [data-slot="card"]:not(.surface)) {
+  border-color: var(--glass-edge);
+  background: color-mix(in srgb, var(--card) 78%, transparent);
+  box-shadow: var(--surface-shadow);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root.dark:not([data-dark-style="clean"])
+    :is(
+      [data-slot="select-content"],
+      [data-slot="dropdown-menu-content"],
+      [data-slot="dropdown-menu-sub-content"],
+      [data-slot="context-menu-content"],
+      [data-slot="context-menu-sub-content"],
+      [data-slot="menubar-content"],
+      [data-slot="menubar-sub-content"],
+      [data-slot="combobox-content"],
+      [data-slot="popover-content"],
+      [data-slot="hover-card-content"],
+      [data-slot="navigation-menu-content"],
+      [data-slot="navigation-menu-viewport"],
+      [data-slot="dialog-content"],
+      [data-slot="alert-dialog-content"],
+      [data-slot="sheet-content"],
+      [data-slot="alert"],
+      [data-slot="card"]:not(.surface)
+    ),
+  :root.dark:not([data-dark-style="clean"])
+    [data-slot="drawer-content"]::before {
+    background: var(--popover);
+    backdrop-filter: none;
   }
 }

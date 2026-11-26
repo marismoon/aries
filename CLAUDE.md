@@ -10,7 +10,7 @@
 - [docs/COMPONENTS.md](docs/COMPONENTS.md) — 公共组件清单、Props、用法、扩展规则
 - [docs/I18N.md](docs/I18N.md) — 多语言用法、新增文案与语言
 - [docs/STARTER.md](docs/STARTER.md) — 同仓创建应用与页面注册
-- [docs/VERSIONING.md](docs/VERSIONING.md) — catalog、审计、应急修复与阶段边界
+- [docs/VERSIONING.md](docs/VERSIONING.md) — catalog、发布、审计与应急修复
 - [docs/decisions/](docs/decisions/) — 架构决策记录（ADR）
 
 常用命令（仓库根目录）：`pnpm dev` · `pnpm typecheck` · `pnpm lint` · `pnpm build` · `pnpm test` · `pnpm test:ui` · `pnpm check:workspace` · `pnpm check:package`。

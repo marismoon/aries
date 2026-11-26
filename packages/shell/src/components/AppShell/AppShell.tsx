@@ -23,10 +23,14 @@ function MobileDirectory({
   navigation,
   activeModule,
   onSelectModule,
+  onSetupGuideClick,
+  onSupportClick,
 }: {
   navigation: WorkspaceNavigation
   activeModule: NavModule
   onSelectModule: (id: string) => void
+  onSetupGuideClick?: () => void
+  onSupportClick?: () => void
 }) {
   const labels = useShellLabels()
   const [open, setOpen] = useState(false)
@@ -54,6 +58,8 @@ function MobileDirectory({
           activeModule={activeModule}
           onSelectModule={onSelectModule}
           onNavigate={() => setOpen(false)}
+          onSetupGuideClick={onSetupGuideClick}
+          onSupportClick={onSupportClick}
         />
       </DialogContent>
     </Dialog>
@@ -98,6 +104,16 @@ export interface AppShellProps {
    * Defaults to `<AriesMagicRings />`; pass your own fixed, `aria-hidden` layer to
    * replace it, or `null` for the plain dark ground. */
   glassBackdrop?: ReactNode
+  /** Wraps the rail user avatar in a host-supplied menu or popover trigger. */
+  renderUserMenu?: (
+    avatar: ReactNode,
+    state: { navExpanded: boolean }
+  ) => ReactNode
+  /** Optional overlay rendered inside the desktop second-column nav card. */
+  navOverlay?: ReactNode
+  /** Optional handlers for the two footer help buttons in the second column. */
+  onSetupGuideClick?: () => void
+  onSupportClick?: () => void
 }
 
 export function AppShell({
@@ -112,6 +128,10 @@ export function AppShell({
   renderRightPanelTrigger,
   rightPanelShortcut = true,
   glassBackdrop = <AriesMagicRings />,
+  renderUserMenu,
+  navOverlay,
+  onSetupGuideClick,
+  onSupportClick,
 }: AppShellProps) {
   const { activePath, locationKey = activePath } = useShellRouter()
   const labels = useShellLabels()
@@ -135,6 +155,13 @@ export function AppShell({
   }
   const activeModule = navigation.modules.find(({ id }) => id === activeId)
   if (!activeModule) throw new Error(`Unknown navigation module: ${activeId}`)
+  const commands =
+    navigation.showPlaceholders === false
+      ? {
+          ...activeModule.commands,
+          items: activeModule.commands.items.filter((item) => item.path),
+        }
+      : activeModule.commands
 
   function selectModule(module: string) {
     setSelection({ locationKey, module })
@@ -165,7 +192,7 @@ export function AppShell({
   }, [shortcutEnabled])
 
   return (
-    <CommandPaletteProvider commands={activeModule.commands}>
+    <CommandPaletteProvider commands={commands}>
       {darkGlass && glassBackdrop}
       <div className="app-shell" data-nav-collapsed={!navExpanded}>
         <a className="skip-link" href="#main-content">
@@ -177,6 +204,7 @@ export function AppShell({
           navExpanded={navExpanded}
           onToggleNav={() => setNavExpanded((expanded) => !expanded)}
           onSelectModule={selectModule}
+          renderUserMenu={renderUserMenu}
           rightPanelTrigger={
             renderRightPanelTrigger && (
               <span className="contents" data-right-panel-trigger="">
@@ -196,10 +224,18 @@ export function AppShell({
               navigation={navigation}
               activeModule={activeModule}
               onSelectModule={selectModule}
+              onSetupGuideClick={onSetupGuideClick}
+              onSupportClick={onSupportClick}
             />
           }
         />
-        <WorkspaceNav navigation={navigation} activeModule={activeModule} />
+        <WorkspaceNav
+          navigation={navigation}
+          activeModule={activeModule}
+          overlay={navOverlay}
+          onSetupGuideClick={onSetupGuideClick}
+          onSupportClick={onSupportClick}
+        />
         <HeaderExtraContext.Provider value={headerExtra}>
           <MainWorkspace>{children}</MainWorkspace>
         </HeaderExtraContext.Provider>

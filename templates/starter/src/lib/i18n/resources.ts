@@ -1,8 +1,8 @@
 export const resources = {
   "zh-CN": {
     translation: {
-      home: { title: "首页", body: "这里是工作区首页。" },
-      settings: { title: "设置", body: "在这里管理工作区设置。" },
+      home: { title: "首页" },
+      settings: { title: "设置" },
       nav: {
         directoryDescription: "选择模块并打开页面。",
         create: "新建",
@@ -16,11 +16,8 @@ export const resources = {
   },
   en: {
     translation: {
-      home: { title: "Home", body: "This is your workspace home." },
-      settings: {
-        title: "Settings",
-        body: "Manage your workspace settings here.",
-      },
+      home: { title: "Home" },
+      settings: { title: "Settings" },
       nav: {
         directoryDescription: "Choose a module and open a page.",
         create: "Create",

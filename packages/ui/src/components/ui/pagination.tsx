@@ -133,12 +133,7 @@ function PaginationEllipsis({ className, ...props }: ComponentProps<"span">) {
       )}
       {...props}
     >
-      <AppIcon
-        icon={SolarEllipsis}
-        fill="currentColor"
-        stroke="none"
-        aria-hidden="true"
-      />
+      <AppIcon icon={SolarEllipsis} aria-hidden="true" />
       <span className="sr-only">{labels.morePages}</span>
     </span>
   )

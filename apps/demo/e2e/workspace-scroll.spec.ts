@@ -51,7 +51,9 @@ for (const [width, height] of [
         const headerParts = [
           header.getByRole("navigation", { name: "面包屑" }),
           heading,
-          header.locator(".page-header-description"),
+          ...(path === "/overview"
+            ? [header.locator(".page-header-description")]
+            : []),
           header.getByRole("button", { name: "品牌配色" }),
           header.getByRole("button", { name: /^切换到[浅深]色模式$/ }),
         ]

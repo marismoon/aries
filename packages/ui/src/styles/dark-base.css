@@ -84,9 +84,9 @@
 
 /* Glass material, after Raycast's theme recipe (github.com/raycast/ray-so):
    every neutral is the text colour at an alpha, every surface is the window
-   material (grey 20% under a tint, a strong blur, one 1px edge), selection is
-   the brand colour at 10%, tags are a colour over 15% of itself. The light
-   behind the glass is its own layer (glass-backdrop.css).
+   material (grey 20% under a tint, a strong blur, one 1px edge), tags are a
+   colour over 15% of itself. The light behind the glass is its own layer
+   (glass-backdrop.css).
 
    The window material is two layers in Raycast (grey 20%, then a tint); here
    they are folded into one colour and one alpha so .surface keeps its single
@@ -125,9 +125,9 @@
     transparent
   );
   --muted-foreground: color-mix(in srgb, var(--glass-text) 80%, transparent);
-  --border: color-mix(in srgb, var(--glass-text) 20%, transparent);
+  --border: color-mix(in srgb, var(--glass-text) 18%, transparent);
   --border-subtle: color-mix(in srgb, var(--glass-text) 10%, transparent);
-  --glass-edge: color-mix(in srgb, var(--glass-text) 20%, transparent);
+  --glass-edge: color-mix(in srgb, var(--glass-text) 18%, transparent);
   --surface-edge: var(--glass-edge);
   --layout-control-border: var(--glass-edge);
   --input: color-mix(in srgb, var(--glass-text) 40%, transparent);
@@ -151,12 +151,23 @@
   --glass-fill-top: 74%;
   --glass-fill-bottom: 74%;
   --surface-filter: blur(72px);
-  --surface-shadow: 0 1px 3px rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
-  --hero-decor: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--card) var(--glass-fill-top), transparent),
-    color-mix(in srgb, var(--card-bottom) var(--glass-fill-bottom), transparent)
-  );
+  --glass-specular: inset 0 1px 0
+    color-mix(in srgb, var(--glass-text) 14%, transparent);
+  --surface-shadow:
+    0 1px 3px rgb(0 0 0 / 10%),
+    0 1px 2px -1px rgb(0 0 0 / 10%),
+    var(--glass-specular);
+  --hero-decor:
+    radial-gradient(
+      110% 90% at 12% 0%,
+      color-mix(in srgb, var(--primary) 10%, transparent),
+      transparent 62%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--card) var(--glass-fill-top), transparent),
+      color-mix(in srgb, var(--card-bottom) var(--glass-fill-bottom), transparent)
+    );
   --hero-fill: transparent;
   --hero-outline: var(--surface-shadow);
 
@@ -170,22 +181,32 @@
   --sidebar-edge: var(--glass-edge);
   --sidebar-shadow: var(--surface-shadow);
 
-  /* One edge, no sheen, no stacked shadows. */
+  /* Quiet controls: no sheen or stacked shadows. */
   --card-shadow: none;
-  --glass-specular: none;
   --control-sheen: none;
   --control-rim: 0 0 0 0 transparent;
   --control-shadow: none;
   --primary-shadow: none;
   --field-shadow: none;
 
-  /* Selection: the brand colour at 10%, flat. */
-  --nav-active-fill: color-mix(in srgb, var(--primary) 10%, transparent);
-  --nav-active-shadow: none;
-  --nav-hover-fill: color-mix(in srgb, var(--glass-text) 5%, transparent);
+  /* Floating layers & modals: frosted glass with top specular hairline. */
+  --popover-fill: 82%;
+  --popover-filter: blur(28px) saturate(160%);
+  --modal-fill: 84%;
+  --modal-filter: blur(32px) saturate(150%);
+  --floating-shadow:
+    0 20px 56px -12px rgb(0 0 0 / 52%),
+    0 2px 6px rgb(0 0 0 / 24%),
+    var(--glass-specular);
+
+  /* Selection: M3-style tonal pill for faster scanning on dark glass. */
+  --nav-active-fill: color-mix(in srgb, var(--primary) 16%, transparent);
+  --nav-active-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var(--primary) 22%, transparent);
+  --nav-hover-fill: color-mix(in srgb, var(--glass-text) 6%, transparent);
   --nav-hover-shadow: none;
-  --item-hover: color-mix(in srgb, var(--glass-text) 5%, transparent);
-  --item-selected: color-mix(in srgb, var(--primary) 10%, transparent);
+  --item-hover: color-mix(in srgb, var(--glass-text) 6%, transparent);
+  --item-selected: color-mix(in srgb, var(--primary) 16%, transparent);
 
   /* Tags: a colour over 15% of itself. */
   --success-bg: color-mix(in srgb, var(--success) 15%, transparent);

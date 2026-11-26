@@ -57,8 +57,8 @@ export const uiEn: Record<string, string> = {
   语言: "Language",
   导航搜索: "Navigation search",
   搜索页面: "Search pages",
-  "输入页面名称，或按 Tab 浏览结果。":
-    "Type a page name, or press Tab to browse results.",
+  "输入页面名称，或用方向键浏览结果。":
+    "Type a page name or use the arrow keys to browse results.",
   输入页面名称: "Type a page name",
   搜索结果: "Search results",
   "未找到匹配的页面。": "No matching pages.",

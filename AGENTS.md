@@ -70,12 +70,13 @@ Demo 和 Starter 各自通过公开入口使用 Shell 与 UI；Shell 只依赖 U
 
 ### 3.1 图标变体
 
-1. 默认 **Linear**（`*-linear.tsx`）；选中、悬停或按下时切换为同名 **Bold**（`*-bold.tsx`）。**MUST NOT** 使用 Linear 与 Bold 之外的变体（Broken、Line Duotone 等）；确需引入 Line Duotone 时先取得设计确认。
+1. 默认 **Linear**（`*-linear.tsx`）；选中、悬停或按下时切换为同名 **Bold**（`*-bold.tsx`）。三点图标按规则 7 固定使用 Bold。**MUST NOT** 使用 Linear 与 Bold 之外的变体（Broken、Line Duotone 等）；确需引入 Line Duotone 时先取得设计确认。
 2. 所有图标 **MUST** 是 `24×24` 网格、颜色只来自 `currentColor`；Linear 与 Bold 同网格，切换不得改变尺寸或布局。
 3. 有选中态或按下反馈的控件内图标写 `<AppIcon icon={…} stateful />`：同时渲染 Linear 与 Bold，由 `styles/icon-states.css` 按 `:hover`（仅非禁用、`hover: hover`）、`:active`（仅非禁用，覆盖触屏点按与键盘触发）、`aria-current`、`aria-selected="true"`、`aria-pressed="true"`、`data-state=active|on|open` 切换。**MUST NOT** 用 JS 状态手动换图标；有 `aria-label` 的图标不参与切换。
-4. 新增 Bold 时 **MUST** 同时补同名 Linear，并在 `components/icons/icon-variants.ts` 登记。只给会进入选中/悬停态的图标补 Bold（现有配对见 [COMPONENTS §3](docs/COMPONENTS.md)），**MUST NOT** 给纯展示图标批量补齐。
+4. 除规则 7 的固定三点图标外，新增 Bold 时 **MUST** 同时补同名 Linear，并在 `components/icons/icon-variants.ts` 登记。只给会进入选中/悬停态的图标补 Bold（现有配对见 [COMPONENTS §3](docs/COMPONENTS.md)），**MUST NOT** 给纯展示图标批量补齐。
 5. `icons.test.ts` 校验：仅 Linear/Bold、Bold 有 Linear 底图并登记、`viewBox` 与尺寸、无字面颜色。
 6. 关闭、移除、清除类按钮 **MUST** 用 `@marismoon/ui/ui/close-button`：图标按钮写 `<CloseButton aria-label=… />`，其他宿主（如 `InputGroupButton`、原生 `button`）加 `closeButtonClass` 并渲染 `<CloseIcon />`。外观唯一：16px 圆圈叉、静止与悬停都不带底色，悬停或按下时由次要色 Linear 变为正文色 Bold。**MUST NOT** 手写关闭 SVG 或另配悬停底色。
+7. 更多操作、省略号等三点图标 **MUST** 统一用 `@marismoon/ui/icons` 的 `SolarEllipsis`（Solar Menu Dots Bold，所有状态均为实心三点）。全局 **MUST NOT** 使用三个空心圆圈作为图标。
 
 ## 4. 布局、滚动与卡片契约
 

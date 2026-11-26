@@ -4,22 +4,12 @@
 
 .data-table-hint {
   --data-table-inset: var(--register-inset, var(--space-4));
-  display: none;
+  display: flex;
   align-items: center;
   gap: 5px;
   padding: 0 var(--data-table-inset) 9px;
   color: var(--muted-foreground);
   font-size: 0.75rem;
-}
-
-@container (max-width: 899px) {
-  .data-table-hint {
-    display: flex;
-  }
-}
-
-.data-table-hint[data-empty] {
-  visibility: hidden;
 }
 
 /* The table fills its card: toolbar and footer keep their height and the rows

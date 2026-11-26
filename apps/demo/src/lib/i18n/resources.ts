@@ -1,9 +1,25 @@
 export const resources = {
   "zh-CN": {
     translation: {
+      settingsOrg: {
+        membersTitle: "成员管理",
+        rolesTitle: "角色权限",
+        departmentsTitle: "部门架构",
+      },
       settingsBasic: {
         title: "基础信息",
-        description: "组织资料、账期与币种、区域显示与数据保留。",
+      },
+      settingsSystem: {
+        paramsTitle: "全局参数",
+      },
+      settingsIntegrations: {
+        appsTitle: "应用集成",
+        botsTitle: "群机器人",
+        rulesTitle: "消息规则",
+      },
+      settingsSecurity: {
+        policyTitle: "安全策略",
+        auditTitle: "操作日志",
       },
       overview: {
         title: "运营总览",
@@ -15,7 +31,6 @@ export const resources = {
       },
       bills: {
         title: "月账单",
-        description: "按供应商、状态和币种核对本期云账单。",
         issuedByCurrency: "原币出账汇总",
         register: "账单明细",
       },
@@ -64,14 +79,51 @@ export const resources = {
         transitionsDescription:
           "分段指示器、方向感知的页面切换、缓动对比、亮暗揭示、弹窗族、Tab 滑块与状态确认。",
       },
+      notifications: {
+        centerTitle: "告警中心",
+        pendingTitle: "待处理告警",
+        rulesTitle: "告警规则",
+        silencesTitle: "静默与值守",
+        logsTitle: "通知记录",
+        preferencesTitle: "通知偏好",
+        criticalTitle: "严重告警",
+        normalTitle: "一般告警",
+      },
+      analytics: {
+        platformOverviewTitle: "平台总览",
+        platformTenantsTitle: "租户与用户分析",
+        backendApiTitle: "API 与任务监控",
+        backendStorageTitle: "数据库与存储",
+        systemInfraTitle: "资源与节点性能",
+        systemSlaTitle: "稳定性与 SLA",
+        costOverviewTitle: "成本总览与趋势",
+        costAllocationTitle: "预算与成本分摊",
+        aiInsightsTitle: "智能数据洞察",
+        customReportsTitle: "自定义报表",
+      },
     },
   },
   en: {
     translation: {
+      settingsOrg: {
+        membersTitle: "Members",
+        rolesTitle: "Roles & permissions",
+        departmentsTitle: "Departments",
+      },
       settingsBasic: {
         title: "Basics",
-        description:
-          "Organization profile, billing period and currency, regional display and data retention.",
+      },
+      settingsSystem: {
+        paramsTitle: "Global parameters",
+      },
+      settingsIntegrations: {
+        appsTitle: "App integrations",
+        botsTitle: "Group bots",
+        rulesTitle: "Message rules",
+      },
+      settingsSecurity: {
+        policyTitle: "Security policy",
+        auditTitle: "Audit log",
       },
       overview: {
         title: "Operations overview",
@@ -84,7 +136,6 @@ export const resources = {
       },
       bills: {
         title: "Monthly bills",
-        description: "Review cloud bills by provider, status and currency.",
         issuedByCurrency: "Issued totals by currency",
         register: "Billing register",
       },
@@ -140,6 +191,28 @@ export const resources = {
         transitions: "Transition motion",
         transitionsDescription:
           "Segment indicator, direction-aware page transitions, easing comparison, theme reveal, overlays, tab glide and status confirmation.",
+      },
+      notifications: {
+        centerTitle: "Alert center",
+        pendingTitle: "Pending alerts",
+        rulesTitle: "Alert rules",
+        silencesTitle: "Silences & on-call",
+        logsTitle: "Notification logs",
+        preferencesTitle: "Notification preferences",
+        criticalTitle: "Critical alerts",
+        normalTitle: "Standard alerts",
+      },
+      analytics: {
+        platformOverviewTitle: "Platform overview",
+        platformTenantsTitle: "Tenants & users",
+        backendApiTitle: "API & job monitoring",
+        backendStorageTitle: "Databases & storage",
+        systemInfraTitle: "Infrastructure & nodes",
+        systemSlaTitle: "Reliability & SLA",
+        costOverviewTitle: "Cost overview & trends",
+        costAllocationTitle: "Budgets & cost allocation",
+        aiInsightsTitle: "AI data insights",
+        customReportsTitle: "Custom reports",
       },
     },
   },

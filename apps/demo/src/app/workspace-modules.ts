@@ -132,35 +132,146 @@ export const workspaceModules = {
     label: "告警通知",
     icon: SolarBell,
     entries: [
-      { kind: "demo", label: "告警中心", icon: SolarBell },
-      { kind: "demo", label: "待处理告警", icon: SolarClock3 },
-      { kind: "demo", label: "告警规则", icon: SolarShieldAlert },
-      { kind: "demo", label: "通知记录", icon: SolarMail },
+      {
+        kind: "folder",
+        label: "告警监控",
+        icon: SolarBell,
+        children: [
+          {
+            label: "告警中心",
+            to: workspacePages["notifications-center"].path,
+          },
+          {
+            label: "待处理告警",
+            to: workspacePages["notifications-pending"].path,
+          },
+        ],
+      },
       {
         kind: "folder",
         label: "告警级别",
-        icon: SolarFolder,
-        children: [{ label: "严重告警" }, { label: "一般告警" }],
+        icon: SolarShieldAlert,
+        children: [
+          {
+            label: "严重告警",
+            to: workspacePages["notifications-severity-critical"].path,
+          },
+          {
+            label: "一般告警",
+            to: workspacePages["notifications-severity-normal"].path,
+          },
+        ],
+      },
+      {
+        kind: "folder",
+        label: "规则与值守",
+        icon: SolarCog,
+        children: [
+          {
+            label: "告警规则",
+            to: workspacePages["notifications-rules"].path,
+          },
+          {
+            label: "静默与值守",
+            to: workspacePages["notifications-silences"].path,
+          },
+        ],
+      },
+      {
+        kind: "folder",
+        label: "通知管理",
+        icon: SolarMail,
+        children: [
+          {
+            label: "通知记录",
+            to: workspacePages["notifications-logs"].path,
+          },
+          {
+            label: "通知偏好",
+            to: workspacePages["notifications-preferences"].path,
+          },
+        ],
       },
     ],
   },
   analytics: {
-    label: "成本分析",
+    label: "数据分析",
     icon: SolarChartSquare,
     entries: [
-      { kind: "demo", label: "成本总览", icon: SolarLayoutGrid },
-      {
-        kind: "demo",
-        label: "成本趋势",
-        icon: SolarChartNoAxesColumnIncreasing,
-      },
-      { kind: "demo", label: "预算管理", icon: SolarReceiptText },
-      { kind: "demo", label: "成本分摊", icon: SolarCreditCard },
       {
         kind: "folder",
-        label: "分析维度",
-        icon: SolarFolder,
-        children: [{ label: "按供应商" }, { label: "按项目" }],
+        label: "平台数据",
+        icon: SolarLayoutGrid,
+        children: [
+          {
+            label: "平台总览",
+            to: workspacePages["analytics-platform-overview"].path,
+          },
+          {
+            label: "租户与用户分析",
+            to: workspacePages["analytics-platform-tenants"].path,
+          },
+        ],
+      },
+      {
+        kind: "folder",
+        label: "后台数据",
+        icon: SolarChartNoAxesColumnIncreasing,
+        children: [
+          {
+            label: "API 与任务监控",
+            to: workspacePages["analytics-backend-api"].path,
+          },
+          {
+            label: "数据库与存储",
+            to: workspacePages["analytics-backend-storage"].path,
+          },
+        ],
+      },
+      {
+        kind: "folder",
+        label: "系统数据",
+        icon: SolarCog,
+        children: [
+          {
+            label: "资源与节点性能",
+            to: workspacePages["analytics-system-infra"].path,
+          },
+          {
+            label: "稳定性与 SLA",
+            to: workspacePages["analytics-system-sla"].path,
+          },
+        ],
+      },
+      {
+        kind: "folder",
+        label: "成本数据",
+        icon: SolarReceiptText,
+        children: [
+          {
+            label: "成本总览与趋势",
+            to: workspacePages["analytics-cost-overview"].path,
+          },
+          {
+            label: "预算与成本分摊",
+            to: workspacePages["analytics-cost-allocation"].path,
+          },
+        ],
+      },
+      {
+        kind: "folder",
+        label: "洞察报告",
+        icon: SolarChartSquare,
+        children: [
+          {
+            label: "智能数据洞察",
+            to: workspacePages["analytics-insights-ai"].path,
+          },
+          {
+            label: "自定义报表",
+            to: workspacePages["analytics-insights-reports"].path,
+          },
+        ],
       },
     ],
   },
@@ -226,9 +337,18 @@ export const workspaceModules = {
         label: "组织权限",
         icon: SolarFolder,
         children: [
-          { label: "成员管理" },
-          { label: "角色权限" },
-          { label: "部门架构" },
+          {
+            label: "成员管理",
+            to: workspacePages["settings-org-members"].path,
+          },
+          {
+            label: "角色权限",
+            to: workspacePages["settings-org-roles"].path,
+          },
+          {
+            label: "部门架构",
+            to: workspacePages["settings-org-departments"].path,
+          },
         ],
       },
       {
@@ -237,7 +357,10 @@ export const workspaceModules = {
         icon: SolarCog,
         children: [
           { label: "基础信息", to: workspacePages["settings-basic"].path },
-          { label: "全局参数" },
+          {
+            label: "全局参数",
+            to: workspacePages["settings-system-params"].path,
+          },
         ],
       },
       {
@@ -245,16 +368,34 @@ export const workspaceModules = {
         label: "集成通知",
         icon: SolarBell,
         children: [
-          { label: "应用集成" },
-          { label: "群机器人" },
-          { label: "消息规则" },
+          {
+            label: "应用集成",
+            to: workspacePages["settings-integrations-apps"].path,
+          },
+          {
+            label: "群机器人",
+            to: workspacePages["settings-integrations-bots"].path,
+          },
+          {
+            label: "消息规则",
+            to: workspacePages["settings-integrations-rules"].path,
+          },
         ],
       },
       {
         kind: "folder",
         label: "安全审计",
         icon: SolarShieldAlert,
-        children: [{ label: "安全策略" }, { label: "操作日志" }],
+        children: [
+          {
+            label: "安全策略",
+            to: workspacePages["settings-security-policy"].path,
+          },
+          {
+            label: "操作日志",
+            to: workspacePages["settings-security-audit"].path,
+          },
+        ],
       },
     ],
   },

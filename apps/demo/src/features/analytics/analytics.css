@@ -1,0 +1,311 @@
+/* Data Analytics module styles — token-only, aligned with Aries grid & table contract */
+
+.analytics-page {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.analytics-page > * {
+  flex: none;
+}
+
+.analytics-toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.analytics-range-pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 9999px;
+  background: var(--recess);
+}
+
+.analytics-range-btn {
+  height: 28px;
+  padding-inline: 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 580;
+  color: var(--muted-foreground);
+  background: transparent;
+  transition:
+    color var(--duration-feedback) var(--ease-feedback),
+    background-color var(--duration-feedback) var(--ease-feedback),
+    box-shadow var(--duration-feedback) var(--ease-feedback);
+}
+
+.analytics-range-btn:hover {
+  color: var(--foreground);
+}
+
+.analytics-range-btn[aria-pressed="true"] {
+  background: var(--layout-control);
+  color: var(--foreground);
+  box-shadow: var(--field-shadow);
+}
+
+@media (pointer: coarse) {
+  .analytics-range-btn {
+    height: var(--control-size-compact);
+  }
+}
+
+.analytics-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+@container workspace (max-width: 56rem) {
+  .analytics-charts-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.analytics-insight-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+@container workspace (max-width: 56rem) {
+  .analytics-insight-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.analytics-insight-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 232px;
+  min-width: 0;
+  padding: var(--card-inset);
+}
+
+.analytics-insight-content {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.analytics-insight-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.analytics-insight-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 640;
+  line-height: 1.4;
+  color: var(--foreground);
+  text-wrap: balance;
+}
+
+.analytics-insight-summary {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+  text-wrap: pretty;
+}
+
+.analytics-insight-impact {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78125rem;
+  font-weight: 620;
+  color: var(--primary);
+}
+
+.analytics-insight-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: 36px;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.analytics-meter {
+  display: grid;
+  gap: 4px;
+  min-width: 78px;
+  margin-inline-start: auto;
+}
+
+.analytics-meter-track {
+  height: 6px;
+  width: 100%;
+  border-radius: 9999px;
+  background: var(--muted);
+  overflow: hidden;
+}
+
+.analytics-meter-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: var(--chart-1);
+}
+
+.analytics-meter-fill[data-tone="warning"] {
+  background: var(--warning);
+}
+
+.analytics-meter-fill[data-tone="danger"] {
+  background: var(--destructive);
+}
+
+/* Explicit DataTable column fractions per AGENTS.md §4.5 */
+.analytics-tenants-table .data-table [data-column="name"] {
+  --column-fraction: 0.28;
+}
+.analytics-tenants-table .data-table [data-column="activeUsers"] {
+  --column-fraction: 0.14;
+}
+.analytics-tenants-table .data-table [data-column="apiCallsK"] {
+  --column-fraction: 0.16;
+}
+.analytics-tenants-table .data-table [data-column="retentionPct"] {
+  --column-fraction: 0.12;
+}
+.analytics-tenants-table .data-table [data-column="status"] {
+  --column-fraction: 0.14;
+}
+.analytics-tenants-table .data-table [data-column="lastActiveAt"] {
+  --column-fraction: 0.16;
+}
+
+.analytics-api-table .data-table [data-column="endpoint"] {
+  --column-fraction: 0.34;
+}
+.analytics-api-table .data-table [data-column="qps"] {
+  --column-fraction: 0.1;
+}
+.analytics-api-table .data-table [data-column="p95Ms"] {
+  --column-fraction: 0.14;
+}
+.analytics-api-table .data-table [data-column="errorRatePct"] {
+  --column-fraction: 0.12;
+}
+.analytics-api-table .data-table [data-column="availabilityPct"] {
+  --column-fraction: 0.14;
+}
+.analytics-api-table .data-table [data-column="status"] {
+  --column-fraction: 0.16;
+}
+
+.analytics-storage-table .data-table [data-column="name"] {
+  --column-fraction: 0.28;
+}
+.analytics-storage-table .data-table [data-column="usedGb"] {
+  --column-fraction: 0.18;
+}
+.analytics-storage-table .data-table [data-column="iops"] {
+  --column-fraction: 0.13;
+}
+.analytics-storage-table .data-table [data-column="cacheHitPct"] {
+  --column-fraction: 0.14;
+}
+.analytics-storage-table .data-table [data-column="slowQueries24h"] {
+  --column-fraction: 0.13;
+}
+.analytics-storage-table .data-table [data-column="status"] {
+  --column-fraction: 0.14;
+}
+
+.analytics-cluster-table .data-table [data-column="cluster"] {
+  --column-fraction: 0.26;
+}
+.analytics-cluster-table .data-table [data-column="cpuPct"] {
+  --column-fraction: 0.16;
+}
+.analytics-cluster-table .data-table [data-column="memoryPct"] {
+  --column-fraction: 0.16;
+}
+.analytics-cluster-table .data-table [data-column="gpuPct"] {
+  --column-fraction: 0.16;
+}
+.analytics-cluster-table .data-table [data-column="podCount"] {
+  --column-fraction: 0.12;
+}
+.analytics-cluster-table .data-table [data-column="status"] {
+  --column-fraction: 0.14;
+}
+
+.analytics-sla-table .data-table [data-column="service"] {
+  --column-fraction: 0.3;
+}
+.analytics-sla-table .data-table [data-column="availabilityPct"] {
+  --column-fraction: 0.16;
+}
+.analytics-sla-table .data-table [data-column="errorBudgetLeftPct"] {
+  --column-fraction: 0.15;
+}
+.analytics-sla-table .data-table [data-column="mttrMin"] {
+  --column-fraction: 0.12;
+}
+.analytics-sla-table .data-table [data-column="incidents30d"] {
+  --column-fraction: 0.13;
+}
+.analytics-sla-table .data-table [data-column="status"] {
+  --column-fraction: 0.14;
+}
+
+.analytics-cost-table .data-table [data-column="department"] {
+  --column-fraction: 0.28;
+}
+.analytics-cost-table .data-table [data-column="provider"] {
+  --column-fraction: 0.14;
+}
+.analytics-cost-table .data-table [data-column="monthlyCostWan"] {
+  --column-fraction: 0.14;
+}
+.analytics-cost-table .data-table [data-column="budgetWan"] {
+  --column-fraction: 0.16;
+}
+.analytics-cost-table .data-table [data-column="momDeltaPct"] {
+  --column-fraction: 0.14;
+}
+.analytics-cost-table .data-table [data-column="idleRatioPct"] {
+  --column-fraction: 0.14;
+}
+
+.analytics-reports-table .data-table [data-column="name"] {
+  --column-fraction: 0.36;
+}
+.analytics-reports-table .data-table [data-column="domain"] {
+  --column-fraction: 0.13;
+}
+.analytics-reports-table .data-table [data-column="format"] {
+  --column-fraction: 0.1;
+}
+.analytics-reports-table .data-table [data-column="lastGeneratedAt"] {
+  --column-fraction: 0.19;
+}
+.analytics-reports-table .data-table [data-column="enabled"] {
+  --column-fraction: 0.12;
+}
+.analytics-reports-table .data-table [data-column="actions"] {
+  --column-fraction: 0.1;
+}

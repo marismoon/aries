@@ -1,5 +1,7 @@
+import { useState } from "react"
 import {
   Link,
+  Navigate,
   NavLink,
   Outlet,
   useLocation,
@@ -23,9 +25,19 @@ import {
   GlassBackdropLayer,
   useGlassBackdrop,
 } from "@/features/glass-backdrop/glass-backdrop"
+import { UserNotificationsBell } from "@/features/notifications/UserNotificationsBell"
 import { useCopilot } from "@/features/copilot/useCopilot"
+import {
+  SetupGuideDrawer,
+  SupportDialog,
+} from "@/features/workspace-chrome/HelpDialogs"
+import {
+  UserMenuDockedSheet,
+  UserMenuTrigger,
+} from "@/features/workspace-chrome/UserMenuPopover"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import { ShellLabelsBridge } from "@/lib/i18n/ShellLabelsBridge"
+import { useWorkspaceStore } from "@/shared/mocks/workspace-store"
 import { useWorkspaceNavigation } from "./use-workspace-navigation"
 import { workspacePages } from "./workspace-pages"
 
@@ -38,12 +50,22 @@ function renderLink({ end, ...props }: ShellLinkProps) {
 }
 
 export function DemoShell() {
-  const { pathname, key } = useLocation()
+  const { pathname, search, key } = useLocation()
   const routeId = useMatches().at(-1)?.id
   const navigate = useNavigate()
   const tl = useUiText()
+  const store = useWorkspaceStore()
   const navigation = useWorkspaceNavigation()
   const { t } = useTranslation()
+  const [setupGuideOpen, setSetupGuideOpen] = useState(false)
+  const [supportOpen, setSupportOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const [userMenuPath, setUserMenuPath] = useState(pathname)
+  if (userMenuPath !== pathname) {
+    setUserMenuPath(pathname)
+    setUserMenuOpen(false)
+  }
+
   const page =
     Object.values(workspacePages).find(({ id }) => id === routeId) ??
     workspacePages.overview
@@ -58,6 +80,11 @@ export function DemoShell() {
 
   useDocumentTitle(`${pageName} · Aries`)
 
+  if (!store.session) {
+    const redirect = encodeURIComponent(`${pathname}${search}`)
+    return <Navigate to={`/login?redirect=${redirect}`} replace />
+  }
+
   return (
     <ShellRouterProvider
       value={{
@@ -71,13 +98,41 @@ export function DemoShell() {
         <AppShell
           navigation={navigation}
           routeModule={page.moduleId}
-          headerExtra={<GlassBackdropControl />}
+          headerExtra={
+            <>
+              <GlassBackdropControl />
+              <UserNotificationsBell />
+            </>
+          }
           {...(glassBackdrop !== "magic-rings" && {
             glassBackdrop: <GlassBackdropLayer kind={glassBackdrop} />,
           })}
-          rightPanel={(open) => (
-            <CopilotPanel open={open} copilot={copilot} pageName={pageName} />
+          renderUserMenu={(avatar, { navExpanded }) => (
+            <UserMenuTrigger
+              avatar={avatar}
+              open={userMenuOpen}
+              onOpenChange={setUserMenuOpen}
+              navExpanded={navExpanded}
+            />
           )}
+          navOverlay={
+            <UserMenuDockedSheet
+              open={userMenuOpen}
+              onClose={() => setUserMenuOpen(false)}
+            />
+          }
+          onSetupGuideClick={() => setSetupGuideOpen(true)}
+          onSupportClick={() => setSupportOpen(true)}
+          overlays={
+            <>
+              <SetupGuideDrawer
+                open={setupGuideOpen}
+                onOpenChange={setSetupGuideOpen}
+              />
+              <SupportDialog open={supportOpen} onOpenChange={setSupportOpen} />
+            </>
+          }
+          rightPanel={(open) => <CopilotPanel open={open} copilot={copilot} />}
           rightPanelOpen={copilotOpen}
           onRightPanelOpenChange={(open, launcher) => {
             if (open) openCopilotFrom(launcher)

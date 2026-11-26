@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 import { AppIcon, SolarGlobal } from "@marismoon/ui/icons"
 import { Button } from "@marismoon/ui/ui/button"
 import {
@@ -15,6 +17,7 @@ export function LanguageControl({
   onChange,
 }: LanguageControlProps) {
   const labels = useShellLabels()
+  const [spinCount, setSpinCount] = useState(0)
   const index = Math.max(
     0,
     options.findIndex((option) => option.value === value)
@@ -32,9 +35,17 @@ export function LanguageControl({
           size="icon"
           className="workspace-mode-control"
           aria-label={labels.language}
-          onClick={() => onChange(next.value)}
+          onClick={() => {
+            setSpinCount((c) => c + 1)
+            onChange(next.value)
+          }}
         >
-          <AppIcon icon={SolarGlobal} size={20} aria-hidden="true" />
+          <span
+            className="workspace-language-icon inline-grid place-items-center"
+            style={{ rotate: `${spinCount * 180}deg` }}
+          >
+            <AppIcon icon={SolarGlobal} size={20} aria-hidden="true" />
+          </span>
         </Button>
       </TooltipTrigger>
       <TooltipContent side="bottom" sideOffset={8}>

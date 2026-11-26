@@ -10,8 +10,16 @@ import {
 } from "./workspace-modules"
 import { workspacePages } from "./workspace-pages"
 
+import {
+  getCurrentMember,
+  useWorkspaceStore,
+} from "@/shared/mocks/workspace-store"
+
 export function useWorkspaceNavigation(): WorkspaceNavigation {
   const tl = useUiText()
+  const store = useWorkspaceStore()
+  const currentMember = getCurrentMember(store)
+  const currentRole = store.roles.find((r) => r.id === currentMember?.roleId)
 
   return useMemo(() => {
     function translateEntry(entry: WorkspaceEntry): NavNode {
@@ -65,9 +73,11 @@ export function useWorkspaceNavigation(): WorkspaceNavigation {
       brandLabel: tl("Aries 工作台"),
       brandPath: workspacePages.overview.path,
       brandMark: "fH",
-      userLabel: tl("演示用户 · 管理员"),
+      userLabel: currentMember
+        ? `${tl(currentMember.name)} · ${tl(currentRole?.name ?? "超级管理员")}`
+        : tl("演示用户 · 管理员"),
       avatarSrc: "https://github.com/pranathip.png",
-      avatarFallback: "M",
+      avatarFallback: currentMember ? tl(currentMember.name).slice(0, 1) : "M",
     }
-  }, [tl])
+  }, [currentMember, currentRole?.name, tl])
 }

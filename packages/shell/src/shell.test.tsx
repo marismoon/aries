@@ -1,7 +1,13 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react"
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react"
 import { renderHook } from "@testing-library/react"
 import type { ReactNode } from "react"
-import { afterEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { TooltipProvider } from "@marismoon/ui/ui/tooltip"
 
 import { AppShell, rightPanelKeyShortcuts } from "./components/AppShell"
@@ -85,7 +91,22 @@ function renderShell(
   )
 }
 
-afterEach(cleanup)
+beforeEach(() => {
+  Element.prototype.scrollIntoView = vi.fn()
+  vi.stubGlobal(
+    "ResizeObserver",
+    class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+  )
+})
+
+afterEach(() => {
+  cleanup()
+  vi.unstubAllGlobals()
+})
 
 describe("宿主注入", () => {
   it("缺少路由适配时给出明确错误", () => {
@@ -219,11 +240,15 @@ describe("NavTree", () => {
       toggle.getAttribute("aria-controls") ?? ""
     )
     expect(toggle.getAttribute("aria-expanded")).toBe("true")
-    expect(list?.hidden).toBe(false)
+    expect(list?.hasAttribute("inert")).toBe(false)
 
     fireEvent.click(toggle)
     expect(toggle.getAttribute("aria-expanded")).toBe("false")
-    expect(list?.hidden).toBe(true)
+    expect(list?.hasAttribute("inert")).toBe(true)
+    expect(list?.getAttribute("aria-hidden")).toBe("true")
+    fireEvent.click(toggle)
+    expect(toggle.getAttribute("aria-expanded")).toBe("true")
+    expect(list?.hasAttribute("inert")).toBe(false)
   })
 })
 
@@ -236,7 +261,7 @@ describe("IconRail dock spring", () => {
 })
 
 describe("CommandPaletteProvider", () => {
-  it("回车跳到第一条带路径的结果", () => {
+  it("回车跳到第一条带路径的结果", async () => {
     const onNavigate = vi.fn()
     renderShell(
       <CommandPaletteProvider
@@ -259,7 +284,12 @@ describe("CommandPaletteProvider", () => {
       { onNavigate }
     )
     fireEvent.click(screen.getByRole("button", { name: "label:commandSearch" }))
-    fireEvent.submit(screen.getByRole("search"))
+    await waitFor(() => {
+      expect(screen.getByRole("option", { selected: true }).textContent).toBe(
+        "账单"
+      )
+    })
+    fireEvent.keyDown(screen.getByRole("combobox"), { key: "Enter" })
     expect(onNavigate).toHaveBeenCalledWith("/bills")
   })
 })
@@ -300,13 +330,6 @@ describe("AppShell 右栏快捷键", () => {
       addEventListener() {},
       removeEventListener() {},
     }))
-    vi.stubGlobal(
-      "ResizeObserver",
-      class {
-        observe() {}
-        disconnect() {}
-      }
-    )
     return renderShell(
       <AppShell
         navigation={navigation}
@@ -327,8 +350,6 @@ describe("AppShell 右栏快捷键", () => {
       </AppShell>
     )
   }
-
-  afterEach(() => vi.unstubAllGlobals())
 
   it("⌘⇧K 以入口按钮为来源打开右栏，并向入口提供 aria-keyshortcuts", () => {
     const onOpenChange = vi.fn()

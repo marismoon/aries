@@ -26,7 +26,9 @@ test("减少动效时，页面与命令面板直接呈现最终态", async ({ pa
   await expect(dialog).toHaveCSS("opacity", "1")
   await expect(dialog).toHaveCSS("transform", "none")
   await expect(dialog).toHaveCSS("animation-name", "none")
-  await expect(dialog.getByRole("searchbox")).toBeFocused()
+  await expect(
+    dialog.getByRole("combobox", { name: "输入页面名称" })
+  ).toBeFocused()
 
   await page.keyboard.press("Escape")
   await expect(dialog).toHaveCount(0)
@@ -44,7 +46,9 @@ test("快捷键直接打开命令面板，鼠标入口仍有过渡", async ({ pa
   await expect(dialog).toHaveAttribute("data-motion", "instant")
   await expect(dialog).toHaveCSS("opacity", "1")
   await expect(dialog).toHaveCSS("transform", "none")
-  await expect(dialog.getByRole("searchbox")).toBeFocused()
+  await expect(
+    dialog.getByRole("combobox", { name: "输入页面名称" })
+  ).toBeFocused()
   await page.keyboard.press("Control+k")
   await expect(dialog).toHaveCount(0)
   await expect(trigger).toBeFocused()

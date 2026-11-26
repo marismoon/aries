@@ -82,7 +82,7 @@ import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 | `selectAllLabel` / `selectRowLabel(row)` / `paginationLabel` | 无障碍文案 |
 | `pageSizes?` | 默认 `[10, 20, 50]` |
 | `empty` | 无匹配时渲染的内容（通常 `EmptyState`） |
-| `scrollHint?` | `string`，局部横向滚动提示 |
+| `scrollHint?` | `string`，仅在有数据且表格实际横向溢出时显示，并作为滚动区域的无障碍说明 |
 | `loading?` | 与行高一致的扫光骨架 |
 
 `use-data-table.ts` 导出：`dataTableFeatures`（列筛选、全局筛选、分页、行选择）、`DataTableInstance<TData>`、`createDataTableColumns<TData>()`、`useDataTable(options)`。参考 `apps/demo/src/features/bills/components/BillsTable.tsx`：
@@ -129,6 +129,8 @@ const table = useDataTable({
 
 **关闭图标**：关闭、移除、清除类按钮统一用 `@marismoon/ui/ui/close-button`。`CloseButton` 是图标按钮（`ghost`、默认 `size=\"icon-sm\"`，需传 `aria-label` 或 `sr-only` 子节点）；`CloseIcon` 是 16px、`stateful` 的 `SolarClose`（`close-circle-linear`，悬停或按下切 `close-circle-bold`）；`closeButtonClass` 给其他宿主按钮用。外观唯一：静止与悬停都不带底色，颜色由 `--muted-foreground` 变为 `--foreground`。`Dialog`、`Sheet` 的关闭按钮，`Combobox` 的清除与标签移除按钮都已使用；`IconPlaceholder` 的 `XIcon` 也映射到圆圈叉。无外圈的叉 `close-linear` 仍以 `SolarCloseLine` 导出，但不用于关闭按钮。
 
+**三点图标**统一用 `SolarEllipsis`，所有状态均为实心三点。`IconPlaceholder` 的 `MoreHorizontalIcon` 使用同一图标。[Solar Menu Dots Bold](https://www.shadcn.io/icon/solar-menu-dots-bold)
+
 **别名对照**（命名与实际图形不一致，引用前先看这里）：`SolarCheck` 与 `SolarCircleCheck` 同为 `check-circle-linear`；`SolarX` 与 `SolarClose` 同为 `close-circle-linear`；`SolarFileSearch` = `document-text`；`SolarSquareMenu` = `file-text`；`SolarChartNoAxesColumnIncreasing` = `chart-2`；`SolarReceiptText` = `bill-list`；`SolarCog` = `settings`；`SolarClock3` = `clock-circle`。
 
 ## 4. 工具与 Hook
@@ -160,7 +162,7 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
   `pointer: coarse` 下 `small`、`icon-xs`、`icon-sm` 放大到 40px，`xs` 放大到 36px。普通 AlertDialog 页脚为 32px，`size="sm"` 的页脚为 28px（由 `popup.css` 自动处理）。各 variant 的底色只来自令牌，暗色没有单独写法：`default` 用 `--primary` / `--primary-foreground`（悬停 `--primary-hover`），`outline` 用 `--field-surface` 加 `--field-shadow`，`secondary` 用 `--secondary`，`ghost` 悬停用 `--muted`，`destructive` 为 `--destructive` 的 10% 底色。有底色的 `default`、`secondary`、`destructive` 再叠一层很轻的受光渐变 `--control-sheen`；内描边与主色投影（`--primary-shadow`）只给 `default`，`secondary` 沿用 `--field-shadow`，`destructive` 不加投影，规则见 [DESIGN_SYSTEM §5](DESIGN_SYSTEM.md)；`outline`、`ghost`、`link` 不叠。
 - `Badge`：`variant` 含 `default secondary destructive outline ghost link`，以及 Ant Design 预设色 `red volcano orange gold yellow lime green cyan blue geekblue purple magenta gray`（加 `solid` 为实心）。
 - `Input`、`SelectTrigger`、`InputGroup`、`NativeSelect`、`Combobox`、`InputOTP`：统一 `field-surface`，不写 `size` 即 32px。`Input` 与 `SelectTrigger` 在任何高度都是全圆胶囊；`Textarea` 保持 `--radius-workspace-control`。
-- `SelectContent` 使用 `position="popper"`。
+- `SelectContent` 的 `alignItemWithTrigger` 默认为 `true`，将已选项与触发器对齐。设为 `false` 时，弹层沿触发器边缘展开。已有 `position` 用法继续有效，同时传入时以 `alignItemWithTrigger` 为准。
 - `Tabs` / `ToggleGroup` / `Menubar`：`--recess` 分段胶囊，选项 28px。
 
 ## 6. 工作区布局组件（`@marismoon/shell`）
