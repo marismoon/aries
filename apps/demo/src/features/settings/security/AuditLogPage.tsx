@@ -34,11 +34,7 @@ import {
   SelectValue,
 } from "@marismoon/ui/ui/select"
 import { useUiText } from "@/lib/i18n/use-ui-text"
-import {
-  SummaryMiniBars,
-  SummaryRingGauge,
-  SummarySegmentedBar,
-} from "../SettingsSummaryVisuals"
+import { SparklineKpiCard } from "../SettingsSummaryVisuals"
 import { useWorkspaceStore } from "@/shared/mocks/workspace-store"
 import type { AuditLog } from "@/shared/types/workspace-settings"
 
@@ -64,68 +60,105 @@ export function AuditLogSummary() {
   const successCount = auditLogs.filter((l) => l.status === "success").length
   const warningCount = auditLogs.filter((l) => l.status === "warning").length
   const failedCount = auditLogs.filter((l) => l.status === "failed").length
+  const abnormalCount = warningCount + failedCount
   const successRate = total > 0 ? Math.round((successCount / total) * 100) : 100
+  const uniqueActors = new Set(auditLogs.map((l) => l.actorEmail)).size
+  const uniqueIps = new Set(auditLogs.map((l) => l.ip)).size
 
-  const moduleCounts = Array.from(
-    auditLogs.reduce((acc, log) => {
-      acc.set(log.module, (acc.get(log.module) ?? 0) + 1)
-      return acc
-    }, new Map<string, number>())
-  )
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 4)
-  const maxMod = Math.max(moduleCounts[0]?.[1] ?? 1, 1)
+  const auditVolumeTrend = [
+    { label: "11/20", value: 42 },
+    { label: "11/21", value: 58 },
+    { label: "11/22", value: 31 },
+    { label: "11/23", value: 49 },
+    { label: "11/24", value: 64 },
+    { label: "11/25", value: 52 },
+    { label: "11/26", value: total },
+  ]
+  const successRateTrend = [
+    { label: "11/20", value: 96 },
+    { label: "11/21", value: 94 },
+    { label: "11/22", value: 98 },
+    { label: "11/23", value: 95 },
+    { label: "11/24", value: 92 },
+    { label: "11/25", value: 97 },
+    { label: "11/26", value: successRate },
+  ]
+  const abnormalTrend = [
+    { label: "11/20", value: 2 },
+    { label: "11/21", value: 3 },
+    { label: "11/22", value: 1 },
+    { label: "11/23", value: 2 },
+    { label: "11/24", value: 4 },
+    { label: "11/25", value: 1 },
+    { label: "11/26", value: abnormalCount },
+  ]
+  const actorTrend = [
+    { label: "11/20", value: Math.max(uniqueActors - 1, 1) },
+    { label: "11/21", value: uniqueActors },
+    { label: "11/22", value: Math.max(uniqueActors - 2, 1) },
+    { label: "11/23", value: uniqueActors },
+    { label: "11/24", value: uniqueActors + 1 },
+    { label: "11/25", value: uniqueActors },
+    { label: "11/26", value: uniqueActors },
+  ]
 
   return (
-    <section className="settings-summary-grid" aria-label={tl("审计日志概况")}>
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("累计审计记录")}</div>
-          <div className="settings-summary-value financial-number">
-            {total} {tl("条")}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={total}
-          items={[
-            { label: tl("成功"), count: successCount, tone: "success" },
-            { label: tl("告警"), count: warningCount, tone: "warning" },
-            { label: tl("失败"), count: failedCount, tone: "danger" },
-          ]}
-        />
-      </FrostCard>
+    <section
+      className="settings-summary-grid"
+      data-cols="4"
+      aria-label={tl("审计日志概况")}
+    >
+      <SparklineKpiCard
+        featured
+        label={tl("累计审计记录")}
+        value={`${total} ${tl("条")}`}
+        formatHoverValue={(v) => `${v} ${tl("条")}`}
+        badge={tl("全量留痕")}
+        badgeTone="info"
+        note={tl("近 7 日操作事件采集吞吐走势")}
+        data={auditVolumeTrend}
+        variant="area"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">{tl("高频操作模块")}</div>
-        <SummaryMiniBars
-          items={moduleCounts.map(([mod, count]) => ({
-            label: tl(mod),
-            value: count,
-            max: maxMod,
-          }))}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("执行成功率")}
+        value={`${successRate}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={`${successCount}/${total}`}
+        badgeTone={abnormalCount === 0 ? "success" : "warning"}
+        note={tl("近 7 日配置与权限变更成功走势")}
+        data={successRateTrend}
+        variant="line"
+        color="var(--chart-positive)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("执行成功率")}</div>
-            <div className="settings-summary-value financial-number">
-              {successCount} / {total}
-            </div>
-            <p className="settings-summary-note">
-              {tl("当前有 {{count}} 条告警或异常事件待关注", {
-                count: warningCount + failedCount,
-              })}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={successRate}
-            tone={warningCount + failedCount === 0 ? "success" : "warning"}
-            label={tl("执行成功率")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("高危与异常事件")}
+        value={`${abnormalCount} ${tl("条")}`}
+        formatHoverValue={(v) => `${v} ${tl("条")}`}
+        badge={abnormalCount > 0 ? tl("需核查") : tl("正常")}
+        badgeTone={abnormalCount > 0 ? "danger" : "success"}
+        note={tl("告警 {{warning}} · 失败 {{failed}}", {
+          warning: warningCount,
+          failed: failedCount,
+        })}
+        data={abnormalTrend}
+        variant="bar"
+        color="var(--chart-negative)"
+      />
+
+      <SparklineKpiCard
+        label={tl("活跃操作人与来源")}
+        value={`${uniqueActors} ${tl("人")}`}
+        formatHoverValue={(v) => `${v} ${tl("人")}`}
+        badge={`${uniqueIps} IP`}
+        badgeTone="neutral"
+        note={tl("覆盖 {{ips}} 个来源 IP 的管理操作", { ips: uniqueIps })}
+        data={actorTrend}
+        variant="bar"
+        color="var(--chart-2)"
+      />
     </section>
   )
 }
@@ -266,7 +299,7 @@ export function AuditLogPage() {
           </div>
           <div className="bills-toolbar-fields" role="search">
             <div
-              className="bills-search field-surface"
+              className="bills-search data-table-search field-surface"
               data-field-focus="quiet"
             >
               <label className="sr-only" htmlFor={searchId}>

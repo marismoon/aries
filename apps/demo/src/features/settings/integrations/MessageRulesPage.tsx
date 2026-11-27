@@ -24,11 +24,7 @@ import { Field, FieldLabel } from "@marismoon/ui/ui/field"
 import { Input } from "@marismoon/ui/ui/input"
 import { Switch } from "@marismoon/ui/ui/switch"
 import { useUiText } from "@/lib/i18n/use-ui-text"
-import {
-  SummaryMiniBars,
-  SummaryRingGauge,
-  SummarySegmentedBar,
-} from "../SettingsSummaryVisuals"
+import { SparklineKpiCard } from "../SettingsSummaryVisuals"
 import {
   useWorkspaceStore,
   workspaceActions,
@@ -66,60 +62,89 @@ export function MessageRulesSummary() {
   const inAppCount = messageRules.filter((r) => r.inApp).length
   const emailCount = messageRules.filter((r) => r.email).length
   const botCount = messageRules.filter((r) => r.bot).length
+  const activeBindings = inAppCount + emailCount + botCount
 
   const alwaysOnCount = messageRules.filter(
     (r) => r.quietHours === "不静默"
   ).length
   const alwaysOnRate = total > 0 ? Math.round((alwaysOnCount / total) * 100) : 0
 
+  const ruleHitTrend = [
+    { label: "11/20", value: 28 },
+    { label: "11/21", value: 34 },
+    { label: "11/22", value: 19 },
+    { label: "11/23", value: 24 },
+    { label: "11/24", value: 42 },
+    { label: "11/25", value: 38 },
+    { label: "11/26", value: 31 },
+  ]
+  const channelVolumeTrend = [
+    { label: "11/20", value: 64 },
+    { label: "11/21", value: 78 },
+    { label: "11/22", value: 52 },
+    { label: "11/23", value: 61 },
+    { label: "11/24", value: 94 },
+    { label: "11/25", value: 86 },
+    { label: "11/26", value: 74 },
+  ]
+  const directRateTrend = [
+    { label: "W1", value: Math.max(alwaysOnRate - 6, 20) },
+    { label: "W2", value: Math.max(alwaysOnRate - 4, 25) },
+    { label: "W3", value: Math.max(alwaysOnRate - 2, 30) },
+    { label: "W4", value: alwaysOnRate },
+    { label: "W5", value: alwaysOnRate },
+    { label: "W6", value: alwaysOnRate },
+  ]
+
   return (
-    <section className="settings-summary-grid" aria-label={tl("通知规则概况")}>
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("已配置规则")}</div>
-          <div className="settings-summary-value financial-number">
-            {total} {tl("条")}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={total}
-          items={[
-            { label: tl("高优先级"), count: highCount, tone: "danger" },
-            { label: tl("中优先级"), count: mediumCount, tone: "warning" },
-            { label: tl("常规通知"), count: lowCount, tone: "info" },
-          ]}
-        />
-      </FrostCard>
+    <section
+      className="settings-summary-grid"
+      data-cols="3"
+      aria-label={tl("通知规则概况")}
+    >
+      <SparklineKpiCard
+        featured
+        label={tl("已配置路由规则")}
+        value={`${total} ${tl("条")}`}
+        formatHoverValue={(v) => `${v} ${tl("次命中")}`}
+        badge={`${tl("高优先级")} ${highCount}`}
+        badgeTone="danger"
+        note={tl("中优 {{medium}} · 常规 {{low}}（柱状为近 7 日触发量）", {
+          medium: mediumCount,
+          low: lowCount,
+        })}
+        data={ruleHitTrend}
+        variant="bar"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">{tl("通道启用分布")}</div>
-        <SummaryMiniBars
-          items={[
-            { label: tl("站内信"), value: inAppCount, max: Math.max(total, 1) },
-            { label: tl("邮件"), value: emailCount, max: Math.max(total, 1) },
-            { label: tl("群机器人"), value: botCount, max: Math.max(total, 1) },
-          ]}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("多通道推送绑定")}
+        value={`${activeBindings} ${tl("项")}`}
+        formatHoverValue={(v) => `${v} ${tl("条推送")}`}
+        badge={`${tl("群机器人")} ${botCount}`}
+        badgeTone="info"
+        note={tl("站内信 {{inApp}} · 邮件 {{email}} · 群机器人 {{bot}}", {
+          inApp: inAppCount,
+          email: emailCount,
+          bot: botCount,
+        })}
+        data={channelVolumeTrend}
+        variant="area"
+        color="var(--chart-2)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("全天候实时推送")}</div>
-            <div className="settings-summary-value financial-number">
-              {alwaysOnCount} / {total}
-            </div>
-            <p className="settings-summary-note">
-              {tl("高优先级告警默认不静默，24 小时实时触达")}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={alwaysOnRate}
-            tone="info"
-            label={tl("全天候实时推送")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("24h 实时直达占比")}
+        value={`${alwaysOnRate}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={`${alwaysOnCount}/${total}`}
+        badgeTone="success"
+        note={tl("高优先级告警默认不静默，24 小时实时触达")}
+        data={directRateTrend}
+        variant="line"
+        color="var(--chart-3)"
+      />
     </section>
   )
 }

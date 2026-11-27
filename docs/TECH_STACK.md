@@ -27,7 +27,7 @@ TypeScript 的 `target` 与 `lib` 统一使用 ES2024。Demo 和 Starter 的浏�
 | 变体 | class-variance-authority / `cn` | 0.7.1 / ^0.5.2 | `lib/utils.ts` 重导出 `cn` |
 | 动画 | motion | 14.14.0 | `LazyMotion` + `domAnimation`；不使用 layout 动画 |
 | 动画样式 | tw-animate-css | 1.4.0 | |
-| 图表 | recharts | 3.8.0（默认 catalog 声明 `^3.8.0`，lockfile 锁定） | 与 `components/ui/chart.tsx` 配套 |
+| 图表 | Bklit UI（`d3-shape` / `d3-scale` / `d3-array` + `motion`） | 源码内置于 `packages/ui/src/components/charts/` | 原生 SVG + Motion 驱动，经 `@marismoon/ui/charts` 统一导出 |
 | 表格 | `@tanstack/react-table` | 9.3.1 | 经 `useDataTable` 封装 |
 | 数据 | `@tanstack/react-query` | 5.108.1 | Mock 服务查询 |
 | 路由 | react-router | 8.5.2 | `createBrowserRouter` + `lazy` |
@@ -43,11 +43,11 @@ TypeScript 的 `target` 与 `lib` 统一使用 ES2024。Demo 和 Starter 的浏�
 - **图标**：lucide-react、`@tabler/*`、`@phosphor-icons/*`、`@hugeicons/*`、`@remixicon/*`、react-icons（ESLint 已禁止）。只用 `@marismoon/ui/icons`（Solar）。
 - **样式方案**：styled-components、emotion、CSS Modules、Sass/Less、Tailwind v3 配置文件（`tailwind.config.js`）、其他 UI 库（Ant Design、MUI、Chakra、Mantine）。
 - **动画**：framer-motion（已由 `motion` 取代）、GSAP、react-spring（与「无弹簧回弹」冲突）。
-- **表格/图表**：ag-grid、react-table v7/8、echarts、chart.js、visx（与 TanStack Table + recharts 重复）。
+- **表格/图表**：ag-grid、react-table v7/8、recharts、echarts、chart.js、visx（与 TanStack Table + Bklit UI 图表重复）。
 - **状态/请求**：Redux、MobX、SWR、axios（服务端状态用 React Query，原生 `fetch`）。
 - **路由**：react-router-dom（v8 起合并为 `react-router`）。
 - **包管理**：npm、yarn。
 
 ## 版本策略
 
-Catalog 升级、审计与临时覆盖的操作步骤见[版本治理](VERSIONING.md)。升级 recharts 前核对共享 `chart.tsx`。
+Catalog 升级、审计与临时覆盖的操作步骤见[版本治理](VERSIONING.md)。升级 `d3-*` 或同步 Bklit 上游源码前核对 `packages/ui/src/components/charts/`。

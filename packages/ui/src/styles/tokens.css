@@ -139,7 +139,7 @@
   --sidebar-radius: 1.375rem;
   /* A pill at every row height, like buttons and fields. */
   --sidebar-item-radius: 9999px;
-  --sidebar-item-height: 2.375rem;
+  --sidebar-item-height: var(--control-size-dense);
   --sidebar-leaf-height: 1.75rem;
   --surface-highlight: rgb(255 255 255 / 57%);
   --sidebar-highlight: color-mix(

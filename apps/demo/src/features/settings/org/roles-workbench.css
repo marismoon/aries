@@ -1,3 +1,12 @@
+.roles-search {
+  height: var(--control-size-dense);
+}
+
+.roles-search > input {
+  display: block;
+  height: 100%;
+}
+
 /* Align custom roots with the protected root without shifting its children. */
 .roles-directory-roots > li > .dept-tree-row > .nav-tree-item {
   gap: 10px;

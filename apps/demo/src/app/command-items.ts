@@ -268,7 +268,16 @@ const pages: readonly CommandItem[] = [
         "对话框、抽屉、提示",
         workspacePages["components-overlay"].path,
       ],
-      ["数据展示", "表格、图表", workspacePages["components-data"].path],
+      [
+        "数据展示",
+        "表格、轮播、可调整面板",
+        workspacePages["components-data"].path,
+      ],
+      [
+        "图表汇总",
+        "折线、面积、柱状、饼图、雷达",
+        workspacePages["components-charts"].path,
+      ],
       ["对话与 AI", "气泡、标记、附件", workspacePages["components-ai"].path],
     ] as const
   ).map(([title, description, path]) => ({

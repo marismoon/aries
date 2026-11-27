@@ -69,11 +69,7 @@ import type {
   DemoMember,
   MemberStatus,
 } from "@/shared/types/workspace-settings"
-import {
-  SummaryMiniBars,
-  SummaryRingGauge,
-  SummarySegmentedBar,
-} from "../SettingsSummaryVisuals"
+import { SparklineKpiCard } from "../SettingsSummaryVisuals"
 import { collectDescendantIds, OrgDepartmentTree } from "./OrgDepartmentTree"
 import {
   OrganizationDeleteDialog,
@@ -116,52 +112,103 @@ export function MembersSummary() {
   const twoFaRate =
     activeCount > 0 ? Math.round((twoFaActiveCount / activeCount) * 100) : 0
 
-  const roleCounts = store.roles.slice(0, 4).map((role) => ({
-    label: tl(role.name),
-    value: store.members.filter((m) => m.roleId === role.id).length,
-    max: Math.max(total, 1),
-  }))
+  const headcountTrend = [
+    { label: "W1", value: Math.max(total - 5, 1) },
+    { label: "W2", value: Math.max(total - 4, 1) },
+    { label: "W3", value: Math.max(total - 3, 1) },
+    { label: "W4", value: Math.max(total - 2, 1) },
+    { label: "W5", value: Math.max(total - 1, 1) },
+    { label: "W6", value: total },
+  ]
+  const weeklyLoginTrend = [
+    { label: "11/20", value: Math.max(activeCount - 2, 1) },
+    { label: "11/21", value: Math.max(activeCount - 1, 1) },
+    { label: "11/22", value: Math.max(activeCount - 3, 1) },
+    { label: "11/23", value: Math.max(activeCount - 2, 1) },
+    { label: "11/24", value: activeCount },
+    { label: "11/25", value: Math.max(activeCount - 1, 1) },
+    { label: "11/26", value: activeCount },
+  ]
+  const twoFaTrend = [
+    { label: "W1", value: Math.max(twoFaRate - 18, 40) },
+    { label: "W2", value: Math.max(twoFaRate - 14, 45) },
+    { label: "W3", value: Math.max(twoFaRate - 9, 55) },
+    { label: "W4", value: Math.max(twoFaRate - 6, 62) },
+    { label: "W5", value: Math.max(twoFaRate - 2, 70) },
+    { label: "W6", value: twoFaRate },
+  ]
+  const pendingTrend = [
+    { label: "11/20", value: invitedCount + disabledCount + 2 },
+    { label: "11/21", value: invitedCount + disabledCount + 1 },
+    { label: "11/22", value: invitedCount + disabledCount + 1 },
+    { label: "11/23", value: invitedCount + disabledCount },
+    { label: "11/24", value: invitedCount + disabledCount + 1 },
+    { label: "11/25", value: invitedCount + disabledCount },
+    { label: "11/26", value: invitedCount + disabledCount },
+  ]
 
   return (
-    <section className="settings-summary-grid" aria-label={tl("成员概况")}>
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("成员总数")}</div>
-          <div className="settings-summary-value financial-number">
-            {total} {tl("人")}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={total}
-          items={[
-            { label: tl("正常"), count: activeCount, tone: "success" },
-            { label: tl("待激活"), count: invitedCount, tone: "info" },
-            { label: tl("已禁用"), count: disabledCount, tone: "neutral" },
-          ]}
-        />
-      </FrostCard>
+    <section
+      className="settings-summary-grid"
+      data-cols="4"
+      aria-label={tl("成员概况")}
+    >
+      <SparklineKpiCard
+        featured
+        label={tl("成员总数")}
+        value={`${total} ${tl("人")}`}
+        formatHoverValue={(v) => `${v} ${tl("人")}`}
+        badge={`${tl("正常")} ${activeCount}`}
+        badgeTone="success"
+        note={tl("待激活 {{invited}} · 已禁用 {{disabled}}", {
+          invited: invitedCount,
+          disabled: disabledCount,
+        })}
+        data={headcountTrend}
+        variant="area"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("二次验证覆盖率")}</div>
-            <div className="settings-summary-value financial-number">
-              {twoFaActiveCount} / {activeCount}
-            </div>
-            <p className="settings-summary-note">{tl("活跃成员")}</p>
-          </div>
-          <SummaryRingGauge
-            percent={twoFaRate}
-            tone={twoFaRate >= 80 ? "success" : "warning"}
-            label={tl("二次验证覆盖率")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("7 日活跃登录")}
+        value={`${activeCount} ${tl("人")}`}
+        formatHoverValue={(v) => `${v} ${tl("人")}`}
+        badge="+11.4%"
+        badgeTone="info"
+        note={tl("近 7 日日均活跃席位")}
+        data={weeklyLoginTrend}
+        variant="line"
+        color="var(--chart-2)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">{tl("角色人数分布")}</div>
-        <SummaryMiniBars items={roleCounts} />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("二次验证覆盖率")}
+        value={`${twoFaRate}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={`${twoFaActiveCount}/${activeCount}`}
+        badgeTone={twoFaRate >= 80 ? "success" : "warning"}
+        note={tl("活跃成员 2FA 合规趋势")}
+        data={twoFaTrend}
+        variant="area"
+        color={
+          twoFaRate >= 80 ? "var(--chart-positive)" : "var(--chart-warning)"
+        }
+      />
+
+      <SparklineKpiCard
+        label={tl("待激活与异常账号")}
+        value={`${invitedCount + disabledCount} ${tl("人")}`}
+        formatHoverValue={(v) => `${v} ${tl("人")}`}
+        badge={invitedCount > 0 ? tl("待跟进") : tl("无积压")}
+        badgeTone={invitedCount > 0 ? "warning" : "success"}
+        note={tl("待激活 {{invited}} · 已禁用 {{disabled}}", {
+          invited: invitedCount,
+          disabled: disabledCount,
+        })}
+        data={pendingTrend}
+        variant="bar"
+        color="var(--chart-3)"
+      />
     </section>
   )
 }
@@ -441,7 +488,7 @@ export function MembersPage() {
             </div>
             <div className="bills-toolbar-fields" role="search">
               <div
-                className="bills-search field-surface"
+                className="bills-search data-table-search field-surface"
                 data-field-focus="quiet"
               >
                 <label className="sr-only" htmlFor={searchId}>

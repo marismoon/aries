@@ -167,18 +167,20 @@
   position: absolute;
   top: 6px;
   right: 6px;
-  min-width: 15px;
-  height: 15px;
-  padding-inline: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 12px;
+  height: 12px;
+  padding-inline: 3px;
   border-radius: 9999px;
   background: var(--destructive);
   color: var(--destructive-foreground);
-  font-size: 0.625rem;
+  font-size: 0.5rem;
   font-weight: 700;
-  line-height: 15px;
-  text-align: center;
+  line-height: 1;
   pointer-events: none;
-  box-shadow: 0 0 0 2px var(--background);
+  box-shadow: 0 0 0 1.5px var(--background);
 }
 
 .user-inbox-popover {

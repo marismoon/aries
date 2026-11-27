@@ -1,3 +1,4 @@
+import { MeterPlot } from "@/shared/charts/BusinessPlots"
 import { useMemo, useState } from "react"
 
 import { DataTable } from "@marismoon/ui/shared/DataTable"
@@ -8,9 +9,8 @@ import {
   useDataTable,
 } from "@marismoon/ui/shared/use-data-table"
 import {
-  SummaryMiniBars,
-  SummaryRingGauge,
-  SummarySegmentedBar,
+  RingKpiCard,
+  SparklineKpiCard,
 } from "@/features/settings/SettingsSummaryVisuals"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import { AnalyticsBarCard, AnalyticsTrendCard } from "./AnalyticsCharts"
@@ -50,13 +50,11 @@ function LoadMeter({ value }: { value: number }) {
   return (
     <div className="analytics-meter">
       <span className="text-xs font-semibold financial-number">{value}%</span>
-      <div className="analytics-meter-track">
-        <div
-          className="analytics-meter-fill"
-          data-tone={tone}
-          style={{ width: `${Math.min(value, 100)}%` }}
-        />
-      </div>
+      <MeterPlot
+        value={value}
+        label={`${value}%`}
+        color={tone ? `var(--${tone})` : "var(--chart-1)"}
+      />
     </div>
   )
 }
@@ -71,75 +69,82 @@ export function SystemInfraSummary() {
     clusterNodeRows.reduce((s, r) => s + r.memoryPct, 0) /
       clusterNodeRows.length
   )
+  const peakGpu = Math.max(...clusterNodeRows.map((r) => r.gpuPct))
+  const healthyClusters = clusterNodeRows.filter(
+    (r) => r.status === "healthy"
+  ).length
+
+  const podBars = clusterNodeRows.map((r) => ({
+    label: r.cluster,
+    value: r.podCount,
+  }))
+  const cpuTrend = (systemLoadSeries["7d"][0]?.values ?? []).map((v, i) => ({
+    label: rangeDaysLabels["7d"][i] ?? `D${i + 1}`,
+    value: v,
+  }))
+  const memTrend = (systemLoadSeries["7d"][1]?.values ?? []).map((v, i) => ({
+    label: rangeDaysLabels["7d"][i] ?? `D${i + 1}`,
+    value: v,
+  }))
+  const gpuTrend = (systemLoadSeries["7d"][2]?.values ?? []).map((v, i) => ({
+    label: rangeDaysLabels["7d"][i] ?? `D${i + 1}`,
+    value: v,
+  }))
 
   return (
-    <section className="settings-summary-grid" aria-label={tl("系统资源概况")}>
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">
-            {tl("运行中工作负载（Pod）")}
-          </div>
-          <div className="settings-summary-value financial-number">
-            {totalPods}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={clusterNodeRows.length}
-          items={[
-            {
-              label: tl("健康集群"),
-              count: clusterNodeRows.filter((r) => r.status === "healthy")
-                .length,
-              tone: "success",
-            },
-            {
-              label: tl("高负载"),
-              count: clusterNodeRows.filter((r) => r.status === "busy").length,
-              tone: "info",
-            },
-            {
-              label: tl("资源预警"),
-              count: clusterNodeRows.filter((r) => r.status === "warning")
-                .length,
-              tone: "warning",
-            },
-          ]}
-        />
-      </FrostCard>
+    <section
+      className="settings-summary-grid"
+      data-cols="4"
+      aria-label={tl("系统资源概况")}
+    >
+      <SparklineKpiCard
+        featured
+        label={tl("运行中工作负载（Pod）")}
+        value={totalPods}
+        formatHoverValue={(v) => `${v} Pods`}
+        badge={`${tl("健康集群")} ${healthyClusters}/${clusterNodeRows.length}`}
+        badgeTone="success"
+        note={tl("悬停柱状查看各计算集群 Pod 实例分布")}
+        data={podBars}
+        variant="bar"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">
-          {tl("各集群内存水位（%）")}
-        </div>
-        <SummaryMiniBars
-          items={clusterNodeRows.map((r) => ({
-            label: r.cluster,
-            value: r.memoryPct,
-            max: 100,
-          }))}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("集群平均 CPU 水位")}
+        value={`${avgCpu}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={tl("负载平稳")}
+        badgeTone="info"
+        note={tl("近 7 日跨区域计算集群 CPU 利用率走势")}
+        data={cpuTrend}
+        variant="line"
+        color="var(--chart-2)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">
-              {tl("集群平均 CPU / 内存")}
-            </div>
-            <div className="settings-summary-value financial-number">
-              {avgCpu}% / {avgMem}%
-            </div>
-            <p className="settings-summary-note">
-              {tl("gpu-infer-shanghai GPU 水位达 92%，建议开启弹性缩容")}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={avgMem}
-            tone={avgMem >= 80 ? "warning" : "info"}
-            label={tl("集群平均内存")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("集群平均内存水位")}
+        value={`${avgMem}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={avgMem >= 80 ? tl("偏高") : tl("健康")}
+        badgeTone={avgMem >= 80 ? "warning" : "success"}
+        note={tl("近 7 日核心节点内存水位变化")}
+        data={memTrend}
+        variant="area"
+        color="var(--chart-3)"
+      />
+
+      <SparklineKpiCard
+        label={tl("GPU 推理节点峰值")}
+        value={`${peakGpu}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={tl("水位预警")}
+        badgeTone="warning"
+        note={tl("gpu-infer-shanghai 接近上限，建议开启弹性缩容")}
+        data={gpuTrend}
+        variant="line"
+        color="var(--chart-warning)"
+      />
     </section>
   )
 }
@@ -211,7 +216,7 @@ export function SystemInfraPage() {
 
   const table = useDataTable({
     columns,
-    data: [...clusterNodeRows],
+    data: clusterNodeRows,
     getRowId: (row) => row.id,
     initialState: { pagination: { pageIndex: 0, pageSize: 10 } },
   })
@@ -287,74 +292,81 @@ export function SystemInfraPage() {
 
 export function SystemSlaSummary() {
   const tl = useUiText()
-  const avgAvail = (
-    serviceSlaRows.reduce((s, r) => s + r.availabilityPct, 0) /
-    serviceSlaRows.length
-  ).toFixed(2)
+  const avgAvail = Number(
+    (
+      serviceSlaRows.reduce((s, r) => s + r.availabilityPct, 0) /
+      serviceSlaRows.length
+    ).toFixed(2)
+  )
   const avgBudget = Math.round(
     serviceSlaRows.reduce((s, r) => s + r.errorBudgetLeftPct, 0) /
       serviceSlaRows.length
+  )
+  const avgMttr = Math.round(
+    serviceSlaRows.reduce((s, r) => s + r.mttrMin, 0) / serviceSlaRows.length
   )
   const healthyCount = serviceSlaRows.filter(
     (r) => r.status === "healthy"
   ).length
 
+  const availTrend = [
+    { label: "11/20", value: 99.91 },
+    { label: "11/21", value: 99.94 },
+    { label: "11/22", value: 99.96 },
+    { label: "11/23", value: 99.89 },
+    { label: "11/24", value: 99.93 },
+    { label: "11/25", value: 99.95 },
+    { label: "11/26", value: avgAvail },
+  ]
+  const mttrBars = serviceSlaRows.map((r) => ({
+    label: tl(r.service),
+    value: r.mttrMin,
+  }))
+
   return (
     <section
       className="settings-summary-grid"
+      data-cols="3"
       aria-label={tl("稳定性与 SLA 概况")}
     >
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("综合服务可用性")}</div>
-          <div className="settings-summary-value financial-number">
-            {avgAvail}%
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={serviceSlaRows.length}
-          items={[
-            { label: tl("达标服务"), count: healthyCount, tone: "success" },
-            {
-              label: tl("预算消耗偏快"),
-              count: serviceSlaRows.length - healthyCount,
-              tone: "warning",
-            },
-          ]}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        featured
+        label={tl("综合服务可用性")}
+        value={`${avgAvail}%`}
+        formatHoverValue={(v) => `${v.toFixed(2)}%`}
+        badge={`${tl("达标服务")} ${healthyCount}/${serviceSlaRows.length}`}
+        badgeTone="success"
+        note={tl("Tier 0 核心账务与认证服务均高于 99.95% SLA")}
+        data={availTrend}
+        variant="line"
+        color="var(--chart-positive)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">{tl("剩余错误预算（%）")}</div>
-        <SummaryMiniBars
-          items={serviceSlaRows.map((r) => ({
-            label: tl(r.service),
-            value: r.errorBudgetLeftPct,
-            max: 100,
-          }))}
-        />
-      </FrostCard>
+      <RingKpiCard
+        label={tl("核心服务剩余错误预算")}
+        value={`${avgBudget}%`}
+        badge={avgBudget >= 50 ? tl("预算健康") : tl("消耗偏快")}
+        badgeTone={avgBudget >= 50 ? "success" : "warning"}
+        note={tl("多环展示各核心服务当月剩余错误预算")}
+        rings={serviceSlaRows.slice(0, 3).map((r, i) => ({
+          label: tl(r.service),
+          value: r.errorBudgetLeftPct,
+          maxValue: 100,
+          color: `var(--chart-${i + 1})`,
+        }))}
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">
-              {tl("平均剩余错误预算")}
-            </div>
-            <div className="settings-summary-value financial-number">
-              {avgBudget}%
-            </div>
-            <p className="settings-summary-note">
-              {tl("Tier 0 核心账务与认证服务均高于 99.95% SLA")}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={avgBudget}
-            tone={avgBudget >= 50 ? "success" : "warning"}
-            label={tl("平均剩余错误预算")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("平均恢复耗时 MTTR")}
+        value={`${avgMttr} min`}
+        formatHoverValue={(v) => `${v} min`}
+        badge="-14%"
+        badgeTone="info"
+        note={tl("悬停柱状查看各核心服务平均故障恢复耗时")}
+        data={mttrBars}
+        variant="bar"
+        color="var(--chart-2)"
+      />
     </section>
   )
 }
@@ -421,7 +433,7 @@ export function SystemSlaPage() {
 
   const table = useDataTable({
     columns,
-    data: [...serviceSlaRows],
+    data: serviceSlaRows,
     getRowId: (row) => row.id,
     initialState: { pagination: { pageIndex: 0, pageSize: 10 } },
   })

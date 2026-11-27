@@ -1,18 +1,14 @@
+import { IssuedTrendPlot } from "@/shared/charts/IssuedTrendPlot"
 import { useState, type CSSProperties } from "react"
 
 import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@marismoon/ui/ui/tabs"
-import { formatActivityTime, formatWan } from "@marismoon/ui/lib/format"
-import { defaultActivity, issuedTrend } from "@/shared/mocks/overview"
+import { formatActivityTime } from "@marismoon/ui/lib/format"
+import { defaultActivity } from "@/shared/mocks/overview"
 import type { ActivityEvent } from "@/shared/types/overview"
 
 import "./overview-workflow.css"
 import { useUiText } from "@/lib/i18n/use-ui-text"
-
-const chartMax =
-  Math.ceil(Math.max(...issuedTrend.map(({ amount }) => amount)) / 500_000) *
-  500_000
-const ticks = [chartMax, 0]
 
 export function ActivityTimeline({
   addedActivities,
@@ -78,36 +74,7 @@ export function ActivityTimeline({
         <TabsContent value="trend" className="activity-viewport">
           <figure className="activity-chart">
             <figcaption>{tl("出账金额（CNY 万元）")}</figcaption>
-            <div className="activity-chart-grid">
-              <div
-                className="activity-chart-ticks financial-number"
-                aria-hidden="true"
-              >
-                {ticks.map((tick) => (
-                  <span key={tick}>{formatWan(tick)}</span>
-                ))}
-              </div>
-              <ol
-                className="activity-chart-bars"
-                aria-label={tl("每月出账金额")}
-              >
-                {issuedTrend.map(({ month, amount }) => (
-                  <li key={month}>
-                    <span className="activity-chart-amount financial-number">
-                      {formatWan(amount)}
-                      <span className="sr-only"> {tl("万元")}</span>
-                    </span>
-                    <div className="activity-chart-column" aria-hidden="true">
-                      <div
-                        className="activity-chart-bar"
-                        style={{ height: `${(amount / chartMax) * 100}%` }}
-                      />
-                    </div>
-                    <span className="activity-chart-month">{tl(month)}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
+            <IssuedTrendPlot className="min-h-0" />
           </figure>
         </TabsContent>
       </Tabs>

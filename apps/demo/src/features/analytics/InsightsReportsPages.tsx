@@ -35,9 +35,8 @@ import {
 } from "@marismoon/ui/ui/select"
 import { Switch } from "@marismoon/ui/ui/switch"
 import {
-  SummaryMiniBars,
-  SummaryRingGauge,
-  SummarySegmentedBar,
+  RingKpiCard,
+  SparklineKpiCard,
 } from "@/features/settings/SettingsSummaryVisuals"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import {
@@ -70,62 +69,75 @@ export function AiInsightsSummary() {
   const { insights } = useAnalyticsStore()
   const openCount = insights.filter((i) => i.status === "open").length
   const adoptedCount = insights.filter((i) => i.status === "adopted").length
-  const dismissedCount = insights.filter((i) => i.status === "dismissed").length
   const avgConfidence = Math.round(
     insights.reduce((s, i) => s + i.confidencePct, 0) /
       Math.max(insights.length, 1)
   )
+  const adoptRate = Math.round(
+    (adoptedCount / Math.max(insights.length, 1)) * 100
+  )
+
+  const domainBars = (["platform", "backend", "system", "cost"] as const).map(
+    (domain) => ({
+      label: tl(domainLabels[domain]),
+      value: insights.filter((i) => i.domain === domain).length,
+    })
+  )
+  const adoptTrend = [
+    { label: "W1", value: 32 },
+    { label: "W2", value: 40 },
+    { label: "W3", value: 46 },
+    { label: "W4", value: 52 },
+    { label: "W5", value: 58 },
+    { label: "W6", value: Math.max(adoptRate, 25) },
+  ]
 
   return (
-    <section className="settings-summary-grid" aria-label={tl("智能洞察概况")}>
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("跨维度智能洞察")}</div>
-          <div className="settings-summary-value financial-number">
-            {insights.length} {tl("条")}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={Math.max(insights.length, 1)}
-          items={[
-            { label: tl("待评估"), count: openCount, tone: "info" },
-            { label: tl("已采纳"), count: adoptedCount, tone: "success" },
-            { label: tl("已忽略"), count: dismissedCount, tone: "neutral" },
-          ]}
-        />
-      </FrostCard>
+    <section
+      className="settings-summary-grid"
+      data-cols="3"
+      aria-label={tl("智能洞察概况")}
+    >
+      <SparklineKpiCard
+        featured
+        label={tl("跨维度智能洞察")}
+        value={`${insights.length} ${tl("条")}`}
+        formatHoverValue={(v) => `${v} ${tl("条")}`}
+        badge={`${tl("待评估")} ${openCount}`}
+        badgeTone="info"
+        note={tl("覆盖平台、后台、系统与成本四维异常归因")}
+        data={domainBars}
+        variant="bar"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">{tl("覆盖分析维度")}</div>
-        <SummaryMiniBars
-          items={(["platform", "backend", "system", "cost"] as const).map(
-            (domain) => ({
-              label: tl(domainLabels[domain]),
-              value: insights.filter((i) => i.domain === domain).length,
-              max: Math.max(insights.length, 1),
-            })
-          )}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("优化建议采纳率")}
+        value={`${adoptRate}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={`${adoptedCount}/${insights.length}`}
+        badgeTone="success"
+        note={tl("近 6 周 AI 降本与性能优化建议采纳趋势")}
+        data={adoptTrend}
+        variant="area"
+        color="var(--chart-positive)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("归因模型置信度")}</div>
-            <div className="settings-summary-value financial-number">
-              {avgConfidence}%
-            </div>
-            <p className="settings-summary-note">
-              {tl("基于近 30 天指标基线与异常关联计算")}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={avgConfidence}
-            tone="success"
-            label={tl("归因模型置信度")}
-          />
-        </div>
-      </FrostCard>
+      <RingKpiCard
+        label={tl("归因模型置信度")}
+        value={`${avgConfidence}%`}
+        badge={tl("近 30 日基线")}
+        badgeTone="info"
+        note={tl("基于近 30 天指标基线与异常关联计算")}
+        rings={[
+          {
+            label: tl("归因模型置信度"),
+            value: avgConfidence,
+            maxValue: 100,
+            color: "var(--chart-2)",
+          },
+        ]}
+      />
     </section>
   )
 }
@@ -266,61 +278,58 @@ export function CustomReportsSummary() {
   const { reports } = useAnalyticsStore()
   const enabledCount = reports.filter((r) => r.enabled).length
   const pct = Math.round((enabledCount / Math.max(reports.length, 1)) * 100)
+  const pdfCount = reports.filter((r) => r.format === "PDF").length
+  const xlsxCount = reports.filter((r) => r.format === "XLSX").length
+  const csvCount = reports.filter((r) => r.format === "CSV").length
+
+  const deliveryBars = [
+    { label: "11/20", value: 6 },
+    { label: "11/21", value: 8 },
+    { label: "11/22", value: 4 },
+    { label: "11/23", value: 9 },
+    { label: "11/24", value: 11 },
+    { label: "11/25", value: 7 },
+    { label: "11/26", value: enabledCount * 2 + 3 },
+  ]
+  const autoRateTrend = [
+    { label: "W1", value: Math.max(pct - 18, 40) },
+    { label: "W2", value: Math.max(pct - 12, 48) },
+    { label: "W3", value: Math.max(pct - 8, 56) },
+    { label: "W4", value: Math.max(pct - 4, 64) },
+    { label: "W5", value: Math.max(pct - 2, 70) },
+    { label: "W6", value: pct },
+  ]
 
   return (
     <section
       className="settings-summary-grid"
+      data-cols="2"
       aria-label={tl("自定义报表概况")}
     >
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("已配置报表模板")}</div>
-          <div className="settings-summary-value financial-number">
-            {reports.length} {tl("份")}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={Math.max(reports.length, 1)}
-          items={[
-            { label: tl("定时运行中"), count: enabledCount, tone: "success" },
-            {
-              label: tl("已暂停"),
-              count: reports.length - enabledCount,
-              tone: "neutral",
-            },
-          ]}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        featured
+        label={tl("定时报表模板与交付量")}
+        value={`${enabledCount} / ${reports.length} ${tl("份")}`}
+        formatHoverValue={(v) => `${v} ${tl("次快照")}`}
+        badge={`PDF ${pdfCount} · XLSX ${xlsxCount} · CSV ${csvCount}`}
+        badgeTone="info"
+        note={tl("近 7 日自动生成并推送的最新报表快照次数")}
+        data={deliveryBars}
+        variant="bar"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">{tl("导出格式分布")}</div>
-        <SummaryMiniBars
-          items={(["PDF", "XLSX", "CSV"] as const).map((fmt) => ({
-            label: fmt,
-            value: reports.filter((r) => r.format === fmt).length,
-            max: Math.max(reports.length, 1),
-          }))}
-        />
-      </FrostCard>
-
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("定时任务启用率")}</div>
-            <div className="settings-summary-value financial-number">
-              {enabledCount} / {reports.length}
-            </div>
-            <p className="settings-summary-note">
-              {tl("支持随时手动触发立即生成最新快照")}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={pct}
-            tone="info"
-            label={tl("定时任务启用率")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("定时任务自动化覆盖率")}
+        value={`${pct}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={tl("支持手动触发")}
+        badgeTone="success"
+        note={tl("支持随时手动触发立即生成最新快照")}
+        data={autoRateTrend}
+        variant="area"
+        color="var(--chart-2)"
+      />
     </section>
   )
 }

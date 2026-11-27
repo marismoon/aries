@@ -11,9 +11,8 @@ import {
 } from "@marismoon/ui/shared/use-data-table"
 import { Input } from "@marismoon/ui/ui/input"
 import {
-  SummaryMiniBars,
-  SummaryRingGauge,
-  SummarySegmentedBar,
+  RingKpiCard,
+  SparklineKpiCard,
 } from "@/features/settings/SettingsSummaryVisuals"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import { AnalyticsBarCard, AnalyticsTrendCard } from "./AnalyticsCharts"
@@ -58,65 +57,102 @@ export function BackendApiSummary() {
   const tl = useUiText()
   const totalQps = apiEndpointRows.reduce((s, r) => s + r.qps, 0)
   const healthy = apiEndpointRows.filter((r) => r.status === "healthy").length
-  const degraded = apiEndpointRows.filter((r) => r.status === "degraded").length
-  const critical = apiEndpointRows.filter((r) => r.status === "critical").length
+  const avgP95 = Math.round(
+    apiEndpointRows.reduce((s, r) => s + r.p95Ms, 0) / apiEndpointRows.length
+  )
   const avgAvail = Number(
     (
       apiEndpointRows.reduce((s, r) => s + r.availabilityPct, 0) /
       apiEndpointRows.length
     ).toFixed(2)
   )
+  const avgErr = Number(
+    (
+      apiEndpointRows.reduce((s, r) => s + r.errorRatePct, 0) /
+      apiEndpointRows.length
+    ).toFixed(2)
+  )
+
+  const qpsTrend = (backendQpsSeries["7d"][0]?.values ?? []).map((v, i) => ({
+    label: rangeDaysLabels["7d"][i] ?? `D${i + 1}`,
+    value: v,
+  }))
+  const p95Bars = apiEndpointRows.map((r) => ({
+    label: r.service,
+    value: r.p95Ms,
+  }))
+  const availTrend = [
+    { label: "11/20", value: 99.82 },
+    { label: "11/21", value: 99.88 },
+    { label: "11/22", value: 99.91 },
+    { label: "11/23", value: 99.74 },
+    { label: "11/24", value: 99.86 },
+    { label: "11/25", value: 99.9 },
+    { label: "11/26", value: avgAvail },
+  ]
+  const errTrend = [
+    { label: "11/20", value: 0.24 },
+    { label: "11/21", value: 0.19 },
+    { label: "11/22", value: 0.15 },
+    { label: "11/23", value: 0.48 },
+    { label: "11/24", value: 0.31 },
+    { label: "11/25", value: 0.22 },
+    { label: "11/26", value: avgErr },
+  ]
 
   return (
-    <section className="settings-summary-grid" aria-label={tl("后台接口概况")}>
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("实时网关总 QPS")}</div>
-          <div className="settings-summary-value financial-number">
-            {totalQps.toLocaleString("en-US")}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={apiEndpointRows.length}
-          items={[
-            { label: tl("正常接口"), count: healthy, tone: "success" },
-            { label: tl("延迟升高"), count: degraded, tone: "warning" },
-            { label: tl("异常波动"), count: critical, tone: "danger" },
-          ]}
-        />
-      </FrostCard>
+    <section
+      className="settings-summary-grid"
+      data-cols="4"
+      aria-label={tl("后台接口概况")}
+    >
+      <SparklineKpiCard
+        featured
+        label={tl("实时网关总 QPS")}
+        value={totalQps.toLocaleString("en-US")}
+        badge={`${tl("正常接口")} ${healthy}/${apiEndpointRows.length}`}
+        badgeTone="success"
+        note={tl("近 7 日实时网关峰值吞吐走势")}
+        data={qpsTrend}
+        variant="area"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">
-          {tl("接口 P95 延迟（ms）")}
-        </div>
-        <SummaryMiniBars
-          items={apiEndpointRows.slice(0, 4).map((r) => ({
-            label: r.service,
-            value: r.p95Ms,
-            max: 450,
-          }))}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("核心接口 P95 延迟")}
+        value={`${avgP95} ms`}
+        formatHoverValue={(v) => `${v} ms`}
+        badge={tl("按服务分布")}
+        badgeTone="info"
+        note={tl("悬停柱状查看各微服务 P95 响应耗时")}
+        data={p95Bars}
+        variant="bar"
+        color="var(--chart-2)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("核心接口可用率")}</div>
-            <div className="settings-summary-value financial-number">
-              {avgAvail}%
-            </div>
-            <p className="settings-summary-note">
-              {tl("ai-gateway 存在 1.18% 上游限流重试")}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={Math.round(avgAvail)}
-            tone="success"
-            label={tl("核心接口可用率")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("核心接口可用率")}
+        value={`${avgAvail}%`}
+        formatHoverValue={(v) => `${v.toFixed(2)}%`}
+        badge="SLA 99.9%"
+        badgeTone="success"
+        note={tl("近 7 日网关核心路由可用性走势")}
+        data={availTrend}
+        variant="line"
+        color="var(--chart-positive)"
+      />
+
+      <SparklineKpiCard
+        label={tl("综合异常错误率")}
+        value={`${avgErr}%`}
+        formatHoverValue={(v) => `${v.toFixed(2)}%`}
+        badge={tl("上游限流")}
+        badgeTone="danger"
+        note={tl("ai-gateway 存在 1.18% 上游限流重试")}
+        data={errTrend}
+        variant="bar"
+        color="var(--chart-negative)"
+      />
     </section>
   )
 }
@@ -248,7 +284,7 @@ export function BackendApiPage() {
           </div>
           <div className="bills-toolbar-fields" role="search">
             <div
-              className="bills-search field-surface"
+              className="bills-search data-table-search field-surface"
               data-field-focus="quiet"
             >
               <label className="sr-only" htmlFor={searchId}>
@@ -290,79 +326,82 @@ export function BackendApiPage() {
 
 export function BackendStorageSummary() {
   const tl = useUiText()
-  const totalUsedTb = (
-    storageNodeRows.reduce((s, r) => s + r.usedGb, 0) / 1024
-  ).toFixed(1)
-  const totalCapTb = (
-    storageNodeRows.reduce((s, r) => s + r.capacityGb, 0) / 1024
-  ).toFixed(1)
+  const totalUsedGb = storageNodeRows.reduce((s, r) => s + r.usedGb, 0)
+  const totalCapGb = storageNodeRows.reduce((s, r) => s + r.capacityGb, 0)
+  const totalUsedTb = (totalUsedGb / 1024).toFixed(1)
+  const totalCapTb = (totalCapGb / 1024).toFixed(1)
+  const usedPct = Math.round((totalUsedGb / Math.max(totalCapGb, 1)) * 100)
+  const totalIops = storageNodeRows.reduce((s, r) => s + r.iops, 0)
+  const totalSlow = storageNodeRows.reduce((s, r) => s + r.slowQueries24h, 0)
   const avgCacheHit = Math.round(
     storageNodeRows.reduce((s, r) => s + r.cacheHitPct, 0) /
       storageNodeRows.length
   )
 
+  const storageGrowthTrend = [
+    { label: "6月", value: Number((Number(totalUsedTb) * 0.78).toFixed(1)) },
+    { label: "7月", value: Number((Number(totalUsedTb) * 0.83).toFixed(1)) },
+    { label: "8月", value: Number((Number(totalUsedTb) * 0.88).toFixed(1)) },
+    { label: "9月", value: Number((Number(totalUsedTb) * 0.92).toFixed(1)) },
+    { label: "10月", value: Number((Number(totalUsedTb) * 0.96).toFixed(1)) },
+    { label: "11月", value: Number(totalUsedTb) },
+  ]
+  const iopsBars = storageNodeRows.map((r) => ({
+    label: r.name,
+    value: r.iops,
+  }))
+
   return (
     <section
       className="settings-summary-grid"
+      data-cols="3"
       aria-label={tl("数据库与存储概况")}
     >
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("已用存储总量")}</div>
-          <div className="settings-summary-value financial-number">
-            {totalUsedTb} / {totalCapTb} TB
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={storageNodeRows.length}
-          items={[
-            {
-              label: tl("健康实例"),
-              count: storageNodeRows.filter((r) => r.status === "healthy")
-                .length,
-              tone: "success",
-            },
-            {
-              label: tl("负载关注"),
-              count: storageNodeRows.filter((r) => r.status === "warning")
-                .length,
-              tone: "warning",
-            },
-          ]}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        featured
+        label={tl("已用存储总量")}
+        value={`${totalUsedTb} / ${totalCapTb} TB`}
+        formatHoverValue={(v) => `${v} TB`}
+        badge={`${usedPct}%`}
+        badgeTone={usedPct >= 80 ? "warning" : "info"}
+        note={tl("近 6 月主从库、ClickHouse 与对象存储容量走势")}
+        data={storageGrowthTrend}
+        variant="area"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">
-          {tl("存储引擎容量占用（GB）")}
-        </div>
-        <SummaryMiniBars
-          items={storageNodeRows.map((r) => ({
-            label: r.name,
-            value: r.usedGb,
-            max: 9500,
-          }))}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("存储集群总 IOPS")}
+        value={totalIops.toLocaleString("en-US")}
+        badge={`${storageNodeRows.length} ${tl("个实例")}`}
+        badgeTone="success"
+        note={tl("悬停柱状查看各存储引擎实时吞吐 IOPS")}
+        data={iopsBars}
+        variant="bar"
+        color="var(--chart-2)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("平均缓存命中率")}</div>
-            <div className="settings-summary-value financial-number">
-              {avgCacheHit}%
-            </div>
-            <p className="settings-summary-note">
-              {tl("Redis 会话网格命中率 99.4%，ClickHouse 11 条慢查询")}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={avgCacheHit}
-            tone="info"
-            label={tl("平均缓存命中率")}
-          />
-        </div>
-      </FrostCard>
+      <RingKpiCard
+        label={tl("缓存命中与容量健康")}
+        value={`${avgCacheHit}%`}
+        badge={tl("慢查询 {{count}} 条", { count: totalSlow })}
+        badgeTone={totalSlow > 10 ? "warning" : "success"}
+        note={tl("Redis 会话网格命中率 99.4%，ClickHouse 11 条慢查询")}
+        rings={[
+          {
+            label: tl("平均缓存命中率"),
+            value: avgCacheHit,
+            maxValue: 100,
+            color: "var(--chart-1)",
+          },
+          {
+            label: tl("存储容量使用率"),
+            value: usedPct,
+            maxValue: 100,
+            color: "var(--chart-3)",
+          },
+        ]}
+      />
     </section>
   )
 }
@@ -430,7 +469,7 @@ export function BackendStoragePage() {
 
   const table = useDataTable({
     columns,
-    data: [...storageNodeRows],
+    data: storageNodeRows,
     getRowId: (row) => row.id,
     initialState: { pagination: { pageIndex: 0, pageSize: 10 } },
   })

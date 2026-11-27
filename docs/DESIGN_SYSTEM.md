@@ -12,6 +12,7 @@
 | `motion.css` | 缓动/时长令牌、对话框退出、`prefers-reduced-motion`、`.shimmer-text`/`.shimmer-block` |
 | `soft-edge.css` | 滚动容器边缘渐隐（scroll-driven animation，不支持时降级） |
 | `icon-states.css` | 图标 Linear/Bold 状态切换（见 COMPONENTS.md） |
+| `bklit-charts.css` | `@marismoon/ui/charts` 图表色映射（含 `--chart-positive` / `--chart-warning` / `--chart-negative`）与磨砂 Tooltip / DatePill 样式 |
 
 ## 1. 主题与模式
 
@@ -94,7 +95,7 @@
 
 状态色：`--success` `--warning` `--danger` `--info`，及背景 `--success-bg` `--warning-bg` `--danger-bg` `--info-bg`。亮色与暗色各有一组共享默认值（信息色为蓝），与品牌撞色的主题按 §2.5 覆盖对应状态色。
 
-图表色：`--chart-1` … `--chart-5`（Tailwind 映射 `--color-chart-1…5`）。
+图表色：`--chart-1` … `--chart-5`（Tailwind 映射 `--color-chart-1…5`），以及图表专用明快状态色 `--chart-positive`、`--chart-warning`、`--chart-negative`（定义于 `bklit-charts.css`，亮色模式避免直接将深文字语义色用于图表图形）。
 
 shadcn `Sidebar` 组件的 `--sidebar*` 颜色令牌是语义令牌的别名（`--sidebar` → `--card`、`--sidebar-accent` → `--accent`、`--sidebar-border` → `--border` 等），随主题变化，不单独维护。
 
@@ -172,10 +173,10 @@ shadcn `Sidebar` 组件的 `--sidebar*` 颜色令牌是语义令牌的别名（`
 
 ## 7. 图表规则
 
-- 使用 `components/ui/chart.tsx`（`ChartContainer` + `ChartConfig`）封装 recharts 3.8.0；系列色只引用 `--chart-1…5`，不写死色值。
-- 图表卡片的外部尺寸固定，图例/Tab 切换不改变卡片高度；坐标轴刻度使用 `financial-number`；每个图表提供文字替代（`figcaption`/`aria-label`）。
-- 纯 SVG 图表的入场用 §6 的 `.chart-in-*` 工具类；悬停时其余系列降到 0.35 透明度（只变透明度，不移动），见 `overview-charts.css` 的 `data-chart-mark`。
-- 参考实现：`apps/demo/src/features/overview/components/OverviewCharts.tsx` 与 `features/settings/chart-demos.tsx`、`ChartShowcase.tsx`。
+- 统一使用 `@marismoon/ui/charts`（基于 Bklit UI 的原生 SVG + Motion 组件库），样式令牌由 `packages/ui/src/styles/bklit-charts.css` 映射至 `--chart-1…5` 与语义色，不写死色值，不使用 `dark:` 变体。
+- 图表卡片采用单层 `.surface` 结构（禁止双层卡片嵌套），外部尺寸稳定，图例/Tab 切换不改变卡片高度；坐标轴刻度使用 `financial-number`；每个图表提供文字替代（`figcaption`/`aria-label`）。
+- 概览、分析和 AI 助手使用 Bklit 的图表与系列组件渲染数据，保留业务单位、图例和无障碍数据描述。
+- 参考实现：`apps/demo/src/features/settings/bklit-chart-demos.tsx`、`ChartShowcase.tsx` 与 `apps/demo/src/features/overview/components/OverviewCharts.tsx`。
 
 ## 8. 响应式
 

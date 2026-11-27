@@ -92,6 +92,7 @@ test("英文消息规则仅在表格横向溢出时显示渠道和静默时段�
 for (const path of [
   "/overview",
   "/bills",
+  "/settings/components/charts",
   "/settings/base/login",
   "/settings/base/security",
   "/settings/base/session",
@@ -101,7 +102,14 @@ for (const path of [
     await page.addInitScript(() => localStorage.setItem("aries-language", "en"))
     await page.goto(path)
     await expect(page.locator("html")).toHaveAttribute("lang", "en")
-    await expect(page.locator("main, [role=main], body").first()).toBeVisible()
+    await expect(
+      page.getByRole("main").getByRole("heading", { level: 1 })
+    ).toBeVisible({ timeout: 20_000 })
+    if (path === "/settings/components/charts") {
+      await expect(
+        page.getByRole("group", { name: "Sparkline KPI cards" })
+      ).toBeVisible()
+    }
     await page.waitForTimeout(600)
     const leftovers = await page.evaluate(() => {
       const cjk = /[一-鿿]/

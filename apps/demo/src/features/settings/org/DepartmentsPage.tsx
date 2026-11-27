@@ -66,11 +66,7 @@ import {
   workspaceActions,
 } from "@/shared/mocks/workspace-store"
 import type { DemoDepartment } from "@/shared/types/workspace-settings"
-import {
-  SummaryMiniBars,
-  SummaryRingGauge,
-  SummarySegmentedBar,
-} from "../SettingsSummaryVisuals"
+import { SparklineKpiCard } from "../SettingsSummaryVisuals"
 import { matchesMemberSearch, MemberSearchResults } from "./MemberSearchResults"
 import {
   OrganizationDeleteDialog,
@@ -112,10 +108,23 @@ export function DepartmentsSummary() {
   const subCount = totalDepts - rootCount - level1Count
 
   const subDepts = store.departments.filter((d) => d.parentId !== null)
-  const sortedByBudget = [...subDepts]
-    .sort((a, b) => b.monthlyBudgetWan - a.monthlyBudgetWan)
-    .slice(0, 4)
-  const maxBudget = Math.max(sortedByBudget[0]?.monthlyBudgetWan ?? 1, 1)
+  const totalBudget = subDepts.reduce((sum, d) => sum + d.monthlyBudgetWan, 0)
+  const deptHeadcountBars = subDepts.slice(0, 6).map((dept) => {
+    const ids = collectDescendantIds(dept.id, store.departments)
+    return {
+      label: tl(dept.name),
+      value: store.members.filter((m) => ids.has(m.departmentId)).length,
+    }
+  })
+
+  const budgetTrend = [
+    { label: "6月", value: Math.round(totalBudget * 0.86) },
+    { label: "7月", value: Math.round(totalBudget * 0.9) },
+    { label: "8月", value: Math.round(totalBudget * 0.93) },
+    { label: "9月", value: Math.round(totalBudget * 0.96) },
+    { label: "10月", value: Math.round(totalBudget * 0.98) },
+    { label: "11月", value: totalBudget },
+  ]
 
   const totalMembers = store.members.length
   const assignedMembers = store.members.filter((m) =>
@@ -123,55 +132,59 @@ export function DepartmentsSummary() {
   ).length
   const coverageRate =
     totalMembers > 0 ? Math.round((assignedMembers / totalMembers) * 100) : 100
+  const coverageTrend = [
+    { label: "W1", value: Math.max(coverageRate - 8, 70) },
+    { label: "W2", value: Math.max(coverageRate - 6, 75) },
+    { label: "W3", value: Math.max(coverageRate - 4, 82) },
+    { label: "W4", value: Math.max(coverageRate - 2, 88) },
+    { label: "W5", value: Math.max(coverageRate - 1, 92) },
+    { label: "W6", value: coverageRate },
+  ]
 
   return (
-    <section className="settings-summary-grid" aria-label={tl("部门架构概况")}>
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("组织节点总数")}</div>
-          <div className="settings-summary-value financial-number">
-            {totalDepts} {tl("个")}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={totalDepts}
-          items={[
-            { label: tl("根组织"), count: rootCount, tone: "info" },
-            { label: tl("一级部门"), count: level1Count, tone: "success" },
-            { label: tl("二级及以下"), count: subCount, tone: "warning" },
-          ]}
-        />
-      </FrostCard>
+    <section
+      className="settings-summary-grid"
+      data-cols="3"
+      aria-label={tl("部门架构概况")}
+    >
+      <SparklineKpiCard
+        featured
+        label={tl("组织节点与层级")}
+        value={`${totalDepts} ${tl("个")}`}
+        formatHoverValue={(v) => `${v} ${tl("人")}`}
+        badge={`${tl("一级部门")} ${level1Count}`}
+        badgeTone="info"
+        note={tl("二级及以下 {{sub}} 个（柱状为各部门编制人数）", {
+          sub: subCount,
+        })}
+        data={deptHeadcountBars}
+        variant="bar"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">
-          {tl("部门月度预算分布（万元）")}
-        </div>
-        <SummaryMiniBars
-          items={sortedByBudget.map((dept) => ({
-            label: tl(dept.name),
-            value: dept.monthlyBudgetWan,
-            max: maxBudget,
-          }))}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("月度云预算池")}
+        value={`¥${totalBudget} ${tl("万")}`}
+        formatHoverValue={(v) => `¥${v} ${tl("万")}`}
+        badge={`${subDepts.length} ${tl("个成本中心")}`}
+        badgeTone="success"
+        note={tl("近 6 月部门月度预算总额走势")}
+        data={budgetTrend}
+        variant="area"
+        color="var(--chart-2)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("成员归属覆盖")}</div>
-            <div className="settings-summary-value financial-number">
-              {assignedMembers} / {totalMembers}
-            </div>
-            <p className="settings-summary-note">{tl("已分配至业务部门")}</p>
-          </div>
-          <SummaryRingGauge
-            percent={coverageRate}
-            tone="success"
-            label={tl("成员归属覆盖")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("成员归属覆盖")}
+        value={`${coverageRate}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={`${assignedMembers}/${totalMembers}`}
+        badgeTone="success"
+        note={tl("已分配至业务部门与对应成本中心")}
+        data={coverageTrend}
+        variant="line"
+        color="var(--chart-positive)"
+      />
     </section>
   )
 }
@@ -516,7 +529,7 @@ export function DepartmentsPage() {
 
             <div className="bills-toolbar-fields" role="search">
               <div
-                className="bills-search field-surface"
+                className="bills-search data-table-search field-surface"
                 data-field-focus="quiet"
               >
                 <label className="sr-only" htmlFor={subSearchId}>

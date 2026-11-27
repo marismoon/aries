@@ -111,7 +111,6 @@
   }
 
   .bills-search-input,
-  .bills-selects [data-slot="select-trigger"],
   .bills-reset {
     height: var(--control-size-touch);
   }

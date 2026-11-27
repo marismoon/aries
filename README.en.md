@@ -38,7 +38,7 @@ The Demo overview in the default brand palette, shown in light mode and dark gla
 Aries provides the shared components and application shell for building workspaces. Demo uses local mock data to show the overview, billing, and component screens. Starter supplies a home page and a settings page wired into the same shell.
 
 - **Themes and surfaces:** Five built-in palettes (Aries Analytics, Calm mist blue, Northern Lights, Warm terracotta, Mono), with Aries Analytics as the default. Switch between light mode and dark mode (glass or clean surfaces); dark glass includes three switchable WebGL 2 backdrops.
-- **Components, tables, and charts:** Built on shadcn-based components and Solar icons, paired with TanStack Table billing views, Recharts trend charts, and a component showcase.
+- **Components, tables, and charts:** Built on shadcn-based components and Solar icons, paired with TanStack Table billing views, Bklit native charts, and a component showcase.
 - **Workspace shell:** A fixed three-column layout (module rail, workspace navigation, and page content) with a command palette for the active module and Simplified Chinese / English support across the shell and main Demo pages.
 - **Copilot panel:** An expandable right-hand assistant panel that answers sample questions using local mock data.
 - **Starter and layout contract:** A ready-to-use home and settings template scaffolded via `pnpm create:app` or `npm create @marismoon/aries`, with `pnpm lint` and `pnpm test:ui` enforcing the shell layout.

@@ -261,6 +261,18 @@
   }
 }
 
+.data-table-search,
+.data-table-filter {
+  height: var(--control-size-dense);
+}
+
+.data-table-search > input {
+  display: block;
+  /* The input hit area includes the field surface’s 1px border on both edges. */
+  height: var(--control-size-dense);
+  margin-block: -1px;
+}
+
 /* A filter that is narrowing the table gets a soft primary tint. */
 .data-table-filter {
   transition:

@@ -117,6 +117,19 @@ export const workspacePages = {
       return { Content: () => <ComponentCategoryPage slug="data" /> }
     },
   },
+  "components-charts": {
+    id: "components-charts",
+    moduleId: "settings",
+    path: "/settings/components/charts",
+    titleKey: "components.charts",
+    descriptionKey: "components.chartsDescription",
+    breadcrumbs: [{ label: "系统设置" }, { label: "组件预览" }],
+    load: async () => {
+      const { ComponentCategoryPage } =
+        await import("@/features/settings/ComponentCategoryPage")
+      return { Content: () => <ComponentCategoryPage slug="charts" /> }
+    },
+  },
   "components-ai": {
     id: "components-ai",
     moduleId: "settings",
@@ -294,9 +307,9 @@ export const workspacePages = {
     titleKey: "settingsIntegrations.appsTitle",
     breadcrumbs: [{ label: "系统设置" }, { label: "集成通知" }],
     load: async () => {
-      const { AppsIntegrationPage } =
+      const { AppsIntegrationPage, AppsIntegrationSummary } =
         await import("@/features/settings/integrations/AppsIntegrationPage")
-      return { Content: AppsIntegrationPage }
+      return { Content: AppsIntegrationPage, Summary: AppsIntegrationSummary }
     },
   },
   "settings-integrations-bots": {
@@ -306,9 +319,9 @@ export const workspacePages = {
     titleKey: "settingsIntegrations.botsTitle",
     breadcrumbs: [{ label: "系统设置" }, { label: "集成通知" }],
     load: async () => {
-      const { GroupBotsPage } =
+      const { GroupBotsPage, GroupBotsSummary } =
         await import("@/features/settings/integrations/GroupBotsPage")
-      return { Content: GroupBotsPage }
+      return { Content: GroupBotsPage, Summary: GroupBotsSummary }
     },
   },
   "settings-integrations-rules": {
@@ -446,9 +459,12 @@ export const workspacePages = {
     titleKey: "notifications.preferencesTitle",
     breadcrumbs: [{ label: "告警通知" }, { label: "通知管理" }],
     load: async () => {
-      const { NotificationPreferencesPage } =
+      const { NotificationPreferencesPage, NotificationPreferencesSummary } =
         await import("@/features/notifications/NotificationPreferencesPage")
-      return { Content: NotificationPreferencesPage }
+      return {
+        Content: NotificationPreferencesPage,
+        Summary: NotificationPreferencesSummary,
+      }
     },
   },
   "notifications-severity-critical": {

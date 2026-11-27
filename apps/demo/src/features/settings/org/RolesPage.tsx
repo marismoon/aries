@@ -96,11 +96,7 @@ import type {
   DemoRole,
   MemberStatus,
 } from "@/shared/types/workspace-settings"
-import {
-  SummaryMiniBars,
-  SummaryRingGauge,
-  SummarySegmentedBar,
-} from "../SettingsSummaryVisuals"
+import { SparklineKpiCard } from "../SettingsSummaryVisuals"
 
 import { matchesMemberSearch, MemberSearchResults } from "./MemberSearchResults"
 import {
@@ -191,11 +187,10 @@ export function RolesSummary() {
   const builtinCount = store.roles.filter((r) => r.builtin).length
   const customCount = totalRoles - builtinCount
 
-  const roleDist = store.roles.slice(0, 4).map((role) => ({
+  const roleDist = store.roles.slice(0, 6).map((role) => ({
     label: tl(role.name),
     value: store.members.filter((m) => m.roleId === role.id).length,
   }))
-  const maxMembers = Math.max(...roleDist.map((item) => item.value), 1)
 
   const privilegedRoleIds = new Set(
     store.roles
@@ -209,55 +204,73 @@ export function RolesSummary() {
   const privilegedRate =
     totalMembers > 0 ? Math.round((privilegedMembers / totalMembers) * 100) : 0
 
+  const privilegedTrend = [
+    { label: "W1", value: Math.min(privilegedRate + 12, 100) },
+    { label: "W2", value: Math.min(privilegedRate + 9, 100) },
+    { label: "W3", value: Math.min(privilegedRate + 6, 100) },
+    { label: "W4", value: Math.min(privilegedRate + 4, 100) },
+    { label: "W5", value: Math.min(privilegedRate + 2, 100) },
+    { label: "W6", value: privilegedRate },
+  ]
+
+  const permChangeTrend = [
+    { label: "11/20", value: 3 },
+    { label: "11/21", value: 5 },
+    { label: "11/22", value: 2 },
+    { label: "11/23", value: 4 },
+    { label: "11/24", value: 7 },
+    { label: "11/25", value: 3 },
+    { label: "11/26", value: 4 },
+  ]
+  const totalChanges = permChangeTrend.reduce((sum, p) => sum + p.value, 0)
+
   return (
-    <section className="settings-summary-grid" aria-label={tl("角色权限概况")}>
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("角色总数")}</div>
-          <div className="settings-summary-value financial-number">
-            {totalRoles} {tl("个")}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={totalRoles}
-          items={[
-            { label: tl("预置角色"), count: builtinCount, tone: "info" },
-            { label: tl("自定义角色"), count: customCount, tone: "success" },
-          ]}
-        />
-      </FrostCard>
+    <section
+      className="settings-summary-grid"
+      data-cols="3"
+      aria-label={tl("角色权限概况")}
+    >
+      <SparklineKpiCard
+        featured
+        label={tl("角色体系规模")}
+        value={`${totalRoles} ${tl("个")}`}
+        formatHoverValue={(v) => `${v} ${tl("人")}`}
+        badge={`${tl("自定义角色")} ${customCount}`}
+        badgeTone="info"
+        note={tl("预置 {{builtin}} · 自定义 {{custom}}（柱状为各角色人数）", {
+          builtin: builtinCount,
+          custom: customCount,
+        })}
+        data={roleDist}
+        variant="bar"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">{tl("成员角色分布")}</div>
-        <SummaryMiniBars
-          items={roleDist.map((item) => ({
-            label: item.label,
-            value: item.value,
-            max: maxMembers,
-          }))}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("高敏权限覆盖")}
+        value={`${privilegedRate}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={`${privilegedMembers}/${totalMembers}`}
+        badgeTone={privilegedRate > 35 ? "warning" : "success"}
+        note={tl("{{roles}} 个角色含高敏权限，持续按最小权限收敛", {
+          roles: privilegedRoleIds.size,
+        })}
+        data={privilegedTrend}
+        variant="line"
+        color={privilegedRate > 35 ? "var(--chart-warning)" : "var(--chart-2)"}
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("高敏权限覆盖")}</div>
-            <div className="settings-summary-value financial-number">
-              {privilegedMembers} / {totalMembers}
-            </div>
-            <p className="settings-summary-note">
-              {tl("{{roles}} 个角色含高敏权限", {
-                roles: privilegedRoleIds.size,
-              })}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={privilegedRate}
-            tone={privilegedRate > 35 ? "warning" : "info"}
-            label={tl("高敏权限覆盖")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("近 7 日权限变更")}
+        value={`${totalChanges} ${tl("次")}`}
+        formatHoverValue={(v) => `${v} ${tl("次")}`}
+        badge={tl("均已留痕")}
+        badgeTone="success"
+        note={tl("覆盖角色授权、成员调岗与继承基线调整")}
+        data={permChangeTrend}
+        variant="area"
+        color="var(--chart-3)"
+      />
     </section>
   )
 }
@@ -1039,7 +1052,7 @@ export function RolesPage() {
               </div>
 
               <div
-                className="dept-tree-search field-surface"
+                className="dept-tree-search roles-search field-surface"
                 data-field-focus="quiet"
               >
                 <label className="sr-only" htmlFor={roleSearchId}>
@@ -1440,7 +1453,7 @@ export function RolesPage() {
                       <div className="bills-toolbar">
                         <div className="bills-toolbar-fields" role="search">
                           <div
-                            className="bills-search field-surface"
+                            className="bills-search data-table-search field-surface"
                             data-field-focus="quiet"
                           >
                             <label className="sr-only" htmlFor={memberSearchId}>

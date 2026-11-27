@@ -168,15 +168,6 @@
   --chart-soft-8: color-mix(in srgb, #9fb3ff 82%, var(--primary));
 }
 
-/* Charts keep no focus rectangle after a click (the sectors and bars are
-   pointer targets, not tab stops). */
-.recharts-wrapper,
-.recharts-wrapper :focus,
-.recharts-wrapper :focus-visible,
-.recharts-surface:focus {
-  outline: none;
-}
-
 /* Floating dock: the same glass as every popup, floating on the card. */
 .dock-bar {
   background: color-mix(in srgb, var(--popover) 97%, transparent);

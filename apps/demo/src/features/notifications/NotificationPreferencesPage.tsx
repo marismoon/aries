@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@marismoon/ui/ui/select"
 import { Switch } from "@marismoon/ui/ui/switch"
+import { SparklineKpiCard } from "@/features/settings/SettingsSummaryVisuals"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import {
   notificationsActions,
@@ -22,6 +23,7 @@ import {
 } from "@/shared/mocks/workspace-store"
 
 import "../settings/basic-info/basic-info.css"
+import "../settings/settings-table.css"
 import "./notifications.css"
 
 const categoryRows: readonly {
@@ -55,6 +57,74 @@ const categoryRows: readonly {
     emailKey: "systemEmail",
   },
 ]
+
+export function NotificationPreferencesSummary() {
+  const tl = useUiText()
+  const { preferences } = useNotificationsStore()
+
+  const inAppEnabled = categoryRows.filter((r) =>
+    Boolean(preferences[r.inAppKey])
+  ).length
+  const emailEnabled = categoryRows.filter((r) =>
+    Boolean(preferences[r.emailKey])
+  ).length
+  const totalEnabled = inAppEnabled + emailEnabled
+  const totalSlots = categoryRows.length * 2
+
+  const personalPushTrend = [
+    { label: "11/20", value: 12 },
+    { label: "11/21", value: 16 },
+    { label: "11/22", value: 9 },
+    { label: "11/23", value: 14 },
+    { label: "11/24", value: 19 },
+    { label: "11/25", value: 15 },
+    { label: "11/26", value: 11 },
+  ]
+  const quietInterceptTrend = [
+    { label: "11/20", value: 4 },
+    { label: "11/21", value: 6 },
+    { label: "11/22", value: 3 },
+    { label: "11/23", value: 5 },
+    { label: "11/24", value: 7 },
+    { label: "11/25", value: 4 },
+    { label: "11/26", value: 5 },
+  ]
+
+  return (
+    <section
+      className="settings-summary-grid"
+      data-cols="2"
+      aria-label={tl("个人通知偏好概况")}
+    >
+      <SparklineKpiCard
+        featured
+        label={tl("已开启订阅频道")}
+        value={`${totalEnabled} / ${totalSlots}`}
+        formatHoverValue={(v) => `${v} ${tl("条提醒")}`}
+        badge={`${tl("站内铃铛")} ${inAppEnabled} · ${tl("邮件")} ${emailEnabled}`}
+        badgeTone="info"
+        note={tl("近 7 日推送至当前登录账号的个人提醒走势")}
+        data={personalPushTrend}
+        variant="bar"
+        color="var(--chart-1)"
+      />
+
+      <SparklineKpiCard
+        label={tl("夜间免打扰状态")}
+        value={
+          preferences.quietModeEnabled ? preferences.quietRange : tl("未开启")
+        }
+        formatHoverValue={(v) => `${v} ${tl("条暂缓")}`}
+        badge={preferences.dailyDigest ? tl("含晨间摘要") : tl("仅实时推送")}
+        badgeTone={preferences.quietModeEnabled ? "success" : "neutral"}
+        note={tl("近 7 日非工作时段自动暂缓的一般级别提醒量")}
+        data={quietInterceptTrend}
+        variant="area"
+        color="var(--chart-2)"
+      />
+    </section>
+  )
+}
 
 export function NotificationPreferencesPage() {
   const tl = useUiText()

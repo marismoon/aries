@@ -7,7 +7,7 @@
 ## 升级依赖
 
 1. 在根 [pnpm-workspace.yaml](../pnpm-workspace.yaml) 的默认 `catalog` 更新核心栈版本，在 `catalogs.dev` 更新测试或 lint 工具。默认 catalog 中被可发布包（`@marismoon/ui`）用作运行时依赖的条目写兼容区间（如 `^3.8.0`），发布后宿主可与之去重；其余条目写精确版本。实际安装版本一律由 `pnpm-lock.yaml` 锁定。React 与 React DOM 是 ui 的 `peerDependencies`（`^19`）。使用方继续写 `catalog:` 或 `catalog:dev`。直接写在包清单中的依赖在相应清单更新，并核对其他使用方和公共包的 peer 范围。
-2. 在根目录用项目锁定的 pnpm 执行 `pnpm install`。检查 `pnpm-lock.yaml` 的 importer、packages 与 snapshots 的差异，确认解析变化都能归因于此次升级。recharts 的升级还需核对共享图表组件，见[技术栈](TECH_STACK.md)。
+2. 在根目录用项目锁定的 pnpm 执行 `pnpm install`。检查 `pnpm-lock.yaml` 的 importer、packages 与 snapshots 的差异，确认解析变化都能归因于此次升级。图表相关依赖（如 `motion`）的升级还需核对共享图表组件，见[技术栈](TECH_STACK.md)。
 3. 运行[开发契约 §9](../AGENTS.md) 的提交前自检和 `pnpm run audit`，将清单与 lockfile 一起提交。大版本升级单独提交，记录受影响的包和兼容性。
 
 ## 发布

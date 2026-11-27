@@ -28,10 +28,7 @@ import {
   SelectValue,
 } from "@marismoon/ui/ui/select"
 import { Switch } from "@marismoon/ui/ui/switch"
-import {
-  SummaryRingGauge,
-  SummarySegmentedBar,
-} from "@/features/settings/SettingsSummaryVisuals"
+import { SparklineKpiCard } from "@/features/settings/SettingsSummaryVisuals"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import {
   notificationsActions,
@@ -52,55 +49,55 @@ export function SilencesSummary() {
   const activeCount = silences.filter((s) => s.active).length
   const inactiveCount = silences.length - activeCount
 
+  const suppressedNoiseTrend = [
+    { label: "11/20", value: 14 },
+    { label: "11/21", value: 22 },
+    { label: "11/22", value: 9 },
+    { label: "11/23", value: 18 },
+    { label: "11/24", value: 31 },
+    { label: "11/25", value: 26 },
+    { label: "11/26", value: 19 },
+  ]
+  const escalationRespTrend = [
+    { label: "11/20", value: 7.8 },
+    { label: "11/21", value: 7.2 },
+    { label: "11/22", value: 6.9 },
+    { label: "11/23", value: 6.4 },
+    { label: "11/24", value: 6.6 },
+    { label: "11/25", value: 6.1 },
+    { label: "11/26", value: 5.8 },
+  ]
+
   return (
     <section
       className="settings-summary-grid"
+      data-cols="2"
       aria-label={tl("静默与值守概况")}
     >
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("生效中静默窗口")}</div>
-          <div className="settings-summary-value financial-number">
-            {activeCount} / {silences.length}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={Math.max(silences.length, 1)}
-          items={[
-            { label: tl("生效中"), count: activeCount, tone: "info" },
-            { label: tl("已结束"), count: inactiveCount, tone: "neutral" },
-          ]}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        featured
+        label={tl("生效中静默窗口与降噪")}
+        value={`${activeCount} / ${silences.length}`}
+        formatHoverValue={(v) => `${v} ${tl("条已抑制")}`}
+        badge={`${tl("已结束")} ${inactiveCount}`}
+        badgeTone="info"
+        note={tl("近 7 日维护静默窗口累计拦截 139 条非关键噪音告警")}
+        data={suppressedNoiseTrend}
+        variant="bar"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("值守升级梯队")}</div>
-          <div className="settings-summary-value financial-number">
-            {onCallShifts.length} {tl("级")}
-          </div>
-          <p className="settings-summary-note">
-            {tl("L1 一线 15 分钟未响应自动升级至 L2 / L3 负责人")}
-          </p>
-        </div>
-      </FrostCard>
-
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("7×24 值守覆盖")}</div>
-            <div className="settings-summary-value financial-number">100%</div>
-            <p className="settings-summary-note">
-              {tl("主备双人排班均已绑定即时通讯通道")}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={100}
-            tone="success"
-            label={tl("7×24 值守覆盖")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("7×24 值守梯队与响应")}
+        value={`${onCallShifts.length} ${tl("级")} · 100%`}
+        formatHoverValue={(v) => `${v.toFixed(1)} min`}
+        badge={tl("L1 均值 5.8m")}
+        badgeTone="success"
+        note={tl("主备双人排班均已绑定即时通讯通道，15 分钟超时自动升级")}
+        data={escalationRespTrend}
+        variant="line"
+        color="var(--chart-positive)"
+      />
     </section>
   )
 }

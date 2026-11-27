@@ -38,11 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@marismoon/ui/ui/select"
-import {
-  SummaryMiniBars,
-  SummaryRingGauge,
-  SummarySegmentedBar,
-} from "@/features/settings/SettingsSummaryVisuals"
+import { SparklineKpiCard } from "@/features/settings/SettingsSummaryVisuals"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import {
   notificationsActions,
@@ -121,92 +117,116 @@ export function AlertCenterSummary({
   const resolvedCount = scoped.filter(
     (a) => a.status === "resolved" || a.status === "silenced"
   ).length
-
-  const byCategory = [
-    {
-      label: tl("成本与预算"),
-      value: scoped.filter((a) => a.category === "cost").length,
-    },
-    {
-      label: tl("云账号与采集"),
-      value: scoped.filter((a) => a.category === "cloud").length,
-    },
-    {
-      label: tl("安全与权限"),
-      value: scoped.filter((a) => a.category === "security").length,
-    },
-    {
-      label: tl("系统任务"),
-      value: scoped.filter((a) => a.category === "system").length,
-    },
-  ]
-  const maxCat = Math.max(...byCategory.map((item) => item.value), 1)
-
   const onTimeCount = scoped.filter(
     (a) => a.status !== "open" || a.slaMinutesLeft > 15
   ).length
   const slaRate = total > 0 ? Math.round((onTimeCount / total) * 100) : 100
 
+  const primaryLabel =
+    preset === "pending"
+      ? tl("待处置告警")
+      : preset === "critical"
+        ? tl("严重告警总数")
+        : preset === "normal"
+          ? tl("一般与重要告警")
+          : tl("活跃与近期告警")
+
+  const alertTrend24h = [
+    { label: "00:00", value: Math.max(total - 3, 1) },
+    { label: "04:00", value: Math.max(total - 4, 1) },
+    { label: "08:00", value: Math.max(total - 2, 1) },
+    { label: "12:00", value: total + 1 },
+    { label: "16:00", value: total + 2 },
+    { label: "20:00", value: Math.max(total - 1, 1) },
+    { label: "24:00", value: total },
+  ]
+  const backlogBars = [
+    { label: "08:00", value: openCount + 2 },
+    { label: "10:00", value: openCount + 1 },
+    { label: "12:00", value: openCount + 3 },
+    { label: "14:00", value: openCount + 1 },
+    { label: "16:00", value: openCount + 2 },
+    { label: "18:00", value: openCount },
+    { label: "20:00", value: openCount },
+  ]
+  const slaTrend = [
+    { label: "11/20", value: Math.max(slaRate - 6, 70) },
+    { label: "11/21", value: Math.max(slaRate - 4, 75) },
+    { label: "11/22", value: Math.max(slaRate - 2, 80) },
+    { label: "11/23", value: Math.max(slaRate - 5, 76) },
+    { label: "11/24", value: Math.max(slaRate - 1, 82) },
+    { label: "11/25", value: slaRate },
+    { label: "11/26", value: slaRate },
+  ]
+  const mttaTrend = [
+    { label: "11/20", value: 11.4 },
+    { label: "11/21", value: 10.6 },
+    { label: "11/22", value: 9.8 },
+    { label: "11/23", value: 10.2 },
+    { label: "11/24", value: 9.1 },
+    { label: "11/25", value: 8.7 },
+    { label: "11/26", value: 8.4 },
+  ]
+
   return (
-    <section className="settings-summary-grid" aria-label={tl("告警概况")}>
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">
-            {preset === "pending"
-              ? tl("待处置告警")
-              : preset === "critical"
-                ? tl("严重告警总数")
-                : preset === "normal"
-                  ? tl("一般与重要告警")
-                  : tl("活跃与近期告警")}
-          </div>
-          <div className="settings-summary-value financial-number">
-            {total} {tl("条")}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={Math.max(total, 1)}
-          items={[
-            { label: tl("待处理"), count: openCount, tone: "danger" },
-            { label: tl("处理中"), count: ackCount, tone: "warning" },
-            {
-              label: tl("已静默 / 解决"),
-              count: resolvedCount,
-              tone: "success",
-            },
-          ]}
-        />
-      </FrostCard>
+    <section
+      className="settings-summary-grid"
+      data-cols="4"
+      aria-label={tl("告警概况")}
+    >
+      <SparklineKpiCard
+        featured
+        label={primaryLabel}
+        value={`${total} ${tl("条")}`}
+        formatHoverValue={(v) => `${v} ${tl("条")}`}
+        badge={`${tl("已静默 / 解决")} ${resolvedCount}`}
+        badgeTone="success"
+        note={tl("待处理 {{open}} · 处理中 {{ack}}", {
+          open: openCount,
+          ack: ackCount,
+        })}
+        data={alertTrend24h}
+        variant="area"
+        color={
+          preset === "critical" ? "var(--chart-negative)" : "var(--chart-1)"
+        }
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">{tl("告警来源分布")}</div>
-        <SummaryMiniBars
-          items={byCategory.map((item) => ({
-            label: item.label,
-            value: item.value,
-            max: maxCat,
-          }))}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("待认领积压")}
+        value={`${openCount} ${tl("条")}`}
+        formatHoverValue={(v) => `${v} ${tl("条")}`}
+        badge={openCount > 0 ? tl("需优先处置") : tl("已清空")}
+        badgeTone={openCount > 0 ? "danger" : "success"}
+        note={tl("处理中 {{ack}} 条，均已分配责任人", { ack: ackCount })}
+        data={backlogBars}
+        variant="bar"
+        color="var(--chart-negative)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("SLA 响应达标率")}</div>
-            <div className="settings-summary-value financial-number">
-              {onTimeCount} / {total}
-            </div>
-            <p className="settings-summary-note">
-              {tl("严重告警 30 分钟内须认领处置")}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={slaRate}
-            tone={slaRate >= 85 ? "success" : "warning"}
-            label={tl("SLA 响应达标率")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("SLA 响应达标率")}
+        value={`${slaRate}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={`${onTimeCount}/${total}`}
+        badgeTone={slaRate >= 85 ? "success" : "warning"}
+        note={tl("严重告警 30 分钟内须认领处置")}
+        data={slaTrend}
+        variant="line"
+        color={slaRate >= 85 ? "var(--chart-positive)" : "var(--chart-warning)"}
+      />
+
+      <SparklineKpiCard
+        label={tl("平均认领耗时 MTTA")}
+        value="8.4 min"
+        formatHoverValue={(v) => `${v.toFixed(1)} min`}
+        badge="-18%"
+        badgeTone="info"
+        note={tl("近 7 日首次响应耗时持续下降")}
+        data={mttaTrend}
+        variant="line"
+        color="var(--chart-2)"
+      />
     </section>
   )
 }
@@ -369,7 +389,7 @@ export function AlertCenterPage({
           </div>
           <div className="bills-toolbar-fields" role="search">
             <div
-              className="bills-search field-surface"
+              className="bills-search data-table-search field-surface"
               data-field-focus="quiet"
             >
               <label className="sr-only" htmlFor={searchId}>

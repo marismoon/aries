@@ -7,6 +7,7 @@ const pages = [
   ["导航", "/settings/components/navigation"],
   ["浮层与反馈", "/settings/components/overlay"],
   ["数据展示", "/settings/components/data"],
+  ["图表汇总", "/settings/components/charts"],
   ["对话与 AI", "/settings/components/ai"],
 ] as const
 
@@ -64,7 +65,7 @@ test("基础组件页渲染官方示例：按钮图标随尺寸缩放，徽标�
   }
 })
 
-test("数据展示页包含表格模版与图表", async ({ page }) => {
+test("数据展示页包含表格模版，图表已迁至图表汇总页", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto("/settings/components/data")
   const demo = page.getByRole("group", { name: "DataTable（表格模版）" })
@@ -75,7 +76,49 @@ test("数据展示页包含表格模版与图表", async ({ page }) => {
   await expect(page.getByRole("table").first()).toBeVisible()
   await expect(
     page.getByRole("heading", { name: "Chart", level: 2 })
+  ).toHaveCount(0)
+
+  await page.goto("/settings/components/charts")
+  await expect(
+    page.getByRole("heading", { name: "Chart", level: 2 })
   ).toBeVisible()
+})
+
+test("图表汇总的卡片均为单层，并与折线图等宽等高", async ({ page }) => {
+  await page.goto("/settings/components/charts")
+  const charts = page.locator("#component-chart")
+  const cards = charts.locator(
+    ".chart-showcase > .components-grid > [data-slot=card]"
+  )
+  await expect(
+    charts
+      .getByRole("group", { name: "Sparkline KPI 指标卡" })
+      .locator("[data-slot=card]")
+  ).toHaveCount(3)
+  await expect(
+    charts.getByText("实时流折线图 Live Line", { exact: true })
+  ).toBeVisible()
+  await expect(cards).toHaveCount(12)
+  await expect(
+    charts.locator(".surface .surface, .surface [data-slot=card]")
+  ).toHaveCount(0)
+
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 })
+    await expect
+      .poll(() =>
+        cards.evaluateAll((items) => {
+          const line = items[0]!
+          return items.every(
+            (card) =>
+              Math.abs(card.clientWidth - line.clientWidth) <= 1 &&
+              card.clientHeight === line.clientHeight &&
+              card.scrollHeight <= card.clientHeight + 1
+          )
+        })
+      )
+      .toBe(true)
+  }
 })
 
 test("日历的选中底是比格子小一圈的正圆，相邻两天不相接", async ({ page }) => {

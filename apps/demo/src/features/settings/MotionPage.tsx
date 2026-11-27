@@ -6,13 +6,21 @@ import { Badge } from "@marismoon/ui/ui/badge"
 import { Switch } from "@marismoon/ui/ui/switch"
 import { Button } from "@marismoon/ui/ui/button"
 import {
-  AreaDemo,
-  ColorBarDemo,
-  LineDemo,
-  PieDemo,
-  RadarDemo,
-  StackedBarDemo,
-} from "./chart-demos"
+  BklitAreaDemo,
+  BklitBarDemo,
+  BklitComposedDemo,
+  BklitFunnelDemo,
+  BklitHeatmapDemo,
+  BklitLineDemo,
+  BklitLiveLineDemo,
+  BklitLollipopDemo,
+  BklitPieDemo,
+  BklitRadarDemo,
+  BklitRingDemo,
+  BklitSparklineDemo,
+  BklitSparklineKpiCardsDemo,
+  BklitStackedBarDemo,
+} from "./bklit-chart-demos"
 import {
   AnimatedTooltipDemo,
   BentoGridDemo,
@@ -47,7 +55,6 @@ import {
   ProgressDemo,
   SavedStateDemo,
   SkeletonDemo,
-  SvgChartEntranceDemo,
   TabGlideDemo,
   ThemeRevealDemo,
   TodoListDemo,
@@ -175,42 +182,7 @@ function ToggleDemo() {
   )
 }
 
-/* ---------- 图表动效 ---------- */
-
-function RingDemo() {
-  const [run, replay] = useReplay()
-  return (
-    <Demo
-      title="环形进度"
-      usage="motion.circle 的 pathLength 从 0 过渡到目标值"
-      onReplay={replay}
-    >
-      <svg viewBox="0 0 80 80" className="size-24" key={run}>
-        <circle
-          cx="40"
-          cy="40"
-          r="32"
-          fill="none"
-          stroke="var(--recess)"
-          strokeWidth="9"
-        />
-        <m.circle
-          cx="40"
-          cy="40"
-          r="32"
-          fill="none"
-          stroke="var(--chart-soft-2)"
-          strokeWidth="9"
-          strokeLinecap="round"
-          transform="rotate(-90 40 40)"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 0.857 }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-        />
-      </svg>
-    </Demo>
-  )
-}
+/* ---------- 数字动效 ---------- */
 
 function CountDemo() {
   const [run, replay] = useReplay()
@@ -413,14 +385,20 @@ const sections = {
   },
   charts: {
     demos: [
-      <LineDemo key="line" />,
-      <AreaDemo key="area" />,
-      <ColorBarDemo key="bar" />,
-      <StackedBarDemo key="stacked" />,
-      <PieDemo key="pie" />,
-      <RadarDemo key="radar" />,
-      <RingDemo key="ring" />,
-      <SvgChartEntranceDemo key="svg-entrance" />,
+      <BklitLineDemo key="line" />,
+      <BklitAreaDemo key="area" />,
+      <BklitBarDemo key="bar" />,
+      <BklitStackedBarDemo key="stacked" />,
+      <BklitComposedDemo key="composed" />,
+      <BklitPieDemo key="pie" />,
+      <BklitRingDemo key="ring" />,
+      <BklitRadarDemo key="radar" />,
+      <BklitFunnelDemo key="funnel" />,
+      <BklitLollipopDemo key="lollipop" />,
+      <BklitHeatmapDemo key="heatmap" />,
+      <BklitSparklineDemo key="sparkline" />,
+      <BklitSparklineKpiCardsDemo key="sparkline-kpi" />,
+      <BklitLiveLineDemo key="live-line" />,
     ],
   },
   transitions: {

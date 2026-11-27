@@ -33,55 +33,91 @@
 }
 
 .chart-plot {
+  position: relative;
   min-height: 0;
 }
 
-.chart-plot svg {
-  display: block;
-  width: 100%;
+.overview-donut-layout {
+  display: flex;
   height: 100%;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 12px;
 }
 
-.chart-plot text {
-  fill: var(--muted-foreground);
-  font-size: 9px;
-  font-variant-numeric: tabular-nums;
+.overview-donut-list {
+  display: grid;
+  min-width: 108px;
+  gap: 6px;
+  font-size: 0.75rem;
 }
 
-.chart-plot .chart-value {
-  fill: var(--foreground);
-  font-weight: 650;
+.overview-donut-list > li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.chart-plot .chart-axis-label {
-  font-size: 9.5px;
+.overview-donut-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted-foreground);
 }
 
-.chart-plot .chart-total {
-  fill: var(--foreground);
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+.overview-donut-name > i {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 9999px;
 }
 
-.chart-axis line,
-.chart-axis polygon {
-  stroke: var(--border-subtle);
-  stroke-width: 1;
+.overview-donut-list strong {
+  color: var(--foreground);
+  font-weight: 620;
 }
 
-.chart-series polyline {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linejoin: round;
-  stroke-linecap: round;
+.overview-gauge-layout {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
 }
 
-.chart-series circle {
-  fill: currentColor;
-  stroke: var(--card);
-  stroke-width: 1.2;
+.overview-gauge-ring {
+  margin-bottom: -26px;
+}
+
+.overview-heatmap {
+  display: grid;
+  grid-template: auto auto / max-content minmax(0, 1fr);
+  align-content: center;
+  gap: 4px;
+  height: 100%;
+  max-width: 15rem;
+  margin-inline: auto;
+  font-size: var(--text-label);
+  color: var(--muted-foreground);
+}
+
+.overview-heatmap > :last-child {
+  aspect-ratio: 7 / 5;
+}
+
+.overview-heatmap-days {
+  display: grid;
+  grid-column: 2;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  text-align: center;
+}
+
+.overview-heatmap-weeks {
+  display: grid;
+  align-items: center;
+  grid-template-rows: repeat(5, minmax(0, 1fr));
 }
 
 .chart-legend {
@@ -128,18 +164,5 @@
 @container overview (max-width: 640px) {
   .overview-charts {
     grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-/* Hover: the mark under the pointer stays, its siblings step back. Opacity
-   only, so nothing moves while a value is being read. */
-.chart-plot [data-chart-mark] {
-  transition: opacity var(--duration-feedback) var(--ease-feedback);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .chart-plot svg:has([data-chart-mark]:hover)
-    [data-chart-mark]:not(:hover) {
-    opacity: 0.35;
   }
 }

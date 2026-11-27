@@ -9,8 +9,24 @@
   gap: var(--space-3);
 }
 
+.settings-summary-grid[data-cols="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.settings-summary-grid[data-cols="4"] {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@container workspace (max-width: 64rem) {
+  .settings-summary-grid[data-cols="4"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @container workspace (max-width: 48rem) {
-  .settings-summary-grid {
+  .settings-summary-grid,
+  .settings-summary-grid[data-cols="2"],
+  .settings-summary-grid[data-cols="4"] {
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -22,6 +38,92 @@
   gap: 10px;
   min-width: 0;
   padding: var(--card-inset);
+}
+
+.settings-kpi-card {
+  gap: 12px;
+}
+
+.settings-kpi-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.settings-kpi-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.settings-kpi-period {
+  font-size: 0.6875rem;
+  font-weight: 560;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.settings-kpi-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 2px 8px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.settings-kpi-pill[data-tone="success"] {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.settings-kpi-pill[data-tone="info"] {
+  background: var(--info-bg);
+  color: var(--info);
+}
+
+.settings-kpi-pill[data-tone="warning"] {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.settings-kpi-pill[data-tone="danger"] {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.settings-kpi-spark {
+  min-width: 0;
+  margin-inline: -2px;
+}
+
+.settings-ring-kpi-card {
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.settings-ring-kpi-body {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.settings-ring-kpi-chart {
+  flex: none;
+  display: grid;
+  width: 76px;
+  height: 76px;
+  place-items: center;
 }
 
 .settings-summary-top {
@@ -298,4 +400,54 @@
   .settings-audit-table .bills-selects {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+/* Apps integration table column widths */
+.settings-apps-table .data-table [data-column="name"] {
+  --column-fraction: 0.34;
+}
+
+.settings-apps-table .data-table [data-column="category"] {
+  --column-fraction: 0.14;
+}
+
+.settings-apps-table .data-table [data-column="status"] {
+  --column-fraction: 0.14;
+}
+
+.settings-apps-table .data-table [data-column="enabled"] {
+  --column-fraction: 0.1;
+}
+
+.settings-apps-table .data-table [data-column="lastSyncAt"] {
+  --column-fraction: 0.19;
+}
+
+.settings-apps-table .data-table [data-column="actions"] {
+  --column-fraction: 0.09;
+}
+
+/* Group bots table column widths */
+.settings-bots-table .data-table [data-column="name"] {
+  --column-fraction: 0.36;
+}
+
+.settings-bots-table .data-table [data-column="channel"] {
+  --column-fraction: 0.13;
+}
+
+.settings-bots-table .data-table [data-column="enabled"] {
+  --column-fraction: 0.1;
+}
+
+.settings-bots-table .data-table [data-column="eventsCount"] {
+  --column-fraction: 0.12;
+}
+
+.settings-bots-table .data-table [data-column="lastTriggeredAt"] {
+  --column-fraction: 0.2;
+}
+
+.settings-bots-table .data-table [data-column="actions"] {
+  --column-fraction: 0.09;
 }

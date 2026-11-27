@@ -15,9 +15,8 @@ import {
 } from "@marismoon/ui/shared/use-data-table"
 import { Input } from "@marismoon/ui/ui/input"
 import {
-  SummaryMiniBars,
-  SummaryRingGauge,
-  SummarySegmentedBar,
+  RingKpiCard,
+  SparklineKpiCard,
 } from "@/features/settings/SettingsSummaryVisuals"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import { AnalyticsBarCard, AnalyticsTrendCard } from "./AnalyticsCharts"
@@ -52,66 +51,90 @@ export function PlatformOverviewSummary() {
   const tl = useUiText()
   const totalActive = tenantUsageRows.reduce((s, r) => s + r.activeUsers, 0)
   const totalSeats = tenantUsageRows.reduce((s, r) => s + r.seatLimit, 0)
+  const seatPct = Math.round((totalActive / Math.max(totalSeats, 1)) * 100)
   const avgRetention = Math.round(
     tenantUsageRows.reduce((s, r) => s + r.retentionPct, 0) /
       tenantUsageRows.length
   )
+  const dauPoints = (platformDauSeries["7d"][0]?.values ?? []).map((v, i) => ({
+    label: rangeDaysLabels["7d"][i] ?? `D${i + 1}`,
+    value: v,
+  }))
+  const seatTrend = [
+    { label: "W1", value: Math.max(seatPct - 9, 50) },
+    { label: "W2", value: Math.max(seatPct - 7, 55) },
+    { label: "W3", value: Math.max(seatPct - 5, 60) },
+    { label: "W4", value: Math.max(seatPct - 3, 64) },
+    { label: "W5", value: Math.max(seatPct - 1, 68) },
+    { label: "W6", value: seatPct },
+  ]
+  const retentionTrend = [
+    { label: "W1", value: Math.max(avgRetention - 4, 70) },
+    { label: "W2", value: Math.max(avgRetention - 3, 74) },
+    { label: "W3", value: Math.max(avgRetention - 2, 78) },
+    { label: "W4", value: Math.max(avgRetention - 2, 80) },
+    { label: "W5", value: Math.max(avgRetention - 1, 82) },
+    { label: "W6", value: avgRetention },
+  ]
+  const moduleBars = moduleUsageBars.slice(0, 6).map((item) => ({
+    label: tl(item.label),
+    value: item.value,
+  }))
+  const topModule = moduleUsageBars[0]
 
   return (
-    <section className="settings-summary-grid" aria-label={tl("平台数据概况")}>
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">
-            {tl("平台日活用户（DAU）")}
-          </div>
-          <div className="settings-summary-value financial-number">2,390</div>
-        </div>
-        <SummarySegmentedBar
-          total={totalSeats}
-          items={[
-            { label: tl("活跃席位"), count: totalActive, tone: "success" },
-            {
-              label: tl("待激活席位"),
-              count: Math.max(totalSeats - totalActive, 0),
-              tone: "neutral",
-            },
-          ]}
-        />
-      </FrostCard>
+    <section
+      className="settings-summary-grid"
+      data-cols="4"
+      aria-label={tl("平台数据概况")}
+    >
+      <SparklineKpiCard
+        featured
+        label={tl("平台日活用户（DAU）")}
+        value="2,390"
+        badge="+14.6%"
+        badgeTone="success"
+        note={tl("近 7 日活跃工作区与核心操作用户增长")}
+        data={dauPoints}
+        variant="area"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">
-          {tl("核心模块周活跃度（%）")}
-        </div>
-        <SummaryMiniBars
-          items={moduleUsageBars.slice(0, 4).map((item) => ({
-            label: tl(item.label),
-            value: item.value,
-            max: 100,
-          }))}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("活跃席位利用率")}
+        value={`${seatPct}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={`${totalActive}/${totalSeats}`}
+        badgeTone="info"
+        note={tl("近 6 周企业席位激活率稳步上升")}
+        data={seatTrend}
+        variant="line"
+        color="var(--chart-2)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">
-              {tl("30 日平均租户留存")}
-            </div>
-            <div className="settings-summary-value financial-number">
-              {avgRetention}%
-            </div>
-            <p className="settings-summary-note">
-              {tl("较上周期提升 +2.4%，旗舰版留存领先")}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={avgRetention}
-            tone="success"
-            label={tl("30 日平均租户留存")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("30 日平均租户留存")}
+        value={`${avgRetention}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge="+2.4%"
+        badgeTone="success"
+        note={tl("旗舰版与多云财务工作区留存领先")}
+        data={retentionTrend}
+        variant="area"
+        color="var(--chart-positive)"
+      />
+
+      <SparklineKpiCard
+        label={tl("核心模块周渗透率")}
+        value={`${topModule?.value ?? 94}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={topModule ? tl(topModule.label) : undefined}
+        badgeTone="neutral"
+        note={tl("悬停柱状查看各功能模块周活跃渗透率")}
+        data={moduleBars}
+        variant="bar"
+        color="var(--chart-3)"
+      />
     </section>
   )
 }
@@ -255,7 +278,10 @@ function PlatformTenantsTable() {
           </span>
         </div>
         <div className="bills-toolbar-fields" role="search">
-          <div className="bills-search field-surface" data-field-focus="quiet">
+          <div
+            className="bills-search data-table-search field-surface"
+            data-field-focus="quiet"
+          >
             <label className="sr-only" htmlFor={searchId}>
               {tl("搜索租户名称或版本套餐")}
             </label>
@@ -302,61 +328,81 @@ export function PlatformTenantsSummary() {
   const risk = tenantUsageRows.filter((r) => r.status === "risk").length
   const totalSeats = tenantUsageRows.reduce((s, r) => s + r.seatLimit, 0)
   const usedSeats = tenantUsageRows.reduce((s, r) => s + r.activeUsers, 0)
-  const seatRate = Math.round((usedSeats / totalSeats) * 100)
+  const seatRate = Math.round((usedSeats / Math.max(totalSeats, 1)) * 100)
+  const avgRetention = Math.round(
+    tenantUsageRows.reduce((s, r) => s + r.retentionPct, 0) /
+      tenantUsageRows.length
+  )
+  const totalApiK = Math.round(
+    tenantUsageRows.reduce((s, r) => s + r.apiCallsK, 0)
+  )
+
+  const tenantSeatBars = tenantUsageRows.map((r) => ({
+    label: tl(r.name),
+    value: r.activeUsers,
+  }))
+  const apiUsageTrend = [
+    { label: "11/20", value: Math.round(totalApiK * 0.84) },
+    { label: "11/21", value: Math.round(totalApiK * 0.88) },
+    { label: "11/22", value: Math.round(totalApiK * 0.86) },
+    { label: "11/23", value: Math.round(totalApiK * 0.92) },
+    { label: "11/24", value: Math.round(totalApiK * 0.96) },
+    { label: "11/25", value: Math.round(totalApiK * 0.98) },
+    { label: "11/26", value: totalApiK },
+  ]
 
   return (
     <section
       className="settings-summary-grid"
+      data-cols="3"
       aria-label={tl("租户与用户概况")}
     >
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("重点企业租户")}</div>
-          <div className="settings-summary-value financial-number">
-            {tenantUsageRows.length} {tl("家")}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={tenantUsageRows.length}
-          items={[
-            { label: tl("健康活跃"), count: healthy, tone: "success" },
-            { label: tl("高速增长"), count: growing, tone: "info" },
-            { label: tl("留存预警"), count: risk, tone: "warning" },
-          ]}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        featured
+        label={tl("重点企业租户")}
+        value={`${tenantUsageRows.length} ${tl("家")}`}
+        formatHoverValue={(v) => `${v} ${tl("席位")}`}
+        badge={`${tl("健康活跃")} ${healthy} · ${tl("高速增长")} ${growing}`}
+        badgeTone="success"
+        note={tl("留存预警 {{risk}} 家（柱状为各租户活跃席位）", { risk })}
+        data={tenantSeatBars}
+        variant="bar"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">
-          {tl("日均 API 消耗排行（千次）")}
-        </div>
-        <SummaryMiniBars
-          items={tenantUsageRows.slice(0, 4).map((r) => ({
-            label: tl(r.name),
-            value: Math.round(r.apiCallsK),
-            max: 450,
-          }))}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("租户日均 API 总消耗")}
+        value={`${totalApiK.toLocaleString("en-US")}k`}
+        formatHoverValue={(v) => `${v.toLocaleString("en-US")}k`}
+        badge="+16.2%"
+        badgeTone="info"
+        note={tl("近 7 日企业租户日均调用量走势")}
+        data={apiUsageTrend}
+        variant="area"
+        color="var(--chart-2)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("整体席位利用率")}</div>
-            <div className="settings-summary-value financial-number">
-              {usedSeats} / {totalSeats}
-            </div>
-            <p className="settings-summary-note">
-              {tl("2 家租户席位接近上限，建议扩容")}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={seatRate}
-            tone="info"
-            label={tl("整体席位利用率")}
-          />
-        </div>
-      </FrostCard>
+      <RingKpiCard
+        label={tl("席位利用率与留存双环")}
+        value={`${seatRate}%`}
+        badge={`${usedSeats}/${totalSeats}`}
+        badgeTone="info"
+        note={tl("2 家租户席位接近上限，建议扩容")}
+        rings={[
+          {
+            label: tl("席位利用率"),
+            value: seatRate,
+            maxValue: 100,
+            color: "var(--chart-1)",
+          },
+          {
+            label: tl("30 日留存"),
+            value: avgRetention,
+            maxValue: 100,
+            color: "var(--chart-positive)",
+          },
+        ]}
+      />
     </section>
   )
 }

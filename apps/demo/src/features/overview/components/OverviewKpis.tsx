@@ -1,9 +1,10 @@
+import { IssuedTrendPlot } from "@/shared/charts/IssuedTrendPlot"
 import type { CSSProperties, ReactNode } from "react"
 
 import { AppIcon, SolarCheck } from "@marismoon/ui/icons"
 import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 import { StatusBadge } from "@marismoon/ui/shared/StatusBadge"
-import { formatCurrency, formatWan } from "@marismoon/ui/lib/format"
+import { formatWan } from "@marismoon/ui/lib/format"
 import {
   collectionChannels,
   collectionStates,
@@ -60,32 +61,7 @@ function IssuedKpi() {
       </div>
 
       <figure className="issued-chart" aria-label={tl("近 6 个月 CNY 出账")}>
-        <ul className="issued-chart-columns" aria-label={tl("各月出账金额")}>
-          {issuedTrend.map(({ month, amount }) => {
-            const formatted = formatCurrency(amount, "CNY")
-
-            return (
-              <li
-                key={month}
-                title={`${tl(month)} · ${formatted}`}
-                style={{ "--bar-ratio": amount / maxIssued } as CSSProperties}
-              >
-                <span aria-hidden="true" className="issued-chart-track">
-                  <span className="issued-chart-bar" />
-                </span>
-                <span
-                  aria-hidden="true"
-                  className="issued-chart-value financial-number"
-                >
-                  {formatWan(amount)}
-                  {tl("万")}
-                </span>
-                <span className="issued-chart-month">{tl(month)}</span>
-                <span className="sr-only"> {formatted}</span>
-              </li>
-            )
-          })}
-        </ul>
+        <IssuedTrendPlot className="h-[88px]" />
       </figure>
     </FrostCard>
   )
