@@ -106,7 +106,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 2px 4px;
+  padding: 6px 8px;
+  border-radius: var(--radius-control);
+  background: var(--recess);
 }
 
 .user-menu-identity {
@@ -156,19 +158,14 @@
   line-height: 1.3;
 }
 
-.user-menu-divider {
-  height: 1px;
-  flex: none;
-  background: var(--border-subtle);
-}
 
 .user-menu-nav {
   gap: 2px;
 }
 
 .user-menu-nav .workspace-nav-item {
-  min-height: 32px;
-  padding: 4px 10px;
+  min-height: 34px;
+  padding: 5px 10px;
   font-size: 0.8125rem;
 }
 
@@ -181,29 +178,121 @@
   color: var(--muted-foreground);
 }
 
-.user-menu-signout {
+.user-menu-footer {
   display: flex;
-  width: 100%;
-  min-height: 32px;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border-radius: var(--sidebar-item-radius);
-  padding: 0 12px;
-  background: color-mix(in srgb, var(--danger-bg) 72%, transparent);
-  color: var(--danger);
-  font-size: 0.8125rem;
-  font-weight: 580;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 2px 2px 0;
+}
+
+.user-menu-icon-action {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 9999px;
+  color: var(--muted-foreground);
   transition:
     background-color var(--duration-feedback) var(--ease-feedback),
+    color var(--duration-feedback) var(--ease-feedback),
     transform 150ms var(--ease-feedback);
 }
 
-.user-menu-signout:hover,
-.user-menu-signout:focus-visible {
-  background: var(--danger-bg);
+@media (pointer: coarse) {
+  .user-menu-icon-action {
+    width: var(--control-size-dense);
+    height: var(--control-size-dense);
+  }
 }
 
-.user-menu-signout:active {
-  transform: scale(0.98);
+.user-menu-icon-action:hover,
+.user-menu-icon-action:focus-visible {
+  background: var(--sidebar-item-hover);
+  color: var(--foreground);
+  outline: none;
+}
+
+.user-menu-icon-action:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.user-menu-icon-action:active {
+  transform: scale(0.94);
+}
+
+.user-menu-icon-action--danger {
+  color: var(--danger);
+}
+
+.user-menu-icon-action--danger:hover,
+.user-menu-icon-action--danger:focus-visible {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+/* Lock-screen frosted overlay */
+.user-lock-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: var(--overlay);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+
+.user-lock-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: min(22rem, 100%);
+  padding: var(--space-6);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--floating-shadow);
+}
+
+.user-lock-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.user-lock-identity {
+  min-width: 0;
+  flex: 1;
+}
+
+.user-lock-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-lock-name-row strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--foreground);
+  font-size: 0.9375rem;
+  font-weight: 660;
+}
+
+.user-lock-subtitle {
+  margin-top: 2px;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.user-lock-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.user-lock-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }

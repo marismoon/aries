@@ -1,10 +1,9 @@
+import { IssuedTrendPlot } from "@/shared/charts/IssuedTrendPlot"
 import { formatWan } from "@marismoon/ui/lib/format"
-import { dashboardMetrics, issuedTrend } from "@/shared/mocks/overview"
+import { dashboardMetrics } from "@/shared/mocks/overview"
 
 import "./copilot-summary.css"
 import { useUiText } from "@/lib/i18n/use-ui-text"
-
-const trendMaximum = Math.max(...issuedTrend.map(({ amount }) => amount))
 
 export function CopilotSummary({ questionId }: { questionId?: string | null }) {
   const tl = useUiText()
@@ -47,30 +46,7 @@ export function CopilotSummary({ questionId }: { questionId?: string | null }) {
           <strong>{tl("近 6 月已出账")}</strong>
           <span>{tl("CNY · 万元")}</span>
         </figcaption>
-        <dl className="copilot-summary-bars">
-          {issuedTrend.map(({ month, amount }, index) => (
-            <div
-              key={month}
-              title={tl("{{month}} · {{value}} 万元", {
-                month,
-                value: formatWan(amount),
-              })}
-            >
-              <dt>{month}</dt>
-              <dd>
-                <span
-                  className="copilot-summary-bar"
-                  aria-hidden="true"
-                  data-current={index === issuedTrend.length - 1 || undefined}
-                  style={{ blockSize: `${(amount / trendMaximum) * 100}%` }}
-                />
-                <span className="sr-only">
-                  {formatWan(amount)} {tl("万元")}
-                </span>
-              </dd>
-            </div>
-          ))}
-        </dl>
+        <IssuedTrendPlot className="mt-1.5 h-[84px]" />
       </figure>
     </div>
   )

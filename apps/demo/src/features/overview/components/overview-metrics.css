@@ -23,9 +23,9 @@
 
 .overview-kpi-issued {
   justify-content: space-between;
-  gap: 12px;
-  overflow: clip;
-  padding-bottom: 7px;
+  gap: 10px;
+  overflow: visible;
+  padding-bottom: 10px;
 }
 
 .overview-kpi-heading {
@@ -100,62 +100,6 @@
   background: var(--success-bg);
   color: var(--success);
   font-weight: 650;
-}
-
-.issued-chart-columns {
-  --issued-chart-height: 43px;
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 6px;
-}
-
-.issued-chart-columns li {
-  position: relative;
-  display: grid;
-  min-width: 0;
-  gap: 4px;
-  text-align: center;
-}
-
-.issued-chart-track {
-  display: flex;
-  height: var(--issued-chart-height);
-  align-items: end;
-}
-
-.issued-chart-bar {
-  display: block;
-  width: 100%;
-  height: calc(100% * var(--bar-ratio));
-  border-radius: 5px 5px 2px 2px;
-  background: var(--hero-bar);
-}
-
-.issued-chart-columns li:last-child .issued-chart-bar {
-  background: var(--hero-bar-current);
-}
-
-:lang(en) .issued-chart-value {
-  /* "×10k" is longer than "万"; keep neighbouring labels apart. */
-  font-size: 0.5625rem;
-  letter-spacing: -0.01em;
-}
-
-.issued-chart-value {
-  position: absolute;
-  top: calc(var(--issued-chart-height) * (1 - var(--bar-ratio)));
-  width: 100%;
-  transform: translateY(calc(-100% - 3px));
-  font-size: 0.625rem;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-
-.issued-chart-month {
-  color: var(--hero-muted);
-  font-size: 0.75rem;
-  line-height: 1.3;
-  white-space: nowrap;
 }
 
 .overview-kpi-badge {
@@ -241,31 +185,16 @@
   gap: 6px;
 }
 
-.collection-segments {
-  display: flex;
-  gap: 2px;
-  width: 100%;
-}
-
-.collection-segments span {
-  min-width: 2px;
-  height: 8px;
-  border-radius: 999px;
-}
-
-.collection-segments [data-tone="complete"],
 .collection-legend [data-tone="complete"] {
   background: var(--primary);
 }
 
-.collection-segments [data-tone="processing"],
 .collection-legend [data-tone="processing"] {
   background: var(--chart-2);
 }
 
-.collection-segments [data-tone="intervention"],
 .collection-legend [data-tone="intervention"] {
-  background: var(--danger);
+  background: var(--chart-negative);
 }
 
 .collection-legend {
@@ -290,35 +219,6 @@
   border-radius: 50%;
 }
 
-.collection-bar {
-  --collection-track: color-mix(in srgb, var(--chart-2) 17%, var(--recess));
-  display: block;
-  width: 100%;
-  height: 5px;
-  min-width: 0;
-  overflow: hidden;
-  appearance: none;
-  border: 0;
-  border-radius: 999px;
-  background: var(--collection-track);
-  color: var(--primary);
-}
-
-.collection-bar::-webkit-progress-bar {
-  border-radius: 999px;
-  background: var(--collection-track);
-}
-
-.collection-bar::-webkit-progress-value {
-  border-radius: 999px;
-  background: currentColor;
-}
-
-.collection-bar::-moz-progress-bar {
-  border-radius: 999px;
-  background: currentColor;
-}
-
 .collection-breakdown {
   display: grid;
   gap: 7px;
@@ -340,11 +240,7 @@
 .collection-breakdown-row[data-tone="success"] {
   --metric-pictogram: var(--success);
   --metric-pictogram-fill: var(--success-bg);
-  --metric-strip: color-mix(in srgb, var(--success) 58%, white);
-}
-
-.dark .collection-breakdown-row[data-tone="success"] {
-  --metric-strip: var(--success);
+  --metric-strip: var(--chart-positive);
 }
 
 .collection-breakdown-row[data-tone="info"] {
@@ -382,10 +278,6 @@
   font-size: 0.6875rem;
 }
 
-.collection-breakdown-row .collection-bar {
-  height: 6px;
-  color: var(--metric-strip);
-}
 
 @container overview (max-width: 1040px) {
   .overview-kpis {
@@ -448,52 +340,5 @@
 
   .overview-kpi-secondary:hover {
     transform: translateY(-2px);
-  }
-}
-
-/* Chart entrance motion (shared keyframes live in styles/motion.css). */
-@media (prefers-reduced-motion: no-preference) {
-  .issued-chart-bar {
-    transform-origin: bottom;
-    animation: chart-grow-y 640ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  }
-
-  .issued-chart-value {
-    animation: chart-fade-in 360ms 360ms backwards;
-  }
-
-  .collection-segments span {
-    transform-origin: left;
-    animation: chart-grow-x 640ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  }
-
-  .collection-bar::-webkit-progress-value {
-    transform-origin: left;
-    animation: chart-grow-x 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  }
-
-  .collection-bar::-moz-progress-bar {
-    transform-origin: left;
-    animation: chart-grow-x 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  }
-
-  .issued-chart-columns
-    li:nth-child(2)
-    :is(.issued-chart-bar, .issued-chart-value),
-  .collection-segments span:nth-child(2) {
-    animation-delay: 60ms;
-  }
-  .issued-chart-columns li:nth-child(3) .issued-chart-bar,
-  .collection-segments span:nth-child(3) {
-    animation-delay: 120ms;
-  }
-  .issued-chart-columns li:nth-child(4) .issued-chart-bar {
-    animation-delay: 180ms;
-  }
-  .issued-chart-columns li:nth-child(5) .issued-chart-bar {
-    animation-delay: 240ms;
-  }
-  .issued-chart-columns li:nth-child(6) .issued-chart-bar {
-    animation-delay: 300ms;
   }
 }

@@ -35,11 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@marismoon/ui/ui/select"
-import {
-  SummaryMiniBars,
-  SummaryRingGauge,
-  SummarySegmentedBar,
-} from "@/features/settings/SettingsSummaryVisuals"
+import { SparklineKpiCard } from "@/features/settings/SettingsSummaryVisuals"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import {
   notificationsActions,
@@ -87,70 +83,107 @@ export function NotificationLogsSummary() {
   const failed = deliveryLogs.filter((l) => l.status === "failed").length
   const throttled = deliveryLogs.filter((l) => l.status === "throttled").length
   const successRate = total > 0 ? Math.round((delivered / total) * 100) : 100
+  const avgLatency =
+    total > 0
+      ? Math.round(
+          deliveryLogs.reduce((sum, l) => sum + l.latencyMs, 0) / total
+        )
+      : 0
 
-  const channels: DeliveryChannel[] = [
-    "feishu",
-    "email",
-    "wecom",
-    "inApp",
-    "webhook",
+  const deliveryVolumeTrend = [
+    { label: "11/20", value: 112 },
+    { label: "11/21", value: 138 },
+    { label: "11/22", value: 94 },
+    { label: "11/23", value: 126 },
+    { label: "11/24", value: 152 },
+    { label: "11/25", value: 144 },
+    { label: "11/26", value: total },
   ]
-  const dist = channels
-    .map((ch) => ({
-      label: tl(channelMeta[ch]),
-      value: deliveryLogs.filter((l) => l.channel === ch).length,
-    }))
-    .filter((item) => item.value > 0)
-  const maxCount = Math.max(...dist.map((item) => item.value), 1)
+  const rateTrend = [
+    { label: "11/20", value: 96 },
+    { label: "11/21", value: 94 },
+    { label: "11/22", value: 97 },
+    { label: "11/23", value: 95 },
+    { label: "11/24", value: 92 },
+    { label: "11/25", value: 96 },
+    { label: "11/26", value: successRate },
+  ]
+  const latencyTrend = [
+    { label: "11/20", value: Math.max(avgLatency + 42, 80) },
+    { label: "11/21", value: Math.max(avgLatency + 28, 75) },
+    { label: "11/22", value: Math.max(avgLatency + 14, 70) },
+    { label: "11/23", value: Math.max(avgLatency + 35, 85) },
+    { label: "11/24", value: Math.max(avgLatency + 12, 72) },
+    { label: "11/25", value: Math.max(avgLatency + 6, 68) },
+    { label: "11/26", value: avgLatency },
+  ]
+  const issueTrend = [
+    { label: "11/20", value: 3 },
+    { label: "11/21", value: 5 },
+    { label: "11/22", value: 2 },
+    { label: "11/23", value: 4 },
+    { label: "11/24", value: 6 },
+    { label: "11/25", value: 2 },
+    { label: "11/26", value: failed + throttled },
+  ]
 
   return (
-    <section className="settings-summary-grid" aria-label={tl("通知投递概况")}>
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("近期投递总数")}</div>
-          <div className="settings-summary-value financial-number">
-            {total} {tl("次")}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={Math.max(total, 1)}
-          items={[
-            { label: tl("已送达"), count: delivered, tone: "success" },
-            { label: tl("发送失败"), count: failed, tone: "danger" },
-            { label: tl("已抑制"), count: throttled, tone: "neutral" },
-          ]}
-        />
-      </FrostCard>
+    <section
+      className="settings-summary-grid"
+      data-cols="4"
+      aria-label={tl("通知投递概况")}
+    >
+      <SparklineKpiCard
+        featured
+        label={tl("近期投递总数")}
+        value={`${total} ${tl("次")}`}
+        formatHoverValue={(v) => `${v} ${tl("次")}`}
+        badge={`${tl("已送达")} ${delivered}`}
+        badgeTone="success"
+        note={tl("覆盖飞书、企微、邮件、站内信与 Webhook")}
+        data={deliveryVolumeTrend}
+        variant="area"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">{tl("投递通道分布")}</div>
-        <SummaryMiniBars
-          items={dist.map((item) => ({
-            label: item.label,
-            value: item.value,
-            max: maxCount,
-          }))}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("通道送达成功率")}
+        value={`${successRate}%`}
+        formatHoverValue={(v) => `${v}%`}
+        badge={`${delivered}/${total}`}
+        badgeTone={successRate >= 85 ? "success" : "warning"}
+        note={tl("发送失败的回调支持一键重发并记录回执")}
+        data={rateTrend}
+        variant="line"
+        color="var(--chart-positive)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("通道送达成功率")}</div>
-            <div className="settings-summary-value financial-number">
-              {delivered} / {total}
-            </div>
-            <p className="settings-summary-note">
-              {tl("发送失败的回调支持一键重发并记录回执")}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={successRate}
-            tone={successRate >= 85 ? "success" : "warning"}
-            label={tl("通道送达成功率")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("平均投递延迟")}
+        value={`${avgLatency} ms`}
+        formatHoverValue={(v) => `${v} ms`}
+        badge="P50"
+        badgeTone="info"
+        note={tl("各通道 Webhook 回调与邮件网关平均耗时")}
+        data={latencyTrend}
+        variant="line"
+        color="var(--chart-2)"
+      />
+
+      <SparklineKpiCard
+        label={tl("失败与限流拦截")}
+        value={`${failed + throttled} ${tl("次")}`}
+        formatHoverValue={(v) => `${v} ${tl("次")}`}
+        badge={failed > 0 ? tl("有待重发") : tl("无失败")}
+        badgeTone={failed > 0 ? "danger" : "neutral"}
+        note={tl("发送失败 {{failed}} · 已抑制 {{throttled}}", {
+          failed,
+          throttled,
+        })}
+        data={issueTrend}
+        variant="bar"
+        color="var(--chart-negative)"
+      />
     </section>
   )
 }
@@ -295,7 +328,7 @@ export function NotificationLogsPage() {
           </div>
           <div className="bills-toolbar-fields" role="search">
             <div
-              className="bills-search field-surface"
+              className="bills-search data-table-search field-surface"
               data-field-focus="quiet"
             >
               <label className="sr-only" htmlFor={searchId}>

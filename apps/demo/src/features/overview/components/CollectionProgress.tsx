@@ -1,3 +1,4 @@
+import { DistributionPlot, MeterPlot } from "@/shared/charts/BusinessPlots"
 import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 import {
   collectionChannels,
@@ -22,9 +23,24 @@ export function CollectionProgress() {
   const { processing, manual, parseSuccess } = collectionStates
   const month = Number(demoPeriod.slice(-2))
   const states = [
-    { label: tl("已完成"), count: completed, tone: "complete" },
-    { label: tl("解析中"), count: processing, tone: "processing" },
-    { label: tl("待介入"), count: manual, tone: "intervention" },
+    {
+      label: tl("已完成"),
+      count: completed,
+      tone: "complete",
+      color: "var(--primary)",
+    },
+    {
+      label: tl("解析中"),
+      count: processing,
+      tone: "processing",
+      color: "var(--chart-2)",
+    },
+    {
+      label: tl("待介入"),
+      count: manual,
+      tone: "intervention",
+      color: "var(--chart-negative)",
+    },
   ] as const
 
   return (
@@ -58,10 +74,14 @@ export function CollectionProgress() {
       </div>
 
       <div className="collection-distribution">
-        <div className="collection-segments" aria-hidden="true">
-          {states.map(({ tone, count }) => (
-            <span key={tone} data-tone={tone} style={{ flexGrow: count }} />
-          ))}
+        <div aria-hidden="true">
+          <DistributionPlot
+            segments={states.map((s) => ({
+              key: s.tone,
+              value: s.count,
+              color: s.color,
+            }))}
+          />
         </div>
         <ul className="collection-legend" aria-label={tl("云账号采集完成情况")}>
           {states.map(({ label, count, tone }) => (
@@ -95,11 +115,11 @@ export function CollectionProgress() {
                   {tl("{{completed}} / {{total}} 个账号", { completed, total })}
                 </span>
               </div>
-              <progress
-                className="collection-bar"
+              <MeterPlot
+                color="var(--metric-strip)"
                 value={completed}
                 max={total}
-                aria-label={tl("{{currency}} 采集完成率", { currency })}
+                label={tl("{{currency}} 采集完成率", { currency })}
               />
             </li>
           )
@@ -114,11 +134,11 @@ export function CollectionProgress() {
               {tl("自动化解析 · {{parseSuccess}}%", { parseSuccess })}
             </span>
           </div>
-          <progress
-            className="collection-bar"
+          <MeterPlot
+            color="var(--metric-strip)"
             value={parseSuccess}
             max={100}
-            aria-label={tl("解析成功率")}
+            label={tl("解析成功率")}
           />
         </li>
         <li className="collection-breakdown-row" data-tone="success">
@@ -135,11 +155,11 @@ export function CollectionProgress() {
               {((completed / accountCount) * 100).toFixed(1)}%
             </span>
           </div>
-          <progress
-            className="collection-bar"
+          <MeterPlot
+            color="var(--metric-strip)"
             value={completed}
             max={accountCount}
-            aria-label={tl("云账号采集完成率")}
+            label={tl("云账号采集完成率")}
           />
         </li>
       </ul>

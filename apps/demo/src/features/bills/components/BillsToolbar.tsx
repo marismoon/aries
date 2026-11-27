@@ -51,7 +51,10 @@ export function BillsToolbar({
         role="search"
         aria-label={tl("账单搜索与筛选")}
       >
-        <div className="bills-search field-surface" data-field-focus="quiet">
+        <div
+          className="bills-search data-table-search field-surface"
+          data-field-focus="quiet"
+        >
           <label className="sr-only" htmlFor={searchId}>
             {tl("搜索账单")}
           </label>

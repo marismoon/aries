@@ -1,0 +1,92 @@
+/* Bklit UI chart semantic tokens mapped to Aries design system tokens.
+   All colors derive from Aries theme variables so every brand palette and
+   light/dark mode switches automatically with zero hardcoded color values. */
+:root {
+  --chart-background: var(--card);
+  --chart-foreground: var(--foreground);
+  --chart-foreground-muted: var(--muted-foreground);
+  --chart-label: var(--muted-foreground);
+  --chart-line-primary: var(--chart-1);
+  --chart-line-secondary: var(--chart-2);
+  --chart-crosshair: color-mix(in srgb, var(--foreground) 18%, transparent);
+  --chart-grid: var(--border-subtle);
+  --chart-indicator-color: var(--chart-1);
+  --chart-indicator-secondary-color: var(--chart-2);
+  --chart-marker-background: var(--popover);
+  --chart-marker-border: var(--border);
+  --chart-marker-foreground: var(--foreground);
+  --chart-marker-badge-background: var(--primary);
+  --chart-marker-badge-foreground: var(--primary-foreground);
+  --chart-segment-background: color-mix(in srgb, var(--primary) 12%, transparent);
+  --chart-segment-line: var(--primary);
+  --chart-brush-border: var(--border);
+  --chart-tooltip-background: var(--popover);
+  --chart-tooltip-foreground: var(--popover-foreground);
+  --chart-tooltip-muted: var(--muted-foreground);
+  /* Light-mode semantic chart hues: brighter than text-contrast --success/--warning/--danger
+     so sparklines, rings, and bars stay airy on light frosted cards (DESIGN_SYSTEM §2.5). */
+  --chart-positive: #10b981;
+  --chart-warning: #f59e0b;
+  --chart-negative: #f43f5e;
+  --chart-scale-01: color-mix(in srgb, var(--chart-1) 18%, var(--muted));
+  --chart-scale-02: color-mix(in srgb, var(--chart-1) 38%, var(--muted));
+  --chart-scale-03: color-mix(in srgb, var(--chart-1) 58%, var(--muted));
+  --chart-scale-04: color-mix(in srgb, var(--chart-1) 78%, var(--muted));
+  --chart-scale-05: var(--chart-1);
+  --chart-scale-pattern-color: var(--border);
+}
+
+.dark {
+  --chart-positive: var(--success);
+  --chart-warning: var(--warning);
+  --chart-negative: var(--danger);
+}
+
+/* Aries-native frosted popover surface for all Bklit chart tooltips and date pills
+   (matches popup.css material across Light, Dark Glass, and Dark Clean). */
+[data-slot="chart-tooltip-panel"] {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-control);
+  background: color-mix(
+    in srgb,
+    var(--chart-tooltip-background) var(--popover-fill, 95%),
+    transparent
+  );
+  color: var(--chart-tooltip-foreground);
+  box-shadow: var(--floating-shadow);
+  backdrop-filter: var(--popover-filter, blur(24px) saturate(160%));
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+[data-slot="date-pill"] {
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  background: color-mix(
+    in srgb,
+    var(--chart-tooltip-background) var(--popover-fill, 95%),
+    transparent
+  );
+  color: var(--chart-tooltip-foreground);
+  box-shadow: var(--floating-shadow);
+  backdrop-filter: var(--popover-filter, blur(20px) saturate(150%));
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+:root.dark:not([data-dark-style="clean"]) [data-slot="chart-tooltip-panel"],
+:root.dark:not([data-dark-style="clean"]) [data-slot="date-pill"] {
+  border-color: var(--glass-edge);
+}
+
+:root.dark[data-dark-style="clean"] [data-slot="chart-tooltip-panel"],
+:root.dark[data-dark-style="clean"] [data-slot="date-pill"] {
+  background: var(--popover);
+  backdrop-filter: none;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  [data-slot="chart-tooltip-panel"],
+  [data-slot="date-pill"] {
+    background: var(--popover);
+    backdrop-filter: none;
+  }
+}

@@ -189,11 +189,7 @@
   letter-spacing: -0.015em;
 }
 
-/* Official chart examples use the Aries categorical palette on this page. */
-#component-chart {
-  --chart-1: var(--chart-soft-1);
-  --chart-2: var(--chart-soft-2);
-  --chart-3: var(--chart-soft-3);
-  --chart-4: var(--chart-soft-4);
-  --chart-5: var(--chart-soft-5);
+/* Reserve the last line of the chart area for the selected bar's value. */
+.chart-showcase .chart-bar-with-value > :first-child {
+  height: calc(11rem - 1.25rem);
 }

@@ -79,8 +79,15 @@ export const componentCategories = [
   {
     slug: "data",
     title: "数据展示",
-    description: "表格、图表、轮播与可调整面板。",
-    components: ["table", "chart", "carousel", "resizable", "scroll-area"],
+    description: "表格、轮播与可调整面板。",
+    components: ["table", "carousel", "resizable", "scroll-area"],
+  },
+  {
+    slug: "charts",
+    title: "图表汇总",
+    description:
+      "折线、面积、柱状、堆叠、饼图、环形、径向与雷达等数据可视化图表。",
+    components: ["chart"],
   },
   {
     slug: "ai",

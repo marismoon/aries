@@ -47,6 +47,7 @@ const moduleMenus = [
         "导航",
         "浮层与反馈",
         "数据展示",
+        "图表汇总",
         "对话与 AI",
       ],
     ],
@@ -208,7 +209,7 @@ test("桌面导航默认展开，只有手动切换能改变状态", async ({ pa
   await expect(myTasks).not.toHaveAttribute("aria-controls")
   await expect(sidebar.getByRole("button", { name: "导航搜索" })).toHaveCSS(
     "height",
-    "36px"
+    "32px"
   )
   await expect(page.getByRole("button", { name: "导航搜索" })).toHaveCount(1)
   await expect(main.getByRole("button", { name: "搜索页面" })).toHaveCount(0)

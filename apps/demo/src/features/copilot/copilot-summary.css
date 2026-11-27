@@ -31,8 +31,7 @@
 }
 
 .copilot-summary-facts dt,
-.copilot-summary-chart figcaption > span,
-.copilot-summary-bars dt {
+.copilot-summary-chart figcaption > span {
   color: var(--muted-foreground);
 }
 
@@ -53,42 +52,4 @@
 
 .copilot-summary-chart figcaption strong {
   font-weight: 620;
-}
-
-.copilot-summary-bars {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: var(--space-2);
-  margin-block-start: var(--space-1);
-  text-align: center;
-}
-
-.copilot-summary-bars > div {
-  position: relative;
-  display: grid;
-  gap: var(--space-1);
-}
-
-.copilot-summary-bars dt {
-  grid-row: 2;
-  font-size: 0.6875rem;
-  white-space: nowrap;
-}
-
-.copilot-summary-bars dd {
-  display: flex;
-  grid-row: 1;
-  align-items: end;
-  justify-content: center;
-  block-size: 38px;
-}
-
-.copilot-summary-bar {
-  inline-size: min(100%, var(--space-6));
-  border-radius: var(--space-1);
-  background: var(--chart-1);
-}
-
-.copilot-summary-bar[data-current] {
-  background: var(--hero-bar-current);
 }

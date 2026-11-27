@@ -293,6 +293,7 @@ export const workspaceModules = {
             to: workspacePages["components-overlay"].path,
           },
           { label: "数据展示", to: workspacePages["components-data"].path },
+          { label: "图表汇总", to: workspacePages["components-charts"].path },
           { label: "对话与 AI", to: workspacePages["components-ai"].path },
         ],
       },

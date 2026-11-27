@@ -38,7 +38,7 @@
 Aries 提供构建工作区应用所需的共享组件和外壳。Demo 使用本地模拟数据展示概览、账单和组件，Starter 则提供接好外壳的首页与设置页。
 
 - **主题与材质**：内置五套品牌主题（Aries Analytics、静心雾蓝、北极光、暖陶土、极简灰），默认 Aries Analytics，可从页头直接轮换。支持亮色与暗色模式，暗色提供 glass 和 clean 两种材质，其中 glass 模式内置三款可切换的 WebGL 2 动态背景。
-- **组件、表格与图表**：基于 shadcn 组件与 Solar 图标构建，搭配 TanStack Table 账单表、Recharts 趋势图与完整的组件预览页。
+- **组件、表格与图表**：基于 shadcn 组件与 Solar 图标构建，搭配 TanStack Table 账单表、Bklit 原生图表与完整的组件预览页。
 - **工作区外壳**：固定三列布局（模块入口、工作区导航、业务内容区），内置命令面板检索当前模块页面，外壳与主要 Demo 页面均支持简体中文与英文。
 - **Copilot 右栏示例**：提供可展开的右侧助手面板，基于本地模拟数据回答示例问题。
 - **Starter 与布局契约**：包含首页与设置页的起步模板，通过 `pnpm create:app` 或 `npm create @marismoon/aries` 创建新应用；布局由 `pnpm lint` 与 `pnpm test:ui` 自动校验。

@@ -1,25 +1,40 @@
 import {
-  AreaDemo,
-  ColorBarDemo,
-  LineDemo,
-  PieDemo,
-  RadarDemo,
-  StackedBarDemo,
-} from "./chart-demos"
-import "./motion-demos.css"
+  BklitAreaDemo,
+  BklitBarDemo,
+  BklitComposedDemo,
+  BklitFunnelDemo,
+  BklitHeatmapDemo,
+  BklitLineDemo,
+  BklitLiveLineDemo,
+  BklitLollipopDemo,
+  BklitPieDemo,
+  BklitRadarDemo,
+  BklitRingDemo,
+  BklitSparklineDemo,
+  BklitSparklineKpiCardsDemo,
+  BklitStackedBarDemo,
+} from "./bklit-chart-demos"
 
-/** Aries chart standard: the soft categorical palette, rounded marks, soft
- * tooltips, and click / legend interaction. Sits above the official example so
- * both can be compared; the examples below use the same palette here. */
+/** Aries chart standard: Bklit UI charts mapped to Aries theme tokens. */
 export function ChartShowcase() {
   return (
     <div className="components-grid chart-showcase">
-      <LineDemo />
-      <AreaDemo />
-      <ColorBarDemo />
-      <StackedBarDemo />
-      <PieDemo />
-      <RadarDemo />
+      <div className="components-grid col-span-full auto-rows-fr">
+        <BklitLineDemo />
+        <BklitAreaDemo />
+        <BklitBarDemo />
+        <BklitStackedBarDemo />
+        <BklitComposedDemo />
+        <BklitPieDemo />
+        <BklitRingDemo />
+        <BklitRadarDemo />
+        <BklitFunnelDemo />
+        <BklitLollipopDemo />
+        <BklitHeatmapDemo />
+        <BklitSparklineDemo />
+      </div>
+      <BklitSparklineKpiCardsDemo />
+      <BklitLiveLineDemo />
     </div>
   )
 }

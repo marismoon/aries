@@ -6,6 +6,7 @@
 
 | 导入 | 源文件 |
 | --- | --- |
+| `@marismoon/ui/charts` | `src/components/charts/index.ts`（Bklit UI 图表组件唯一标准） |
 | `@marismoon/ui/ui/<name>` | `src/components/ui/<name>.tsx` |
 | `@marismoon/ui/shared/<Name>` | `src/components/shared/<Name>.tsx` |
 | `@marismoon/ui/shared/use-data-table` | `src/components/shared/use-data-table.ts` |
@@ -71,7 +72,7 @@ import { FrostCard } from "@marismoon/ui/shared/FrostCard"
 
 ### DataTable + useDataTable
 
-所有业务表格的唯一模板（shadcn Table + TanStack Table）。样式只在 `shared/data-table.css`。
+所有业务表格的唯一模板（shadcn Table + TanStack Table）。样式只在 `shared/data-table.css`。表格工具栏的搜索框外层使用 `data-table-search field-surface`，右侧筛选框使用 `data-table-filter`。两者含边框高 32px，粗指针设备上为 40px。
 
 | `DataTable` Prop | 说明 |
 | --- | --- |
@@ -145,7 +146,7 @@ const table = useDataTable({
 
 shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 
-`accordion` `alert-dialog` `alert` `aspect-ratio` `attachment` `avatar` `badge` `breadcrumb` `bubble` `button-group` `button` `calendar` `card` `carousel` `chart` `checkbox` `code-block` `collapsible` `combobox` `command` `context-menu` `date-picker` `dialog` `direction` `drawer` `dropdown-menu` `empty` `field` `hover-card` `input-group` `input-otp` `input` `item` `kbd` `label` `marker` `menubar` `message-scroller` `message` `native-select` `navigation-menu` `pagination` `popover` `progress` `questionnaire` `radio-group` `resizable` `scroll-area` `select` `separator` `sheet` `sidebar` `skeleton` `slider` `sonner` `spinner` `switch` `table` `tabs` `textarea` `toggle-group` `toggle` `tooltip` `trace`。样式文件：`popup.css`、`select.css`、`text-field.css`。
+`accordion` `alert-dialog` `alert` `aspect-ratio` `attachment` `avatar` `badge` `breadcrumb` `bubble` `button-group` `button` `calendar` `card` `carousel` `checkbox` `code-block` `collapsible` `combobox` `command` `context-menu` `date-picker` `dialog` `direction` `drawer` `dropdown-menu` `empty` `field` `hover-card` `input-group` `input-otp` `input` `item` `kbd` `label` `marker` `menubar` `message-scroller` `message` `native-select` `navigation-menu` `pagination` `popover` `progress` `questionnaire` `radio-group` `resizable` `scroll-area` `select` `separator` `sheet` `sidebar` `skeleton` `slider` `sonner` `spinner` `switch` `table` `tabs` `textarea` `toggle-group` `toggle` `tooltip` `trace`。样式文件：`popup.css`、`select.css`、`text-field.css`。
 
 ### 默认值（规范）
 
@@ -173,7 +174,7 @@ shadcn（radix-rhea）+ 本项目扩展，均已按本项目令牌定制。
 
 | 能力 | 位置 |
 | --- | --- |
-| KPI 卡、图表卡（recharts） | `features/overview/components/OverviewKpis.tsx`、`OverviewCharts.tsx` |
+| KPI 卡、图表卡（Bklit 示例见 `bklit-chart-demos.tsx`） | `features/overview/components/OverviewKpis.tsx`、`OverviewCharts.tsx` |
 | 连续匀速滚动列表（跑马灯，仅列表滚动，不含数字动画） | `features/overview/components/AttentionList.tsx` + `hooks/useAttentionScroll.ts` |
 | Tabs 切换卡片（尺寸稳定） | `features/overview/components/ActivityTimeline.tsx` |
 | 表格 + 抽屉 | `features/bills/components/BillsTable.tsx`、`BillDrawer.tsx` |

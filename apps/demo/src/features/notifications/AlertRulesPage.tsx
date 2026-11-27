@@ -45,11 +45,7 @@ import {
   SelectValue,
 } from "@marismoon/ui/ui/select"
 import { Switch } from "@marismoon/ui/ui/switch"
-import {
-  SummaryMiniBars,
-  SummaryRingGauge,
-  SummarySegmentedBar,
-} from "@/features/settings/SettingsSummaryVisuals"
+import { SparklineKpiCard } from "@/features/settings/SettingsSummaryVisuals"
 import { useUiText } from "@/lib/i18n/use-ui-text"
 import {
   notificationsActions,
@@ -97,65 +93,81 @@ export function AlertRulesSummary() {
   const total = rules.length
   const enabledCount = rules.filter((r) => r.enabled).length
   const criticalCount = rules.filter((r) => r.severity === "critical").length
-  const warningCount = rules.filter((r) => r.severity === "warning").length
-  const infoCount = total - criticalCount - warningCount
   const enabledRate = total > 0 ? Math.round((enabledCount / total) * 100) : 0
+  const totalTriggers30d = rules.reduce(
+    (sum, r) => sum + r.triggeredCount30d,
+    0
+  )
 
-  const topTriggered = [...rules]
+  const activeRulesTrend = [
+    { label: "W1", value: Math.max(enabledCount - 2, 1) },
+    { label: "W2", value: Math.max(enabledCount - 1, 1) },
+    { label: "W3", value: Math.max(enabledCount - 1, 1) },
+    { label: "W4", value: enabledCount },
+    { label: "W5", value: enabledCount },
+    { label: "W6", value: enabledCount },
+  ]
+  const topRuleBars = [...rules]
     .sort((a, b) => b.triggeredCount30d - a.triggeredCount30d)
-    .slice(0, 4)
-  const maxTrig = Math.max(topTriggered[0]?.triggeredCount30d ?? 1, 1)
+    .slice(0, 6)
+    .map((rule) => ({
+      label: tl(rule.name),
+      value: rule.triggeredCount30d,
+    }))
+  const dedupeTrend = [
+    { label: "11/20", value: 61 },
+    { label: "11/21", value: 63 },
+    { label: "11/22", value: 65 },
+    { label: "11/23", value: 64 },
+    { label: "11/24", value: 67 },
+    { label: "11/25", value: 68 },
+    { label: "11/26", value: 68.4 },
+  ]
 
   return (
-    <section className="settings-summary-grid" aria-label={tl("告警规则概况")}>
-      <FrostCard className="settings-summary-card hero-surface">
-        <div className="settings-summary-meta">
-          <div className="settings-summary-label">{tl("已配置监控规则")}</div>
-          <div className="settings-summary-value financial-number">
-            {total} {tl("条")}
-          </div>
-        </div>
-        <SummarySegmentedBar
-          total={Math.max(total, 1)}
-          items={[
-            { label: tl("严重"), count: criticalCount, tone: "danger" },
-            { label: tl("重要"), count: warningCount, tone: "warning" },
-            { label: tl("一般"), count: infoCount, tone: "info" },
-          ]}
-        />
-      </FrostCard>
+    <section
+      className="settings-summary-grid"
+      data-cols="3"
+      aria-label={tl("告警规则概况")}
+    >
+      <SparklineKpiCard
+        featured
+        label={tl("生效中监控规则")}
+        value={`${enabledCount} / ${total}`}
+        formatHoverValue={(v) => `${v} ${tl("条")}`}
+        badge={`${enabledRate}%`}
+        badgeTone="success"
+        note={tl("含 {{critical}} 条严重级别实时策略", {
+          critical: criticalCount,
+        })}
+        data={activeRulesTrend}
+        variant="area"
+        color="var(--chart-1)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-label">
-          {tl("近 30 天高频触发规则")}
-        </div>
-        <SummaryMiniBars
-          items={topTriggered.map((rule) => ({
-            label: tl(rule.name),
-            value: rule.triggeredCount30d,
-            max: maxTrig,
-          }))}
-        />
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("近 30 天累计触发")}
+        value={`${totalTriggers30d} ${tl("次")}`}
+        formatHoverValue={(v) => `${v} ${tl("次")}`}
+        badge={tl("高频分布")}
+        badgeTone="warning"
+        note={tl("悬停柱状查看各规则 30 天命中次数")}
+        data={topRuleBars}
+        variant="bar"
+        color="var(--chart-3)"
+      />
 
-      <FrostCard className="settings-summary-card">
-        <div className="settings-summary-top">
-          <div className="settings-summary-meta">
-            <div className="settings-summary-label">{tl("规则生效覆盖率")}</div>
-            <div className="settings-summary-value financial-number">
-              {enabledCount} / {total}
-            </div>
-            <p className="settings-summary-note">
-              {tl("启用中的规则按冷却周期自动去重推送")}
-            </p>
-          </div>
-          <SummaryRingGauge
-            percent={enabledRate}
-            tone="success"
-            label={tl("规则生效覆盖率")}
-          />
-        </div>
-      </FrostCard>
+      <SparklineKpiCard
+        label={tl("冷却去重降噪率")}
+        value="68.4%"
+        formatHoverValue={(v) => `${v}%`}
+        badge="+5.2%"
+        badgeTone="info"
+        note={tl("启用中的规则按冷却周期自动去重推送")}
+        data={dedupeTrend}
+        variant="line"
+        color="var(--chart-2)"
+      />
     </section>
   )
 }
@@ -342,7 +354,7 @@ export function AlertRulesPage() {
           </div>
           <div className="bills-toolbar-fields" role="search">
             <div
-              className="bills-search field-surface"
+              className="bills-search data-table-search field-surface"
               data-field-focus="quiet"
             >
               <label className="sr-only" htmlFor={searchId}>

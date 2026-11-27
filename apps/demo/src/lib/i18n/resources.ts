@@ -46,7 +46,10 @@ export const resources = {
         overlay: "浮层与反馈",
         overlayDescription: "对话框、抽屉、弹出层、菜单、提示与通知。",
         data: "数据展示",
-        dataDescription: "表格、图表、轮播与可调整面板。",
+        dataDescription: "表格、轮播与可调整面板。",
+        charts: "图表汇总",
+        chartsDescription:
+          "折线、面积、柱状、堆叠、饼图、环形、径向与雷达等数据可视化图表。",
         ai: "对话与 AI",
         aiDescription: "对话气泡、标记与附件。",
       },
@@ -74,7 +77,7 @@ export const resources = {
           "边缘微光、状态按钮、多步骤加载、上传、快捷栏、侧栏、侧滑面板、状态脉冲与命令面板结果。",
         charts: "图表动效",
         chartsDescription:
-          "折线、面积、柱状、堆叠、饼图、雷达、环形进度与纯 SVG 图表入场。",
+          "基于 Bklit UI：折线、面积、柱状、堆叠、组合、饼/环、多环进度、雷达、漏斗、棒棒糖、热力与迷你趋势图。",
         transitions: "切换动效",
         transitionsDescription:
           "分段指示器、方向感知的页面切换、缓动对比、亮暗揭示、弹窗族、Tab 滑块与状态确认。",
@@ -156,7 +159,10 @@ export const resources = {
         overlayDescription:
           "Dialogs, drawers, popovers, menus, tooltips and toasts.",
         data: "Data display",
-        dataDescription: "Tables, charts, carousels and resizable panels.",
+        dataDescription: "Tables, carousels and resizable panels.",
+        charts: "Charts & graphs",
+        chartsDescription:
+          "Line, area, bar, stacked, pie, donut, radial and radar charts.",
         ai: "Chat and AI",
         aiDescription: "Chat bubbles, markers and attachments.",
       },
@@ -187,7 +193,7 @@ export const resources = {
         scrollDescription: "Scroll reveal, scroll narrative and parallax.",
         charts: "Chart motion",
         chartsDescription:
-          "Line, area, bar, stacked, pie, radar, ring progress and plain SVG chart entrance.",
+          "Powered by Bklit UI: line, area, bar, stacked, composed, pie/donut, ring, radar, funnel, lollipop, heatmap and sparklines.",
         transitions: "Transition motion",
         transitionsDescription:
           "Segment indicator, direction-aware page transitions, easing comparison, theme reveal, overlays, tab glide and status confirmation.",

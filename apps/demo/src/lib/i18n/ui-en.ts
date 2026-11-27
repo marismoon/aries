@@ -91,6 +91,7 @@ export const uiEn: Record<string, string> = {
   导航: "Navigation",
   浮层与反馈: "Overlays and feedback",
   数据展示: "Data display",
+  图表汇总: "Charts & graphs",
   "对话与 AI": "Chat and AI",
   基础页面: "Base pages",
   登录与账号: "Sign-in and account",
@@ -204,7 +205,8 @@ export const uiEn: Record<string, string> = {
   "输入、选择、开关等": "Inputs, selects, switches",
   "页签、面包屑、分页": "Tabs, breadcrumbs, pagination",
   "对话框、抽屉、提示": "Dialogs, drawers, tooltips",
-  "表格、图表": "Tables, charts",
+  "表格、轮播、可调整面板": "Tables, carousels, resizable panels",
+  "折线、面积、柱状、饼图、雷达": "Line, area, bar, pie and radar charts",
   "气泡、标记、附件": "Bubbles, markers, attachments",
   "登录、找回密码、动态口令、首次部署":
     "Sign-in, password reset, one-time code, first setup",
