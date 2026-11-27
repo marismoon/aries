@@ -1,6 +1,6 @@
 {
   "name": "@marismoon/create-aries",
-  "version": "0.1.0-next.5",
+  "version": "0.1.0-next.6",
   "description": "创建 Aries 工作区应用：三列外壳、主题、中英文与布局契约开箱即用。用法：npm create @marismoon/aries@next my-app",
   "keywords": [
     "create",
